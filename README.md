@@ -1,5 +1,4 @@
 # Desktop_App_Car_Company_ABC
-## Proyecto Final para el curso de Desarrollo de Software I en la Universidad del Valle
 
 La empresa autos ABC dedicada a la venta de automóviles eléctricos decidió
 sistematizar sus procesos tanto de gestión interna como de operación del negocio. Dado
