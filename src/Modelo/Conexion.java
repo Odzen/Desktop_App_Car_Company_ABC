@@ -1,6 +1,9 @@
-package Modelo;
+package src.Modelo;
 
-"Clase para conectar con la base de datos en postgreSQL"
+// Clase para conectar con la base de datos en postgreSQL
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class Conexion {
     private final String base = "";
@@ -12,9 +15,10 @@ public class Conexion {
     public Connection getConexion(){
 
         try{
-
-        }catch(){
-
+            System.out.println("Aqui va la conexion a PostgreSQL");
+        }catch( Exception e/*SQLException e*/){
+            System.err.println(e);
         }
+        return con;
     }
 }

@@ -1,6 +1,6 @@
-package Modelo;
+package src.Modelo;
 
-"Clase para modelar el Usuario en la base de datos"
+//Clase para modelar el Usuario en la base de datos
 public class Usuario {
     private int id_usuario;
     private char[] contraseña;
