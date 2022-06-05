@@ -1,13 +1,18 @@
 package src.Modelo;
 
+import java.net.URISyntaxException;
 import java.sql.Connection;
+import java.sql.SQLException;
 
-public class ConsultasUsuario extends Conexion {
+public class ConsultasUsuario  {
 
+    private Conexion con = new Conexion();
+
+    public ConsultasUsuario(){
+        con.getConnection();
+    }
     public boolean registrar(Usuario usr) {
-        Connection con = getConexion();
 
-        String sql = "INSERT INTO usuario (...)  VALUES (?,?,?...)";
 
         return true;
     }
