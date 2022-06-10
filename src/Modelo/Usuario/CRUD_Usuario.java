@@ -1,10 +1,13 @@
 package src.Modelo.Usuario;
 
+import com.sun.tools.jconsole.JConsoleContext;
 import src.Modelo.Conexion;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CRUD_Usuario {
@@ -13,11 +16,53 @@ public class CRUD_Usuario {
     public CRUD_Usuario(){
     }
 
-    public void verUsuarios() {
+    public ArrayList<Usuario> leerTodosLosUsuarios() {
+        try {
+            PreparedStatement sentencia = this.connection.getConnection().prepareStatement(
+                    "SELECT * FROM usuario"
+            );
+            ResultSet resultado = sentencia.executeQuery();
 
+            ArrayList<Usuario> usuariosResultado = new ArrayList<Usuario>();
+            int contador = 0;
+
+            while (resultado.next()) {
+                Usuario usuario = new Usuario();
+
+                int id_usuario = resultado.getInt("id_usuario");
+                usuario.setId_usuario(id_usuario);
+                String contraseña = resultado.getString("contraseña");
+                usuario.setContraseña(contraseña);
+                String email = resultado.getString("email");
+                usuario.setEmail(email);
+                String nombre = resultado.getString("nombre");
+                usuario.setNombre(nombre);
+                String apellido = resultado.getString("apellido");
+                usuario.setApellido(apellido);
+                Date modificado = resultado.getDate("modificado");
+                usuario.setModificado(modificado);
+                String avatar = resultado.getString("avatar");
+                usuario.setAvatar(avatar);
+                boolean activo = resultado.getBoolean("activo");
+                usuario.setActivo(activo);
+                Date joined = resultado.getDate("joined");
+                usuario.setJoined(joined);
+                String user_type = resultado.getString("user_type");
+                usuario.setUser_type(user_type);
+
+                usuariosResultado.add(usuario);
+
+                contador++;
+            }
+            return usuariosResultado;
+
+        } catch (SQLException e) {
+            System.out.printf("Error al leer los usuarios", e);
+            throw new RuntimeException(e);
+        }
     }
 
-    public void insertarUsuario(Usuario usuario) {
+    public void crearUsuario(Usuario usuario) {
         try {
             PreparedStatement sentencia = this.connection.getConnection().prepareStatement(
                     "INSERT INTO usuario " +
@@ -35,7 +80,10 @@ public class CRUD_Usuario {
 
             sentencia.execute();
 
+            System.out.println("Operación Exitosa: Creación de Usuario");
+
         } catch (SQLException e) {
+            System.out.printf("Error al crear el Usuario", e);
             throw new RuntimeException(e);
         }
     }

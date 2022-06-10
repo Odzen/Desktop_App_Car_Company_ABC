@@ -6,6 +6,7 @@ import src.Vista.Vista;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -47,9 +48,12 @@ public class Controlador implements ActionListener {
             this.opcion = scanner.nextInt();
 
             if (opcion == 1) {
-                usrConsulta.verUsuarios();
+                ArrayList<Usuario>  usuarios = usrConsulta.leerTodosLosUsuarios();
+                for (Usuario usuario : usuarios) {
+                    System.out.printf(usuario.toString()+"\n");
+                }
             } else if( opcion == 2) {
-                usrConsulta.insertarUsuario(this.pedirDatosUsuario());
+                usrConsulta.crearUsuario(this.pedirDatosUsuario());
             } else if( opcion == 3) {
                 usrConsulta.editarUsuarios();
             } else if( opcion == 4) {

@@ -4,6 +4,8 @@ import java.util.Date;
 
 //Clase para modelar el Usuario en la base de datos
 public class Usuario {
+
+    private int id_usuario;
     private String contraseña;
     private String email;
     private String nombre;
@@ -15,6 +17,7 @@ public class Usuario {
     private String user_type;
 
     public Usuario() {
+        this.id_usuario = 0;
         this.contraseña = "";
         this.email = "";
         this.nombre = "";
@@ -25,6 +28,14 @@ public class Usuario {
         this.user_type = "";
         this.activo = true;
 
+    }
+
+    public int getId_usuario() {
+        return id_usuario;
+    }
+
+    public void setId_usuario(int id_usuario) {
+        this.id_usuario = id_usuario;
     }
 
     public String getContraseña() {
@@ -97,5 +108,21 @@ public class Usuario {
 
     public void setUser_type(String user_type) {
         this.user_type = user_type;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "id_usuario=" + id_usuario +
+                ", contraseña='" + contraseña + '\'' +
+                ", email='" + email + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", modificado=" + modificado +
+                ", avatar='" + avatar + '\'' +
+                ", activo=" + activo +
+                ", joined=" + joined +
+                ", user_type='" + user_type + '\'' +
+                '}';
     }
 }
