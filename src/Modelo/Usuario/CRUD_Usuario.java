@@ -54,6 +54,7 @@ public class CRUD_Usuario {
 
                 contador++;
             }
+            System.out.println("Operación Exitosa: Lectura de Usuarios de la Base de datos!!");
             return usuariosResultado;
 
         } catch (SQLException e) {
