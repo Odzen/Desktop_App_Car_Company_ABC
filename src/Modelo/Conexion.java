@@ -63,4 +63,12 @@ public class Conexion {
         }
     }
 
+    public static void closeConnection() {
+        try {
+            getCon().close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

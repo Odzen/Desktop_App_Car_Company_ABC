@@ -1,5 +1,6 @@
 package src.Controlador;
 
+import src.Modelo.Conexion;
 import src.Modelo.Usuario.CRUD_Usuario;
 import src.Modelo.Usuario.Usuario;
 import src.Vista.Vista;
@@ -60,9 +61,12 @@ public class Controlador implements ActionListener {
                 Usuario usuarioActualizado = pedirDatosUsuario();
                 usrConsulta.editarUsuarios(id_usuario,usuarioActualizado);
             } else if( opcion == 4) {
-                usrConsulta.eliminarUsuarios();
+                System.out.println("Ingrese Id del Usuario que quiere eliminar");
+                int id_usuario = scanner.nextInt();
+                usrConsulta.eliminarUsuario(id_usuario);
             } else if( opcion == 5) {
                 System.out.println("Salió del menu Usuario!!");
+                Conexion.closeConnection();
             }
 
         } while (opcion != 5);
