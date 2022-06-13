@@ -94,16 +94,16 @@ public class CRUD_Usuario {
         java.util.Date modificado = new java.util.Date();
         java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
         try {
-            PreparedStatement sentencia = connection.getConnection().prepareStatement("" +
-                    "UPDATE usuario SET" +
-                    "contraseña=?" +
-                    "email=?" +
-                    "nombre=?" +
-                    "apellido=?" +
-                    "modificado=?" +
-                    "avatar=?" +
-                    "user_type=?" +
-                    "WHERE id_usuario = ?");
+            PreparedStatement sentencia = connection.getConnection().prepareStatement(
+                    "UPDATE usuario SET " +
+                        "contraseña = ? , " +
+                        "email = ? , " +
+                        "nombre = ? , " +
+                        "apellido = ? , " +
+                        "modificado = ? , " +
+                        "avatar= ? , " +
+                        "user_type= ? " +
+                        "WHERE id_usuario = ?");
             sentencia.setString(1, usuarioActualizado.getContraseña());
             sentencia.setString(2, usuarioActualizado.getEmail());
             sentencia.setString(3, usuarioActualizado.getNombre());
