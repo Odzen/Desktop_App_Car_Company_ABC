@@ -1,18 +1,34 @@
-package src.Modelo;
+package src.Modelo.Usuario;
+
+import java.util.Date;
 
 //Clase para modelar el Usuario en la base de datos
 public class Usuario {
+
     private int id_usuario;
-    private char[] contraseña;
+    private String contraseña;
     private String email;
     private String nombre;
     private String apellido;
-    private String modificado;
+    private Date modificado;
     private String avatar;
     private boolean activo;
-    private String joined;
+    private Date joined;
     private String user_type;
 
+    public Usuario() {
+        this.id_usuario = 0;
+        this.contraseña = "";
+        this.email = "";
+        this.nombre = "";
+        this.apellido = "";
+        this.modificado = new Date();
+        this.avatar = "";
+        this.joined = new Date();
+        this.user_type = "";
+        this.activo = true;
+
+    }
 
     public int getId_usuario() {
         return id_usuario;
@@ -22,11 +38,11 @@ public class Usuario {
         this.id_usuario = id_usuario;
     }
 
-    public char[] getContraseña() {
+    public String getContraseña() {
         return contraseña;
     }
 
-    public void setContraseña(char[] contraseña) {
+    public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
     }
 
@@ -54,11 +70,11 @@ public class Usuario {
         this.apellido = apellido;
     }
 
-    public String getModificado() {
+    public Date getModificado() {
         return modificado;
     }
 
-    public void setModificado(String modificado) {
+    public void setModificado(Date modificado) {
         this.modificado = modificado;
     }
 
@@ -78,11 +94,11 @@ public class Usuario {
         this.activo = activo;
     }
 
-    public String getJoined() {
+    public Date getJoined() {
         return joined;
     }
 
-    public void setJoined(String joined) {
+    public void setJoined(Date joined) {
         this.joined = joined;
     }
 
@@ -92,5 +108,21 @@ public class Usuario {
 
     public void setUser_type(String user_type) {
         this.user_type = user_type;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "id_usuario=" + id_usuario +
+                ", contraseña='" + contraseña + '\'' +
+                ", email='" + email + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", modificado=" + modificado +
+                ", avatar='" + avatar + '\'' +
+                ", activo=" + activo +
+                ", joined=" + joined +
+                ", user_type='" + user_type + '\'' +
+                '}';
     }
 }

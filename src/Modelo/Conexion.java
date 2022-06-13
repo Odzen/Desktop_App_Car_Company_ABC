@@ -55,10 +55,18 @@ public class Conexion {
     public Connection getConnection(){
         try{
             con = DriverManager.getConnection(this.getDbUrl(), this.getUsername(), this.getPassword());
-            System.out.println("Conexión Exitosa a la Base de Datos en Heroku!!");
+            System.out.println("Conexión Exitosa a la Base de Datos en Heroku!!\n");
             return con;
         } catch (SQLException e){
             System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void closeConnection() {
+        try {
+            getCon().close();
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
