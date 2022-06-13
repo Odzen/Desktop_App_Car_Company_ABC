@@ -19,7 +19,7 @@ public class CRUD_Usuario {
     public ArrayList<Usuario> leerTodosLosUsuarios() {
         try {
             PreparedStatement sentencia = this.connection.getConnection().prepareStatement(
-                    "SELECT * FROM usuario"
+                    "SELECT * FROM usuario ORDER BY id_usuario"
             );
             ResultSet resultado = sentencia.executeQuery();
 
@@ -89,7 +89,36 @@ public class CRUD_Usuario {
         }
     }
 
-    public void editarUsuarios() {
+
+    public void editarUsuarios(int id_usuario, Usuario usuarioActualizado) {
+        java.util.Date modificado = new java.util.Date();
+        java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
+        try {
+            PreparedStatement sentencia = connection.getConnection().prepareStatement("" +
+                    "UPDATE usuario SET" +
+                    "contraseña=?" +
+                    "email=?" +
+                    "nombre=?" +
+                    "apellido=?" +
+                    "modificado=?" +
+                    "avatar=?" +
+                    "user_type=?" +
+                    "WHERE id_usuario = ?");
+            sentencia.setString(1, usuarioActualizado.getContraseña());
+            sentencia.setString(2, usuarioActualizado.getEmail());
+            sentencia.setString(3, usuarioActualizado.getNombre());
+            sentencia.setString(4, usuarioActualizado.getApellido());
+            sentencia.setDate(5, modificadoSql);
+            sentencia.setString(6, usuarioActualizado.getAvatar());
+            sentencia.setString(7, usuarioActualizado.getUser_type());
+            sentencia.setInt(8, id_usuario);
+            sentencia.executeUpdate();
+
+            System.out.println("Operación Exitosa: Actualización de Usuario!!");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 

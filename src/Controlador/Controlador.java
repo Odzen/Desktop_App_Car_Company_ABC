@@ -55,7 +55,10 @@ public class Controlador implements ActionListener {
             } else if( opcion == 2) {
                 usrConsulta.crearUsuario(this.pedirDatosUsuario());
             } else if( opcion == 3) {
-                usrConsulta.editarUsuarios();
+                System.out.println("Ingrese Id del Usuario que quiere modificar");
+                int id_usuario = scanner.nextInt();
+                Usuario usuarioActualizado = pedirDatosUsuario();
+                usrConsulta.editarUsuarios(id_usuario,usuarioActualizado);
             } else if( opcion == 4) {
                 usrConsulta.eliminarUsuarios();
             } else if( opcion == 5) {
