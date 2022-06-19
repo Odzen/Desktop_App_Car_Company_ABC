@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS usuario CASCADE;
 DROP TABLE IF EXISTS administrador CASCADE;
 DROP TABLE IF EXISTS jefe_de_taller CASCADE;
 DROP TABLE IF EXISTS gerente CASCADE;
-DROP TABLE IF EXISTS vendendor CASCADE;
+DROP TABLE IF EXISTS vendedor CASCADE;
 
 --Table creation
 CREATE TABLE usuario (
@@ -17,6 +17,7 @@ CREATE TABLE usuario (
   activo bool,
   joined date NOT NULL,
   user_type varchar(30) NOT NULL,
+  fecha_nacimiento date NOT NULL,
   PRIMARY KEY (id_usuario)
 );
 
