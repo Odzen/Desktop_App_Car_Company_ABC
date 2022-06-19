@@ -5,12 +5,9 @@ import src.Modelo.Usuario.Utils.Rol;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class CRUD_Usuario {
-
 
     private static final Conexion conexion = new Conexion();
     private Connection connection = null;
@@ -88,8 +85,8 @@ public class CRUD_Usuario {
                 usuario.setJoined(joined);
                 Date fecha_nacimiento = resultado.getDate("fecha_nacimiento");
                 usuario.setFecha_nacimiento(fecha_nacimiento);
-                Date last_session = resultado.getDate("fecha_nacimiento");
-                usuario.setLast_session(last_session);
+                Timestamp last_session = resultado.getTimestamp("last_session");
+                usuario.setLast_session(last_session.toLocalDateTime());
                 int id_tipo_usuario = resultado.getInt("id_tipo_usuario");
                 usuario.setId_tipo_usuario(id_tipo_usuario);
 
@@ -122,19 +119,9 @@ public class CRUD_Usuario {
             sentencia.setBoolean(7, usuario.isActivo());
             sentencia.setString(8, usuario.getAvatar());
             sentencia.setDate(9, new java.sql.Date(usuario.getFecha_nacimiento().getTime()));
-            sentencia.setDate(10, new java.sql.Date(usuario.getLast_session().getTime()));
+            sentencia.setTimestamp(10, Timestamp.valueOf(usuario.getLast_session()));
+            sentencia.setString(11, usuario.getUser_type().name());
             sentencia.setInt(12, usuario.getId_tipo_usuario());
-            if (usuario.getId_tipo_usuario() == 1) {
-                sentencia.setString(11, String.valueOf(Rol.ADMIN));
-            } else if (usuario.getId_tipo_usuario() == 2) {
-                sentencia.setString(11, String.valueOf(Rol.GERENTE));
-            } else if (usuario.getId_tipo_usuario() == 3) {
-                sentencia.setString(11, String.valueOf(Rol.JEFE_TALLER));
-            } else if (usuario.getId_tipo_usuario() == 4) {
-                sentencia.setString(11, String.valueOf(Rol.VENDEDOR));
-            } else {
-                throw new Exception("Datos nos válidos para el tipo de usuario");
-            }
 
             sentencia.execute();
 
@@ -142,8 +129,6 @@ public class CRUD_Usuario {
 
         } catch (SQLException e) {
             System.out.printf("Error al crear el Usuario", e);
-            throw new RuntimeException(e);
-        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -166,8 +151,8 @@ public class CRUD_Usuario {
                                 "avatar= ? , " +
                                 "fecha_nacimiento= ?, " +
                                 "last_session= ?, " +
-                                "user_type= ?, " +
-                                "id_tipo_usuario= ? " +
+                                "id_tipo_usuario= ?, " +
+                                "user_type= ? " +
                                 "WHERE id_usuario = ?");
                 sentencia.setString(1, usuarioActualizado.getContraseña());
                 sentencia.setString(2, usuarioActualizado.getEmail());
@@ -176,21 +161,14 @@ public class CRUD_Usuario {
                 sentencia.setDate(5, modificadoSql);
                 sentencia.setString(6, usuarioActualizado.getAvatar());
                 sentencia.setDate(7, new java.sql.Date(usuarioActualizado.getFecha_nacimiento().getTime()));
-                sentencia.setDate(8, new java.sql.Date(usuarioActualizado.getLast_session().getTime()));
-                sentencia.setInt(10, usuarioActualizado.getId_tipo_usuario());
-                if (usuarioActualizado.getId_tipo_usuario() == 1) {
-                    sentencia.setString(9, String.valueOf(Rol.ADMIN));
-                } else if (usuarioActualizado.getId_tipo_usuario() == 2) {
-                    sentencia.setString(9, String.valueOf(Rol.GERENTE));
-                } else if (usuarioActualizado.getId_tipo_usuario() == 3) {
-                    sentencia.setString(9, String.valueOf(Rol.JEFE_TALLER));
-                } else if (usuarioActualizado.getId_tipo_usuario() == 4) {
-                    sentencia.setString(9, String.valueOf(Rol.VENDEDOR));
-                } else {
-                    throw new Exception("Datos nos válidos para el tipo de usuario");
-                }
+                sentencia.setTimestamp(8, Timestamp.valueOf(usuarioActualizado.getLast_session()));
+                System.out.println(usuarioActualizado.getUser_type().toString());
+                sentencia.setInt(9, usuarioActualizado.getId_tipo_usuario());
+                sentencia.setString(10, usuarioActualizado.getUser_type().toString());
+                sentencia.setInt(11, id_usuario);
 
                 int filasAfectadas = sentencia.executeUpdate();
+                System.out.println(filasAfectadas);
 
                 if (filasAfectadas == 0) {
                     System.out.println("No se modificó nada !");
@@ -198,9 +176,7 @@ public class CRUD_Usuario {
                     System.out.println("Se modificaron exitosamente: " + filasAfectadas + " registros");
                 }
             } catch (SQLException e) {
-                throw new RuntimeException(e);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+                System.err.println(e);
             }
         } else {
             System.out.println("El usuario con ese id NO existe, por favor dijiste un id correcto!");
@@ -231,7 +207,7 @@ public class CRUD_Usuario {
                 }
 
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                System.err.println(e);
             }
         } else {
             System.out.println("El usuario con ese id NO existe, por favor dijiste un id correcto!");
@@ -243,8 +219,9 @@ public class CRUD_Usuario {
     public void eliminarTodosUsuarios() {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
-                    "DELETE * FROM usuario"
+                    "TRUNCATE usuario"
             );
+            System.out.println("Borro TODOS LOS USUARIOS exitosamente!!");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -261,7 +238,7 @@ public class CRUD_Usuario {
                 System.out.println("Borro el usuario con el id" + id_usuario + " exitosamente!");
 
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                System.err.println(e);
             }
         } else {
             System.out.println("El usuario con ese id NO existe, por favor dijiste un id correcto!");

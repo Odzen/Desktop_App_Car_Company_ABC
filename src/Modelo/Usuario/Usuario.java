@@ -2,6 +2,9 @@ package src.Modelo.Usuario;
 
 import src.Modelo.Usuario.Utils.Rol;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 //Clase para modelar el Usuario en la base de datos
@@ -17,10 +20,8 @@ public class Usuario {
     private boolean activo;
     private Date joined;
     private Date fecha_nacimiento;
-
-    private Date last_session;
+    private LocalDateTime last_session;
     private Rol user_type;
-
     private int id_tipo_usuario;
 
 
@@ -36,7 +37,8 @@ public class Usuario {
         this.user_type = Rol.INDEFINIDO;
         this.activo = true;
         this.fecha_nacimiento = null;
-
+        this.last_session = LocalDateTime.now();
+        this.id_tipo_usuario = 0;
     }
 
     public int getId_usuario() {
@@ -127,11 +129,11 @@ public class Usuario {
         this.fecha_nacimiento = fecha_nacimiento;
     }
 
-    public Date getLast_session() {
+    public LocalDateTime getLast_session() {
         return last_session;
     }
 
-    public void setLast_session(Date last_session) {
+    public void setLast_session(LocalDateTime last_session) {
         this.last_session = last_session;
     }
 
@@ -141,6 +143,17 @@ public class Usuario {
 
     public void setId_tipo_usuario(int id_tipo_usuario) {
         this.id_tipo_usuario = id_tipo_usuario;
+        if (this.id_tipo_usuario == 1) {
+            this.setUser_type(Rol.ADMIN);
+        } else if (this.id_tipo_usuario == 2) {
+            this.setUser_type(Rol.GERENTE);
+        } else if (this.id_tipo_usuario == 3) {
+            this.setUser_type(Rol.JEFE_TALLER);
+        } else if (this.id_tipo_usuario == 4) {
+            this.setUser_type(Rol.VENDEDOR);
+        } else {
+            this.setUser_type(Rol.INDEFINIDO);
+        }
     }
 
     @Override
