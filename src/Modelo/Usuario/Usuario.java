@@ -14,9 +14,12 @@ public class Usuario {
     private String avatar;
     private boolean activo;
     private Date joined;
+    private Date fecha_nacimiento;
+
+    private Date last_session;
     private String user_type;
 
-    private Date fecha_nacimiento;
+    private int id_tipo_usuario;
 
 
     public Usuario() {
@@ -122,6 +125,22 @@ public class Usuario {
         this.fecha_nacimiento = fecha_nacimiento;
     }
 
+    public Date getLast_session() {
+        return last_session;
+    }
+
+    public void setLast_session(Date last_session) {
+        this.last_session = last_session;
+    }
+
+    public int getId_tipo_usuario() {
+        return id_tipo_usuario;
+    }
+
+    public void setId_tipo_usuario(int id_tipo_usuario) {
+        this.id_tipo_usuario = id_tipo_usuario;
+    }
+
     @Override
     public String toString() {
         return "{" +
@@ -134,8 +153,10 @@ public class Usuario {
                 ", avatar='" + avatar + '\'' +
                 ", activo=" + activo +
                 ", joined=" + joined +
-                ", user_type='" + user_type + '\'' +
                 ", fecha_nacimiento='" + fecha_nacimiento + '\'' +
+                ", last_session='" + last_session + '\'' +
+                ", user_type='" + user_type + '\'' +
+                ", id_tipo_usuario='" + id_tipo_usuario + '\'' +
                 '}';
     }
 }
