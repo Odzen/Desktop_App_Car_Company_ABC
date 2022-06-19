@@ -1,13 +1,16 @@
 package src.Modelo.Usuario;
 
-import com.sun.tools.jconsole.JConsoleContext;
 import src.Modelo.Conexion;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class CRUD_Usuario {
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
     private static final Conexion conexion = new Conexion();
     private Connection connection = null;
@@ -16,7 +19,7 @@ public class CRUD_Usuario {
     }
 
     // Verifica si un usuario existe o no en la base de datos, basado en su ID
-    public boolean existeUsuario(int id_usuario)  {
+    public boolean existeUsuario_Id(int id_usuario)  {
         try {
             PreparedStatement sentencia = this.connection.prepareStatement(
                     "SELECT * FROM usuario WHERE id_usuario="+ id_usuario
@@ -31,6 +34,30 @@ public class CRUD_Usuario {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    // Verifica si un usuario existe o no en la base de datos, basado en su nombre
+    public boolean existeUsuario_Nombre(String nombre)  {
+        try {
+            PreparedStatement sentencia = this.connection.prepareStatement(
+                    "SELECT * FROM usuario WHERE nombre="+ nombre
+            );
+            ResultSet resultado = sentencia.executeQuery();
+            if (resultado.next()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Verifica si el email es correcto
+    public static boolean validarEmail(String email) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
+        return matcher.find();
     }
 
     // Obtiene todos los registros de Usuario que están en la base de datos
@@ -117,7 +144,7 @@ public class CRUD_Usuario {
     // Edita un usuario en la base de datos
     public void editarUsuarios(int id_usuario, Usuario usuarioActualizado) {
 
-        if ( this.existeUsuario(id_usuario)) {
+        if ( this.existeUsuario_Id(id_usuario)) {
             java.util.Date modificado = new java.util.Date();
             java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
             try {
@@ -159,7 +186,7 @@ public class CRUD_Usuario {
 
     // Elimina al usuario poniendolo inactivo en la base de datos
     public void eliminarUsuario(int id_usuario) {
-        if(this.existeUsuario(id_usuario)) {
+        if(this.existeUsuario_Id(id_usuario)) {
             java.util.Date modificado = new java.util.Date();
             java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
             try {
@@ -201,7 +228,7 @@ public class CRUD_Usuario {
     }
 
     public void eliminarUsuarioPorId(int id_usuario) {
-        if (this.existeUsuario(id_usuario)) {
+        if (this.existeUsuario_Id(id_usuario)) {
             try {
                 PreparedStatement sentencia = connection.prepareStatement(
                         "DELETE FROM usuario WHERE id_usuario=?"

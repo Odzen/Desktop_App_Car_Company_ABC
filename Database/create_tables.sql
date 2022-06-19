@@ -1,10 +1,6 @@
 -- Dropping tables for testing
 DROP TABLE IF EXISTS usuario CASCADE;
 DROP TABLE IF EXISTS tipo_usuario CASCADE;
-DROP TABLE IF EXISTS administrador CASCADE;
-DROP TABLE IF EXISTS jefe_de_taller CASCADE;
-DROP TABLE IF EXISTS gerente CASCADE;
-DROP TABLE IF EXISTS vendedor CASCADE;
 
 --Table creation
 
@@ -17,6 +13,9 @@ CREATE TABLE tipo_usuario (
   nombre varchar(30) NOT NULL,
   PRIMARY KEY (id_tipo_usuario)
 );
+
+INSERT INTO tipo_usuario (nombre)
+VALUES ('admin'), ('gerente'), ('jefe_taller'),( 'vendedor');
 
 
 CREATE TABLE usuario (
