@@ -1,4 +1,4 @@
-package src.Modelo;
+package Modelo;
 
 //Clase para modelar el Usuario en la base de datos
 public class Usuario {
@@ -12,6 +12,20 @@ public class Usuario {
     private boolean activo;
     private String joined;
     private String user_type;
+
+    
+    public Usuario(int id_usuario, char[] contraseña, String email, String nombre, String apellido, String modificado, String avatar, boolean activo, String joined, String user_type) {
+        this.id_usuario = id_usuario;
+        this.contraseña = contraseña;
+        this.email = email;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.modificado = modificado;
+        this.avatar = avatar;
+        this.activo = activo;
+        this.joined = joined;
+        this.user_type = user_type;
+    }
 
 
     public int getId_usuario() {
