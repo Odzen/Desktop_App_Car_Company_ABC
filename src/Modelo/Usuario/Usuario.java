@@ -1,5 +1,7 @@
 package src.Modelo.Usuario;
 
+import src.Modelo.Usuario.Utils.Rol;
+
 import java.util.Date;
 
 //Clase para modelar el Usuario en la base de datos

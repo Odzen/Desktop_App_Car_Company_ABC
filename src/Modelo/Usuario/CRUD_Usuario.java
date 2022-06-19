@@ -1,6 +1,7 @@
 package src.Modelo.Usuario;
 
 import src.Modelo.Conexion;
+import src.Modelo.Usuario.Utils.Rol;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,8 +10,7 @@ import java.util.regex.Pattern;
 
 
 public class CRUD_Usuario {
-    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
 
     private static final Conexion conexion = new Conexion();
     private Connection connection = null;
@@ -52,12 +52,6 @@ public class CRUD_Usuario {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    // Verifica si el email es correcto
-    public static boolean validarEmail(String email) {
-        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
-        return matcher.find();
     }
 
     // Obtiene todos los registros de Usuario que están en la base de datos
@@ -129,8 +123,18 @@ public class CRUD_Usuario {
             sentencia.setString(8, usuario.getAvatar());
             sentencia.setDate(9, new java.sql.Date(usuario.getFecha_nacimiento().getTime()));
             sentencia.setDate(10, new java.sql.Date(usuario.getLast_session().getTime()));
-            sentencia.setString(11, String.valueOf(usuario.getUser_type()));
             sentencia.setInt(12, usuario.getId_tipo_usuario());
+            if (usuario.getId_tipo_usuario() == 1) {
+                sentencia.setString(11, String.valueOf(Rol.ADMIN));
+            } else if (usuario.getId_tipo_usuario() == 2) {
+                sentencia.setString(11, String.valueOf(Rol.GERENTE));
+            } else if (usuario.getId_tipo_usuario() == 3) {
+                sentencia.setString(11, String.valueOf(Rol.JEFE_TALLER));
+            } else if (usuario.getId_tipo_usuario() == 4) {
+                sentencia.setString(11, String.valueOf(Rol.VENDEDOR));
+            } else {
+                throw new Exception("Datos nos válidos para el tipo de usuario");
+            }
 
             sentencia.execute();
 
@@ -138,6 +142,8 @@ public class CRUD_Usuario {
 
         } catch (SQLException e) {
             System.out.printf("Error al crear el Usuario", e);
+            throw new RuntimeException(e);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

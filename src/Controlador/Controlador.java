@@ -2,8 +2,9 @@ package src.Controlador;
 
 import src.Modelo.Conexion;
 import src.Modelo.Usuario.CRUD_Usuario;
-import src.Modelo.Usuario.Rol;
+import src.Modelo.Usuario.Utils.Hash;
 import src.Modelo.Usuario.Usuario;
+import src.Modelo.Usuario.Utils.Validaciones;
 import src.Vista.Vista;
 
 import java.awt.event.ActionEvent;
@@ -93,23 +94,43 @@ public class Controlador implements ActionListener {
 
         System.out.println("Ingrese Contraseña");
         String contraseña = scanner.nextLine();
-        usuario.setContraseña(contraseña);
+
+        try {
+            if (Validaciones.validarPassword(contraseña)) {
+                usuario.setContraseña(Hash.md5(contraseña));
+            } else {
+                throw new Exception("Contraseña inválida");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         System.out.println("Ingrese Email");
         String email = scanner.nextLine();
-        usuario.setEmail(email);
+
+        try {
+            if (Validaciones.validarEmail(email)) {
+                usuario.setEmail(email);
+            } else {
+                throw new Exception("Email inválido");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
 
         System.out.println("Ingrese Avatar");
         String avatar = scanner.nextLine();
         usuario.setAvatar(avatar);
 
-        System.out.println("Ingrese el tipo de Usuario (Admin, Jefe de Taller, Vendedor o Gerente)");
-        Rol tipo_usuario = Rol.valueOf(scanner.nextLine());
-        usuario.setUser_type(tipo_usuario);
 
         System.out.println("Ingrese la fecha de nacimiento del usuario");
         String fecha_nacimiento = scanner.nextLine();
+
+        System.out.println("Ingrese el tipo de Usuario (1. Admin, 2. Gerente, 3. Jefe de Taller o 4. Vendedor)");
+        int id_tipo_usuario = scanner.nextInt();
+        usuario.setId_tipo_usuario(id_tipo_usuario);
+
         try {
             Date fecha_nacimiento_format = new SimpleDateFormat("dd/MM/yyyy").parse(fecha_nacimiento);
             usuario.setFecha_nacimiento(fecha_nacimiento_format);
