@@ -67,6 +67,8 @@ public class CRUD_Usuario {
                 usuario.setJoined(joined);
                 String user_type = resultado.getString("user_type");
                 usuario.setUser_type(user_type);
+                Date fecha_nacimiento = resultado.getDate("fecha_nacimiento");
+                usuario.setFecha_nacimiento(fecha_nacimiento);
 
                 usuariosResultado.add(usuario);
 
@@ -86,8 +88,8 @@ public class CRUD_Usuario {
         try {
             PreparedStatement sentencia = this.connection.prepareStatement(
                     "INSERT INTO usuario " +
-                            "(nombre, apellido, contraseña, email, joined, modificado, activo, avatar, user_type)" +
-                            "VALUES  (?,?,?,?,?,?,?,?,?)");
+                            "(nombre, apellido, contraseña, email, joined, modificado, activo, avatar, user_type, fecha_nacimiento)" +
+                            "VALUES  (?,?,?,?,?,?,?,?,?,?)");
             sentencia.setString(1, usuario.getNombre());
             sentencia.setString(2, usuario.getApellido());
             sentencia.setString(3, usuario.getContraseña());
@@ -97,6 +99,7 @@ public class CRUD_Usuario {
             sentencia.setBoolean(7, usuario.isActivo());
             sentencia.setString(8, usuario.getAvatar());
             sentencia.setString(9, usuario.getUser_type());
+            sentencia.setDate(10, new java.sql.Date(usuario.getFecha_nacimiento().getTime()));
 
             sentencia.execute();
 
@@ -125,6 +128,7 @@ public class CRUD_Usuario {
                                 "modificado = ? , " +
                                 "avatar= ? , " +
                                 "user_type= ? " +
+                                "fecha_nacimiento= ? " +
                                 "WHERE id_usuario = ?");
                 sentencia.setString(1, usuarioActualizado.getContraseña());
                 sentencia.setString(2, usuarioActualizado.getEmail());
@@ -133,7 +137,8 @@ public class CRUD_Usuario {
                 sentencia.setDate(5, modificadoSql);
                 sentencia.setString(6, usuarioActualizado.getAvatar());
                 sentencia.setString(7, usuarioActualizado.getUser_type());
-                sentencia.setInt(8, id_usuario);
+                sentencia.setDate(8, new java.sql.Date(usuarioActualizado.getFecha_nacimiento().getTime()));
+                sentencia.setInt(9, id_usuario);
 
                 int filasAfectadas = sentencia.executeUpdate();
 

@@ -7,6 +7,8 @@ import src.Vista.Vista;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
@@ -104,6 +106,15 @@ public class Controlador implements ActionListener {
         System.out.println("Ingrese el tipo de Usuario (Admin, Jefe de Taller, Vendedor o Gerente)");
         String tipo_usuario = scanner.nextLine();
         usuario.setUser_type(tipo_usuario);
+
+        System.out.println("Ingrese la fecha de nacimiento del usuario");
+        String fecha_nacimiento = scanner.nextLine();
+        try {
+            Date fecha_nacimiento_format = new SimpleDateFormat("dd/MM/yyyy").parse(fecha_nacimiento);
+            usuario.setFecha_nacimiento(fecha_nacimiento_format);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
 
 
         return usuario;
