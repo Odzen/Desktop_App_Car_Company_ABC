@@ -92,10 +92,12 @@ public class CRUD_Usuario {
                 usuario.setActivo(activo);
                 Date joined = resultado.getDate("joined");
                 usuario.setJoined(joined);
-                String user_type = resultado.getString("user_type");
-                usuario.setUser_type(user_type);
                 Date fecha_nacimiento = resultado.getDate("fecha_nacimiento");
                 usuario.setFecha_nacimiento(fecha_nacimiento);
+                Date last_session = resultado.getDate("fecha_nacimiento");
+                usuario.setLast_session(last_session);
+                int id_tipo_usuario = resultado.getInt("id_tipo_usuario");
+                usuario.setId_tipo_usuario(id_tipo_usuario);
 
                 usuariosResultado.add(usuario);
 
@@ -127,7 +129,7 @@ public class CRUD_Usuario {
             sentencia.setString(8, usuario.getAvatar());
             sentencia.setDate(9, new java.sql.Date(usuario.getFecha_nacimiento().getTime()));
             sentencia.setDate(10, new java.sql.Date(usuario.getLast_session().getTime()));
-            sentencia.setString(11, usuario.getUser_type());
+            sentencia.setString(11, String.valueOf(usuario.getUser_type()));
             sentencia.setInt(12, usuario.getId_tipo_usuario());
 
             sentencia.execute();
@@ -156,8 +158,10 @@ public class CRUD_Usuario {
                                 "apellido = ? , " +
                                 "modificado = ? , " +
                                 "avatar= ? , " +
+                                "fecha_nacimiento= ?, " +
+                                "last_session= ?, " +
                                 "user_type= ?, " +
-                                "fecha_nacimiento= ? " +
+                                "id_tipo_usuario= ? " +
                                 "WHERE id_usuario = ?");
                 sentencia.setString(1, usuarioActualizado.getContraseña());
                 sentencia.setString(2, usuarioActualizado.getEmail());
@@ -165,9 +169,20 @@ public class CRUD_Usuario {
                 sentencia.setString(4, usuarioActualizado.getApellido());
                 sentencia.setDate(5, modificadoSql);
                 sentencia.setString(6, usuarioActualizado.getAvatar());
-                sentencia.setString(7, usuarioActualizado.getUser_type());
-                sentencia.setDate(8, new java.sql.Date(usuarioActualizado.getFecha_nacimiento().getTime()));
-                sentencia.setInt(9, id_usuario);
+                sentencia.setDate(7, new java.sql.Date(usuarioActualizado.getFecha_nacimiento().getTime()));
+                sentencia.setDate(8, new java.sql.Date(usuarioActualizado.getLast_session().getTime()));
+                sentencia.setInt(10, usuarioActualizado.getId_tipo_usuario());
+                if (usuarioActualizado.getId_tipo_usuario() == 1) {
+                    sentencia.setString(9, String.valueOf(Rol.ADMIN));
+                } else if (usuarioActualizado.getId_tipo_usuario() == 2) {
+                    sentencia.setString(9, String.valueOf(Rol.GERENTE));
+                } else if (usuarioActualizado.getId_tipo_usuario() == 3) {
+                    sentencia.setString(9, String.valueOf(Rol.JEFE_TALLER));
+                } else if (usuarioActualizado.getId_tipo_usuario() == 4) {
+                    sentencia.setString(9, String.valueOf(Rol.VENDEDOR));
+                } else {
+                    throw new Exception("Datos nos válidos para el tipo de usuario");
+                }
 
                 int filasAfectadas = sentencia.executeUpdate();
 
@@ -177,6 +192,8 @@ public class CRUD_Usuario {
                     System.out.println("Se modificaron exitosamente: " + filasAfectadas + " registros");
                 }
             } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         } else {

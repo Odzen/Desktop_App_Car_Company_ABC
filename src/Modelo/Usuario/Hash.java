@@ -1,4 +1,4 @@
-package src.Modelo;
+package src.Modelo.Usuario;
 
 public class Hash {
 

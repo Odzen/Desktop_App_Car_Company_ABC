@@ -2,6 +2,7 @@ package src.Controlador;
 
 import src.Modelo.Conexion;
 import src.Modelo.Usuario.CRUD_Usuario;
+import src.Modelo.Usuario.Rol;
 import src.Modelo.Usuario.Usuario;
 import src.Vista.Vista;
 
@@ -104,7 +105,7 @@ public class Controlador implements ActionListener {
         usuario.setAvatar(avatar);
 
         System.out.println("Ingrese el tipo de Usuario (Admin, Jefe de Taller, Vendedor o Gerente)");
-        String tipo_usuario = scanner.nextLine();
+        Rol tipo_usuario = Rol.valueOf(scanner.nextLine());
         usuario.setUser_type(tipo_usuario);
 
         System.out.println("Ingrese la fecha de nacimiento del usuario");

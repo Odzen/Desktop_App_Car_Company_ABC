@@ -17,7 +17,7 @@ public class Usuario {
     private Date fecha_nacimiento;
 
     private Date last_session;
-    private String user_type;
+    private Rol user_type;
 
     private int id_tipo_usuario;
 
@@ -31,7 +31,7 @@ public class Usuario {
         this.modificado = new Date();
         this.avatar = "";
         this.joined = new Date();
-        this.user_type = "";
+        this.user_type = Rol.INDEFINIDO;
         this.activo = true;
         this.fecha_nacimiento = null;
 
@@ -109,11 +109,11 @@ public class Usuario {
         this.joined = joined;
     }
 
-    public String getUser_type() {
+    public Rol getUser_type() {
         return user_type;
     }
 
-    public void setUser_type(String user_type) {
+    public void setUser_type(Rol user_type) {
         this.user_type = user_type;
     }
 
