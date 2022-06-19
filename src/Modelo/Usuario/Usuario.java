@@ -16,6 +16,9 @@ public class Usuario {
     private Date joined;
     private String user_type;
 
+    private Date fecha_nacimiento;
+
+
     public Usuario() {
         this.id_usuario = 0;
         this.contraseña = "";
@@ -27,6 +30,7 @@ public class Usuario {
         this.joined = new Date();
         this.user_type = "";
         this.activo = true;
+        this.fecha_nacimiento = null;
 
     }
 
@@ -108,6 +112,14 @@ public class Usuario {
 
     public void setUser_type(String user_type) {
         this.user_type = user_type;
+    }
+
+    public Date getFecha_nacimiento() {
+        return fecha_nacimiento;
+    }
+
+    public void setFecha_nacimiento(Date fecha_nacimiento) {
+        this.fecha_nacimiento = fecha_nacimiento;
     }
 
     @Override
