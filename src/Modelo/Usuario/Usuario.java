@@ -135,6 +135,7 @@ public class Usuario {
                 ", activo=" + activo +
                 ", joined=" + joined +
                 ", user_type='" + user_type + '\'' +
+                ", fecha_nacimiento='" + fecha_nacimiento + '\'' +
                 '}';
     }
 }
