@@ -127,7 +127,7 @@ public class CRUD_Usuario {
                                 "apellido = ? , " +
                                 "modificado = ? , " +
                                 "avatar= ? , " +
-                                "user_type= ? " +
+                                "user_type= ?, " +
                                 "fecha_nacimiento= ? " +
                                 "WHERE id_usuario = ?");
                 sentencia.setString(1, usuarioActualizado.getContraseña());
