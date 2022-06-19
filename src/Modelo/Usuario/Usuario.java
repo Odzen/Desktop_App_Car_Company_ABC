@@ -1,5 +1,10 @@
 package src.Modelo.Usuario;
 
+import src.Modelo.Usuario.Utils.Rol;
+
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 //Clase para modelar el Usuario en la base de datos
@@ -14,7 +19,11 @@ public class Usuario {
     private String avatar;
     private boolean activo;
     private Date joined;
-    private String user_type;
+    private Date fecha_nacimiento;
+    private LocalDateTime last_session;
+    private Rol user_type;
+    private int id_tipo_usuario;
+
 
     public Usuario() {
         this.id_usuario = 0;
@@ -25,9 +34,11 @@ public class Usuario {
         this.modificado = new Date();
         this.avatar = "";
         this.joined = new Date();
-        this.user_type = "";
+        this.user_type = Rol.INDEFINIDO;
         this.activo = true;
-
+        this.fecha_nacimiento = null;
+        this.last_session = LocalDateTime.now();
+        this.id_tipo_usuario = 0;
     }
 
     public int getId_usuario() {
@@ -102,12 +113,47 @@ public class Usuario {
         this.joined = joined;
     }
 
-    public String getUser_type() {
+    public Rol getUser_type() {
         return user_type;
     }
 
-    public void setUser_type(String user_type) {
+    public void setUser_type(Rol user_type) {
         this.user_type = user_type;
+    }
+
+    public Date getFecha_nacimiento() {
+        return fecha_nacimiento;
+    }
+
+    public void setFecha_nacimiento(Date fecha_nacimiento) {
+        this.fecha_nacimiento = fecha_nacimiento;
+    }
+
+    public LocalDateTime getLast_session() {
+        return last_session;
+    }
+
+    public void setLast_session(LocalDateTime last_session) {
+        this.last_session = last_session;
+    }
+
+    public int getId_tipo_usuario() {
+        return id_tipo_usuario;
+    }
+
+    public void setId_tipo_usuario(int id_tipo_usuario) {
+        this.id_tipo_usuario = id_tipo_usuario;
+        if (this.id_tipo_usuario == 1) {
+            this.setUser_type(Rol.ADMIN);
+        } else if (this.id_tipo_usuario == 2) {
+            this.setUser_type(Rol.GERENTE);
+        } else if (this.id_tipo_usuario == 3) {
+            this.setUser_type(Rol.JEFE_TALLER);
+        } else if (this.id_tipo_usuario == 4) {
+            this.setUser_type(Rol.VENDEDOR);
+        } else {
+            this.setUser_type(Rol.INDEFINIDO);
+        }
     }
 
     @Override
@@ -122,7 +168,10 @@ public class Usuario {
                 ", avatar='" + avatar + '\'' +
                 ", activo=" + activo +
                 ", joined=" + joined +
+                ", fecha_nacimiento='" + fecha_nacimiento + '\'' +
+                ", last_session='" + last_session + '\'' +
                 ", user_type='" + user_type + '\'' +
+                ", id_tipo_usuario='" + id_tipo_usuario + '\'' +
                 '}';
     }
 }

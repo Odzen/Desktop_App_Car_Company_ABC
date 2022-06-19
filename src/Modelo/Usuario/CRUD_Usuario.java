@@ -1,11 +1,11 @@
 package src.Modelo.Usuario;
 
-import com.sun.tools.jconsole.JConsoleContext;
 import src.Modelo.Conexion;
+import src.Modelo.Usuario.Utils.Rol;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Scanner;
+
 
 public class CRUD_Usuario {
 
@@ -16,10 +16,28 @@ public class CRUD_Usuario {
     }
 
     // Verifica si un usuario existe o no en la base de datos, basado en su ID
-    public boolean existeUsuario(int id_usuario)  {
+    public boolean existeUsuario_Id(int id_usuario)  {
         try {
             PreparedStatement sentencia = this.connection.prepareStatement(
                     "SELECT * FROM usuario WHERE id_usuario="+ id_usuario
+            );
+            ResultSet resultado = sentencia.executeQuery();
+            if (resultado.next()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Verifica si un usuario existe o no en la base de datos, basado en su nombre
+    public boolean existeUsuario_Nombre(String nombre)  {
+        try {
+            PreparedStatement sentencia = this.connection.prepareStatement(
+                    "SELECT * FROM usuario WHERE nombre="+ nombre
             );
             ResultSet resultado = sentencia.executeQuery();
             if (resultado.next()) {
@@ -65,8 +83,12 @@ public class CRUD_Usuario {
                 usuario.setActivo(activo);
                 Date joined = resultado.getDate("joined");
                 usuario.setJoined(joined);
-                String user_type = resultado.getString("user_type");
-                usuario.setUser_type(user_type);
+                Date fecha_nacimiento = resultado.getDate("fecha_nacimiento");
+                usuario.setFecha_nacimiento(fecha_nacimiento);
+                Timestamp last_session = resultado.getTimestamp("last_session");
+                usuario.setLast_session(last_session.toLocalDateTime());
+                int id_tipo_usuario = resultado.getInt("id_tipo_usuario");
+                usuario.setId_tipo_usuario(id_tipo_usuario);
 
                 usuariosResultado.add(usuario);
 
@@ -86,8 +108,8 @@ public class CRUD_Usuario {
         try {
             PreparedStatement sentencia = this.connection.prepareStatement(
                     "INSERT INTO usuario " +
-                            "(nombre, apellido, contraseña, email, joined, modificado, activo, avatar, user_type)" +
-                            "VALUES  (?,?,?,?,?,?,?,?,?)");
+                            "(nombre, apellido, contraseña, email, joined, modificado, activo, avatar, fecha_nacimiento, last_session, user_type, id_tipo_usuario )" +
+                            "VALUES  (?,?,?,?,?,?,?,?,?,?,?,?)");
             sentencia.setString(1, usuario.getNombre());
             sentencia.setString(2, usuario.getApellido());
             sentencia.setString(3, usuario.getContraseña());
@@ -96,7 +118,10 @@ public class CRUD_Usuario {
             sentencia.setDate(6,  new java.sql.Date(usuario.getModificado().getTime()));
             sentencia.setBoolean(7, usuario.isActivo());
             sentencia.setString(8, usuario.getAvatar());
-            sentencia.setString(9, usuario.getUser_type());
+            sentencia.setDate(9, new java.sql.Date(usuario.getFecha_nacimiento().getTime()));
+            sentencia.setTimestamp(10, Timestamp.valueOf(usuario.getLast_session()));
+            sentencia.setString(11, usuario.getUser_type().name());
+            sentencia.setInt(12, usuario.getId_tipo_usuario());
 
             sentencia.execute();
 
@@ -112,7 +137,7 @@ public class CRUD_Usuario {
     // Edita un usuario en la base de datos
     public void editarUsuarios(int id_usuario, Usuario usuarioActualizado) {
 
-        if ( this.existeUsuario(id_usuario)) {
+        if ( this.existeUsuario_Id(id_usuario)) {
             java.util.Date modificado = new java.util.Date();
             java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
             try {
@@ -124,6 +149,9 @@ public class CRUD_Usuario {
                                 "apellido = ? , " +
                                 "modificado = ? , " +
                                 "avatar= ? , " +
+                                "fecha_nacimiento= ?, " +
+                                "last_session= ?, " +
+                                "id_tipo_usuario= ?, " +
                                 "user_type= ? " +
                                 "WHERE id_usuario = ?");
                 sentencia.setString(1, usuarioActualizado.getContraseña());
@@ -132,10 +160,15 @@ public class CRUD_Usuario {
                 sentencia.setString(4, usuarioActualizado.getApellido());
                 sentencia.setDate(5, modificadoSql);
                 sentencia.setString(6, usuarioActualizado.getAvatar());
-                sentencia.setString(7, usuarioActualizado.getUser_type());
-                sentencia.setInt(8, id_usuario);
+                sentencia.setDate(7, new java.sql.Date(usuarioActualizado.getFecha_nacimiento().getTime()));
+                sentencia.setTimestamp(8, Timestamp.valueOf(usuarioActualizado.getLast_session()));
+                System.out.println(usuarioActualizado.getUser_type().toString());
+                sentencia.setInt(9, usuarioActualizado.getId_tipo_usuario());
+                sentencia.setString(10, usuarioActualizado.getUser_type().toString());
+                sentencia.setInt(11, id_usuario);
 
                 int filasAfectadas = sentencia.executeUpdate();
+                System.out.println(filasAfectadas);
 
                 if (filasAfectadas == 0) {
                     System.out.println("No se modificó nada !");
@@ -143,7 +176,7 @@ public class CRUD_Usuario {
                     System.out.println("Se modificaron exitosamente: " + filasAfectadas + " registros");
                 }
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                System.err.println(e);
             }
         } else {
             System.out.println("El usuario con ese id NO existe, por favor dijiste un id correcto!");
@@ -152,7 +185,7 @@ public class CRUD_Usuario {
 
     // Elimina al usuario poniendolo inactivo en la base de datos
     public void eliminarUsuario(int id_usuario) {
-        if(this.existeUsuario(id_usuario)) {
+        if(this.existeUsuario_Id(id_usuario)) {
             java.util.Date modificado = new java.util.Date();
             java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
             try {
@@ -174,7 +207,7 @@ public class CRUD_Usuario {
                 }
 
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                System.err.println(e);
             }
         } else {
             System.out.println("El usuario con ese id NO existe, por favor dijiste un id correcto!");
@@ -186,15 +219,16 @@ public class CRUD_Usuario {
     public void eliminarTodosUsuarios() {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
-                    "DELETE * FROM usuario"
+                    "TRUNCATE usuario"
             );
+            System.out.println("Borro TODOS LOS USUARIOS exitosamente!!");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void eliminarUsuarioPorId(int id_usuario) {
-        if (this.existeUsuario(id_usuario)) {
+        if (this.existeUsuario_Id(id_usuario)) {
             try {
                 PreparedStatement sentencia = connection.prepareStatement(
                         "DELETE FROM usuario WHERE id_usuario=?"
@@ -204,7 +238,7 @@ public class CRUD_Usuario {
                 System.out.println("Borro el usuario con el id" + id_usuario + " exitosamente!");
 
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                System.err.println(e);
             }
         } else {
             System.out.println("El usuario con ese id NO existe, por favor dijiste un id correcto!");

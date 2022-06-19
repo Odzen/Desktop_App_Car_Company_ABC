@@ -2,11 +2,16 @@ package src.Controlador;
 
 import src.Modelo.Conexion;
 import src.Modelo.Usuario.CRUD_Usuario;
+import src.Modelo.Usuario.Utils.Hash;
 import src.Modelo.Usuario.Usuario;
+import src.Modelo.Usuario.Utils.Rol;
+import src.Modelo.Usuario.Utils.Validaciones;
 import src.Vista.Vista;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
@@ -44,8 +49,9 @@ public class Controlador implements ActionListener {
             System.out.println("\n 1. Ver usuarios");
             System.out.println("\n 2. Crear usuarios");
             System.out.println("\n 3. Editar usuarios");
-            System.out.println("\n 4. Eliminar usuarios");
-            System.out.println("\n 5. Salir");
+            System.out.println("\n 4. Eliminar usuarios - Soft Delete (Poner inactivo)");
+            System.out.println("\n 5. DEV Eliminar TODOS LOS USUARIOS");
+            System.out.println("\n 6. Salir");
             this.opcion = scanner.nextInt();
 
             if (opcion == 1) {
@@ -64,49 +70,69 @@ public class Controlador implements ActionListener {
                 System.out.println("Ingrese Id del Usuario que quiere eliminar");
                 int id_usuario = scanner.nextInt();
                 usrConsulta.eliminarUsuario(id_usuario);
-            } else if( opcion == 5) {
+            }else if( opcion == 5) {
+                usrConsulta.eliminarTodosUsuarios();
+            } else if( opcion == 6) {
                 System.out.println("Salió del menu Usuario!!");
                 Conexion.closeConnection();
             }
 
-        } while (opcion != 5);
+        } while (opcion != 6);
 
     }
 
     public Usuario pedirDatosUsuario() {
+        try {
+            Usuario usuario = new Usuario();
 
-        Usuario usuario = new Usuario();
+            System.out.println("Ingrese Nombre");
+            scanner.nextLine();
+            String nombre = scanner.nextLine();
+            usuario.setNombre(nombre);
 
-        System.out.println("Ingrese Nombre");
-        scanner.nextLine();
-        String nombre = scanner.nextLine();
-        usuario.setNombre(nombre);
+            System.out.println("Ingrese Apellido");
+            String apellido = scanner.nextLine();
+            usuario.setApellido(apellido);
 
+            System.out.println("Ingrese Contraseña");
+            String contraseña = scanner.nextLine();
 
-        System.out.println("Ingrese Apellido");
-        String apellido = scanner.nextLine();
-        usuario.setApellido(apellido);
+            if (Validaciones.validarPassword(contraseña)) {
+                usuario.setContraseña(Hash.md5(contraseña));
+            } else {
+                throw new Exception("Contraseña inválida");
+            }
 
+            System.out.println("Ingrese Email");
+            String email = scanner.nextLine();
 
-        System.out.println("Ingrese Contraseña");
-        String contraseña = scanner.nextLine();
-        usuario.setContraseña(contraseña);
+            if (Validaciones.validarEmail(email)) {
+                usuario.setEmail(email);
+            } else {
+                throw new Exception("Email inválido");
+            }
 
-        System.out.println("Ingrese Email");
-        String email = scanner.nextLine();
-        usuario.setEmail(email);
+            System.out.println("Ingrese Avatar");
+            String avatar = scanner.nextLine();
+            usuario.setAvatar(avatar);
 
+            System.out.println("Ingrese la fecha de nacimiento del usuario");
+            String fecha_nacimiento = scanner.nextLine();
 
-        System.out.println("Ingrese Avatar");
-        String avatar = scanner.nextLine();
-        usuario.setAvatar(avatar);
+            System.out.println("Ingrese el tipo de Usuario (1. Admin, 2. Gerente, 3. Jefe de Taller o 4. Vendedor)");
+            int id_tipo_usuario = scanner.nextInt();
+            usuario.setId_tipo_usuario(id_tipo_usuario);
 
-        System.out.println("Ingrese el tipo de Usuario (Admin, Jefe de Taller, Vendedor o Gerente)");
-        String tipo_usuario = scanner.nextLine();
-        usuario.setUser_type(tipo_usuario);
+            Date fecha_nacimiento_format = new SimpleDateFormat("dd/MM/yyyy").parse(fecha_nacimiento);
+            usuario.setFecha_nacimiento(fecha_nacimiento_format);
 
+            return usuario;
 
-        return usuario;
+        } catch (Exception e) {
+            System.err.println(e);
+
+        }
+        return null;
     }
 
 }
