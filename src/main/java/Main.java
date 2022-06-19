@@ -1,9 +1,7 @@
-package src;
-
-import src.Controlador.Controlador;
-import src.Modelo.Usuario.CRUD_Usuario;
-import src.Modelo.Usuario.Usuario;
-import src.Vista.Vista;
+import Controlador.Controlador;
+import Modelo.Usuario.CRUD_Usuario;
+import Modelo.Usuario.Usuario;
+import Vista.Vista;
 
 public class Main {
     public static void main(String[] args){

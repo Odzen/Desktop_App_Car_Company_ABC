@@ -1,4 +1,4 @@
-package src.Vista;
+package Vista;
 
 public class Vista {
 }

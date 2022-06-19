@@ -1,7 +1,6 @@
-package src.Modelo.Usuario;
+package Modelo.Usuario;
 
-import src.Modelo.Conexion;
-import src.Modelo.Usuario.Utils.Rol;
+import Modelo.Conexion;
 
 import java.sql.*;
 import java.util.ArrayList;

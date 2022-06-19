@@ -1,16 +1,14 @@
-package src.Controlador;
+package Controlador;
 
-import src.Modelo.Conexion;
-import src.Modelo.Usuario.CRUD_Usuario;
-import src.Modelo.Usuario.Utils.Hash;
-import src.Modelo.Usuario.Usuario;
-import src.Modelo.Usuario.Utils.Rol;
-import src.Modelo.Usuario.Utils.Validaciones;
-import src.Vista.Vista;
+import Modelo.Conexion;
+import Modelo.Usuario.CRUD_Usuario;
+import Modelo.Usuario.Usuario;
+import Modelo.Usuario.Utils.Hash;
+import Modelo.Usuario.Utils.Validaciones;
+import Vista.Vista;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
