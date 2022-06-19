@@ -1,6 +1,8 @@
 
 package autosabc;
 
+
+import Controlador.LoginController;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -8,31 +10,40 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+
 /**
  *
  * @author mavel
  */
 public class Principal extends Application {
-
+    
   
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage stage) throws IOException  {
         
-        Parent root = FXMLLoader.load(getClass().getResource("/Vista/Login.fxml"));
+        System.out.println(getClass());
         
+        //Ventana de Login
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Vista/Login.fxml"));
+        Parent root = loader.load();
+        
+        // Escena para JavaFX
         Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        stage.setScene(scene);
+        stage.show();
+        
+        new animatefx.animation.BounceIn(root).play();
                 
     }
-
-    /**
+   
+  /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         launch(args);
     }
-    
+                
+    }    
 
     
-}
+

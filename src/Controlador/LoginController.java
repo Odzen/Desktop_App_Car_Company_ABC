@@ -1,143 +1,158 @@
 
 package Controlador;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
+
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-import javafx.stage.WindowEvent;
-import javax.swing.JOptionPane;
 import Modelo.UsuarioDAO;
+import java.io.IOException;
+import java.util.ResourceBundle;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javax.print.DocFlavor.URL;
+
 
 /**
  * FXML Controller class
  *
  * @author mavel
  */
-public class LoginController implements Initializable {
+public class LoginController  {
 
-        private UsuarioDAO modelo = new UsuarioDAO();
+    private final UsuarioDAO modelo = new UsuarioDAO();
+        
+    private Stage stage;  
+        
+        protected
+    String mensajeExito = String.format("-fx-text-fill: GREEN;");
+    String estiloMensajeExito = String.format("-fx-border-color: #A9A9A9; -fx-border-width: 2; -fx-border-radius: 5;");
+
+    String mensaje = String.format("-fx-text-fill: black;");
+    String mensajeError = String.format("-fx-text-fill: RED;");
+    String estiloMensajeError = String.format("-fx-border-color: RED; -fx-border-width: 2; -fx-border-radius: 5;");
+
+    @FXML
+    private Button btnLogin;
+
+    @FXML
+    private Button btnSalir;
+
+    @FXML
+    private Label invalidoUser;
+
+    @FXML
+    private PasswordField txtContraseña;
 
     @FXML
     private TextField txtUser;
-    
-    @FXML
-    private PasswordField txtPassword;
-    
-    @FXML
-    private Button btnLogin;
-    
-    @FXML
-    private void eventKey(KeyEvent event){
-        
-        Object evt = event.getSource();
-        
-        if(evt.equals(txtUser)){
-            
-            if(event.getCharacter().equals(" ")){
-                event.consume();
-            }
-        
-        }else if(evt.equals(txtPassword)){
 
-            if(event.getCharacter().equals(" ")){
-                event.consume();
-            }            
-        
-        }
-    }
     
+        // Para salir de la aplicación
     @FXML
-    private void eventAction(ActionEvent event){
-        
-        Object evt = event.getSource();
-
-        if(evt.equals(btnLogin)){
-                                
-            if(!txtUser.getText().isEmpty() && !txtPassword.getText().isEmpty()){
-            
-                String user = txtUser.getText();
-                String pass = txtPassword.getText();
-                
-                int state = modelo.login(user, pass);
-                
-                if(state!=-1){
-
-                    if(state == 1){
-
-                        JOptionPane.showMessageDialog(null, "Datos correctos puede ingresar al sistema");
+    protected void btnSalirClick() {
+    Stage stage = (Stage) btnSalir.getScene().getWindow();
+    stage.close();
+     }
+    
+    
+    //Para validar los campos de usuario y contraseña
+    @FXML
+    void btnLoginClick() throws IOException{
+    
+        // Cuando los campos están en blanco
+        if(txtUser.getText().isEmpty() || txtContraseña.getText().isEmpty()){
+                        invalidoUser.setStyle(mensajeError);
                         
-                        loadStage("/Vista/ViewPrincipal.fxml", event);
+            if (txtUser.getText().isEmpty() && txtContraseña.getText().isEmpty()) {
+                invalidoUser.setText("Se requiere el usuario y la contraseña!");
+                txtUser.setStyle(mensaje);
+                txtContraseña.setStyle(mensajeError);
+                
+            new animatefx.animation.Shake(txtUser).play();
+            new animatefx.animation.Shake(txtContraseña).play();
+             
 
-                    }else{
-                        JOptionPane.showMessageDialog(null, "Error al iniciar sesión datos de acceso incorrectos", 
-                                                            "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);                
+
+        }
+            else // Cuando el usuario esta en blanco
+                if (txtUser.getText().isEmpty()) {
+                    txtUser.setStyle(mensaje);
+                    invalidoUser.setText("Se requiere el usuario!");
+                    txtContraseña.setStyle(estiloMensajeExito);
+                    new animatefx.animation.Shake(txtUser).play();
+                    
+                } else // Cuando la contraseña queda en blanco
+                    if (txtContraseña.getText().isEmpty()) {
+                        txtContraseña.setStyle(estiloMensajeError);
+                        invalidoUser.setText("Se requiere la contraseña!");
+                        txtUser.setStyle(estiloMensajeExito);
+                        new animatefx.animation.Shake(txtContraseña).play();
                     }
-
-                }                
-
             
-            }else{            
-                    JOptionPane.showMessageDialog(null, "Error al iniciar sesión datos de acceso incorrectos", 
-                                                        "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);                                
-            }
-        
-        }
-    
-    }
-    
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    private void loadStage(String url, Event event){
-            
-        try {
-    
-            //((Node)(event.getSource())).getScene().getWindow().hide();    
-            
-            
-            Object eventSource = event.getSource(); 
-            Node sourceAsNode = (Node) eventSource ;
-            Scene oldScene = sourceAsNode.getScene();
-            Window window = oldScene.getWindow();
-            Stage stage = (Stage) window ;
-            stage.hide();
-                        
-            Parent root = FXMLLoader.load(getClass().getResource(url));
-            Scene scene = new Scene(root);              
-            Stage newStage = new Stage();
-            newStage.setScene(scene);
-            newStage.show();  
-                                    
-            newStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                @Override
-                public void handle(WindowEvent event) {
-                    Platform.exit();
-                }
-            });  
-
-        } catch (IOException ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    } else // Se comprueba la longitud de la contraseña
+            if (txtContraseña.getText().length() < 5) {
+                invalidoUser.setText("La contraseña tiene es menos caracteres!");
+                invalidoUser.setStyle(mensajeError);
+                txtContraseña.setStyle(estiloMensajeError);
+                new animatefx.animation.FadeIn(txtContraseña).play();
                 
-    }    
+    } else // Se comprueba la longitud del usuario
+            if (txtUser.getText().length() < 6) {
+                invalidoUser.setText("El usuario tiene es menos caracteres!");
+                invalidoUser.setStyle(mensajeError);
+                txtUser.setStyle(estiloMensajeError);
+                new animatefx.animation.FadeIn(txtUser).play();
+            }        
+            // Mensaje si el ingreso es correcto
+            else {
+                invalidoUser.setText("Ingreso éxitoso!");
+                invalidoUser.setStyle(mensajeExito);
+                txtUser.setStyle(estiloMensajeExito);
+                txtContraseña.setStyle(estiloMensajeExito);
+                new animatefx.animation.Tada(invalidoUser).play();
+                 
+               
+            }
+    }
+     
+    
+    @FXML
+    private void btnLogin_MouseClicked() throws IOException {
+    //Para crear una ventana necesitas un nuevo Stage (Escenario)
+    Stage stage = new Stage();
+    //Cargas el FXML que queres que abra en un Parent
+    Parent root = FXMLLoader.load(getClass().getResource("/Vista/menu.fxml"));
+    //Se declara una Scene y se le asigna el FXML (Una Scene es la ventana)
+    Scene scene = new Scene(root);
+    //Establecemos la scena en el Stage
+    stage.setScene(scene);
+    //titulo para la ventana
+    stage.setTitle("Menú");
+    
+    stage.show();
+
+    //Cerramos la ventana anterior de Login. La obtenemos a partir de un control (Button)
+    Stage old = (Stage) btnLogin.getScene().getWindow();
+    old.close();
+}
+
+
+    
+    
+    
+     @FXML
+    public void initialize (URL url, ResourceBundle rb){
+        //TODO
+    }
+
+    
+
+    
+ 
 
 }
