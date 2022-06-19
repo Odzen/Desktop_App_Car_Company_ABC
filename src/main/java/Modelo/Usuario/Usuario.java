@@ -1,9 +1,6 @@
-package src.Modelo.Usuario;
+package Modelo.Usuario;
 
-import src.Modelo.Usuario.Utils.Rol;
-
-import java.sql.Time;
-import java.sql.Timestamp;
+import Modelo.Usuario.Utils.Rol;
 import java.time.LocalDateTime;
 import java.util.Date;
 

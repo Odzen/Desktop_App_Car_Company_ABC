@@ -1,4 +1,4 @@
-package src.Modelo;
+package Modelo;
 
 // Clase para conectar con la base de datos en postgreSQL
 
