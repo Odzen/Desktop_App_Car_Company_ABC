@@ -10,6 +10,7 @@ import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.application.Application;
 
@@ -24,7 +25,8 @@ public class EmpresaAutosABC extends Application {
         System.out.println(getClass());
         
         //Ventana de Login
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("src/main/java/Vista/Login.fxml"));
+        System.out.println("TEST: " + getClass().getResource("/Vista/Login.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Vista/Login.fxml"));
         Parent root = loader.load();
         
         // Escena para JavaFX
