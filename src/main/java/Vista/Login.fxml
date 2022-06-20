@@ -13,7 +13,7 @@
    <children>
       <ImageView id="LOGO" fitHeight="158.0" fitWidth="254.0" layoutX="173.0" layoutY="31.0">
          <image>
-            <Image url="@../recursos/logo.png" />
+            <Image url="@../../../recursos/logo.png" />
          </image>
       </ImageView>
       <TextField fx:id="txtUser" layoutX="190.0" layoutY="208.0" prefHeight="33.0" prefWidth="203.0" promptText="Nombre de usuario" style="-fx-background-radius: 8;" />

@@ -65,7 +65,7 @@
          </effect></DatePicker>
       <ImageView fitHeight="58.0" fitWidth="98.0" layoutX="495.0" layoutY="14.0">
          <image>
-            <Image url="@../recursos/logo.png" />
+            <Image url="@../../../recursos/logo.png" />
          </image>
       </ImageView>
       <Separator layoutX="92.0" layoutY="8.0" orientation="VERTICAL" prefHeight="25.0" prefWidth="0.0" />

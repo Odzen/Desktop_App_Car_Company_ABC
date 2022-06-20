@@ -1,5 +1,3 @@
-package empresaautosabc;
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Project/Maven2/JavaApp/src/main/java/${packagePath}/${mainClassName}.java to edit this template
@@ -26,7 +24,7 @@ public class EmpresaAutosABC extends Application {
         System.out.println(getClass());
         
         //Ventana de Login
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Vista/Login.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("src/main/java/Vista/Login.fxml"));
         Parent root = loader.load();
         
         // Escena para JavaFX
