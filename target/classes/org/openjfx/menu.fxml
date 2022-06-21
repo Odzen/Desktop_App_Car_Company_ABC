@@ -26,9 +26,9 @@
             <Font name="Apple SD Gothic Neo Regular" size="24.0" />
          </font>
       </Label>
-      <Label layoutX="175.0" layoutY="86.0" prefHeight="60.0" prefWidth="265.0" text="¡Bienvenido!" textAlignment="CENTER" textFill="#125dc6">
+      <Label layoutX="175.0" layoutY="86.0" prefHeight="60.0" prefWidth="265.0" text="¡Bienvenido Administrador!" textAlignment="CENTER" textFill="#125dc6">
          <font>
-            <Font size="48.0" />
+            <Font size="32.0" />
          </font>
       </Label>
    </children>

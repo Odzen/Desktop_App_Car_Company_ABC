@@ -69,8 +69,8 @@
       <Label layoutX="98.0" layoutY="5.0" prefHeight="32.0" prefWidth="124.0" text="Registro de usuario" />
       <SplitMenuButton fx:id="cargo" layoutX="233.0" layoutY="259.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="161.0" style="-fx-background-radius: 5;" text="Seleccionar Cargo">
         <items>
+          <MenuItem mnemonicParsing="false" text="Administrador" />
           <MenuItem mnemonicParsing="false" text="Gerente" />
-          <MenuItem mnemonicParsing="false" text="Jefe de taller" />
         </items>
          <effect>
             <ColorAdjust />
