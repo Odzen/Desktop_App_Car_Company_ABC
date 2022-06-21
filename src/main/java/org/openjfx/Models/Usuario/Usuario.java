@@ -1,4 +1,4 @@
-package org.openjfx.Usuario;
+package org.openjfx.Models.Usuario;
 
 import Modelo.Usuario.Utils.Rol;
 import java.time.LocalDateTime;

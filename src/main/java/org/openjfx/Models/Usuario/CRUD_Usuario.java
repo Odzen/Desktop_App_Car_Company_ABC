@@ -1,6 +1,6 @@
-package org.openjfx.Usuario;
+package org.openjfx.Models.Usuario;
 
-import org.openjfx.Conexion;
+import org.openjfx.Models.Conexion;
 
 import java.sql.*;
 import java.util.ArrayList;

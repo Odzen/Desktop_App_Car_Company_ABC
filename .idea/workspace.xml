@@ -7,9 +7,11 @@
     <list default="true" id="7fd16580-a472-45e8-bb1e-964e07fed7e4" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/openjfx/RegistrarUsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/openjfx/RegistrarUsuarioController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/org/openjfx/registrarUsuario.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/openjfx/registrarUsuario.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/openjfx/RegistrarUsuarioController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/openjfx/RegistrarUsuarioController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/openjfx/registrarUsuario.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/openjfx/registrarUsuario.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/openjfx/Usuario/CRUD_Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/openjfx/Models/Usuario/CRUD_Usuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/openjfx/Usuario/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/openjfx/Models/Usuario/Usuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/openjfx/Usuario/Utils/Hash.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/openjfx/Models/Usuario/Utils/Hash.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/openjfx/Usuario/Utils/Rol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/openjfx/Models/Usuario/Utils/Rol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/openjfx/Usuario/Utils/Validaciones.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/openjfx/Models/Usuario/Utils/Validaciones.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,6 +53,9 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/recursos" />
     </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -60,7 +65,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1655785594293</updated>
-      <workItem from="1655785608442" duration="6586000" />
+      <workItem from="1655785608442" duration="7317000" />
     </task>
     <servers />
   </component>

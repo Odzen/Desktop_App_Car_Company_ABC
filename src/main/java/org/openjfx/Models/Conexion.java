@@ -1,4 +1,4 @@
-package org.openjfx;
+package org.openjfx.Models;
 
 // Clase para conectar con la base de datos en postgreSQL
 
