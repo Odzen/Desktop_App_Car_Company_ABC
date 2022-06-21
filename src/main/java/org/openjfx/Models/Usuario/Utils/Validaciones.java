@@ -1,4 +1,4 @@
-package Modelo.Usuario.Utils;
+package org.openjfx.Models.Usuario.Utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
