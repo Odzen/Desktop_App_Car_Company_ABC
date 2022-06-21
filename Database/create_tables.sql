@@ -15,6 +15,7 @@ CREATE TABLE tipo_usuario (
   PRIMARY KEY (id_tipo_usuario)
 );
 
+-- Datos estáticos, no se cambian a menos que queramos agregar más tipos de usuarios
 INSERT INTO tipo_usuario (nombre)
 VALUES ('admin'), ('gerente'), ('jefe_taller'),( 'vendedor'), ( 'indefinido') ;
 

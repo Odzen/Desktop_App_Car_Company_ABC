@@ -5,6 +5,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.openjfx.Controllers.Controlador_Terminal_SuperAdmin;
+import org.openjfx.Models.Usuario.CRUD_Usuario;
+import org.openjfx.Models.Usuario.Usuario;
+
 import java.io.IOException;
 /**
  *
@@ -31,6 +35,14 @@ public class EmpresaAutosABC extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        // Para iniciar controlador super_admin en terminal
+        System.out.println("ABC App Inicio Main\n");
+        Usuario usr = new Usuario();
+        CRUD_Usuario consultasUsuario = new CRUD_Usuario();
+        Controlador_Terminal_SuperAdmin ctrl = new Controlador_Terminal_SuperAdmin(usr, consultasUsuario);
+        ctrl.iniciar();
+
+        // Para iniciar la vista en JavaFx
         launch(args);
     }
 

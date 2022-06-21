@@ -84,6 +84,8 @@ public class CRUD_Usuario {
                 usuario.setJoined(joined);
                 Date fecha_nacimiento = resultado.getDate("fecha_nacimiento");
                 usuario.setFecha_nacimiento(fecha_nacimiento);
+                String telefono = resultado.getString("telefono");
+                usuario.setTelefono(telefono);
                 Timestamp last_session = resultado.getTimestamp("last_session");
                 usuario.setLast_session(last_session.toLocalDateTime());
                 int id_tipo_usuario = resultado.getInt("id_tipo_usuario");
@@ -118,6 +120,7 @@ public class CRUD_Usuario {
             sentencia.setBoolean(7, usuario.isActivo());
             sentencia.setString(8, usuario.getAvatar());
             sentencia.setDate(9, new java.sql.Date(usuario.getFecha_nacimiento().getTime()));
+            System.out.println( "Insertar telefono:" +  usuario.getTelefono());
             sentencia.setString(10, usuario.getTelefono());
             sentencia.setTimestamp(11, Timestamp.valueOf(usuario.getLast_session()));
             sentencia.setString(12, usuario.getUser_type().name());
@@ -223,6 +226,12 @@ public class CRUD_Usuario {
             PreparedStatement sentencia = connection.prepareStatement(
                     "TRUNCATE usuario"
             );
+            PreparedStatement sentencia_alter_sequence = connection.prepareStatement(
+                    "ALTER SEQUENCE usuario_id_usuario_seq RESTART;"
+            );
+
+            sentencia.executeUpdate();
+            sentencia_alter_sequence.executeUpdate();
             System.out.println("Borro TODOS LOS USUARIOS exitosamente!!");
         } catch (SQLException e) {
             throw new RuntimeException(e);
