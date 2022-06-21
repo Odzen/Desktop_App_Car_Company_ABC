@@ -21,7 +21,7 @@ import org.openjfx.EmpresaAutosABC;
  */
 public class MenuController implements Initializable {
     @FXML
-    private Button bttnAdmin, bttnRegistroAdmin;
+    private Button bttnAdmin, bttnRegistroAdmin, btnCerrarSesion;
 
     @FXML
     private Button btnSalir;
@@ -41,6 +41,10 @@ public class MenuController implements Initializable {
     @FXML
     private void btnRegistroAdminClick() throws IOException{
         EmpresaAutosABC.setRoot("registrarUsuario");
+    }
+    @FXML
+    private void btnCerrarSesionClick() throws IOException{
+        EmpresaAutosABC.setRoot("Login");
     }
     /*
     @FXML
