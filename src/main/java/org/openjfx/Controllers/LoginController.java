@@ -10,8 +10,12 @@ import java.util.ResourceBundle;
 
 import javafx.scene.control.Label;
 import org.openjfx.EmpresaAutosABC;
+import org.openjfx.Models.Usuario.CRUD_Usuario;
+import org.openjfx.Models.Usuario.Usuario;
+import org.openjfx.Models.Usuario.Utils.Hash;
 
 import javax.print.DocFlavor.URL;
+import javax.swing.*;
 
 
 /**
@@ -88,29 +92,40 @@ public class LoginController  {
                     }
             
     } else // Se comprueba la longitud de la contraseña
-            if (txtContraseña.getText().length() < 5) {
-                invalidoUser.setText("La contraseña tiene es menos caracteres!");
+            if (txtContraseña.getText().length() < 8) {
+                invalidoUser.setText("Recuerda que la contraseña es de almenos 8 caracteres!");
                 invalidoUser.setStyle(mensajeError);
                 txtContraseña.setStyle(estiloMensajeError);
                 new animatefx.animation.FadeIn(txtContraseña).play();
                 
     } else // Se comprueba la longitud del usuario
-            if (txtUser.getText().length() < 6) {
-                invalidoUser.setText("El usuario tiene es menos caracteres!");
+            if (txtUser.getText().length() < 8) {
+                invalidoUser.setText("Al menos 8 caracteres!");
                 invalidoUser.setStyle(mensajeError);
                 txtUser.setStyle(estiloMensajeError);
                 new animatefx.animation.FadeIn(txtUser).play();
             }        
             // Mensaje si el ingreso es correcto
             else {
+                CRUD_Usuario usuarioSql = new CRUD_Usuario();
+                Usuario usuarioLogin = new Usuario();
+                String contraseña = txtContraseña.getText();
+                String contraseñaCifrada = Hash.md5(contraseña);
 
-                invalidoUser.setText("Ingreso éxitoso!");
-                invalidoUser.setStyle(mensajeExito);
-                txtUser.setStyle(estiloMensajeExito);
-                txtContraseña.setStyle(estiloMensajeExito);
-                new animatefx.animation.Tada(invalidoUser).play();
-                this.btnLogin_MouseClicked();
-               
+                usuarioLogin.setCedula(txtUser.getText());
+                usuarioLogin.setContraseña(contraseñaCifrada);
+
+                if(usuarioSql.login(usuarioLogin)) {
+                    invalidoUser.setText("Ingreso éxitoso!");
+                    invalidoUser.setStyle(mensajeExito);
+                    txtUser.setStyle(estiloMensajeExito);
+                    txtContraseña.setStyle(estiloMensajeExito);
+                    new animatefx.animation.Tada(invalidoUser).play();
+                    this.btnLogin_MouseClicked();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Datos Incorrectos!");
+                }
+
             }
     }
 

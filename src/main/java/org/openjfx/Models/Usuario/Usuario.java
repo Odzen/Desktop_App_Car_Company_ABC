@@ -176,8 +176,8 @@ public class Usuario {
     @Override
     public String toString() {
         return "{" +
-                "id_usuario=" + id_usuario +
-                "cedula=" + cedula +
+                "id_usuario=" + id_usuario +  '\'' +
+                ", cedula='" + cedula + '\'' +
                 ", contraseña='" + contraseña + '\'' +
                 ", email='" + email + '\'' +
                 ", nombre='" + nombre + '\'' +

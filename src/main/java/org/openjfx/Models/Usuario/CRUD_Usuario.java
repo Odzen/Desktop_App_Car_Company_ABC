@@ -4,6 +4,8 @@ import org.openjfx.Models.Conexion;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class CRUD_Usuario {
@@ -41,13 +43,21 @@ public class CRUD_Usuario {
             sentencia.setString(1, usuario.getCedula());
             ResultSet resultado = sentencia.executeQuery();
             if (resultado.next()) {
-                return true;
-            } else {
-                return false;
+                if (usuario.getContraseña().equals(resultado.getString(4)))
+                {
+                    usuario.setId_usuario(resultado.getInt(1));
+                    usuario.setNombre(resultado.getString(2));
+                    usuario.setId_tipo_usuario(resultado.getInt(5));
+                    return true;
+                } else {
+                    return false;
+                }
             }
+            return false;
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            Logger.getLogger(CRUD_Usuario.class.getName()).log(Level.SEVERE, null, e);
+            return false;
         }
     }
 

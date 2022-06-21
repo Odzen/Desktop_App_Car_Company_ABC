@@ -77,6 +77,11 @@ public class Controlador_Terminal_SuperAdmin {
         try {
             Usuario usuario = new Usuario();
 
+            System.out.println("Ingrese Cedula");
+            scanner.nextLine();
+            String cedula = scanner.nextLine();
+            usuario.setCedula(cedula);
+
             System.out.println("Ingrese Nombre");
             scanner.nextLine();
             String nombre = scanner.nextLine();
@@ -99,7 +104,6 @@ public class Controlador_Terminal_SuperAdmin {
                     contraseña_Valida = false;
                 }
             }
-
 
             boolean email_Valido = false;
             while (!email_Valido)
