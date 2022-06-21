@@ -10,11 +10,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 
 /**
@@ -52,9 +48,12 @@ public class RegistrarUsuarioController implements Initializable {
     @FXML
     private DatePicker dtpNacimiento;
      @FXML
-    private ComboBox<?> cmbCargo;
-     
-      @FXML
+    private SplitMenuButton cargo;
+    @FXML
+    MenuItem firstItem;
+    @FXML
+    MenuItem secondItem;
+    @FXML
     private Label lbinvalidoRegistro;
     
      
@@ -84,12 +83,8 @@ public class RegistrarUsuarioController implements Initializable {
                 txtTel.setStyle(mensajeError);
                 txtDocumento.setStyle(mensajeError);
                 txtPassword1.setStyle(mensajeError);
-                
             //new animatefx.animation.Shake(txtNombreUsuario).play();
             //new animatefx.animation.Shake(txtPassword1).play();
-             
-
-
         }
            } else // Se comprueba la longitud de la contraseña
             if (txtPassword1.getText().length() < 5) {
@@ -128,6 +123,16 @@ public class RegistrarUsuarioController implements Initializable {
     private void btnInicio() throws IOException {
         EmpresaAutosABC.setRoot("menu");
     }
+    @FXML
+    private void setFirstItem() throws IOException {
+        cargo.setText(firstItem.getText());
+    }
+
+    @FXML
+    private void setSecondItem() throws IOException {
+        cargo.setText(secondItem.getText());
+    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
