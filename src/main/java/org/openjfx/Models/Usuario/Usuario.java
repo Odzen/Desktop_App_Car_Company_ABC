@@ -17,6 +17,8 @@ public class Usuario {
     private boolean activo;
     private Date joined;
     private Date fecha_nacimiento;
+
+    private String telefono;
     private LocalDateTime last_session;
     private Rol user_type;
     private int id_tipo_usuario;
@@ -32,6 +34,7 @@ public class Usuario {
         this.avatar = "";
         this.joined = new Date();
         this.user_type = Rol.INDEFINIDO;
+        this.telefono = "";
         this.activo = true;
         this.fecha_nacimiento = null;
         this.last_session = LocalDateTime.now();
@@ -48,6 +51,14 @@ public class Usuario {
 
     public String getContraseña() {
         return contraseña;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public void setContraseña(String contraseña) {
@@ -166,6 +177,7 @@ public class Usuario {
                 ", activo=" + activo +
                 ", joined=" + joined +
                 ", fecha_nacimiento='" + fecha_nacimiento + '\'' +
+                ", telefono='" + telefono + '\'' +
                 ", last_session='" + last_session + '\'' +
                 ", user_type='" + user_type + '\'' +
                 ", id_tipo_usuario='" + id_tipo_usuario + '\'' +

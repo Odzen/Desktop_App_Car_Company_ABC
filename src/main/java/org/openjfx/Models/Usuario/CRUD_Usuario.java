@@ -107,8 +107,8 @@ public class CRUD_Usuario {
         try {
             PreparedStatement sentencia = this.connection.prepareStatement(
                     "INSERT INTO usuario " +
-                            "(nombre, apellido, contraseña, email, joined, modificado, activo, avatar, fecha_nacimiento, last_session, user_type, id_tipo_usuario )" +
-                            "VALUES  (?,?,?,?,?,?,?,?,?,?,?,?)");
+                            "(nombre, apellido, contraseña, email, joined, modificado, activo, avatar, fecha_nacimiento, telefono, last_session, user_type, id_tipo_usuario )" +
+                            "VALUES  (?,?,?,?,?,?,?,?,?,?,?,?,?)");
             sentencia.setString(1, usuario.getNombre());
             sentencia.setString(2, usuario.getApellido());
             sentencia.setString(3, usuario.getContraseña());
@@ -118,9 +118,10 @@ public class CRUD_Usuario {
             sentencia.setBoolean(7, usuario.isActivo());
             sentencia.setString(8, usuario.getAvatar());
             sentencia.setDate(9, new java.sql.Date(usuario.getFecha_nacimiento().getTime()));
-            sentencia.setTimestamp(10, Timestamp.valueOf(usuario.getLast_session()));
-            sentencia.setString(11, usuario.getUser_type().name());
-            sentencia.setInt(12, usuario.getId_tipo_usuario());
+            sentencia.setString(10, usuario.getTelefono());
+            sentencia.setTimestamp(11, Timestamp.valueOf(usuario.getLast_session()));
+            sentencia.setString(12, usuario.getUser_type().name());
+            sentencia.setInt(13, usuario.getId_tipo_usuario());
 
             sentencia.execute();
 
@@ -149,6 +150,7 @@ public class CRUD_Usuario {
                                 "modificado = ? , " +
                                 "avatar= ? , " +
                                 "fecha_nacimiento= ?, " +
+                                "telefono = ?, " +
                                 "last_session= ?, " +
                                 "id_tipo_usuario= ?, " +
                                 "user_type= ? " +
@@ -160,11 +162,12 @@ public class CRUD_Usuario {
                 sentencia.setDate(5, modificadoSql);
                 sentencia.setString(6, usuarioActualizado.getAvatar());
                 sentencia.setDate(7, new java.sql.Date(usuarioActualizado.getFecha_nacimiento().getTime()));
-                sentencia.setTimestamp(8, Timestamp.valueOf(usuarioActualizado.getLast_session()));
+                sentencia.setString(8, usuarioActualizado.getTelefono());
+                sentencia.setTimestamp(9, Timestamp.valueOf(usuarioActualizado.getLast_session()));
                 System.out.println(usuarioActualizado.getUser_type().toString());
-                sentencia.setInt(9, usuarioActualizado.getId_tipo_usuario());
-                sentencia.setString(10, usuarioActualizado.getUser_type().toString());
-                sentencia.setInt(11, id_usuario);
+                sentencia.setInt(10, usuarioActualizado.getId_tipo_usuario());
+                sentencia.setString(11, usuarioActualizado.getUser_type().toString());
+                sentencia.setInt(12, id_usuario);
 
                 int filasAfectadas = sentencia.executeUpdate();
                 System.out.println(filasAfectadas);
