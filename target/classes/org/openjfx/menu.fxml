@@ -16,7 +16,6 @@
             <Image url="@recursos/logo.png" />
          </image>
       </ImageView>
-      <Hyperlink fx:id="linkInicio" layoutX="14.0" layoutY="14.0" text="Inicio" />
       <Label fx:id="bttnSalir" layoutX="65.0" layoutY="17.0" text="Menú del sistema" />
       <Separator layoutX="51.0" layoutY="10.0" orientation="VERTICAL" prefHeight="31.0" prefWidth="0.0" />
       <Button fx:id="bttnAdmin" layoutX="104.0" layoutY="260.0" mnemonicParsing="false" onAction="#btnGestationUsuariosClick" prefHeight="31.0" prefWidth="142.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-color: #3d739c#3d739c; -fx-border-radius: 12;" text="Gestión de usuario" />

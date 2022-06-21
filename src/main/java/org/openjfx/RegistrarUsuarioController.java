@@ -124,6 +124,11 @@ public class RegistrarUsuarioController implements Initializable {
             }
     }
 
+    @FXML
+    private void btnInicio() throws IOException {
+        EmpresaAutosABC.setRoot("menu");
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }

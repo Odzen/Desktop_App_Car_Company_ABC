@@ -36,6 +36,10 @@ public class GestionUsuarioController implements Initializable {
     //new animatefx.animation.BounceIn(root).play();
 
     }
+    @FXML
+    private void btnInicio() throws IOException {
+        EmpresaAutosABC.setRoot("menu");
+    }
 
     /**
      * Initializes the controller class.

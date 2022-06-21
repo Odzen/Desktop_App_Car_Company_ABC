@@ -6,13 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="7fd16580-a472-45e8-bb1e-964e07fed7e4" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/openjfx/EmpresaAutosABC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/openjfx/EmpresaAutosABC.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/openjfx/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/openjfx/MenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/openjfx/GestionUsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/openjfx/GestionUsuarioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/openjfx/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/openjfx/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/openjfx/RegistrarUsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/openjfx/RegistrarUsuarioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/openjfx/GestionUsuario.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/openjfx/GestionUsuario.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/org/openjfx/menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/openjfx/menu.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/org/openjfx/registrarUsuario.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/openjfx/registrarUsuario.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/openjfx/EmpresaAutosABC.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/openjfx/EmpresaAutosABC.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/openjfx/GestionUsuario.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/openjfx/GestionUsuario.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/org/openjfx/GestionUsuarioController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/openjfx/GestionUsuarioController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/openjfx/MenuController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/openjfx/MenuController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/openjfx/LoginController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/openjfx/LoginController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/openjfx/RegistrarUsuarioController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/openjfx/RegistrarUsuarioController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/org/openjfx/menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/openjfx/menu.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/org/openjfx/registrarUsuario.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/openjfx/registrarUsuario.fxml" afterDir="false" />
     </list>
@@ -65,7 +68,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1655785594293</updated>
-      <workItem from="1655785608442" duration="3326000" />
+      <workItem from="1655785608442" duration="3815000" />
     </task>
     <servers />
   </component>

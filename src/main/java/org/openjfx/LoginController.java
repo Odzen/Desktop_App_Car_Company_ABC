@@ -46,7 +46,6 @@ public class LoginController  {
 
     @FXML
     private TextField txtUser;
-
     
         // Para salir de la aplicación
     @FXML
@@ -54,8 +53,7 @@ public class LoginController  {
         Stage stage = (Stage) btnSalir.getScene().getWindow();
         stage.close();
      }
-    
-    
+
     //Para validar los campos de usuario y contraseña
     @FXML
     void btnLoginClick() throws IOException{
@@ -114,24 +112,15 @@ public class LoginController  {
                
             }
     }
-     
+
     @FXML
     private void btnLogin_MouseClicked() throws IOException {
         EmpresaAutosABC.setRoot("menu");
     }
 
-
-    
-    
-    
      @FXML
     public void initialize (URL url, ResourceBundle rb){
         //TODO
     }
-
-    
-
-    
- 
 
 }

@@ -13,7 +13,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #c7e9ff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.GestionUsuarioController">
    <children>
-      <Hyperlink layoutX="14.0" layoutY="14.0" text="Inicio" />
+      <Hyperlink layoutX="14.0" layoutY="14.0" text="Inicio" onAction="#btnInicio" />
       <Separator layoutX="48.0" layoutY="4.0" orientation="VERTICAL" prefHeight="43.0" prefWidth="0.0" />
       <Label layoutX="60.0" layoutY="17.0" text="Administrador" />
       <Button fx:id="bttnNuevoUsuario" layoutX="33.0" layoutY="105.0" mnemonicParsing="false" onAction="#bttnNuevoUsuarioClicked" style="-fx-background-radius: 12; -fx-background-color: #899bab; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Nuevo Usuario" />
