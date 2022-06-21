@@ -25,23 +25,21 @@ import javafx.stage.Stage;
 public class GestionUsuarioController implements Initializable {
 
     @FXML
-    private Button bttnNuevoUsuario, bttnVolverInicio;
+    private Button bttnNuevoUsuario, btnSalir;
     
     
     // Para salir de la aplicación
     @FXML
-    protected void btnSalirClickGestion() {
-    Stage stage = (Stage) bttnVolverInicio.getScene().getWindow();
+    protected void btnSalirClick() {
+    Stage stage = (Stage) btnSalir.getScene().getWindow();
     stage.close();
-     }
+    }
    
      @FXML
      private void bttnNuevoUsuarioClicked() throws Exception {
          EmpresaAutosABC.setRoot("registrarUsuario");
-    
     // Animación
     //new animatefx.animation.BounceIn(root).play();
-
 
     }
 
