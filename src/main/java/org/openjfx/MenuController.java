@@ -19,8 +19,6 @@ import javafx.stage.Stage;
  * @author mavel
  */
 public class MenuController implements Initializable {
-
-
     @FXML
     private Button bttnAdmin, bttnRegistroAdmin;
 
@@ -34,28 +32,19 @@ public class MenuController implements Initializable {
         Stage stage = (Stage) btnSalir.getScene().getWindow();
         stage.close();
     }
-
     @FXML
-    void btnGestationUsuariosClick() throws IOException{
+    private void btnGestationUsuariosClick() throws IOException{
         EmpresaAutosABC.setRoot("GestionUsuario");
-
-
     }
 
-
-    /*
     @FXML
-
-    private void btnGestationUsuarios_MouseClicked() throws IOException {
-            EmpresaAutosABC.setRoot("GestionUsuario");
-
-    }*/
-
-
+    private void btnRegistroAdminClick() throws IOException{
+        EmpresaAutosABC.setRoot("registrarUsuario");
+    }
+    /*
     @FXML
     void btnRegistroAdminClick() throws IOException{
         this.btnRegistroAdmin_MouseClicked();
-
 
     }
     @FXML
@@ -65,6 +54,7 @@ public class MenuController implements Initializable {
         // Animación
         // new animatefx.animation.BounceIn(root).play();
     }
+    */
 
     /**
      * Initializes the controller class.

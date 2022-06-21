@@ -1,8 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Project/Maven2/JavaApp/src/main/java/${packagePath}/${mainClassName}.java to edit this template
- */
-
 package org.openjfx;
 
 import javafx.application.Application;
@@ -10,18 +5,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
-
-
 /**
  *
  * @author mavel
  */
 public class EmpresaAutosABC extends Application {
-
     private static Scene scene;
-
     @Override
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("Login"));
@@ -35,9 +25,7 @@ public class EmpresaAutosABC extends Application {
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(EmpresaAutosABC.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
-
     }
-
     /**
      * @param args the command line arguments
      */
