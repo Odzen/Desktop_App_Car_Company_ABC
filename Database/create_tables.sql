@@ -1,3 +1,6 @@
+-- Alterar secuencias
+ALTER SEQUENCE usuario_id_usuario_seq RESTART;
+
 -- Dropping tables for testing
 DROP TABLE IF EXISTS usuario CASCADE;
 DROP TABLE IF EXISTS tipo_usuario CASCADE;
@@ -22,6 +25,7 @@ VALUES ('admin'), ('gerente'), ('jefe_taller'),( 'vendedor'), ( 'indefinido') ;
 
 CREATE TABLE usuario (
      id_usuario SERIAL,
+     cedula text NOT NULL,
      contraseña text NOT NULL,
      email text NOT NULL,
      nombre text NOT NULL,

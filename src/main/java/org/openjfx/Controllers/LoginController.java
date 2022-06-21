@@ -103,11 +103,12 @@ public class LoginController  {
             }        
             // Mensaje si el ingreso es correcto
             else {
+
                 invalidoUser.setText("Ingreso éxitoso!");
                 invalidoUser.setStyle(mensajeExito);
                 txtUser.setStyle(estiloMensajeExito);
                 txtContraseña.setStyle(estiloMensajeExito);
-                //new animatefx.animation.Tada(invalidoUser).play();
+                new animatefx.animation.Tada(invalidoUser).play();
                 this.btnLogin_MouseClicked();
                
             }

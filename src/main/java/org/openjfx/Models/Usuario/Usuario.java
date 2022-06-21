@@ -8,6 +8,8 @@ import java.util.Date;
 public class Usuario {
 
     private int id_usuario;
+
+    private String cedula;
     private String contraseña;
     private String email;
     private String nombre;
@@ -26,6 +28,7 @@ public class Usuario {
 
     public Usuario() {
         this.id_usuario = 0;
+        this.cedula = "";
         this.contraseña = "";
         this.email = "";
         this.nombre = "";
@@ -47,6 +50,14 @@ public class Usuario {
 
     public void setId_usuario(int id_usuario) {
         this.id_usuario = id_usuario;
+    }
+
+    public String getCedula() {
+        return cedula;
+    }
+
+    public void setCedula(String cedula) {
+        this.cedula = cedula;
     }
 
     public String getContraseña() {
@@ -166,6 +177,7 @@ public class Usuario {
     public String toString() {
         return "{" +
                 "id_usuario=" + id_usuario +
+                "cedula=" + cedula +
                 ", contraseña='" + contraseña + '\'' +
                 ", email='" + email + '\'' +
                 ", nombre='" + nombre + '\'' +
