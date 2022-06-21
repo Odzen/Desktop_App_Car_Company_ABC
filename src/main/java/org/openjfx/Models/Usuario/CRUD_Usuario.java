@@ -120,7 +120,6 @@ public class CRUD_Usuario {
             sentencia.setBoolean(7, usuario.isActivo());
             sentencia.setString(8, usuario.getAvatar());
             sentencia.setDate(9, new java.sql.Date(usuario.getFecha_nacimiento().getTime()));
-            System.out.println( "Insertar telefono:" +  usuario.getTelefono());
             sentencia.setString(10, usuario.getTelefono());
             sentencia.setTimestamp(11, Timestamp.valueOf(usuario.getLast_session()));
             sentencia.setString(12, usuario.getUser_type().name());

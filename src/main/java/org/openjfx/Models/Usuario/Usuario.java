@@ -56,12 +56,9 @@ public class Usuario {
     public String getTelefono() {
         return telefono;
     }
-
     public void setTelefono(String telefono) {
-        System.out.println("Cambiar Telefono en la entidad" + telefono);
         this.telefono = telefono;
     }
-
     public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
     }
