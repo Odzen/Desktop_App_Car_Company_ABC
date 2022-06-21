@@ -6,12 +6,31 @@
   <component name="ChangeListManager">
     <list default="true" id="7fd16580-a472-45e8-bb1e-964e07fed7e4" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/openjfx/RegistrarUsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/openjfx/RegistrarUsuarioController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/openjfx/Usuario/CRUD_Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/openjfx/Models/Usuario/CRUD_Usuario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/openjfx/Usuario/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/openjfx/Models/Usuario/Usuario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/openjfx/Usuario/Utils/Hash.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/openjfx/Models/Usuario/Utils/Hash.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/openjfx/Usuario/Utils/Rol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/openjfx/Models/Usuario/Utils/Rol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/openjfx/Usuario/Utils/Validaciones.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/openjfx/Models/Usuario/Utils/Validaciones.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/openjfx/EmpresaAutosABC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/openjfx/EmpresaAutosABC.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/openjfx/GestionUsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/openjfx/Controllers/GestionUsuarioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/openjfx/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/openjfx/Controllers/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/openjfx/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/openjfx/Controllers/MenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/openjfx/RegistrarUsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/openjfx/Controllers/RegistrarUsuarioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/openjfx/GestionUsuario.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/openjfx/GestionUsuario.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/openjfx/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/openjfx/Login.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/openjfx/menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/openjfx/menu.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/org/openjfx/registrarUsuario.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/org/openjfx/registrarUsuario.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Modelo/Usuario/Utils/Hash.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Modelo/Usuario/Utils/Validaciones.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/openjfx/Conexion.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/openjfx/EmpresaAutosABC.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/openjfx/GestionUsuario.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/openjfx/GestionUsuario.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/openjfx/GestionUsuarioController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/openjfx/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/openjfx/Login.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/openjfx/LoginController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/openjfx/MenuController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/openjfx/RegistrarUsuarioController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/openjfx/Usuario/CRUD_Usuario.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/openjfx/Usuario/Usuario.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/openjfx/menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/openjfx/menu.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/openjfx/registrarUsuario.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/openjfx/registrarUsuario.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +51,9 @@
     </option>
   </component>
   <component name="ProjectId" id="2As5iQv6hgXJv0LskuV2oLSsSQL" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -42,6 +63,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/odzen/Univalle/6/Desarrollo1/Proyecto/Desktop_App_Car_Company_ABC/src/main/java/org/openjfx/Models/Automovil",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -50,10 +72,15 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/org/openjfx/Models/Automovil" />
+      <recent name="$PROJECT_DIR$/src/main/java/org/openjfx/Models/Repuesto" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/recursos" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="org.openjfx" />
       <recent name="" />
     </key>
   </component>
@@ -65,7 +92,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1655785594293</updated>
-      <workItem from="1655785608442" duration="7317000" />
+      <workItem from="1655785608442" duration="8080000" />
     </task>
     <servers />
   </component>

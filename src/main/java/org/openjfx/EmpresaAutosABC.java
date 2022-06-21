@@ -17,8 +17,9 @@ public class EmpresaAutosABC extends Application {
         scene = new Scene(loadFXML("Login"));
         stage.setScene(scene);
         stage.show();
+        //new animatefx.animation.BounceIn(scene).play();
     }
-    static void setRoot(String fxml) throws IOException {
+    public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
 
@@ -34,31 +35,3 @@ public class EmpresaAutosABC extends Application {
     }
 
 }
-
-
-
-
-
-
-
-    /*
-    @Override
-    public void start(Stage stage) throws Exception  {
-
-        try {
-        //Ventana de Login
-        FXMLLoader loader = new FXMLLoader(EmpresaAutosABC.class.getResource("/Vista/Login.fxml"));
-        Scene scene = new Scene(loader.load());
-        // Escena para JavaFX
-        stage.setScene(scene);
-        stage.show();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-
-
-         new animatefx.animation.BounceIn(scene).play();
-                
-    }*/
-
-

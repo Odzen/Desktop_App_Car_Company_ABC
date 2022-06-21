@@ -1,4 +1,4 @@
-package org.openjfx;
+package org.openjfx.Controllers;
 
 import java.io.IOException;
 import java.net.URL;
@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import org.openjfx.EmpresaAutosABC;
 
 /**
  * FXML Controller class
