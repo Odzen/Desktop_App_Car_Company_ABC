@@ -71,7 +71,6 @@
         <items>
           <MenuItem mnemonicParsing="false" text="Gerente" />
           <MenuItem mnemonicParsing="false" text="Jefe de taller" />
-            <MenuItem mnemonicParsing="false" text="Vendedor" />
         </items>
          <effect>
             <ColorAdjust />
