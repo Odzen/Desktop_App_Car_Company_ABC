@@ -1,4 +1,4 @@
-package Modelo.Usuario.Utils;
+package org.openjfx.Models.Usuario.Utils;
 
 public enum Rol {
     ADMIN,

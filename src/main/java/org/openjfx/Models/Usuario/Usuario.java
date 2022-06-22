@@ -1,6 +1,6 @@
 package org.openjfx.Models.Usuario;
 
-import Modelo.Usuario.Utils.Rol;
+import org.openjfx.Models.Usuario.Utils.Rol;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -8,6 +8,8 @@ import java.util.Date;
 public class Usuario {
 
     private int id_usuario;
+
+    private String cedula;
     private String contraseña;
     private String email;
     private String nombre;
@@ -17,6 +19,8 @@ public class Usuario {
     private boolean activo;
     private Date joined;
     private Date fecha_nacimiento;
+
+    private String telefono;
     private LocalDateTime last_session;
     private Rol user_type;
     private int id_tipo_usuario;
@@ -24,6 +28,7 @@ public class Usuario {
 
     public Usuario() {
         this.id_usuario = 0;
+        this.cedula = "";
         this.contraseña = "";
         this.email = "";
         this.nombre = "";
@@ -32,6 +37,7 @@ public class Usuario {
         this.avatar = "";
         this.joined = new Date();
         this.user_type = Rol.INDEFINIDO;
+        this.telefono = "";
         this.activo = true;
         this.fecha_nacimiento = null;
         this.last_session = LocalDateTime.now();
@@ -46,10 +52,24 @@ public class Usuario {
         this.id_usuario = id_usuario;
     }
 
+    public String getCedula() {
+        return cedula;
+    }
+
+    public void setCedula(String cedula) {
+        this.cedula = cedula;
+    }
+
     public String getContraseña() {
         return contraseña;
     }
 
+    public String getTelefono() {
+        return telefono;
+    }
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
     public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
     }
@@ -156,7 +176,8 @@ public class Usuario {
     @Override
     public String toString() {
         return "{" +
-                "id_usuario=" + id_usuario +
+                "id_usuario=" + id_usuario +  '\'' +
+                ", cedula='" + cedula + '\'' +
                 ", contraseña='" + contraseña + '\'' +
                 ", email='" + email + '\'' +
                 ", nombre='" + nombre + '\'' +
@@ -166,6 +187,7 @@ public class Usuario {
                 ", activo=" + activo +
                 ", joined=" + joined +
                 ", fecha_nacimiento='" + fecha_nacimiento + '\'' +
+                ", telefono='" + telefono + '\'' +
                 ", last_session='" + last_session + '\'' +
                 ", user_type='" + user_type + '\'' +
                 ", id_tipo_usuario='" + id_tipo_usuario + '\'' +

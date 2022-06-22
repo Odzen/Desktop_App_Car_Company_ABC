@@ -4,6 +4,8 @@ import org.openjfx.Models.Conexion;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class CRUD_Usuario {
@@ -29,6 +31,33 @@ public class CRUD_Usuario {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    // Verifica si un usuario existe o no en la base de datos, basado en su ID
+    public boolean login(Usuario usuario)  {
+        try {
+            PreparedStatement sentencia = this.connection.prepareStatement(
+                    "SELECT id_usuario, nombre, cedula,  contraseña, id_tipo_usuario FROM usuario WHERE cedula= ?"
+            );
+            sentencia.setString(1, usuario.getCedula());
+            ResultSet resultado = sentencia.executeQuery();
+            if (resultado.next()) {
+                if (usuario.getContraseña().equals(resultado.getString(4)))
+                {
+                    usuario.setId_usuario(resultado.getInt(1));
+                    usuario.setNombre(resultado.getString(2));
+                    usuario.setId_tipo_usuario(resultado.getInt(5));
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return false;
+
+        } catch (SQLException e) {
+            Logger.getLogger(CRUD_Usuario.class.getName()).log(Level.SEVERE, null, e);
+            return false;
         }
     }
 
@@ -66,6 +95,8 @@ public class CRUD_Usuario {
 
                 int id_usuario = resultado.getInt("id_usuario");
                 usuario.setId_usuario(id_usuario);
+                String cedula = resultado.getString("cedula");
+                usuario.setCedula(cedula);
                 String contraseña = resultado.getString("contraseña");
                 usuario.setContraseña(contraseña);
                 String email = resultado.getString("email");
@@ -84,6 +115,8 @@ public class CRUD_Usuario {
                 usuario.setJoined(joined);
                 Date fecha_nacimiento = resultado.getDate("fecha_nacimiento");
                 usuario.setFecha_nacimiento(fecha_nacimiento);
+                String telefono = resultado.getString("telefono");
+                usuario.setTelefono(telefono);
                 Timestamp last_session = resultado.getTimestamp("last_session");
                 usuario.setLast_session(last_session.toLocalDateTime());
                 int id_tipo_usuario = resultado.getInt("id_tipo_usuario");
@@ -107,20 +140,22 @@ public class CRUD_Usuario {
         try {
             PreparedStatement sentencia = this.connection.prepareStatement(
                     "INSERT INTO usuario " +
-                            "(nombre, apellido, contraseña, email, joined, modificado, activo, avatar, fecha_nacimiento, last_session, user_type, id_tipo_usuario )" +
-                            "VALUES  (?,?,?,?,?,?,?,?,?,?,?,?)");
-            sentencia.setString(1, usuario.getNombre());
-            sentencia.setString(2, usuario.getApellido());
-            sentencia.setString(3, usuario.getContraseña());
-            sentencia.setString(4, usuario.getEmail());
-            sentencia.setDate(5,  new java.sql.Date(usuario.getJoined().getTime()));
-            sentencia.setDate(6,  new java.sql.Date(usuario.getModificado().getTime()));
-            sentencia.setBoolean(7, usuario.isActivo());
-            sentencia.setString(8, usuario.getAvatar());
-            sentencia.setDate(9, new java.sql.Date(usuario.getFecha_nacimiento().getTime()));
-            sentencia.setTimestamp(10, Timestamp.valueOf(usuario.getLast_session()));
-            sentencia.setString(11, usuario.getUser_type().name());
-            sentencia.setInt(12, usuario.getId_tipo_usuario());
+                            "(cedula, nombre, apellido, contraseña, email, joined, modificado, activo, avatar, fecha_nacimiento, telefono, last_session, user_type, id_tipo_usuario )" +
+                            "VALUES  (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            sentencia.setString(1, usuario.getCedula());
+            sentencia.setString(2, usuario.getNombre());
+            sentencia.setString(3, usuario.getApellido());
+            sentencia.setString(4, usuario.getContraseña());
+            sentencia.setString(5, usuario.getEmail());
+            sentencia.setDate(6,  new java.sql.Date(usuario.getJoined().getTime()));
+            sentencia.setDate(7,  new java.sql.Date(usuario.getModificado().getTime()));
+            sentencia.setBoolean(8, usuario.isActivo());
+            sentencia.setString(9, usuario.getAvatar());
+            sentencia.setDate(10, new java.sql.Date(usuario.getFecha_nacimiento().getTime()));
+            sentencia.setString(11, usuario.getTelefono());
+            sentencia.setTimestamp(12, Timestamp.valueOf(usuario.getLast_session()));
+            sentencia.setString(13, usuario.getUser_type().name());
+            sentencia.setInt(14, usuario.getId_tipo_usuario());
 
             sentencia.execute();
 
@@ -142,6 +177,7 @@ public class CRUD_Usuario {
             try {
                 PreparedStatement sentencia = connection.prepareStatement(
                         "UPDATE usuario SET " +
+                                "cedula = ? , " +
                                 "contraseña = ? , " +
                                 "email = ? , " +
                                 "nombre = ? , " +
@@ -149,22 +185,24 @@ public class CRUD_Usuario {
                                 "modificado = ? , " +
                                 "avatar= ? , " +
                                 "fecha_nacimiento= ?, " +
+                                "telefono = ?, " +
                                 "last_session= ?, " +
                                 "id_tipo_usuario= ?, " +
                                 "user_type= ? " +
                                 "WHERE id_usuario = ?");
-                sentencia.setString(1, usuarioActualizado.getContraseña());
-                sentencia.setString(2, usuarioActualizado.getEmail());
-                sentencia.setString(3, usuarioActualizado.getNombre());
-                sentencia.setString(4, usuarioActualizado.getApellido());
-                sentencia.setDate(5, modificadoSql);
-                sentencia.setString(6, usuarioActualizado.getAvatar());
-                sentencia.setDate(7, new java.sql.Date(usuarioActualizado.getFecha_nacimiento().getTime()));
-                sentencia.setTimestamp(8, Timestamp.valueOf(usuarioActualizado.getLast_session()));
-                System.out.println(usuarioActualizado.getUser_type().toString());
-                sentencia.setInt(9, usuarioActualizado.getId_tipo_usuario());
-                sentencia.setString(10, usuarioActualizado.getUser_type().toString());
-                sentencia.setInt(11, id_usuario);
+                sentencia.setString(1, usuarioActualizado.getCedula());
+                sentencia.setString(2, usuarioActualizado.getContraseña());
+                sentencia.setString(3, usuarioActualizado.getEmail());
+                sentencia.setString(4, usuarioActualizado.getNombre());
+                sentencia.setString(5, usuarioActualizado.getApellido());
+                sentencia.setDate(6, modificadoSql);
+                sentencia.setString(7, usuarioActualizado.getAvatar());
+                sentencia.setDate(8, new java.sql.Date(usuarioActualizado.getFecha_nacimiento().getTime()));
+                sentencia.setString(9, usuarioActualizado.getTelefono());
+                sentencia.setTimestamp(10, Timestamp.valueOf(usuarioActualizado.getLast_session()));
+                sentencia.setInt(11, usuarioActualizado.getId_tipo_usuario());
+                sentencia.setString(12, usuarioActualizado.getUser_type().toString());
+                sentencia.setInt(13, id_usuario);
 
                 int filasAfectadas = sentencia.executeUpdate();
                 System.out.println(filasAfectadas);
@@ -220,6 +258,12 @@ public class CRUD_Usuario {
             PreparedStatement sentencia = connection.prepareStatement(
                     "TRUNCATE usuario"
             );
+            PreparedStatement sentencia_alter_sequence = connection.prepareStatement(
+                    "ALTER SEQUENCE usuario_id_usuario_seq RESTART;"
+            );
+
+            sentencia.executeUpdate();
+            sentencia_alter_sequence.executeUpdate();
             System.out.println("Borro TODOS LOS USUARIOS exitosamente!!");
         } catch (SQLException e) {
             throw new RuntimeException(e);
