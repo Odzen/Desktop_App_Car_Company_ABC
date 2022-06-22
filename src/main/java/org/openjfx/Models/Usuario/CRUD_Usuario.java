@@ -160,7 +160,7 @@ public class CRUD_Usuario {
             sentencia.setString(9, usuario.getAvatar());
             sentencia.setDate(10, new java.sql.Date(usuario.getFecha_nacimiento().getTime()));
             sentencia.setString(11, usuario.getTelefono());
-            sentencia.setTimestamp(12, Timestamp.valueOf(usuario.getLast_session()));
+            sentencia.setString(12, usuario.getLast_session());
             sentencia.setString(13, usuario.getUser_type().name());
             sentencia.setInt(14, usuario.getId_tipo_usuario());
 
@@ -206,7 +206,7 @@ public class CRUD_Usuario {
                 sentencia.setString(7, usuarioActualizado.getAvatar());
                 sentencia.setDate(8, new java.sql.Date(usuarioActualizado.getFecha_nacimiento().getTime()));
                 sentencia.setString(9, usuarioActualizado.getTelefono());
-                sentencia.setTimestamp(10, Timestamp.valueOf(usuarioActualizado.getLast_session()));
+                sentencia.setString(10, usuarioActualizado.getLast_session());
                 sentencia.setInt(11, usuarioActualizado.getId_tipo_usuario());
                 sentencia.setString(12, usuarioActualizado.getUser_type().toString());
                 sentencia.setInt(13, id_usuario);

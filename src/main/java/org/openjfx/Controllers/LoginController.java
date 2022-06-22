@@ -119,7 +119,7 @@ public class LoginController  {
 
             Date date = new Date();
             DateFormat fechaHora = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
-            usuarioLogin.setLast_session(fechaHora.toString());
+            usuarioLogin.setLast_session(fechaHora.format(date));
 
             usuarioLogin.setCedula(txtUser.getText());
             usuarioLogin.setContraseña(contraseñaCifrada);
