@@ -49,7 +49,7 @@
          </effect></TextField>
       <Button fx:id="btnAgregar" layoutX="469.0" layoutY="356.0" mnemonicParsing="false" onAction="#btnAgregarClick" prefHeight="25.0" prefWidth="87.0" style="-fx-background-color: #c8fcb3#c8fcb3; -fx-background-radius: 50;" text="Confirmar" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="469.0" AnchorPane.rightAnchor="44.0" AnchorPane.topAnchor="356.0">
          <font>
-            <Font size="8.0" />
+            <Font size="10.0" />
          </font>
          <effect>
             <DropShadow />
@@ -81,7 +81,7 @@
             <DropShadow />
          </effect>
          <font>
-            <Font size="8.0" />
+            <Font size="10.0" />
          </font>
       </Button>
       <TextField fx:id="txtApellido" layoutX="44.0" layoutY="222.0" prefHeight="25.0" prefWidth="161.0" promptText="Apellido" style="-fx-background-radius: 8;">
@@ -92,9 +92,9 @@
             <Cursor fx:constant="MOVE" />
          </cursor>
       </TextField>
-      <Label fx:id="validacionRegistroLabel" layoutX="257.0" layoutY="311.0" prefHeight="28.0" prefWidth="87.0" textAlignment="CENTER">
+      <Label fx:id="validacionRegistroLabel" layoutX="200.0" layoutY="300.0"  textAlignment="LEFT">
          <font>
-            <Font size="24.0" />
+            <Font size="10.0" />
          </font>
       </Label>
       <ImageView fitHeight="111.0" fitWidth="154.0" layoutX="245.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
@@ -102,6 +102,6 @@
             <Image url="@recursos/avatar.png" />
          </image>
       </ImageView>
-      <Label fx:id="lblMensajeContra" layoutX="429.0" layoutY="284.0" />
+      <Label fx:id="lblMensajeContra" layoutX="277.0" layoutY="291.0" textAlignment="CENTER" textFill="RED" />
    </children>
 </AnchorPane>
