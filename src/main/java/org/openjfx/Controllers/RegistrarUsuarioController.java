@@ -7,6 +7,12 @@ package org.openjfx.Controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import animatefx.animation.FadeIn;
@@ -16,6 +22,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import org.openjfx.EmpresaAutosABC;
+import org.openjfx.Models.Usuario.CRUD_Usuario;
+import org.openjfx.Models.Usuario.Usuario;
+import org.openjfx.Models.Usuario.Utils.Hash;
 import org.openjfx.Models.Usuario.Utils.Validaciones;
 
 import javax.swing.*;
@@ -164,7 +173,6 @@ public class RegistrarUsuarioController implements Initializable {
             txtPasswordConfirm.setStyle(estiloMensajeError);
             new FadeIn(txtPasswordConfirm).play();
         }
-
         // Validacion contraseñas iguales
         if (!txtPasswordConfirm.getText().equals(txtPassword.getText()))
         {
@@ -268,6 +276,41 @@ public class RegistrarUsuarioController implements Initializable {
         txtNombre.setStyle(estiloMensajeExito);
         txtPassword.setStyle(estiloMensajeExito);
         new Tada(validacionRegistroLabel).play();
+    }
+
+    private void guardarUsuario() {
+        Usuario usuarioModelo = new Usuario();
+        CRUD_Usuario usuarioSql = new CRUD_Usuario();
+
+        String contraseña = txtPassword.getText();
+        String contraseñaCifrada = Hash.md5(contraseña);
+
+        usuarioModelo.setNombre(txtNombre.getText());
+        usuarioModelo.setApellido(txtApellido.getText());
+        usuarioModelo.setCedula(txtDocumento.getText());
+        usuarioModelo.setContraseña(contraseñaCifrada);
+        usuarioModelo.setEmail(txtMail.getText());
+        //LocalDate localDateNacimiento = dtpNacimiento.getValue();
+        //Instant instant = Instant.from(localDateNacimiento.atStartOfDay(ZoneId.systemDefault()));
+        //Date dateNacimiento = Date.from(instant);
+        try {
+            Date fechaNacimientoFormat = new SimpleDateFormat("dd/MM/yyyy").parse(dtpNacimiento.getValue().toString());
+            usuarioModelo.setFecha_nacimiento(fechaNacimientoFormat);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Error guardando la fecha de nacimiento");
+            System.err.println(e);
+        }
+        usuarioModelo.setTelefono(txtTelefono.getText());
+
+        int idTipoUsuario = 0;
+        if (cargo.getText().equals("Administrador")) {
+            idTipoUsuario = 1;
+        } else if (cargo.getText().equals("Gerente")) {
+            idTipoUsuario = 2;
+        }
+        usuarioModelo.setId_tipo_usuario(idTipoUsuario);
+
+
     }
 
     @Override
