@@ -115,15 +115,22 @@ public class LoginController  {
                 usuarioLogin.setCedula(txtUser.getText());
                 usuarioLogin.setContraseña(contraseñaCifrada);
 
-                if(usuarioSql.login(usuarioLogin)) {
-                    invalidoUser.setText("Ingreso éxitoso!");
-                    invalidoUser.setStyle(mensajeExito);
-                    txtUser.setStyle(estiloMensajeExito);
-                    txtContraseña.setStyle(estiloMensajeExito);
-                    new animatefx.animation.Tada(invalidoUser).play();
-                    this.btnLogin_MouseClicked();
+                if (!usuarioLogin.getCedula().equals(contraseña)) {
+                    if(usuarioSql.login(usuarioLogin)) {
+                        invalidoUser.setText("Ingreso éxitoso!");
+                        invalidoUser.setStyle(mensajeExito);
+                        txtUser.setStyle(estiloMensajeExito);
+                        txtContraseña.setStyle(estiloMensajeExito);
+                        new animatefx.animation.Tada(invalidoUser).play();
+                        this.btnLogin_MouseClicked();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Datos Incorrectos!");
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Datos Incorrectos!");
+                    invalidoUser.setText("Cedula y Contraseña no pueden ser iguales!");
+                    invalidoUser.setStyle(mensajeError);
+                    txtUser.setStyle(estiloMensajeError);
+                    new animatefx.animation.FadeIn(txtUser).play();
                 }
 
             }
