@@ -36,14 +36,14 @@ public class LoginController  {
     String mensajeError = String.format("-fx-text-fill: RED;");
     String estiloMensajeError = String.format("-fx-border-color: RED; -fx-border-width: 2; -fx-border-radius: 5;");
 
-    @FXML
-    private Button btnLogin;
 
     @FXML
     private Button btnSalir;
 
     @FXML
     private Label invalidoUser;
+    @FXML
+    private Label validoUser;
 
     @FXML
     private PasswordField txtContraseña;
@@ -51,91 +51,99 @@ public class LoginController  {
     @FXML
     private TextField txtUser;
     
-        // Para salir de la aplicación
+    // Para salir de la aplicación
     @FXML
     protected void btnSalirClick() {
         Stage stage = (Stage) btnSalir.getScene().getWindow();
         stage.close();
      }
 
-    //Para validar los campos de usuario y contraseña
+    //Para validar los campos de usuario(cédula) y contraseña
     @FXML
     void btnLoginClick() throws IOException{
-    
-        // Cuando los campos están en blanco
-        if(txtUser.getText().isEmpty() || txtContraseña.getText().isEmpty()){
-                        invalidoUser.setStyle(mensajeError);
-                        
+        // Cuando ambos campos están vacíos
+        if(txtUser.getText().isEmpty() || txtContraseña.getText().isEmpty()) {
+            invalidoUser.setStyle(mensajeError);
             if (txtUser.getText().isEmpty() && txtContraseña.getText().isEmpty()) {
                 invalidoUser.setText("Se requiere el usuario y la contraseña!");
                 txtUser.setStyle(mensaje);
                 txtContraseña.setStyle(mensajeError);
-                
-             new animatefx.animation.Shake(txtUser).play();
-             new animatefx.animation.Shake(txtContraseña).play();
-            
-
-        }
-            else // Cuando el usuario esta en blanco
-                if (txtUser.getText().isEmpty()) {
+                new animatefx.animation.Shake(txtUser).play();
+                new animatefx.animation.Shake(txtContraseña).play();
+            }
+            // Cuando solo el usuario esta vacío
+            else if (txtUser.getText().isEmpty()) {
                     txtUser.setStyle(mensaje);
-                    invalidoUser.setText("Se requiere el usuario!");
+                    invalidoUser.setText("Se requiere el usuario (cédula)!");
                     txtContraseña.setStyle(estiloMensajeExito);
                     new animatefx.animation.Shake(txtUser).play();
-                    
-                } else // Cuando la contraseña queda en blanco
-                    if (txtContraseña.getText().isEmpty()) {
-                        txtContraseña.setStyle(estiloMensajeError);
-                        invalidoUser.setText("Se requiere la contraseña!");
-                        txtUser.setStyle(estiloMensajeExito);
-                        new animatefx.animation.Shake(txtContraseña).play();
-                    }
-            
-    } else // Se comprueba la longitud de la contraseña
-            if (txtContraseña.getText().length() < 8) {
-                invalidoUser.setText("Recuerda que la contraseña es de almenos 8 caracteres!");
+            }
+            // Cuando solo la contraseña esta vacía
+            else
+                if (txtContraseña.getText().isEmpty()) {
+                    txtContraseña.setStyle(estiloMensajeError);
+                    invalidoUser.setText("Se requiere la contraseña!");
+                    txtUser.setStyle(estiloMensajeExito);
+                    new animatefx.animation.Shake(txtContraseña).play();
+                }
+        }
+        // Se comprueba la longitud de la contraseña
+        else if (txtContraseña.getText().length() < 8) {
+                invalidoUser.setText("Al menos 8 caracteres!");
                 invalidoUser.setStyle(mensajeError);
                 txtContraseña.setStyle(estiloMensajeError);
                 new animatefx.animation.FadeIn(txtContraseña).play();
-                
-    } else // Se comprueba la longitud del usuario
-            if (txtUser.getText().length() < 8) {
-                invalidoUser.setText("Al menos 8 caracteres!");
+        }
+        // Se comprueba la longitud de la cedula
+        else if (txtUser.getText().length() < 10) {
+                invalidoUser.setText("Al menos 10 caracteres!");
                 invalidoUser.setStyle(mensajeError);
                 txtUser.setStyle(estiloMensajeError);
                 new animatefx.animation.FadeIn(txtUser).play();
-            }        
-            // Mensaje si el ingreso es correcto
-            else {
-                CRUD_Usuario usuarioSql = new CRUD_Usuario();
-                Usuario usuarioLogin = new Usuario();
-                String contraseña = txtContraseña.getText();
-                String contraseñaCifrada = Hash.md5(contraseña);
+        }
+        // Se comprueba que ambos campos no sean iguales
+        else if (txtUser.getText().equals(txtContraseña.getText())) {
+            invalidoUser.setText("Cedula y Contraseña no pueden ser iguales!");
+            invalidoUser.setStyle(mensajeError);
+            txtUser.setStyle(estiloMensajeError);
+            new animatefx.animation.FadeIn(txtUser).play();
+            new animatefx.animation.FadeIn(txtContraseña).play();
+            new animatefx.animation.Shake(txtUser).play();
+            new animatefx.animation.Shake(txtContraseña).play();
+        }
+        // Si el ingreso es correcto
+        else {
+            CRUD_Usuario usuarioSql = new CRUD_Usuario();
+            Usuario usuarioLogin = new Usuario();
+            String contraseña = txtContraseña.getText();
+            String contraseñaCifrada = Hash.md5(contraseña);
 
-                usuarioLogin.setCedula(txtUser.getText());
-                usuarioLogin.setContraseña(contraseñaCifrada);
+            usuarioLogin.setCedula(txtUser.getText());
+            usuarioLogin.setContraseña(contraseñaCifrada);
 
-                if (!usuarioLogin.getCedula().equals(contraseña)) {
-                    if(usuarioSql.login(usuarioLogin)) {
-                        invalidoUser.setText("Ingreso éxitoso!");
-                        invalidoUser.setStyle(mensajeExito);
-                        txtUser.setStyle(estiloMensajeExito);
-                        txtContraseña.setStyle(estiloMensajeExito);
-                        new animatefx.animation.Tada(invalidoUser).play();
-                        this.btnLogin_MouseClicked();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Datos Incorrectos!");
-                    }
-                } else {
-                    invalidoUser.setText("Cedula y Contraseña no pueden ser iguales!");
-                    invalidoUser.setStyle(mensajeError);
-                    txtUser.setStyle(estiloMensajeError);
-                    new animatefx.animation.FadeIn(txtUser).play();
-                }
-
+            // Check si existe un usuario con esa cedula y compara contraseñas
+            if(usuarioSql.login(usuarioLogin)) {
+                validoUser.setText("Ingreso éxitoso!");
+                validoUser.setStyle(mensajeExito);
+                txtUser.setStyle(estiloMensajeExito);
+                txtContraseña.setStyle(estiloMensajeExito);
+                new animatefx.animation.Tada(validoUser).play();
+                this.btnLogin_MouseClicked();
             }
+            else {
+                //JOptionPane.showMessageDialog(null, "Datos Incorrectos!");
+                invalidoUser.setText("Cedula o Contraseña incorrectos!");
+                invalidoUser.setStyle(mensajeError);
+                txtUser.setStyle(estiloMensajeError);
+                new animatefx.animation.FadeIn(txtUser).play();
+                new animatefx.animation.FadeIn(txtContraseña).play();
+                new animatefx.animation.Shake(txtUser).play();
+                new animatefx.animation.Shake(txtContraseña).play();
+            }
+        }
     }
 
+    // Cuando el usuario hace click en el boton Login, pasa al menú
     @FXML
     private void btnLogin_MouseClicked() throws IOException {
         EmpresaAutosABC.setRoot("menu");
