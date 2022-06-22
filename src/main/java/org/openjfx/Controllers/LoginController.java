@@ -6,6 +6,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import javafx.scene.control.Label;
@@ -113,6 +116,10 @@ public class LoginController  {
             Usuario usuarioLogin = new Usuario();
             String contraseña = txtContraseña.getText();
             String contraseñaCifrada = Hash.md5(contraseña);
+
+            Date date = new Date();
+            DateFormat fechaHora = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
+            usuarioLogin.setLast_session(fechaHora.toString());
 
             usuarioLogin.setCedula(txtUser.getText());
             usuarioLogin.setContraseña(contraseñaCifrada);

@@ -36,7 +36,7 @@ CREATE TABLE usuario (
      joined date NOT NULL,
      fecha_nacimiento date NOT NULL,
      telefono text,
-     last_session timestamp,
+     last_session text,
      id_tipo_usuario INT,
      user_type varchar(20) NOT NULL,
      PRIMARY KEY (id_usuario),

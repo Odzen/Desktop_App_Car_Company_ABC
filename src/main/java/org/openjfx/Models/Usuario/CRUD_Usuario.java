@@ -45,6 +45,13 @@ public class CRUD_Usuario {
             if (resultado.next()) {
                 if (usuario.getContraseña().equals(resultado.getString(4)))
                 {
+                    PreparedStatement actualizarLastSession = this.connection.prepareStatement(
+                            "UPDATE usuario SET last_session = ? WHERE id_usuario=?"
+                    );
+                    actualizarLastSession.setString(1, usuario.getLast_session());
+                    actualizarLastSession.setInt(2, resultado.getInt(1));
+                    actualizarLastSession.execute();
+
                     usuario.setId_usuario(resultado.getInt(1));
                     usuario.setNombre(resultado.getString(2));
                     usuario.setId_tipo_usuario(resultado.getInt(5));
@@ -117,8 +124,8 @@ public class CRUD_Usuario {
                 usuario.setFecha_nacimiento(fecha_nacimiento);
                 String telefono = resultado.getString("telefono");
                 usuario.setTelefono(telefono);
-                Timestamp last_session = resultado.getTimestamp("last_session");
-                usuario.setLast_session(last_session.toLocalDateTime());
+                String last_session = resultado.getString("last_session");
+                usuario.setLast_session(last_session);
                 int id_tipo_usuario = resultado.getInt("id_tipo_usuario");
                 usuario.setId_tipo_usuario(id_tipo_usuario);
 
