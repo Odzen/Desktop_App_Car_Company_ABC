@@ -15,27 +15,21 @@ import org.openjfx.Models.Usuario.Usuario;
 import org.openjfx.Models.Usuario.Utils.Hash;
 
 import javax.print.DocFlavor.URL;
-import javax.swing.*;
-
 
 /**
  * FXML Controller class
  *
- * @author mavel
+ * @author Mavel Sterling
+ * @author Juan Velasquez
  */
 public class LoginController  {
 
-        
-    private Stage stage;  
-        
-        protected
-    String mensajeExito = String.format("-fx-text-fill: GREEN;");
-    String estiloMensajeExito = String.format("-fx-border-color: #A9A9A9; -fx-border-width: 2; -fx-border-radius: 5;");
-
-    String mensaje = String.format("-fx-text-fill: black;");
-    String mensajeError = String.format("-fx-text-fill: RED;");
-    String estiloMensajeError = String.format("-fx-border-color: RED; -fx-border-width: 2; -fx-border-radius: 5;");
-
+    private Stage stage;
+    protected String mensajeExito = String.format("-fx-text-fill: GREEN;");
+    protected String estiloMensajeExito = String.format("-fx-border-color: #A9A9A9; -fx-border-width: 2; -fx-border-radius: 5;");
+    protected String mensaje = String.format("-fx-text-fill: black;");
+    protected String mensajeError = String.format("-fx-text-fill: RED;");
+    protected String estiloMensajeError = String.format("-fx-border-color: RED; -fx-border-width: 2; -fx-border-radius: 5;");
 
     @FXML
     private Button btnSalir;
@@ -89,21 +83,23 @@ public class LoginController  {
         }
         // Se comprueba la longitud de la contraseña
         else if (txtContraseña.getText().length() < 8) {
-                invalidoUser.setText("Al menos 8 caracteres!");
-                invalidoUser.setStyle(mensajeError);
-                txtContraseña.setStyle(estiloMensajeError);
-                new animatefx.animation.FadeIn(txtContraseña).play();
+            invalidoUser.setText("Al menos 8 caracteres!");
+            invalidoUser.setStyle(mensajeError);
+            txtContraseña.setStyle(estiloMensajeError);
+            new animatefx.animation.FadeIn(txtContraseña).play();
+            new animatefx.animation.Shake(txtContraseña).play();
         }
         // Se comprueba la longitud de la cedula
         else if (txtUser.getText().length() < 10) {
-                invalidoUser.setText("Al menos 10 caracteres!");
-                invalidoUser.setStyle(mensajeError);
-                txtUser.setStyle(estiloMensajeError);
-                new animatefx.animation.FadeIn(txtUser).play();
+            invalidoUser.setText("Al menos 10 caracteres!");
+            invalidoUser.setStyle(mensajeError);
+            txtUser.setStyle(estiloMensajeError);
+            new animatefx.animation.FadeIn(txtUser).play();
+            new animatefx.animation.Shake(txtUser).play();
         }
         // Se comprueba que ambos campos no sean iguales
         else if (txtUser.getText().equals(txtContraseña.getText())) {
-            invalidoUser.setText("Cedula y Contraseña no pueden ser iguales!");
+            invalidoUser.setText("Cédula y Contraseña no pueden ser iguales!");
             invalidoUser.setStyle(mensajeError);
             txtUser.setStyle(estiloMensajeError);
             new animatefx.animation.FadeIn(txtUser).play();
@@ -148,10 +144,8 @@ public class LoginController  {
     private void btnLogin_MouseClicked() throws IOException {
         EmpresaAutosABC.setRoot("menu");
     }
-
      @FXML
     public void initialize (URL url, ResourceBundle rb){
         //TODO
     }
-
 }
