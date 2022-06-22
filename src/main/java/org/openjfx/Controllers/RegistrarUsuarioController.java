@@ -7,11 +7,13 @@ package org.openjfx.Controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -277,7 +279,7 @@ public class RegistrarUsuarioController implements Initializable {
         new Tada(validacionRegistroLabel).play();
     }
 
-    private void guardarUsuario() {
+    public void guardarUsuario() {
         try {
             Usuario usuarioModelo = new Usuario();
             CRUD_Usuario usuarioSql = new CRUD_Usuario();
@@ -290,10 +292,10 @@ public class RegistrarUsuarioController implements Initializable {
             usuarioModelo.setCedula(txtDocumento.getText());
             usuarioModelo.setContraseña(contraseñaCifrada);
             usuarioModelo.setEmail(txtMail.getText());
-            //LocalDate localDateNacimiento = dtpNacimiento.getValue();
-            //Instant instant = Instant.from(localDateNacimiento.atStartOfDay(ZoneId.systemDefault()));
-            //Date dateNacimiento = Date.from(instant);
-            Date fechaNacimientoFormat = new SimpleDateFormat("dd/MM/yyyy").parse(dtpNacimiento.getValue().toString());
+
+            DateTimeFormatter fechaHoraFormato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String stringDataFormateada = dtpNacimiento.getValue().format(fechaHoraFormato);
+            Date fechaNacimientoFormat = new SimpleDateFormat("dd/MM/yyyy").parse(stringDataFormateada);
             usuarioModelo.setFecha_nacimiento(fechaNacimientoFormat);
             usuarioModelo.setTelefono(txtTelefono.getText());
 
@@ -309,10 +311,9 @@ public class RegistrarUsuarioController implements Initializable {
             this.validadoLabelSet();
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null,"Error registrando el usuario");
             System.err.println(e);
+            JOptionPane.showMessageDialog(null,"Error registrando el usuario");
         }
-
     }
 
     @Override
