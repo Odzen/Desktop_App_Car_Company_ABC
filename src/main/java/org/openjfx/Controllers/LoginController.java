@@ -6,6 +6,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import javafx.scene.control.Label;
@@ -23,8 +26,6 @@ import javax.print.DocFlavor.URL;
  * @author Juan Velasquez
  */
 public class LoginController  {
-
-    private Stage stage;
     protected String mensajeExito = String.format("-fx-text-fill: GREEN;");
     protected String estiloMensajeExito = String.format("-fx-border-color: #A9A9A9; -fx-border-width: 2; -fx-border-radius: 5;");
     protected String mensaje = String.format("-fx-text-fill: black;");
@@ -54,7 +55,7 @@ public class LoginController  {
 
     //Para validar los campos de usuario(cédula) y contraseña
     @FXML
-    void btnLoginClick() throws IOException{
+    protected void btnLoginClick() throws IOException{
         // Cuando ambos campos están vacíos
         if(txtUser.getText().isEmpty() || txtContraseña.getText().isEmpty()) {
             invalidoUser.setStyle(mensajeError);
@@ -114,6 +115,10 @@ public class LoginController  {
             String contraseña = txtContraseña.getText();
             String contraseñaCifrada = Hash.md5(contraseña);
 
+            Date date = new Date();
+            DateFormat fechaHora = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
+            usuarioLogin.setLast_session(fechaHora.format(date));
+
             usuarioLogin.setCedula(txtUser.getText());
             usuarioLogin.setContraseña(contraseñaCifrada);
 
@@ -141,7 +146,7 @@ public class LoginController  {
 
     // Cuando el usuario hace click en el boton Login, pasa al menú
     @FXML
-    private void btnLogin_MouseClicked() throws IOException {
+    protected void btnLogin_MouseClicked() throws IOException {
         EmpresaAutosABC.setRoot("menu");
     }
      @FXML

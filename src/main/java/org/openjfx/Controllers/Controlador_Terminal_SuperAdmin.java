@@ -83,7 +83,6 @@ public class Controlador_Terminal_SuperAdmin {
             usuario.setCedula(cedula);
 
             System.out.println("Ingrese Nombre");
-            scanner.nextLine();
             String nombre = scanner.nextLine();
             usuario.setNombre(nombre);
 

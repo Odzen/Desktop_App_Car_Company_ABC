@@ -19,9 +19,8 @@ public class Usuario {
     private boolean activo;
     private Date joined;
     private Date fecha_nacimiento;
-
     private String telefono;
-    private LocalDateTime last_session;
+    private String last_session;
     private Rol user_type;
     private int id_tipo_usuario;
 
@@ -40,7 +39,7 @@ public class Usuario {
         this.telefono = "";
         this.activo = true;
         this.fecha_nacimiento = null;
-        this.last_session = LocalDateTime.now();
+        this.last_session = "";
         this.id_tipo_usuario = 0;
     }
 
@@ -146,11 +145,11 @@ public class Usuario {
         this.fecha_nacimiento = fecha_nacimiento;
     }
 
-    public LocalDateTime getLast_session() {
+    public String getLast_session() {
         return last_session;
     }
 
-    public void setLast_session(LocalDateTime last_session) {
+    public void setLast_session(String last_session) {
         this.last_session = last_session;
     }
 

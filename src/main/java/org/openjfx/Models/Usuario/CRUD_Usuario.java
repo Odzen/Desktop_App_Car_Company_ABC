@@ -45,6 +45,13 @@ public class CRUD_Usuario {
             if (resultado.next()) {
                 if (usuario.getContraseña().equals(resultado.getString(4)))
                 {
+                    PreparedStatement actualizarLastSession = this.connection.prepareStatement(
+                            "UPDATE usuario SET last_session = ? WHERE id_usuario=?"
+                    );
+                    actualizarLastSession.setString(1, usuario.getLast_session());
+                    actualizarLastSession.setInt(2, resultado.getInt(1));
+                    actualizarLastSession.execute();
+
                     usuario.setId_usuario(resultado.getInt(1));
                     usuario.setNombre(resultado.getString(2));
                     usuario.setId_tipo_usuario(resultado.getInt(5));
@@ -117,8 +124,8 @@ public class CRUD_Usuario {
                 usuario.setFecha_nacimiento(fecha_nacimiento);
                 String telefono = resultado.getString("telefono");
                 usuario.setTelefono(telefono);
-                Timestamp last_session = resultado.getTimestamp("last_session");
-                usuario.setLast_session(last_session.toLocalDateTime());
+                String last_session = resultado.getString("last_session");
+                usuario.setLast_session(last_session);
                 int id_tipo_usuario = resultado.getInt("id_tipo_usuario");
                 usuario.setId_tipo_usuario(id_tipo_usuario);
 
@@ -153,13 +160,14 @@ public class CRUD_Usuario {
             sentencia.setString(9, usuario.getAvatar());
             sentencia.setDate(10, new java.sql.Date(usuario.getFecha_nacimiento().getTime()));
             sentencia.setString(11, usuario.getTelefono());
-            sentencia.setTimestamp(12, Timestamp.valueOf(usuario.getLast_session()));
+            sentencia.setString(12, usuario.getLast_session());
             sentencia.setString(13, usuario.getUser_type().name());
             sentencia.setInt(14, usuario.getId_tipo_usuario());
 
             sentencia.execute();
 
             System.out.println("Operación Exitosa: Creación de Usuario");
+
 
         } catch (SQLException e) {
             System.out.printf("Error al crear el Usuario", e);
@@ -199,7 +207,7 @@ public class CRUD_Usuario {
                 sentencia.setString(7, usuarioActualizado.getAvatar());
                 sentencia.setDate(8, new java.sql.Date(usuarioActualizado.getFecha_nacimiento().getTime()));
                 sentencia.setString(9, usuarioActualizado.getTelefono());
-                sentencia.setTimestamp(10, Timestamp.valueOf(usuarioActualizado.getLast_session()));
+                sentencia.setString(10, usuarioActualizado.getLast_session());
                 sentencia.setInt(11, usuarioActualizado.getId_tipo_usuario());
                 sentencia.setString(12, usuarioActualizado.getUser_type().toString());
                 sentencia.setInt(13, id_usuario);
