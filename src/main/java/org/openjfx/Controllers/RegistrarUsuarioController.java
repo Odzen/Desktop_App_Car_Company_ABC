@@ -67,7 +67,7 @@ public class RegistrarUsuarioController implements Initializable {
         txtTelefono.setStyle(null);
         dtpNacimiento.setStyle(null);
         cargo.setStyle(null);
-        System.out.println("Presionó Confirmar");
+        //System.out.println("Presionó Confirmar");
         // Cuando los campos están en blanco
         if(txtNombre.getText().isEmpty() || txtPasswordConfirm.getText().isEmpty() ||
             txtApellido.getText().isEmpty() || txtPassword.getText().isEmpty() ||
@@ -147,7 +147,7 @@ public class RegistrarUsuarioController implements Initializable {
         {
             validado = false;
             String textoError = "Formato de contraseña incorrecto!";
-            System.out.println(textoError);
+            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtPassword.setStyle(estiloMensajeError);
@@ -158,18 +158,32 @@ public class RegistrarUsuarioController implements Initializable {
         {
             validado = false;
             String textoError = "Formato de confirmación de contraseña incorrecto!";
-            System.out.println(textoError);
+            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtPasswordConfirm.setStyle(estiloMensajeError);
             new FadeIn(txtPasswordConfirm).play();
+        }
+
+        // Validacion contraseñas iguales
+        if (!txtPasswordConfirm.getText().equals(txtPassword.getText()))
+        {
+            validado = false;
+            String textoError = "Contraseñas no coinciden!";
+            //System.out.println(textoError);
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtPasswordConfirm.setStyle(estiloMensajeError);
+            new FadeIn(txtPasswordConfirm).play();
+            txtPassword.setStyle(estiloMensajeError);
+            new FadeIn(txtPassword).play();
         }
         // Validacion de telefono
         if (!Validaciones.validarTelefono(txtTelefono.getText()))
         {
             validado = false;
             String textoError = "Formato de telefono incorrecto!";
-            System.out.println(textoError);
+            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtTelefono.setStyle(estiloMensajeError);
@@ -180,7 +194,7 @@ public class RegistrarUsuarioController implements Initializable {
         {
             validado = false;
             String textoError = "El usuario debe tener de 4 a 20 caracteres!";
-            System.out.println(textoError);
+            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtNombre.setStyle(estiloMensajeError);
@@ -191,7 +205,7 @@ public class RegistrarUsuarioController implements Initializable {
         {
             validado = false;
             String textoError = "El apellido debe tener de 4 a 20 caracteres!";
-            System.out.println(textoError);
+            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtApellido.setStyle(estiloMensajeError);
@@ -202,7 +216,7 @@ public class RegistrarUsuarioController implements Initializable {
         {
             validado = false;
             String textoError = "La cedula debe de tener al menos 10 caracteres!";
-            System.out.println(textoError);
+            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumento.setStyle(estiloMensajeError);
@@ -213,7 +227,7 @@ public class RegistrarUsuarioController implements Initializable {
         {
             validado = false;
             String textoError = "Formato de email incorrecto!";
-            System.out.println(textoError);
+            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtMail.setStyle(estiloMensajeError);
@@ -224,18 +238,19 @@ public class RegistrarUsuarioController implements Initializable {
         {
             validado = false;
             String textoError = "Formato de fecha incorrecto!";
-            System.out.println(textoError);
+            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             dtpNacimiento.setStyle(estiloMensajeError);
             new FadeIn(dtpNacimiento).play();
         }
         // Validacion Cargo
-        if (cargo.getText().equals("Seleccionar Cargo") || !cargo.getText().equals("Gerente") || !cargo.getText().equals("Administrador") )
+        if (cargo.getText().equals("Seleccionar Cargo") || (!cargo.getText().equals("Gerente") && !cargo.getText().equals("Administrador")) )
         {
+            //System.out.println(cargo.getText());
             validado = false;
             String textoError = "Formato de cargo incorrecto!";
-            System.out.println(textoError);
+            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             cargo.setStyle(estiloMensajeError);
