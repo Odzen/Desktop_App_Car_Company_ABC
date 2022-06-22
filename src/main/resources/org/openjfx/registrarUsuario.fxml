@@ -47,7 +47,7 @@
          <effect>
             <Blend />
          </effect></TextField>
-      <Button fx:id="btnAgregar" layoutX="469.0" layoutY="356.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="87.0" style="-fx-background-color: #c8fcb3#c8fcb3; -fx-background-radius: 50;" text="Confirmar" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="469.0" AnchorPane.rightAnchor="44.0" AnchorPane.topAnchor="356.0">
+      <Button fx:id="btnAgregar" layoutX="469.0" layoutY="356.0" mnemonicParsing="false" onAction="#btnAgregarClick" prefHeight="25.0" prefWidth="87.0" style="-fx-background-color: #c8fcb3#c8fcb3; -fx-background-radius: 50;" text="Confirmar" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="469.0" AnchorPane.rightAnchor="44.0" AnchorPane.topAnchor="356.0">
          <font>
             <Font size="14.0" />
          </font>
@@ -76,7 +76,7 @@
             <ColorAdjust />
          </effect>
       </SplitMenuButton>
-      <Button fx:id="btnCancelar" layoutX="19.0" layoutY="356.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="79.0" style="-fx-background-color: #b8b9ba#b8b9ba #b8b9ba#b8b9ba; -fx-background-radius: 8;" text="Cancelar" textAlignment="CENTER">
+      <Button fx:id="btnCancelar" layoutX="19.0" layoutY="356.0" mnemonicParsing="false" onAction="#btnCancelarClick" prefHeight="17.0" prefWidth="79.0" style="-fx-background-color: #b8b9ba#b8b9ba #b8b9ba#b8b9ba; -fx-background-radius: 8;" text="Cancelar" textAlignment="CENTER">
          <effect>
             <DropShadow />
          </effect>

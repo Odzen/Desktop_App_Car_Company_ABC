@@ -13,6 +13,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import org.openjfx.EmpresaAutosABC;
 
+import javax.swing.*;
+
 /**
  * FXML Controller class
  *
@@ -20,18 +22,12 @@ import org.openjfx.EmpresaAutosABC;
  */
 public class RegistrarUsuarioController implements Initializable {
     
-    String mensajeExito = String.format("-fx-text-fill: GREEN;");
-    String estiloMensajeExito = String.format("-fx-border-color: #A9A9A9; -fx-border-width: 2; -fx-border-radius: 5;");
+    private String mensajeExito = String.format("-fx-text-fill: GREEN;");
+    private String estiloMensajeExito = String.format("-fx-border-color: #A9A9A9; -fx-border-width: 2; -fx-border-radius: 5;");
 
-    String mensaje = String.format("-fx-text-fill: black;");
-    String mensajeError = String.format("-fx-text-fill: RED;");
-    String estiloMensajeError = String.format("-fx-border-color: RED; -fx-border-width: 2; -fx-border-radius: 5;");
-
-    
-    @FXML
-    private Button btnAgregar;
-    @FXML
-    private Button btnCancelar;
+    private String mensaje = String.format("-fx-text-fill: black;");
+    private String mensajeError = String.format("-fx-text-fill: RED;");
+    private String estiloMensajeError = String.format("-fx-border-color: RED; -fx-border-width: 2; -fx-border-radius: 5;");
     @FXML
     private TextField txtNombreUsuario;
     @FXML
@@ -55,72 +51,82 @@ public class RegistrarUsuarioController implements Initializable {
     MenuItem secondItem;
     @FXML
     private Label lbinvalidoRegistro;
-    
-     
+
     //Para validar los campos de usuario y contraseña
     @FXML
-    void btnAgregarClick() throws IOException{
+    protected void btnAgregarClick() throws IOException{
     
         // Cuando los campos están en blanco
         if(txtNombreUsuario.getText().isEmpty() || txtNombre.getText().isEmpty()||
-               txtApellido.getText().isEmpty() || txtPassword1.getText().isEmpty() ||
-                txtMail.getText().isEmpty()||  txtMail.getText().isEmpty() ||
-                txtDocumento.getText().isEmpty() || txtTel.getText().isEmpty()){
-            
-            
-                        lbinvalidoRegistro.setStyle(mensajeError);
+           txtApellido.getText().isEmpty() || txtPassword1.getText().isEmpty() ||
+            txtMail.getText().isEmpty()||  txtMail.getText().isEmpty() ||
+            txtDocumento.getText().isEmpty() || txtTel.getText().isEmpty())
+        {
+                lbinvalidoRegistro.setStyle(mensajeError);
                         
-            if(txtNombreUsuario.getText().isEmpty() && txtNombre.getText().isEmpty() &&
-               txtApellido.getText().isEmpty() && txtPassword1.getText().isEmpty() &&
-                txtMail.getText().isEmpty() && txtMail.getText().isEmpty() &&
-                txtDocumento.getText().isEmpty() && txtTel.getText().isEmpty()){
-                lbinvalidoRegistro.setText("Se requieren todos los campos!");
-                
-                txtNombreUsuario.setStyle(mensajeError);
-                txtNombre.setStyle(mensajeError);
-                txtApellido.setStyle(mensajeError);
-                txtMail.setStyle(mensajeError);
-                txtTel.setStyle(mensajeError);
-                txtDocumento.setStyle(mensajeError);
-                txtPassword1.setStyle(mensajeError);
-            //new animatefx.animation.Shake(txtNombreUsuario).play();
-            //new animatefx.animation.Shake(txtPassword1).play();
+                if(txtNombreUsuario.getText().isEmpty() && txtNombre.getText().isEmpty() &&
+                   txtApellido.getText().isEmpty() && txtPassword1.getText().isEmpty() &&
+                    txtMail.getText().isEmpty() && txtMail.getText().isEmpty() &&
+                    txtDocumento.getText().isEmpty() && txtTel.getText().isEmpty())
+                {
+                        lbinvalidoRegistro.setText("Se requieren todos los campos!");
+                        txtNombreUsuario.setStyle(mensajeError);
+                        txtNombre.setStyle(mensajeError);
+                        txtApellido.setStyle(mensajeError);
+                        txtMail.setStyle(mensajeError);
+                        txtTel.setStyle(mensajeError);
+                        txtDocumento.setStyle(mensajeError);
+                        txtPassword1.setStyle(mensajeError);
+                        new animatefx.animation.Shake(txtNombreUsuario).play();
+                        new animatefx.animation.Shake(txtPassword1).play();
+                }
         }
-           } else // Se comprueba la longitud de la contraseña
-            if (txtPassword1.getText().length() < 5) {
-                lbinvalidoRegistro.setText("La contraseña tiene es menos  de 5 caracteres!");
-                lbinvalidoRegistro.setStyle(mensajeError);
-                txtPassword1.setStyle(estiloMensajeError);
-                //new animatefx.animation.FadeIn(txtPassword1).play();
-                
-    } else // Se comprueba la longitud del usuario
-            if (txtNombreUsuario.getText().length() < 6) {
-                lbinvalidoRegistro.setText("El usuario tiene es menos de 6 caracteres!");
-                lbinvalidoRegistro.setStyle(mensajeError);
-                txtNombreUsuario.setStyle(estiloMensajeError);
-                //new animatefx.animation.FadeIn(txtNombreUsuario).play();
-            }    
-             else // Se comprueba la longitud del mail
-            if (txtMail.getText().length() < 12) {
-                lbinvalidoRegistro.setText("El correo tiene es menos de 12 caracteres!");
-                lbinvalidoRegistro.setStyle(mensajeError);
-                txtMail.setStyle(estiloMensajeError);
-               // new animatefx.animation.FadeIn(txtMail).play();
-            } 
-            // Mensaje si el ingreso es correcto
-            else {
-                lbinvalidoRegistro.setText("Ingreso éxitoso!");
-                lbinvalidoRegistro.setStyle(mensajeExito);
-                txtNombreUsuario.setStyle(estiloMensajeExito);
-                txtPassword1.setStyle(estiloMensajeExito);
-               // new animatefx.animation.Tada(lbinvalidoRegistro).play();
-                 
-               
-            }
+        // Se comprueba la longitud de la contraseña
+        else if (txtPassword1.getText().length() < 5)
+        {
+            lbinvalidoRegistro.setText("La contraseña tiene es menos  de 5 caracteres!");
+            lbinvalidoRegistro.setStyle(mensajeError);
+            txtPassword1.setStyle(estiloMensajeError);
+            new animatefx.animation.FadeIn(txtPassword1).play();
+        }
+        // Se comprueba la longitud del usuario
+        else if (txtNombreUsuario.getText().length() < 6)
+        {
+            lbinvalidoRegistro.setText("El usuario tiene es menos de 6 caracteres!");
+            lbinvalidoRegistro.setStyle(mensajeError);
+            txtNombreUsuario.setStyle(estiloMensajeError);
+            new animatefx.animation.FadeIn(txtNombreUsuario).play();
+        }
+        // Se comprueba la longitud del mail
+        else if (txtMail.getText().length() < 12)
+        {
+            lbinvalidoRegistro.setText("El correo tiene es menos de 12 caracteres!");
+            lbinvalidoRegistro.setStyle(mensajeError);
+            txtMail.setStyle(estiloMensajeError);
+            new animatefx.animation.FadeIn(txtMail).play();
+        }
+        // Mensaje si el ingreso es correcto
+        else
+        {
+            lbinvalidoRegistro.setText("Ingreso éxitoso!");
+            lbinvalidoRegistro.setStyle(mensajeExito);
+            txtNombreUsuario.setStyle(estiloMensajeExito);
+            txtPassword1.setStyle(estiloMensajeExito);
+           new animatefx.animation.Tada(lbinvalidoRegistro).play();
+        }
     }
 
     @FXML
-    private void btnInicio() throws IOException {
+    protected void btnCancelarClick() throws IOException {
+        int input = JOptionPane.showConfirmDialog(null, "¿Está seguro que quiere cancelar el registro?",
+                "Seleccione una opción", JOptionPane.YES_NO_OPTION);
+        if (input == 0) {
+            EmpresaAutosABC.setRoot("menu");
+        }
+    }
+
+    @FXML
+    protected void btnInicio() throws IOException {
         EmpresaAutosABC.setRoot("menu");
     }
     @FXML
