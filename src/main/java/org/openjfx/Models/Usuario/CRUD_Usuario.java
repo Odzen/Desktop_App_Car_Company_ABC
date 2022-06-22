@@ -168,6 +168,7 @@ public class CRUD_Usuario {
 
             System.out.println("Operación Exitosa: Creación de Usuario");
 
+
         } catch (SQLException e) {
             System.out.printf("Error al crear el Usuario", e);
             throw new RuntimeException(e);

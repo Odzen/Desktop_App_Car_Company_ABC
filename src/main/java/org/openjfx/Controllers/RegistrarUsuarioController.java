@@ -114,17 +114,16 @@ public class RegistrarUsuarioController implements Initializable {
                 validacionRegistroLabel.setText("Algunos campos están vacíos!");
                 boolean validado = this.validaciones();
                 if (validado) {
-                    this.validadoLabelSet();
+                    this.guardarUsuario();
                 }
             }
         } else {
             boolean validado = this.validaciones();
             if (validado) {
-                this.validadoLabelSet();
+                this.guardarUsuario();
             }
         }
     }
-
     @FXML
     protected void btnCancelarClick() throws IOException {
         int input = JOptionPane.showConfirmDialog(null, "¿Está seguro que quiere cancelar el registro?",
@@ -272,44 +271,47 @@ public class RegistrarUsuarioController implements Initializable {
         validacionRegistroLabel.setText("");
         System.out.println("Pasó Validaciones");
         validacionRegistroLabel.setStyle(mensajeExito);
-        validacionRegistroLabel.setText("Ingreso éxitoso!");
+        validacionRegistroLabel.setText("Registro éxitoso!");
         txtNombre.setStyle(estiloMensajeExito);
         txtPassword.setStyle(estiloMensajeExito);
         new Tada(validacionRegistroLabel).play();
     }
 
     private void guardarUsuario() {
-        Usuario usuarioModelo = new Usuario();
-        CRUD_Usuario usuarioSql = new CRUD_Usuario();
-
-        String contraseña = txtPassword.getText();
-        String contraseñaCifrada = Hash.md5(contraseña);
-
-        usuarioModelo.setNombre(txtNombre.getText());
-        usuarioModelo.setApellido(txtApellido.getText());
-        usuarioModelo.setCedula(txtDocumento.getText());
-        usuarioModelo.setContraseña(contraseñaCifrada);
-        usuarioModelo.setEmail(txtMail.getText());
-        //LocalDate localDateNacimiento = dtpNacimiento.getValue();
-        //Instant instant = Instant.from(localDateNacimiento.atStartOfDay(ZoneId.systemDefault()));
-        //Date dateNacimiento = Date.from(instant);
         try {
+            Usuario usuarioModelo = new Usuario();
+            CRUD_Usuario usuarioSql = new CRUD_Usuario();
+
+            String contraseña = txtPassword.getText();
+            String contraseñaCifrada = Hash.md5(contraseña);
+
+            usuarioModelo.setNombre(txtNombre.getText());
+            usuarioModelo.setApellido(txtApellido.getText());
+            usuarioModelo.setCedula(txtDocumento.getText());
+            usuarioModelo.setContraseña(contraseñaCifrada);
+            usuarioModelo.setEmail(txtMail.getText());
+            //LocalDate localDateNacimiento = dtpNacimiento.getValue();
+            //Instant instant = Instant.from(localDateNacimiento.atStartOfDay(ZoneId.systemDefault()));
+            //Date dateNacimiento = Date.from(instant);
             Date fechaNacimientoFormat = new SimpleDateFormat("dd/MM/yyyy").parse(dtpNacimiento.getValue().toString());
             usuarioModelo.setFecha_nacimiento(fechaNacimientoFormat);
+            usuarioModelo.setTelefono(txtTelefono.getText());
+
+            int idTipoUsuario = 0;
+            if (cargo.getText().equals("Administrador")) {
+                idTipoUsuario = 1;
+            } else if (cargo.getText().equals("Gerente")) {
+                idTipoUsuario = 2;
+            }
+            usuarioModelo.setId_tipo_usuario(idTipoUsuario);
+
+            usuarioSql.crearUsuario(usuarioModelo);
+            this.validadoLabelSet();
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null,"Error guardando la fecha de nacimiento");
+            JOptionPane.showMessageDialog(null,"Error registrando el usuario");
             System.err.println(e);
         }
-        usuarioModelo.setTelefono(txtTelefono.getText());
-
-        int idTipoUsuario = 0;
-        if (cargo.getText().equals("Administrador")) {
-            idTipoUsuario = 1;
-        } else if (cargo.getText().equals("Gerente")) {
-            idTipoUsuario = 2;
-        }
-        usuarioModelo.setId_tipo_usuario(idTipoUsuario);
-
 
     }
 
