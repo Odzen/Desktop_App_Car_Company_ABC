@@ -309,11 +309,25 @@ public class RegistrarUsuarioController implements Initializable {
 
             usuarioSql.crearUsuario(usuarioModelo);
             this.validadoLabelSet();
+            this.limpiar();
 
         } catch (Exception e) {
             System.err.println(e);
             JOptionPane.showMessageDialog(null,"Error registrando el usuario");
         }
+    }
+
+    public void limpiar() {
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtDocumento.setText("");
+        txtPassword.setText("");
+        txtPasswordConfirm.setText("");
+        txtMail.setText("");
+        txtTelefono.setText("");
+        cargo.setText("Seleccionar Cargo");
+        dtpNacimiento.setValue(null);
+
     }
 
     @Override
