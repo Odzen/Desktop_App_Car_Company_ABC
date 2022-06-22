@@ -31,25 +31,25 @@
          <effect>
             <Blend />
          </effect></TextField>
-      <TextField fx:id="txtDocumento" layoutX="44.0" layoutY="259.0" promptText="Documento de identidad" style="-fx-background-radius: 8;">
+      <TextField fx:id="txtDocumento" layoutX="44.0" layoutY="259.0" promptText="Cédula" style="-fx-background-radius: 8;">
          <effect>
             <Blend />
          </effect></TextField>
-      <PasswordField fx:id="txtPassword1" layoutX="415.0" layoutY="222.0" promptText="Contraseña" style="-fx-background-radius: 8;">
+      <PasswordField fx:id="txtPassword" layoutX="415.0" layoutY="222.0" promptText="Contraseña" style="-fx-background-radius: 8;">
          <effect>
             <Blend />
          </effect></PasswordField>
-      <PasswordField fx:id="txtPassword11" layoutX="415.0" layoutY="259.0" promptText="Confirmar contraseña" style="-fx-background-radius: 8;">
+      <PasswordField fx:id="txtPasswordConfirm" layoutX="415.0" layoutY="259.0" promptText="Confirmar contraseña" style="-fx-background-radius: 8;">
          <effect>
             <Blend />
          </effect></PasswordField>
-      <TextField fx:id="txtTel" layoutX="233.0" layoutY="222.0" promptText="Teléfono" style="-fx-background-radius: 8;">
+      <TextField fx:id="txtTelefono" layoutX="233.0" layoutY="222.0" promptText="Teléfono" style="-fx-background-radius: 8;">
          <effect>
             <Blend />
          </effect></TextField>
       <Button fx:id="btnAgregar" layoutX="469.0" layoutY="356.0" mnemonicParsing="false" onAction="#btnAgregarClick" prefHeight="25.0" prefWidth="87.0" style="-fx-background-color: #c8fcb3#c8fcb3; -fx-background-radius: 50;" text="Confirmar" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="469.0" AnchorPane.rightAnchor="44.0" AnchorPane.topAnchor="356.0">
          <font>
-            <Font size="14.0" />
+            <Font size="8.0" />
          </font>
          <effect>
             <DropShadow />
@@ -81,7 +81,7 @@
             <DropShadow />
          </effect>
          <font>
-            <Font size="14.0" />
+            <Font size="8.0" />
          </font>
       </Button>
       <TextField fx:id="txtApellido" layoutX="44.0" layoutY="222.0" prefHeight="25.0" prefWidth="161.0" promptText="Apellido" style="-fx-background-radius: 8;">
@@ -92,7 +92,7 @@
             <Cursor fx:constant="MOVE" />
          </cursor>
       </TextField>
-      <Label fx:id="lbinvalidoRegistro" layoutX="257.0" layoutY="311.0" prefHeight="28.0" prefWidth="87.0" textAlignment="CENTER">
+      <Label fx:id="validacionRegistroLabel" layoutX="257.0" layoutY="311.0" prefHeight="28.0" prefWidth="87.0" textAlignment="CENTER">
          <font>
             <Font size="24.0" />
          </font>

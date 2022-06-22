@@ -8,10 +8,15 @@ package org.openjfx.Controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import animatefx.animation.FadeIn;
+import animatefx.animation.Shake;
+import animatefx.animation.Tada;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import org.openjfx.EmpresaAutosABC;
+import org.openjfx.Models.Usuario.Utils.Validaciones;
 
 import javax.swing.*;
 
@@ -29,18 +34,15 @@ public class RegistrarUsuarioController implements Initializable {
     private String mensajeError = String.format("-fx-text-fill: RED;");
     private String estiloMensajeError = String.format("-fx-border-color: RED; -fx-border-width: 2; -fx-border-radius: 5;");
     @FXML
-    private TextField txtNombreUsuario;
-    @FXML
     private TextField txtNombre, txtApellido;
     @FXML
-    private TextField txtPassword1;
+    private TextField txtPassword, txtPasswordConfirm;
     @FXML
     private TextField txtMail;
     @FXML
     private TextField txtDocumento;
     @FXML
-    private TextField txtTel;
-    
+    private TextField txtTelefono;
     @FXML
     private DatePicker dtpNacimiento;
      @FXML
@@ -50,69 +52,95 @@ public class RegistrarUsuarioController implements Initializable {
     @FXML
     MenuItem secondItem;
     @FXML
-    private Label lbinvalidoRegistro;
+    private Label validacionRegistroLabel;
 
     //Para validar los campos de usuario y contraseña
     @FXML
     protected void btnAgregarClick() throws IOException{
     
         // Cuando los campos están en blanco
-        if(txtNombreUsuario.getText().isEmpty() || txtNombre.getText().isEmpty()||
-           txtApellido.getText().isEmpty() || txtPassword1.getText().isEmpty() ||
-            txtMail.getText().isEmpty()||  txtMail.getText().isEmpty() ||
-            txtDocumento.getText().isEmpty() || txtTel.getText().isEmpty())
+        if(txtNombre.getText().isEmpty() || txtPasswordConfirm.getText().isEmpty() ||
+            txtApellido.getText().isEmpty() || txtPassword.getText().isEmpty() ||
+            txtMail.getText().isEmpty()|| txtDocumento.getText().isEmpty() ||
+            txtTelefono.getText().isEmpty() || dtpNacimiento.getAccessibleText().isEmpty() ||
+            cargo.getText().isEmpty())
         {
-                lbinvalidoRegistro.setStyle(mensajeError);
-                        
-                if(txtNombreUsuario.getText().isEmpty() && txtNombre.getText().isEmpty() &&
-                   txtApellido.getText().isEmpty() && txtPassword1.getText().isEmpty() &&
-                    txtMail.getText().isEmpty() && txtMail.getText().isEmpty() &&
-                    txtDocumento.getText().isEmpty() && txtTel.getText().isEmpty())
+                validacionRegistroLabel.setStyle(mensajeError);
+                if(txtNombre.getText().isEmpty() && txtPasswordConfirm.getText().isEmpty() &&
+                    txtApellido.getText().isEmpty() && txtPassword.getText().isEmpty() &&
+                    txtMail.getText().isEmpty()  && txtDocumento.getText().isEmpty() &&
+                    txtTelefono.getText().isEmpty() && dtpNacimiento.getAccessibleText().isEmpty() &&
+                    cargo.getText().isEmpty())
                 {
-                        lbinvalidoRegistro.setText("Se requieren todos los campos!");
-                        txtNombreUsuario.setStyle(mensajeError);
-                        txtNombre.setStyle(mensajeError);
-                        txtApellido.setStyle(mensajeError);
-                        txtMail.setStyle(mensajeError);
-                        txtTel.setStyle(mensajeError);
-                        txtDocumento.setStyle(mensajeError);
-                        txtPassword1.setStyle(mensajeError);
-                        new animatefx.animation.Shake(txtNombreUsuario).play();
-                        new animatefx.animation.Shake(txtPassword1).play();
+                    validacionRegistroLabel.setText("Se requieren todos los campos!");
+                    txtNombre.setStyle(mensajeError);
+                    txtPasswordConfirm.setStyle(mensajeError);
+                    txtApellido.setStyle(mensajeError);
+                    txtPassword.setStyle(mensajeError);
+                    txtMail.setStyle(mensajeError);
+                    txtDocumento.setStyle(mensajeError);
+                    txtTelefono.setStyle(mensajeError);
+                    dtpNacimiento.setStyle(mensajeError);
+                    cargo.setStyle(mensajeError);
+                    new Shake(txtNombre).play();
+                    new Shake(txtPasswordConfirm).play();
+                    new Shake(txtApellido).play();
+                    new Shake(txtPassword).play();
+                    new Shake(txtMail).play();
+                    new Shake(txtDocumento).play();
+                    new Shake(txtTelefono).play();
+                    new Shake(dtpNacimiento).play();
+                    new Shake(cargo).play();
                 }
         }
-        // Se comprueba la longitud de la contraseña
-        else if (txtPassword1.getText().length() < 5)
+        // Validacion contraseña
+        else if (!Validaciones.validarPassword(txtPassword.getText()))
         {
-            lbinvalidoRegistro.setText("La contraseña tiene es menos  de 5 caracteres!");
-            lbinvalidoRegistro.setStyle(mensajeError);
-            txtPassword1.setStyle(estiloMensajeError);
-            new animatefx.animation.FadeIn(txtPassword1).play();
+            validacionRegistroLabel.setText("Formato de contraseña incorrecto!");
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtPassword.setStyle(estiloMensajeError);
+            new FadeIn(txtPassword).play();
         }
-        // Se comprueba la longitud del usuario
-        else if (txtNombreUsuario.getText().length() < 6)
+        // Validacion confirmación de contraseña
+        else if (!Validaciones.validarPassword(txtPasswordConfirm.getText()))
         {
-            lbinvalidoRegistro.setText("El usuario tiene es menos de 6 caracteres!");
-            lbinvalidoRegistro.setStyle(mensajeError);
-            txtNombreUsuario.setStyle(estiloMensajeError);
-            new animatefx.animation.FadeIn(txtNombreUsuario).play();
+            validacionRegistroLabel.setText("Formato de contraseña incorrecto!");
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtPasswordConfirm.setStyle(estiloMensajeError);
+            new FadeIn(txtPasswordConfirm).play();
         }
-        // Se comprueba la longitud del mail
-        else if (txtMail.getText().length() < 12)
+        // Validacion de telefono
+        else if (!Validaciones.validarTelefono(txtTelefono.getText()))
         {
-            lbinvalidoRegistro.setText("El correo tiene es menos de 12 caracteres!");
-            lbinvalidoRegistro.setStyle(mensajeError);
+            validacionRegistroLabel.setText("Formato de telefono incorrecto!");
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtTelefono.setStyle(estiloMensajeError);
+            new FadeIn(txtTelefono).play();
+        }
+        // Se comprueba la longitud del nombre del usuario
+        else if (txtNombre.getText().length() < 6 ||  txtNombre.getText().length() > 20)
+        {
+            validacionRegistroLabel.setText("El usuario debe tener de 6 a 20 caracteres!");
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtNombre.setStyle(estiloMensajeError);
+            new FadeIn(txtNombre).play();
+        }
+        // Validación Email
+        else if (Validaciones.validarEmail(txtMail.getText()))
+        {
+            validacionRegistroLabel.setText("Formato de email incorrecto!");
+            validacionRegistroLabel.setStyle(mensajeError);
             txtMail.setStyle(estiloMensajeError);
-            new animatefx.animation.FadeIn(txtMail).play();
+            new FadeIn(txtMail).play();
         }
         // Mensaje si el ingreso es correcto
         else
         {
-            lbinvalidoRegistro.setText("Ingreso éxitoso!");
-            lbinvalidoRegistro.setStyle(mensajeExito);
-            txtNombreUsuario.setStyle(estiloMensajeExito);
-            txtPassword1.setStyle(estiloMensajeExito);
-           new animatefx.animation.Tada(lbinvalidoRegistro).play();
+            validacionRegistroLabel.setText("Ingreso éxitoso!");
+            validacionRegistroLabel.setStyle(mensajeExito);
+            txtNombre.setStyle(estiloMensajeExito);
+            txtPassword.setStyle(estiloMensajeExito);
+            new Tada(validacionRegistroLabel).play();
         }
     }
 
@@ -138,7 +166,6 @@ public class RegistrarUsuarioController implements Initializable {
     private void setSecondItem() throws IOException {
         cargo.setText(secondItem.getText());
     }
-
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
