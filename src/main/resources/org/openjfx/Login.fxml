@@ -28,5 +28,6 @@
          </effect>
       </Button>
       <Label fx:id="invalidoUser" layoutX="277.0" layoutY="291.0" textAlignment="CENTER" textFill="RED" />
+      <Label fx:id="validoUser" layoutX="277.0" layoutY="291.0" textAlignment="CENTER" textFill="GREEN" />
    </children>
 </AnchorPane>
