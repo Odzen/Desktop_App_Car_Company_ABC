@@ -15,7 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import org.openjfx.EmpresaAutosABC;
-import org.openjfx.Models.Usuario.CRUD_Usuario;
+import org.openjfx.Models.Usuario.SQL_Usuario;
 import org.openjfx.Models.Usuario.Usuario;
 import org.openjfx.Models.Usuario.Utils.Hash;
 import org.openjfx.Models.Usuario.Utils.Validaciones;
@@ -208,9 +208,9 @@ public class RegistrarUsuarioController implements Initializable {
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumento.setStyle(estiloMensajeError);
             new FadeIn(txtDocumento).play();
-        } else if (!CRUD_Usuario.existeUsuario_Cedula(txtDocumento.getText())) {
+        } else if (!SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText())) {
             // Validacion para saber si el usuario con esa cédula ya existe
-                System.out.println(CRUD_Usuario.existeUsuario_Cedula(txtDocumento.getText()));
+                System.out.println(SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText()));
                 validado = false;
                 String textoError = "Un usuario con ese número de cédula ya existe!";
                 validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
@@ -291,7 +291,7 @@ public class RegistrarUsuarioController implements Initializable {
             }
             usuarioModelo.setId_tipo_usuario(idTipoUsuario);
 
-            CRUD_Usuario.crearUsuario(usuarioModelo);
+            SQL_Usuario.crearUsuario(usuarioModelo);
             this.validadoLabelSet();
             this.limpiar();
 

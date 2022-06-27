@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class CRUD_Usuario {
+public class SQL_Usuario {
 
     private static Conexion conexion = new Conexion();
     private static Connection connection = conexion.getConnection();
@@ -80,7 +80,7 @@ public class CRUD_Usuario {
             return false;
 
         } catch (SQLException e) {
-            Logger.getLogger(CRUD_Usuario.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(SQL_Usuario.class.getName()).log(Level.SEVERE, null, e);
             return false;
         }
     }

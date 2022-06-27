@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 import org.openjfx.EmpresaAutosABC;
-import org.openjfx.Models.Usuario.CRUD_Usuario;
+import org.openjfx.Models.Usuario.SQL_Usuario;
 import org.openjfx.Models.Usuario.Usuario;
 import org.openjfx.Models.Usuario.Utils.Hash;
 import org.openjfx.Models.Usuario.Utils.Rol;
@@ -113,7 +113,7 @@ public class LoginController  {
             usuarioLogin.setContraseña(contraseñaCifrada);
 
             // Check si existe un usuario con esa cedula y compara contraseñas
-            if(CRUD_Usuario.login(usuarioLogin)) {
+            if(SQL_Usuario.login(usuarioLogin)) {
                 validoUser.setText("Ingreso éxitoso!");
                 validoUser.setStyle(mensajeExito);
                 txtUser.setStyle(estiloMensajeExito);

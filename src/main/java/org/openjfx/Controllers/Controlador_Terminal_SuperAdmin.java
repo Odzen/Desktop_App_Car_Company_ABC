@@ -1,7 +1,6 @@
 package org.openjfx.Controllers;
 
-import org.openjfx.Models.Conexion;
-import org.openjfx.Models.Usuario.CRUD_Usuario;
+import org.openjfx.Models.Usuario.SQL_Usuario;
 import org.openjfx.Models.Usuario.Usuario;
 import org.openjfx.Models.Usuario.Utils.Hash;
 import org.openjfx.Models.Usuario.Utils.Validaciones;
@@ -14,13 +13,13 @@ import java.util.Scanner;
 
 public class Controlador_Terminal_SuperAdmin {
     private Usuario usr;
-    private CRUD_Usuario usrConsulta;
+    private SQL_Usuario usrConsulta;
 
     //Scanner para simular la vista en consola
     private static final Scanner scanner = new Scanner(System.in);
     private int opcion = 0;
 
-    public Controlador_Terminal_SuperAdmin(Usuario usr, CRUD_Usuario usrConsulta){
+    public Controlador_Terminal_SuperAdmin(Usuario usr, SQL_Usuario usrConsulta){
         this.usr = usr;
         this.usrConsulta = usrConsulta;
     }
