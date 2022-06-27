@@ -31,7 +31,7 @@ public class GestionUsuarioController implements Initializable {
     }
     @FXML
     private void btnInicio() throws IOException {
-        EmpresaAutosABC.setRoot("menu");
+        EmpresaAutosABC.setRoot("menuAdmin");
     }
 
     /**
