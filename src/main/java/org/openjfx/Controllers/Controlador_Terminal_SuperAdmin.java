@@ -66,7 +66,6 @@ public class Controlador_Terminal_SuperAdmin {
                 usrConsulta.eliminarTodosUsuarios();
             } else if( opcion == 6) {
                 System.out.println("Salió del menu Usuario!!");
-                Conexion.closeConnection();
             }
 
         } while (opcion != 6);

@@ -10,16 +10,13 @@ import java.util.logging.Logger;
 
 public class CRUD_Usuario {
 
-    private static final Conexion conexion = new Conexion();
-    private Connection connection = null;
-    public CRUD_Usuario(){
-        this.connection =  conexion.getConnection();
-    }
+    private static Conexion conexion = new Conexion();
+    private static Connection connection = conexion.getConnection();
 
     // Verifica si un usuario existe o no en la base de datos, basado en su ID
-    public boolean existeUsuario_Id(int id_usuario)  {
+    public static boolean existeUsuario_Id(int id_usuario)  {
         try {
-            PreparedStatement sentencia = this.connection.prepareStatement(
+            PreparedStatement sentencia = connection.prepareStatement(
                     "SELECT * FROM usuario WHERE id_usuario="+ id_usuario
             );
             ResultSet resultado = sentencia.executeQuery();
@@ -34,10 +31,30 @@ public class CRUD_Usuario {
         }
     }
 
-    // Verifica si un usuario existe o no en la base de datos, basado en su ID
-    public boolean login(Usuario usuario)  {
+    // Verifica si un usuario existe o no en la base de datos, basado en su cédula
+    public static boolean existeUsuario_Cedula(String cedula)  {
         try {
-            PreparedStatement sentencia = this.connection.prepareStatement(
+            PreparedStatement sentencia = connection.prepareStatement(
+                    "SELECT * FROM usuario WHERE cedula= ?"
+            );
+
+            sentencia.setString(1, cedula);
+            ResultSet resultado = sentencia.executeQuery();
+            if (resultado.next()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Verifica si un usuario existe o no en la base de datos, basado en su ID
+    public static boolean login(Usuario usuario)  {
+        try {
+            PreparedStatement sentencia = connection.prepareStatement(
                     "SELECT id_usuario, nombre, cedula,  contraseña, id_tipo_usuario FROM usuario WHERE cedula= ?"
             );
             sentencia.setString(1, usuario.getCedula());
@@ -45,7 +62,7 @@ public class CRUD_Usuario {
             if (resultado.next()) {
                 if (usuario.getContraseña().equals(resultado.getString(4)))
                 {
-                    PreparedStatement actualizarLastSession = this.connection.prepareStatement(
+                    PreparedStatement actualizarLastSession = connection.prepareStatement(
                             "UPDATE usuario SET last_session = ? WHERE id_usuario=?"
                     );
                     actualizarLastSession.setString(1, usuario.getLast_session());
@@ -69,9 +86,9 @@ public class CRUD_Usuario {
     }
 
     // Verifica si un usuario existe o no en la base de datos, basado en su nombre
-    public boolean existeUsuario_Nombre(String nombre)  {
+    public static boolean existeUsuario_Nombre(String nombre)  {
         try {
-            PreparedStatement sentencia = this.connection.prepareStatement(
+            PreparedStatement sentencia = connection.prepareStatement(
                     "SELECT * FROM usuario WHERE nombre="+ nombre
             );
             ResultSet resultado = sentencia.executeQuery();
@@ -87,9 +104,9 @@ public class CRUD_Usuario {
     }
 
     // Obtiene todos los registros de Usuario que están en la base de datos
-    public ArrayList<Usuario> leerTodosLosUsuarios() {
+    public static ArrayList<Usuario> leerTodosLosUsuarios() {
         try {
-            PreparedStatement sentencia = this.connection.prepareStatement(
+            PreparedStatement sentencia = connection.prepareStatement(
                     "SELECT * FROM usuario ORDER BY id_usuario"
             );
             ResultSet resultado = sentencia.executeQuery();
@@ -143,9 +160,9 @@ public class CRUD_Usuario {
     }
 
     // Crea un usuario con la base de datos
-    public void crearUsuario(Usuario usuario) {
+    public static void crearUsuario(Usuario usuario) {
         try {
-            PreparedStatement sentencia = this.connection.prepareStatement(
+            PreparedStatement sentencia = connection.prepareStatement(
                     "INSERT INTO usuario " +
                             "(cedula, nombre, apellido, contraseña, email, joined, modificado, activo, avatar, fecha_nacimiento, telefono, last_session, user_type, id_tipo_usuario )" +
                             "VALUES  (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
@@ -177,9 +194,9 @@ public class CRUD_Usuario {
 
 
     // Edita un usuario en la base de datos
-    public void editarUsuarios(int id_usuario, Usuario usuarioActualizado) {
+    public static void editarUsuarios(int id_usuario, Usuario usuarioActualizado) {
 
-        if ( this.existeUsuario_Id(id_usuario)) {
+        if ( existeUsuario_Id(id_usuario)) {
             java.util.Date modificado = new java.util.Date();
             java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
             try {
@@ -229,8 +246,8 @@ public class CRUD_Usuario {
     }
 
     // Elimina al usuario poniendolo inactivo en la base de datos
-    public void eliminarUsuario(int id_usuario) {
-        if(this.existeUsuario_Id(id_usuario)) {
+    public static void eliminarUsuario(int id_usuario) {
+        if(existeUsuario_Id(id_usuario)) {
             java.util.Date modificado = new java.util.Date();
             java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
             try {
@@ -261,7 +278,7 @@ public class CRUD_Usuario {
 
 
     /* Metodos para DEV y NO produccion: Los metodos sgtes son para el ambiente de desarrollo pero no se deberían de usar en producción*/
-    public void eliminarTodosUsuarios() {
+    public static void eliminarTodosUsuarios() {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
                     "TRUNCATE usuario"
@@ -278,8 +295,8 @@ public class CRUD_Usuario {
         }
     }
 
-    public void eliminarUsuarioPorId(int id_usuario) {
-        if (this.existeUsuario_Id(id_usuario)) {
+    public static void eliminarUsuarioPorId(int id_usuario) {
+        if (existeUsuario_Id(id_usuario)) {
             try {
                 PreparedStatement sentencia = connection.prepareStatement(
                         "DELETE FROM usuario WHERE id_usuario=?"

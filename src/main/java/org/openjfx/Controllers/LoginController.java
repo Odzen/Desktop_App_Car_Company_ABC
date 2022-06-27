@@ -101,7 +101,6 @@ public class LoginController  {
         }
         // Si el ingreso es correcto
         else {
-            CRUD_Usuario usuarioSql = new CRUD_Usuario();
             Usuario usuarioLogin = new Usuario();
             String contraseña = txtContraseña.getText();
             String contraseñaCifrada = Hash.md5(contraseña);
@@ -114,7 +113,7 @@ public class LoginController  {
             usuarioLogin.setContraseña(contraseñaCifrada);
 
             // Check si existe un usuario con esa cedula y compara contraseñas
-            if(usuarioSql.login(usuarioLogin)) {
+            if(CRUD_Usuario.login(usuarioLogin)) {
                 validoUser.setText("Ingreso éxitoso!");
                 validoUser.setStyle(mensajeExito);
                 txtUser.setStyle(estiloMensajeExito);

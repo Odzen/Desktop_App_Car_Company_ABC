@@ -204,11 +204,19 @@ public class RegistrarUsuarioController implements Initializable {
         {
             validado = false;
             String textoError = "Formato de la cédula incorrecto!";
-            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumento.setStyle(estiloMensajeError);
             new FadeIn(txtDocumento).play();
+        } else if (!CRUD_Usuario.existeUsuario_Cedula(txtDocumento.getText())) {
+            // Validacion para saber si el usuario con esa cédula ya existe
+                System.out.println(CRUD_Usuario.existeUsuario_Cedula(txtDocumento.getText()));
+                validado = false;
+                String textoError = "Un usuario con ese número de cédula ya existe!";
+                validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+                validacionRegistroLabel.setStyle(mensajeError);
+                txtDocumento.setStyle(estiloMensajeError);
+                new FadeIn(cargo).play();
         }
         // Validación Email
         if (!Validaciones.validarEmail(txtMail.getText()))
@@ -241,6 +249,7 @@ public class RegistrarUsuarioController implements Initializable {
             cargo.setStyle(estiloMensajeError);
             new FadeIn(cargo).play();
         }
+
         // Mensaje si el ingreso es correcto
         return validado;
     }
@@ -258,7 +267,6 @@ public class RegistrarUsuarioController implements Initializable {
     public void guardarUsuario() {
         try {
             Usuario usuarioModelo = new Usuario();
-            CRUD_Usuario usuarioSql = new CRUD_Usuario();
 
             String contraseña = txtPassword.getText();
             String contraseñaCifrada = Hash.md5(contraseña);
@@ -283,7 +291,7 @@ public class RegistrarUsuarioController implements Initializable {
             }
             usuarioModelo.setId_tipo_usuario(idTipoUsuario);
 
-            usuarioSql.crearUsuario(usuarioModelo);
+            CRUD_Usuario.crearUsuario(usuarioModelo);
             this.validadoLabelSet();
             this.limpiar();
 
