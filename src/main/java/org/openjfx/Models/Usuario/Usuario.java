@@ -1,7 +1,6 @@
 package org.openjfx.Models.Usuario;
 
 import org.openjfx.Models.Usuario.Utils.Rol;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 //Clase para modelar el Usuario en la base de datos
