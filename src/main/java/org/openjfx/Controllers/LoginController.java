@@ -145,7 +145,6 @@ public class LoginController  {
     // Cuando el usuario hace click en el boton Login, pasa al menú
     @FXML
     protected void btnLogin_MouseClicked(Usuario usuarioLogin) throws IOException {
-        MenuAdminController menuAdmin = new MenuAdminController(usuarioLogin);
         if (usuarioLogin.getUser_type().equals(Rol.ADMIN)) {
             EmpresaAutosABC.setRoot("menuAdmin");
         }

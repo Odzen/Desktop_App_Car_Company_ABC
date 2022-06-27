@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package org.openjfx.Controllers;
 
 import java.io.IOException;
@@ -15,7 +11,6 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
 import org.openjfx.Models.Usuario.Usuario;
-import org.openjfx.Models.Usuario.Utils.Rol;
 
 /**
  * FXML Controller class
@@ -31,11 +26,6 @@ public class MenuAdminController implements Initializable {
 
     @FXML
     private Button btnSalir;
-
-    public MenuAdminController(Usuario usuarioLogin) {
-        labelNameUsuario.setText("Bienvenido Administrador " + usuarioLogin.getNombre() + " !");
-    }
-
 
     // Para salir de la aplicación
     @FXML
@@ -56,20 +46,6 @@ public class MenuAdminController implements Initializable {
     private void btnCerrarSesionClick() throws IOException{
         EmpresaAutosABC.setRoot("Login");
     }
-    /*
-    @FXML
-    void btnRegistroAdminClick() throws IOException{
-        this.btnRegistroAdmin_MouseClicked();
-
-    }
-    @FXML
-    private void btnRegistroAdmin_MouseClicked() throws IOException {
-        EmpresaAutosABC.setRoot("registrarUsuario");
-
-        // Animación
-        // new animatefx.animation.BounceIn(root).play();
-    }
-    */
 
     /**
      * Initializes the controller class.

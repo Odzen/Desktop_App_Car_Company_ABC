@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import GlobalUtils.Dialogs;
 import animatefx.animation.FadeIn;
 import animatefx.animation.Shake;
 import animatefx.animation.Tada;
@@ -128,16 +129,16 @@ public class RegistrarUsuarioController implements Initializable {
     }
     @FXML
     protected void btnCancelarClick() throws IOException {
-        int input = JOptionPane.showConfirmDialog(null, "¿Está seguro que quiere cancelar el registro?",
-                "Seleccione una opción", JOptionPane.YES_NO_OPTION);
-        if (input == 0) {
-            EmpresaAutosABC.setRoot("menu");
+        //int input = JOptionPane.showConfirmDialog(null, "¿Está seguro que quiere cancelar el registro?",
+        //        "Seleccione una opción", JOptionPane.YES_NO_OPTION);
+        if (Dialogs.showConfirm("Seleccione una opción", "¿Está seguro que quiere cancelar el registro?", Dialogs.YES, Dialogs.NO).equals(Dialogs.YES)) {
+            EmpresaAutosABC.setRoot("menuAdmin");
         }
     }
 
     @FXML
     protected void btnInicio() throws IOException {
-        EmpresaAutosABC.setRoot("menu");
+        EmpresaAutosABC.setRoot("menuAdmin");
     }
     @FXML
     private void setFirstItem() {
