@@ -72,25 +72,26 @@ public class RegistrarSedeController implements Initializable {
                 txtNombreSede.setStyle(mensajeError);
                 txtTelSede.setStyle(mensajeError);
                 txtDirSede.setStyle(mensajeError);
-                txtCiudad.setStyle(mensajeError);}
+                txtCiudad.setStyle(mensajeError);
                 new Shake(txtNombreSede).play();
                 new Shake(txtTelSede).play();
                 new Shake(txtDirSede).play();
                 new Shake(txtCiudad).play();
 
-           } else {
+        } else {
             lbinvalidoRegistro.setText("Algunos campos están vacíos!");
             boolean validado = this.validaciones();
             if (validado) {
                 this.guardarSede();
             }
-        }   else {
+        }
+    } else {
         boolean validado = this.validaciones();
         if (validado) {
             this.guardarSede();
         }
     }
-    }
+}
 
 
 
