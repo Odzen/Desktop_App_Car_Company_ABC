@@ -12,7 +12,7 @@ import org.openjfx.EmpresaAutosABC;
 public class GestionUsuarioController implements Initializable {
 
     @FXML
-    private Button bttnNuevoUsuario, btnSalir;
+    private Button btnSalir;
     
     
     // Para salir de la aplicación

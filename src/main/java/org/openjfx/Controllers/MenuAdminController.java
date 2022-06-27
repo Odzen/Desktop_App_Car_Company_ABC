@@ -10,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
-import org.openjfx.Models.Usuario.Usuario;
 
 /**
  * FXML Controller class
@@ -18,9 +17,6 @@ import org.openjfx.Models.Usuario.Usuario;
  * @author mavel
  */
 public class MenuAdminController implements Initializable {
-    @FXML
-    private Button bttnAdmin, bttnRegistroAdmin, btnCerrarSesion;
-
     @FXML
     private Label labelNameUsuario;
 
