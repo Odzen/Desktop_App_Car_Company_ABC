@@ -10,10 +10,6 @@ import org.openjfx.Models.Usuario.CRUD_Usuario;
 import org.openjfx.Models.Usuario.Usuario;
 
 import java.io.IOException;
-/**
- *
- * @author mavel
- */
 public class EmpresaAutosABC extends Application {
     private static Scene scene;
     @Override

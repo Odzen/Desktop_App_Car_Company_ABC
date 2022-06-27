@@ -8,7 +8,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
-
 import org.openjfx.EmpresaAutosABC;
 import org.openjfx.Models.Usuario.CRUD_Usuario;
 import org.openjfx.Models.Usuario.Usuario;
@@ -17,12 +16,6 @@ import org.openjfx.Models.Usuario.Utils.Rol;
 
 import javax.print.DocFlavor.URL;
 
-/**
- * FXML Controller class
- *
- * @author Mavel Sterling
- * @author Juan Velasquez
- */
 public class LoginController  {
     protected String mensajeExito = String.format("-fx-text-fill: GREEN;");
     protected String estiloMensajeExito = String.format("-fx-border-color: #A9A9A9; -fx-border-width: 2; -fx-border-radius: 5;");

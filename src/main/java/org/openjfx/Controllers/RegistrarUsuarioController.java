@@ -1,22 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package org.openjfx.Controllers;
 
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.ResourceBundle;
-
 import GlobalUtils.Dialogs;
 import animatefx.animation.FadeIn;
 import animatefx.animation.Shake;
@@ -32,11 +22,6 @@ import org.openjfx.Models.Usuario.Utils.Validaciones;
 
 import javax.swing.*;
 
-/**
- * FXML Controller class
- *
- * @author mavel
- */
 public class RegistrarUsuarioController implements Initializable {
     
     private String mensajeExito = String.format("-fx-text-fill: GREEN;");
@@ -237,11 +222,10 @@ public class RegistrarUsuarioController implements Initializable {
             new FadeIn(txtMail).play();
         }
         // Validación Fecha
-        if (dtpNacimiento.getValue()==null)
+        if (dtpNacimiento.getValue()==null && !Validaciones.validarFecha(String.valueOf(dtpNacimiento.getValue())))
         {
             validado = false;
             String textoError = "Formato de fecha incorrecto!";
-            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             dtpNacimiento.setStyle(estiloMensajeError);
@@ -250,10 +234,8 @@ public class RegistrarUsuarioController implements Initializable {
         // Validacion Cargo
         if (cargo.getText().equals("Seleccionar Cargo") || (!cargo.getText().equals("Gerente") && !cargo.getText().equals("Administrador")) )
         {
-            //System.out.println(cargo.getText());
             validado = false;
             String textoError = "Formato de cargo incorrecto!";
-            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             cargo.setStyle(estiloMensajeError);

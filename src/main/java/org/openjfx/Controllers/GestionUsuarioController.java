@@ -9,14 +9,6 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
 
-/**
- * FXML Controller class
- *
- * @author mavel
- */
-
-
-
 public class GestionUsuarioController implements Initializable {
 
     @FXML
