@@ -11,20 +11,30 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
+import org.openjfx.Models.Usuario.Usuario;
+import org.openjfx.Models.Usuario.Utils.Rol;
 
 /**
  * FXML Controller class
  *
  * @author mavel
  */
-public class MenuController implements Initializable {
+public class MenuAdminController implements Initializable {
     @FXML
     private Button bttnAdmin, bttnRegistroAdmin, btnCerrarSesion;
 
     @FXML
+    private Label labelNameUsuario;
+
+    @FXML
     private Button btnSalir;
+
+    public MenuAdminController(Usuario usuarioLogin) {
+        labelNameUsuario.setText("Bienvenido Administrador " + usuarioLogin.getNombre() + " !");
+    }
 
 
     // Para salir de la aplicación

@@ -1,9 +1,7 @@
 package org.openjfx.Controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -11,11 +9,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-import javafx.scene.control.Label;
 import org.openjfx.EmpresaAutosABC;
 import org.openjfx.Models.Usuario.CRUD_Usuario;
 import org.openjfx.Models.Usuario.Usuario;
 import org.openjfx.Models.Usuario.Utils.Hash;
+import org.openjfx.Models.Usuario.Utils.Rol;
 
 import javax.print.DocFlavor.URL;
 
@@ -129,7 +127,7 @@ public class LoginController  {
                 txtUser.setStyle(estiloMensajeExito);
                 txtContraseña.setStyle(estiloMensajeExito);
                 new animatefx.animation.Tada(validoUser).play();
-                this.btnLogin_MouseClicked();
+                this.btnLogin_MouseClicked(usuarioLogin);
             }
             else {
                 //JOptionPane.showMessageDialog(null, "Datos Incorrectos!");
@@ -146,8 +144,24 @@ public class LoginController  {
 
     // Cuando el usuario hace click en el boton Login, pasa al menú
     @FXML
-    protected void btnLogin_MouseClicked() throws IOException {
-        EmpresaAutosABC.setRoot("menu");
+    protected void btnLogin_MouseClicked(Usuario usuarioLogin) throws IOException {
+        MenuAdminController menuAdmin = new MenuAdminController(usuarioLogin);
+        if (usuarioLogin.getUser_type().equals(Rol.ADMIN)) {
+            EmpresaAutosABC.setRoot("menuAdmin");
+        }
+        else if (usuarioLogin.getUser_type().equals(Rol.GERENTE)) {
+            // EmpresaAutosABC.setRoot("menuGerente");
+        }
+        else if (usuarioLogin.getUser_type().equals(Rol.JEFE_TALLER)) {
+            // EmpresaAutosABC.setRoot("menuJefeTaller");
+        }
+        else if (usuarioLogin.getUser_type().equals(Rol.VENDEDOR)) {
+            // EmpresaAutosABC.setRoot("menuVendedor");
+        }
+        else {
+            System.err.println("Rol undefined");
+        }
+
     }
      @FXML
     public void initialize (URL url, ResourceBundle rb){
