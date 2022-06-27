@@ -15,11 +15,23 @@ public class Validaciones {
                     + "|^(\\+\\d{1,3}( )?)?(\\d{3}[ ]?){2}\\d{3}$"
                     + "|^(\\+\\d{1,3}( )?)?(\\d{3}[ ]?)(\\d{2}[ ]?){2}\\d{2}$", Pattern.CASE_INSENSITIVE);
 
+    public static final Pattern VALID_CEDULA =
+            Pattern.compile("^[0-9]{8,20}$", Pattern.CASE_INSENSITIVE);
+
+
+
     // Verifica si el email es correcto
     public static boolean validarEmail(String email) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
         return matcher.find();
     }
+
+    // Verifica si la cédula es correcta
+    public static boolean validarCedula(String cedula) {
+        Matcher matcher = VALID_CEDULA.matcher(cedula);
+        return matcher.find();
+    }
+
 
     // Verifica si la contraseña es correcta
     public static boolean validarPassword(String password) {

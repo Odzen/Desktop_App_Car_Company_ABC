@@ -129,8 +129,6 @@ public class RegistrarUsuarioController implements Initializable {
     }
     @FXML
     protected void btnCancelarClick() throws IOException {
-        //int input = JOptionPane.showConfirmDialog(null, "¿Está seguro que quiere cancelar el registro?",
-        //        "Seleccione una opción", JOptionPane.YES_NO_OPTION);
         if (Dialogs.showConfirm("Seleccione una opción", "¿Está seguro que quiere cancelar el registro?", Dialogs.YES, Dialogs.NO).equals(Dialogs.YES)) {
             EmpresaAutosABC.setRoot("menuAdmin");
         }
@@ -221,8 +219,8 @@ public class RegistrarUsuarioController implements Initializable {
             txtApellido.setStyle(estiloMensajeError);
             new FadeIn(txtApellido).play();
         }
-        // Se comprueba la longitud de la cedula del usuario
-        if (txtDocumento.getText().length() < 10)
+        // Validación Cédula
+        if (!Validaciones.validarCedula(txtDocumento.getText()))
         {
             validado = false;
             String textoError = "La cedula debe de tener al menos 10 caracteres!";
