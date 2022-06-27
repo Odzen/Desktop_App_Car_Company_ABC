@@ -1,22 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package org.openjfx.Controllers;
 
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.ResourceBundle;
-
+import GlobalUtils.Dialogs;
 import animatefx.animation.FadeIn;
 import animatefx.animation.Shake;
 import animatefx.animation.Tada;
@@ -24,18 +15,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import org.openjfx.EmpresaAutosABC;
-import org.openjfx.Models.Usuario.CRUD_Usuario;
+import org.openjfx.Models.Usuario.SQL_Usuario;
 import org.openjfx.Models.Usuario.Usuario;
 import org.openjfx.Models.Usuario.Utils.Hash;
 import org.openjfx.Models.Usuario.Utils.Validaciones;
 
 import javax.swing.*;
 
-/**
- * FXML Controller class
- *
- * @author mavel
- */
 public class RegistrarUsuarioController implements Initializable {
     
     private String mensajeExito = String.format("-fx-text-fill: GREEN;");
@@ -128,16 +114,14 @@ public class RegistrarUsuarioController implements Initializable {
     }
     @FXML
     protected void btnCancelarClick() throws IOException {
-        int input = JOptionPane.showConfirmDialog(null, "¿Está seguro que quiere cancelar el registro?",
-                "Seleccione una opción", JOptionPane.YES_NO_OPTION);
-        if (input == 0) {
-            EmpresaAutosABC.setRoot("menu");
+        if (Dialogs.showConfirm("Seleccione una opción", "¿Está seguro que quiere cancelar el registro?", Dialogs.YES, Dialogs.NO).equals(Dialogs.YES)) {
+            EmpresaAutosABC.setRoot("menuAdmin");
         }
     }
 
     @FXML
     protected void btnInicio() throws IOException {
-        EmpresaAutosABC.setRoot("menu");
+        EmpresaAutosABC.setRoot("menuAdmin");
     }
     @FXML
     private void setFirstItem() {
@@ -157,7 +141,6 @@ public class RegistrarUsuarioController implements Initializable {
         {
             validado = false;
             String textoError = "Formato de contraseña incorrecto!";
-            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtPassword.setStyle(estiloMensajeError);
@@ -168,7 +151,6 @@ public class RegistrarUsuarioController implements Initializable {
         {
             validado = false;
             String textoError = "Formato de confirmación de contraseña incorrecto!";
-            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtPasswordConfirm.setStyle(estiloMensajeError);
@@ -179,7 +161,6 @@ public class RegistrarUsuarioController implements Initializable {
         {
             validado = false;
             String textoError = "Contraseñas no coinciden!";
-            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtPasswordConfirm.setStyle(estiloMensajeError);
@@ -203,7 +184,6 @@ public class RegistrarUsuarioController implements Initializable {
         {
             validado = false;
             String textoError = "El usuario debe tener de 4 a 20 caracteres!";
-            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtNombre.setStyle(estiloMensajeError);
@@ -214,22 +194,29 @@ public class RegistrarUsuarioController implements Initializable {
         {
             validado = false;
             String textoError = "El apellido debe tener de 4 a 20 caracteres!";
-            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtApellido.setStyle(estiloMensajeError);
             new FadeIn(txtApellido).play();
         }
-        // Se comprueba la longitud de la cedula del usuario
-        if (txtDocumento.getText().length() < 10)
+        // Validación Cédula
+        if (!Validaciones.validarCedula(txtDocumento.getText()))
         {
             validado = false;
-            String textoError = "La cedula debe de tener al menos 10 caracteres!";
-            //System.out.println(textoError);
+            String textoError = "Formato de la cédula incorrecto!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumento.setStyle(estiloMensajeError);
             new FadeIn(txtDocumento).play();
+        } else if (SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText())) {
+            // Validacion para saber si el usuario con esa cédula ya existe
+                System.out.println(SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText()));
+                validado = false;
+                String textoError = "Un usuario con ese número de cédula ya existe!";
+                validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+                validacionRegistroLabel.setStyle(mensajeError);
+                txtDocumento.setStyle(estiloMensajeError);
+                new FadeIn(cargo).play();
         }
         // Validación Email
         if (!Validaciones.validarEmail(txtMail.getText()))
@@ -243,11 +230,10 @@ public class RegistrarUsuarioController implements Initializable {
             new FadeIn(txtMail).play();
         }
         // Validación Fecha
-        if (dtpNacimiento.getValue()==null)
+        if (dtpNacimiento.getValue()==null && !Validaciones.validarFecha(String.valueOf(dtpNacimiento.getValue())))
         {
             validado = false;
             String textoError = "Formato de fecha incorrecto!";
-            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             dtpNacimiento.setStyle(estiloMensajeError);
@@ -256,15 +242,14 @@ public class RegistrarUsuarioController implements Initializable {
         // Validacion Cargo
         if (cargo.getText().equals("Seleccionar Cargo") || (!cargo.getText().equals("Gerente") && !cargo.getText().equals("Administrador")) )
         {
-            //System.out.println(cargo.getText());
             validado = false;
             String textoError = "Formato de cargo incorrecto!";
-            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             cargo.setStyle(estiloMensajeError);
             new FadeIn(cargo).play();
         }
+
         // Mensaje si el ingreso es correcto
         return validado;
     }
@@ -282,7 +267,6 @@ public class RegistrarUsuarioController implements Initializable {
     public void guardarUsuario() {
         try {
             Usuario usuarioModelo = new Usuario();
-            CRUD_Usuario usuarioSql = new CRUD_Usuario();
 
             String contraseña = txtPassword.getText();
             String contraseñaCifrada = Hash.md5(contraseña);
@@ -307,7 +291,7 @@ public class RegistrarUsuarioController implements Initializable {
             }
             usuarioModelo.setId_tipo_usuario(idTipoUsuario);
 
-            usuarioSql.crearUsuario(usuarioModelo);
+            SQL_Usuario.crearUsuario(usuarioModelo);
             this.validadoLabelSet();
             this.limpiar();
 

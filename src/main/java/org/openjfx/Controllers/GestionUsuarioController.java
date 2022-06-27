@@ -9,18 +9,10 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
 
-/**
- * FXML Controller class
- *
- * @author mavel
- */
-
-
-
 public class GestionUsuarioController implements Initializable {
 
     @FXML
-    private Button bttnNuevoUsuario, btnSalir;
+    private Button btnSalir;
     
     
     // Para salir de la aplicación
@@ -39,7 +31,7 @@ public class GestionUsuarioController implements Initializable {
     }
     @FXML
     private void btnInicio() throws IOException {
-        EmpresaAutosABC.setRoot("menu");
+        EmpresaAutosABC.setRoot("menuAdmin");
     }
 
     /**

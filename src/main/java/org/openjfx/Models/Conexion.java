@@ -16,12 +16,8 @@ public class Conexion {
     private URI dbUri = URI.create("");
     public static Connection con = null;
 
-    //private final URI dbUri = "postgres://frztblycjqgdss:39b247709a9689db8bb5671d4c65bdf8051ff7883fc5e931b9bd97d804bd19d1@ec2-34-231-221-151.compute-1.amazonaws.com:5432/d3liet8hanl9f3";
-
-
     public Conexion() {
         try {
-            //this.dbUri = new URI(System.getenv("DATABASE_URL"));
             this.dbUri = new URI("postgres://frztblycjqgdss:39b247709a9689db8bb5671d4c65bdf8051ff7883fc5e931b9bd97d804bd19d1@ec2-34-231-221-151.compute-1.amazonaws.com:5432/d3liet8hanl9f3");
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
