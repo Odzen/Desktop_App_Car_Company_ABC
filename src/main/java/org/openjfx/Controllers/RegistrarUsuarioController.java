@@ -156,7 +156,6 @@ public class RegistrarUsuarioController implements Initializable {
         {
             validado = false;
             String textoError = "Formato de contraseña incorrecto!";
-            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtPassword.setStyle(estiloMensajeError);
@@ -167,7 +166,6 @@ public class RegistrarUsuarioController implements Initializable {
         {
             validado = false;
             String textoError = "Formato de confirmación de contraseña incorrecto!";
-            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtPasswordConfirm.setStyle(estiloMensajeError);
@@ -178,7 +176,6 @@ public class RegistrarUsuarioController implements Initializable {
         {
             validado = false;
             String textoError = "Contraseñas no coinciden!";
-            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtPasswordConfirm.setStyle(estiloMensajeError);
@@ -202,7 +199,6 @@ public class RegistrarUsuarioController implements Initializable {
         {
             validado = false;
             String textoError = "El usuario debe tener de 4 a 20 caracteres!";
-            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtNombre.setStyle(estiloMensajeError);
@@ -213,7 +209,6 @@ public class RegistrarUsuarioController implements Initializable {
         {
             validado = false;
             String textoError = "El apellido debe tener de 4 a 20 caracteres!";
-            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtApellido.setStyle(estiloMensajeError);
@@ -223,7 +218,7 @@ public class RegistrarUsuarioController implements Initializable {
         if (!Validaciones.validarCedula(txtDocumento.getText()))
         {
             validado = false;
-            String textoError = "La cedula debe de tener al menos 10 caracteres!";
+            String textoError = "Formato de la cédula incorrecto!";
             //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
