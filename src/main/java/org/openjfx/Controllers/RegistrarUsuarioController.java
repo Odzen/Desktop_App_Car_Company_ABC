@@ -208,7 +208,7 @@ public class RegistrarUsuarioController implements Initializable {
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumento.setStyle(estiloMensajeError);
             new FadeIn(txtDocumento).play();
-        } else if (!SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText())) {
+        } else if (SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText())) {
             // Validacion para saber si el usuario con esa cédula ya existe
                 System.out.println(SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText()));
                 validado = false;
