@@ -28,7 +28,7 @@
          <effect>
             <Blend />
          </effect></TextField>
-      <Button fx:id="btnAgregar" layoutX="467.0" layoutY="356.0" mnemonicParsing="false" onAction="#btnAgregarClick" prefHeight="28.0" prefWidth="87.0" style="-fx-background-color: #c8fcb3#c8fcb3; -fx-background-radius: 8;" text="Confirmar" underline="true" AnchorPane.bottomAnchor="21.0" AnchorPane.leftAnchor="467.0" AnchorPane.rightAnchor="46.0" AnchorPane.topAnchor="356.0">
+      <Button fx:id="btnAgregar" layoutX="19.0" layoutY="356.0" mnemonicParsing="false" onAction="#btnAgregarClick" prefHeight="17.0" prefWidth="79.0" style="-fx-background-color: #c8fcb3#c8fcb3; -fx-background-radius: 8;" text="Confirmar" textAlignment="CENTER" underline="true" AnchorPane.leftAnchor="467.0" AnchorPane.rightAnchor="46.0" AnchorPane.topAnchor="356.0">
          <font>
             <Font size="14.0" />
          </font>
@@ -50,7 +50,7 @@
       <Separator layoutX="92.0" layoutY="8.0" orientation="VERTICAL" prefHeight="25.0" prefWidth="0.0" />
       <Hyperlink layoutX="19.0" layoutY="5.0" onAction="#btnInicio" prefHeight="32.0" prefWidth="61.0" text="Inicio" />
       <Label layoutX="98.0" layoutY="5.0" prefHeight="32.0" prefWidth="136.0" text="Registro de sede" />
-      <Button fx:id="btnCancelar" layoutX="19.0" layoutY="356.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="79.0" style="-fx-background-color: #b8b9ba#b8b9ba #b8b9ba#b8b9ba; -fx-background-radius: 8;" text="Cancelar" textAlignment="CENTER" underline="true">
+      <Button fx:id="btnCancelar" layoutX="19.0" layoutY="356.0" mnemonicParsing="false" onAction="#btnCancelarClick" prefHeight="17.0" prefWidth="79.0" style="-fx-background-color: #b8b9ba#b8b9ba #b8b9ba#b8b9ba; -fx-background-radius: 8;" text="Cancelar" textAlignment="CENTER" underline="true">
          <effect>
             <InnerShadow />
          </effect>
