@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -58,10 +59,14 @@ public class MenuGerenteController implements Initializable {
         stage.close();
     }
     @FXML
-    private void bttnGerenteClick() throws IOException{
+    private void btnGestionGerenteClick() throws IOException{
         EmpresaAutosABC.setRoot("GestionUsuario");
     }
 
+    @FXML
+    private void btnRegistroAdminClick() throws IOException{
+        EmpresaAutosABC.setRoot("registrarUsuario");
+    }
     @FXML
     private void bttnRegistroSedeClick() throws IOException{
         EmpresaAutosABC.setRoot("registrarSede");
@@ -78,5 +83,6 @@ public class MenuGerenteController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }
+
 
 }
