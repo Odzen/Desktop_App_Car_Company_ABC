@@ -60,7 +60,7 @@ public class MenuGerenteController implements Initializable {
     }
     @FXML
     private void btnGestionGerenteClick() throws IOException{
-        EmpresaAutosABC.setRoot("GestionUsuario");
+        EmpresaAutosABC.setRoot("GestionUsuGerente");
     }
 
     @FXML
