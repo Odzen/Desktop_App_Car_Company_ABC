@@ -105,86 +105,6 @@ public class GestionUsuarioController implements Initializable {
         col_nacimientoGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("fecha_nacimiento"));
         col_last_sessionGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("last_session"));
 
-        /*
-        //add cell of button edit
-        Callback<TableColumn<Usuario, String>, TableCell<Usuario, String>> cellFactory = (TableColumn<Usuario, String> param) -> {
-            // make cell containing buttons
-
-            final TableCell<Usuario, String> cell = new TableCell<Usuario, String>() {
-                @Override
-                public void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    //that cell created only on non-empty rows
-                    if (empty) {
-                        setGraphic(null);
-                        setText(null);
-
-                    } else {
-
-                        FontAwesomeIconView deleteIcon = new FontAwesomeIconView(FontAwesomeIcon.TRASH);
-                        FontAwesomeIconView editIcon = new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE);
-
-
-                        deleteIcon.setStyle(
-                                " -fx-cursor: hand ;"
-                                        + "-glyph-size:28px;"
-                                        + "-fx-fill:#ff1744;"
-                        );
-                        editIcon.setStyle(
-                                " -fx-cursor: hand ;"
-                                        + "-glyph-size:28px;"
-                                        + "-fx-fill:#00E676;"
-                        );
-
-
-                        deleteIcon.setOnMouseClicked((event) -> {
-                            try {
-                                usuario = tableGestionAdmin.getSelectionModel().getSelectedItem();
-                                SQL_Usuario.eliminarUsuarioPorCedula(usuario.getCedula());
-                                refreshTable();
-                            } catch (Exception e) {
-                                Logger.getLogger(GestionUsuarioController.class.getName()).log(Level.SEVERE, null, e);
-                            }
-                        });
-                        editIcon.setOnMouseClicked((event) -> {
-                            try{
-                                FXMLLoader loader = new FXMLLoader ();
-                                loader.setLocation(getClass().getResource("registrarUsuario.fxml"));
-                                usuario = tableGestionAdmin.getSelectionModel().getSelectedItem();
-                                loader.load();
-                                //AddStudentController addStudentController = loader.getController();
-                                //addStudentController.setUpdate(true);
-                                //addStudentController.setTextField(student.getId(), student.getName(),
-                                //        usuario.getBirth().toLocalDate(),student.getAdress(), student.getEmail());
-
-                                Parent parent = loader.getRoot();
-                                Stage stage = new Stage();
-                                stage.setScene(new Scene(parent));
-                                //stage.initStyle(StageStyle.UTILITY);
-                                stage.show();
-                            }catch(Exception e) {
-                                Logger.getLogger(GestionUsuarioController.class.getName()).log(Level.SEVERE, null, e);
-                            }
-                        });
-
-                        HBox managebtn = new HBox(editIcon, deleteIcon);
-                        //managebtn.setStyle("-fx-alignment:center");
-                        HBox.setMargin(deleteIcon, new Insets(2, 2, 0, 3));
-                        HBox.setMargin(editIcon, new Insets(2, 3, 0, 2));
-
-                        setGraphic(managebtn);
-
-                        setText(null);
-                    }
-                }
-
-            };
-
-            return cell;
-        };
-        editCol.setCellFactory(cellFactory);
-        */
-
         tableGestionAdmin.setItems(usuariosList);
 
     }
@@ -257,7 +177,6 @@ public class GestionUsuarioController implements Initializable {
 
     public void setSecondItem(ActionEvent actionEvent) {
     }
-
     public void btnCancelarClick(ActionEvent actionEvent) {
     }
 
