@@ -13,6 +13,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -106,8 +107,9 @@ public class GestionUsuarioController implements Initializable {
 
         /*
         //add cell of button edit
-        Callback<TableColumn<Usuario, String>, TableCell<Usuario, String>> cellFoctory = (TableColumn<Usuario, String> param) -> {
+        Callback<TableColumn<Usuario, String>, TableCell<Usuario, String>> cellFactory = (TableColumn<Usuario, String> param) -> {
             // make cell containing buttons
+
             final TableCell<Usuario, String> cell = new TableCell<Usuario, String>() {
                 @Override
                 public void updateItem(String item, boolean empty) {
@@ -122,6 +124,7 @@ public class GestionUsuarioController implements Initializable {
                         FontAwesomeIconView deleteIcon = new FontAwesomeIconView(FontAwesomeIcon.TRASH);
                         FontAwesomeIconView editIcon = new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE);
 
+
                         deleteIcon.setStyle(
                                 " -fx-cursor: hand ;"
                                         + "-glyph-size:28px;"
@@ -132,6 +135,8 @@ public class GestionUsuarioController implements Initializable {
                                         + "-glyph-size:28px;"
                                         + "-fx-fill:#00E676;"
                         );
+
+
                         deleteIcon.setOnMouseClicked((event) -> {
                             try {
                                 usuario = tableGestionAdmin.getSelectionModel().getSelectedItem();
@@ -155,7 +160,7 @@ public class GestionUsuarioController implements Initializable {
                                 Parent parent = loader.getRoot();
                                 Stage stage = new Stage();
                                 stage.setScene(new Scene(parent));
-                                stage.initStyle(StageStyle.UTILITY);
+                                //stage.initStyle(StageStyle.UTILITY);
                                 stage.show();
                             }catch(Exception e) {
                                 Logger.getLogger(GestionUsuarioController.class.getName()).log(Level.SEVERE, null, e);
@@ -163,7 +168,7 @@ public class GestionUsuarioController implements Initializable {
                         });
 
                         HBox managebtn = new HBox(editIcon, deleteIcon);
-                        managebtn.setStyle("-fx-alignment:center");
+                        //managebtn.setStyle("-fx-alignment:center");
                         HBox.setMargin(deleteIcon, new Insets(2, 2, 0, 3));
                         HBox.setMargin(editIcon, new Insets(2, 3, 0, 2));
 
@@ -177,8 +182,9 @@ public class GestionUsuarioController implements Initializable {
 
             return cell;
         };
-        editCol.setCellFactory(cellFoctory);
+        editCol.setCellFactory(cellFactory);
         */
+
         tableGestionAdmin.setItems(usuariosList);
 
     }
@@ -228,7 +234,7 @@ public class GestionUsuarioController implements Initializable {
             Scene scene = new Scene(parent);
             Stage stage = new Stage();
             stage.setScene(scene);
-            stage.initStyle(StageStyle.UTILITY);
+            //stage.initStyle(StageStyle.UTILITY);
             stage.show();
         } catch (IOException ex) {
             Logger.getLogger(GestionUsuarioController.class.getName()).log(Level.SEVERE, null, ex);
@@ -244,6 +250,15 @@ public class GestionUsuarioController implements Initializable {
 
     //@FXML
     private void print(MouseEvent event) {
+    }
+
+    public void setFirstItem(ActionEvent actionEvent) {
+    }
+
+    public void setSecondItem(ActionEvent actionEvent) {
+    }
+
+    public void btnCancelarClick(ActionEvent actionEvent) {
     }
 
     /**
