@@ -2,15 +2,26 @@ package org.openjfx.Controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
+
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
+import org.openjfx.Models.Usuario.SQL_Usuario;
+import org.openjfx.Models.Usuario.Utils.Rol;
 
 public class GestionUsuarioController implements Initializable {
 
@@ -18,22 +29,24 @@ public class GestionUsuarioController implements Initializable {
     private Button btnSalir;
 
     @FXML
-    private TableView<?> tableGestionAdmin;
+    private TableView<ModelTable> tableGestionAdmin;
 
     @FXML
-    private TableColumn<?,?> col_idGestionAdmin;
+    private TableColumn<ModelTable,String> col_idGestionAdmin;
 
     @FXML
-    private TableColumn<?,?> col_nombreGestionAdmin;
+    private TableColumn<ModelTable,String> col_nombreGestionAdmin;
 
     @FXML
-    private TableColumn<?,?> col_cargoGestionAdmin;
+    private TableColumn<ModelTable, String> col_cargoGestionAdmin;
 
     @FXML
-    private TableColumn col_modificarGestionAdmin;
+    private TableColumn<ModelTable, Date> col_modificarGestionAdmin;
 
     @FXML
-    private TableColumn<?,?> col_inhabilitarGestionAdmin;
+    private TableColumn<ModelTable, Boolean> col_inhabilitarGestionAdmin;
+
+    private ObservableList<ModelTable> oblist = FXCollections.observableArrayList();
     
     // Para salir de la aplicación
     @FXML
@@ -45,9 +58,8 @@ public class GestionUsuarioController implements Initializable {
      @FXML
      private void bttnNuevoUsuarioClicked() throws IOException {
          EmpresaAutosABC.setRoot("registrarUsuario");
-    // Animación
-    //new animatefx.animation.BounceIn(root).play();
-
+        // Animación
+        //new animatefx.animation.BounceIn(root).play();
     }
     @FXML
     private void btnInicio() throws IOException {
@@ -59,30 +71,49 @@ public class GestionUsuarioController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+
+        try {
+
+            ResultSet result = SQL_Usuario.obtenerTodosUsuariosPorRol(Rol.ADMIN);
+
+            while (result.next()) {
+                oblist.add(new ModelTable(result.getString("cedula"), result.getString("nombre"), result.getString("user_type"), result.getDate("modificado"), result.getBoolean("activo")));
+            }
+        } catch(SQLException exception) {
+            throw new RuntimeException(exception);
+        }
+
+        col_idGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("cedula"));
+        col_nombreGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        col_cargoGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("cargo"));
+        col_modificarGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("modificado"));
+        col_inhabilitarGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("activo"));
+
+        tableGestionAdmin.setItems(oblist);
     }
 
     /**
      * Aux Class to Model the Table
      */
     public class ModelTable {
-        private String id, nombre, cargo;
-        private boolean modificar, inhabilitar;
+        private String cedula, nombre, cargo;
+        private Date modificado;
+        private boolean activo;
 
-        public ModelTable(String id, String nombre, String cargo, boolean modificar, boolean inhabilitar) {
-            this.id = id;
+        public ModelTable(String cedula, String nombre, String cargo, Date modificado, boolean activo) {
+            this.cedula = cedula;
             this.nombre = nombre;
             this.cargo = cargo;
-            this.modificar = modificar;
-            this.inhabilitar = inhabilitar;
+            this.modificado = modificado;
+            this.activo = activo;
         }
 
-        public String getId() {
-            return id;
+        public String getCedula() {
+            return cedula;
         }
 
-        public void setId(String id) {
-            this.id = id;
+        public void setCedula(String id) {
+            this.cedula = id;
         }
 
         public String getNombre() {
@@ -101,20 +132,20 @@ public class GestionUsuarioController implements Initializable {
             this.cargo = cargo;
         }
 
-        public boolean isModificar() {
-            return modificar;
+        public Date getModificado() {
+            return modificado;
         }
 
-        public void setModificar(boolean modificar) {
-            this.modificar = modificar;
+        public void setModificado(Date modificado) {
+            this.modificado = modificado;
         }
 
-        public boolean isInhabilitar() {
-            return inhabilitar;
+        public boolean isActivo() {
+            return activo;
         }
 
-        public void setInhabilitar(boolean inhabilitar) {
-            this.inhabilitar = inhabilitar;
+        public void setActivo(boolean activo) {
+            this.activo = activo;
         }
     }
     

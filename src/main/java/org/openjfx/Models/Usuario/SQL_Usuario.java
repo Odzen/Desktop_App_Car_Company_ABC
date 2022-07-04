@@ -1,6 +1,7 @@
 package org.openjfx.Models.Usuario;
 
 import org.openjfx.Models.Conexion;
+import org.openjfx.Models.Usuario.Utils.Rol;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -29,6 +30,26 @@ public class SQL_Usuario {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static ResultSet obtenerTodosUsuariosPorRol(Rol rol) {
+        try {
+
+            if(rol.equals(Rol.ADMIN)) {
+                PreparedStatement sentencia = connection.prepareStatement(
+                        "SELECT * FROM usuario WHERE user_type= ? or user_type= ? "
+                );
+                sentencia.setString(1, "ADMIN");
+                sentencia.setString(2, "GERENTE");
+
+                ResultSet resultado = sentencia.executeQuery();
+                return resultado;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 
     // Verifica si un usuario existe o no en la base de datos, basado en su cédula
