@@ -69,7 +69,7 @@
       <PasswordField fx:id="txtPasswordConfirm" layoutX="274.0" layoutY="129.0" promptText="Confirmar Contraseña" />
       <SplitMenuButton fx:id="cargo" layoutX="504.0" layoutY="162.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="132.0" text="Cargo">
         <items>
-          <MenuItem fx:id="firstitem" mnemonicParsing="false" onAction="#setFirstItem" text="Administrador" />
+          <MenuItem fx:id="firstItem" mnemonicParsing="false" onAction="#setFirstItem" text="Administrador" />
           <MenuItem fx:id="secondItem" mnemonicParsing="false" onAction="#setSecondItem" text="Gerente" />
         </items>
       </SplitMenuButton>
