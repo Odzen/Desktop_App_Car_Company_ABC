@@ -1,5 +1,6 @@
 package org.openjfx.Controllers;
 
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
@@ -44,9 +45,13 @@ public class GestionUsuarioController implements Initializable {
     private TableColumn<ModelTable, Date> col_modificarGestionAdmin;
 
     @FXML
+    private TableColumn<ModelTable, String> editCol;
+
+
+    @FXML
     private TableColumn<ModelTable, Boolean> col_inhabilitarGestionAdmin;
 
-    private ObservableList<ModelTable> oblist = FXCollections.observableArrayList();
+    private ObservableList<ModelTable> usuariosList = FXCollections.observableArrayList();
     
     // Para salir de la aplicación
     @FXML
@@ -66,31 +71,45 @@ public class GestionUsuarioController implements Initializable {
         EmpresaAutosABC.setRoot("menuAdmin");
     }
 
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-
-        try {
-
-            ResultSet result = SQL_Usuario.obtenerTodosUsuariosPorRol(Rol.ADMIN);
-
-            while (result.next()) {
-                oblist.add(new ModelTable(result.getString("cedula"), result.getString("nombre"), result.getString("user_type"), result.getDate("modificado"), result.getBoolean("activo")));
-            }
-        } catch(SQLException exception) {
-            throw new RuntimeException(exception);
-        }
-
+    private void loadDate() {
         col_idGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("cedula"));
         col_nombreGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         col_cargoGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("cargo"));
         col_modificarGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("modificado"));
         col_inhabilitarGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("activo"));
-
-        tableGestionAdmin.setItems(oblist);
     }
+
+    private void readUsers() {
+        try {
+            ResultSet result = SQL_Usuario.obtenerTodosUsuariosPorRol(Rol.ADMIN);
+            while (result.next()) {
+                usuariosList.add(new ModelTable(result.getString("cedula"), result.getString("nombre"), result.getString("user_type"), result.getDate("modificado"), result.getBoolean("activo")));
+            }
+        } catch(SQLException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        this.readUsers();
+        this.loadDate();
+        tableGestionAdmin.setItems(usuariosList);
+    }
+
+    //@FXML
+    private void refreshTable() {
+        usuariosList.clear();
+        this.readUsers();
+    }
+
+    //@FXML
+    private void print(MouseEvent event) {
+    }
+
 
     /**
      * Aux Class to Model the Table

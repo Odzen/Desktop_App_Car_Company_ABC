@@ -32,6 +32,7 @@
             <TableColumn fx:id="col_cargoGestionAdmin" prefWidth="112.0" text="Cargo" />
             <TableColumn fx:id="col_modificarGestionAdmin" prefWidth="128.0" text="Modificado" />
             <TableColumn fx:id="col_inhabilitarGestionAdmin" prefWidth="82.0" text="Activo" />
+            <TableColumn fx:id="editCol" maxWidth="64.0" prefWidth="64.0" style="-fx-alignment: center;" text="Edit" />
         </columns>
       </TableView>
       <TextField layoutX="401.0" layoutY="105.0" promptText=" Buscar ID" style="-fx-background-radius: 12;" />
