@@ -25,13 +25,13 @@
          <effect>
             <InnerShadow color="#f5f2f2c7" />
          </effect></Button>
-      <TableView layoutX="21.0" layoutY="144.0" prefHeight="200.0" prefWidth="558.0">
+      <TableView fx:id="tableGestionAdmin" layoutX="21.0" layoutY="144.0" prefHeight="200.0" prefWidth="558.0">
         <columns>
-          <TableColumn prefWidth="79.0" text="ID" />
-          <TableColumn prefWidth="156.0" text="Nombre" />
-            <TableColumn prefWidth="112.0" text="Cargo" />
-            <TableColumn prefWidth="128.0" text="Modificar" />
-            <TableColumn prefWidth="82.0" text="Inhabilitar" />
+          <TableColumn fx:id="col_idGestionAdmin" prefWidth="79.0" text="ID" />
+          <TableColumn fx:id="col_nombreGestionAdmin" prefWidth="156.0" text="Nombre" />
+            <TableColumn fx:id="col_cargoGestionAdmin" prefWidth="112.0" text="Cargo" />
+            <TableColumn fx:id="col_modificarGestionAdmin" prefWidth="128.0" text="Modificar" />
+            <TableColumn fx:id="col_inhabilitarGestionAdmin" prefWidth="82.0" text="Inhabilitar" />
         </columns>
       </TableView>
       <TextField layoutX="401.0" layoutY="105.0" promptText=" Buscar ID" style="-fx-background-radius: 12;" />
