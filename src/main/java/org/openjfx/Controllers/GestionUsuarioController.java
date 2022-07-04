@@ -5,10 +5,17 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import GlobalUtils.Dialogs;
+import animatefx.animation.FadeIn;
+import animatefx.animation.Shake;
+import animatefx.animation.Tada;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
@@ -20,10 +27,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -32,10 +36,15 @@ import javafx.util.Callback;
 import org.openjfx.EmpresaAutosABC;
 import org.openjfx.Models.Usuario.SQL_Usuario;
 import org.openjfx.Models.Usuario.Usuario;
+import org.openjfx.Models.Usuario.Utils.Hash;
 import org.openjfx.Models.Usuario.Utils.Rol;
+import org.openjfx.Models.Usuario.Utils.Validaciones;
+
+import javax.swing.*;
 
 public class GestionUsuarioController implements Initializable {
 
+    // Variables para Actualizar, Leer y Borrar Usuarios
     @FXML
     private Button btnSalir;
     @FXML
@@ -64,31 +73,299 @@ public class GestionUsuarioController implements Initializable {
     private TableColumn<Usuario, Date> col_nacimientoGestionAdmin;
     @FXML
     private TableColumn<Usuario, String> col_last_sessionGestionAdmin;
-    @FXML
-    private TableColumn<Usuario, String> editCol;
 
     private ObservableList<Usuario> usuariosList = FXCollections.observableArrayList();
 
     private Usuario usuario = null;
-    
-    // Para salir de la aplicación
+
+    // Variables para registrar usuarios
+    private String mensajeExito = String.format("-fx-text-fill: GREEN;");
+    private String estiloMensajeExito = String.format("-fx-border-color: #A9A9A9; -fx-border-width: 2; -fx-border-radius: 5;");
+
+    private String mensaje = String.format("-fx-text-fill: black;");
+    private String mensajeError = String.format("-fx-text-fill: RED;");
+    private String estiloMensajeError = String.format("-fx-border-color: RED; -fx-border-width: 2; -fx-border-radius: 5;");
     @FXML
-    protected void btnSalirClick() {
-    Stage stage = (Stage) btnSalir.getScene().getWindow();
-    stage.close();
+    private TextField txtNombre, txtApellido;
+    @FXML
+    private TextField txtPassword, txtPasswordConfirm;
+    @FXML
+    private TextField txtMail;
+    @FXML
+    private TextField txtDocumento;
+    @FXML
+    private TextField txtTelefono;
+    @FXML
+    private DatePicker dtpNacimiento;
+    @FXML
+    private SplitMenuButton cargo;
+    @FXML
+    MenuItem firstItem;
+    @FXML
+    MenuItem secondItem;
+    @FXML
+    private Label validacionRegistroLabel;
+
+    /**
+     * CREATE - Registrar Usuario
+     * @throws IOException
+     */
+    //Para validar los campos de usuario y contraseña
+    @FXML
+    protected void bttnNuevoUsuarioClicked() throws IOException{
+        validacionRegistroLabel.setText("");
+        txtNombre.setStyle(null);
+        txtPasswordConfirm.setStyle(null);
+        txtApellido.setStyle(null);
+        txtPassword.setStyle(null);
+        txtMail.setStyle(null);
+        txtDocumento.setStyle(null);
+        txtTelefono.setStyle(null);
+        dtpNacimiento.setStyle(null);
+        cargo.setStyle(null);
+        //System.out.println("Presionó Confirmar");
+        // Cuando los campos están en blanco
+        if(txtNombre.getText().isEmpty() || txtPasswordConfirm.getText().isEmpty() ||
+                txtApellido.getText().isEmpty() || txtPassword.getText().isEmpty() ||
+                txtMail.getText().isEmpty()|| txtDocumento.getText().isEmpty() ||
+                txtTelefono.getText().isEmpty() || dtpNacimiento.getValue()==null ||
+                cargo.getText().equals("Seleccionar Cargo"))
+        {
+            validacionRegistroLabel.setStyle(mensajeError);
+            if(txtNombre.getText().isEmpty() && txtPasswordConfirm.getText().isEmpty() &&
+                    txtApellido.getText().isEmpty() && txtPassword.getText().isEmpty() &&
+                    txtMail.getText().isEmpty()  && txtDocumento.getText().isEmpty() &&
+                    txtTelefono.getText().isEmpty() && dtpNacimiento.getValue()==null &&
+                    cargo.getText().equals("Seleccionar Cargo"))
+            {
+                validacionRegistroLabel.setText("Se requieren todos los campos!");
+                txtNombre.setStyle(estiloMensajeError);
+                txtPasswordConfirm.setStyle(estiloMensajeError);
+                txtApellido.setStyle(estiloMensajeError);
+                txtPassword.setStyle(estiloMensajeError);
+                txtMail.setStyle(estiloMensajeError);
+                txtDocumento.setStyle(estiloMensajeError);
+                txtTelefono.setStyle(estiloMensajeError);
+                dtpNacimiento.setStyle(estiloMensajeError);
+                cargo.setStyle(estiloMensajeError);
+                new Shake(txtNombre).play();
+                new Shake(txtPasswordConfirm).play();
+                new Shake(txtApellido).play();
+                new Shake(txtPassword).play();
+                new Shake(txtMail).play();
+                new Shake(txtDocumento).play();
+                new Shake(txtTelefono).play();
+                new Shake(dtpNacimiento).play();
+                new Shake(cargo).play();
+            } else {
+                validacionRegistroLabel.setText("Algunos campos están vacíos!");
+                boolean validado = this.validaciones();
+                if (validado) {
+                    this.guardarUsuario();
+                }
+            }
+        } else {
+            boolean validado = this.validaciones();
+            if (validado) {
+                this.guardarUsuario();
+                this.refreshTable();
+            }
+        }
     }
-   
     @FXML
-    private void bttnNuevoUsuarioClicked() throws IOException {
-     EmpresaAutosABC.setRoot("registrarUsuario");
-    // Animación
-    //new animatefx.animation.BounceIn(root).play();
-    }
-    @FXML
-    private void btnInicio() throws IOException {
-        EmpresaAutosABC.setRoot("menuAdmin");
+    private void setFirstItem() {
+        cargo.setText(firstItem.getText());
     }
 
+    @FXML
+    private void setSecondItem() {
+        cargo.setText(secondItem.getText());
+    }
+
+    private boolean validaciones() {
+        // Validacion contraseña
+        boolean validado = true;
+        validacionRegistroLabel.setText("");
+        if (!Validaciones.validarPassword(txtPassword.getText()))
+        {
+            validado = false;
+            String textoError = "Formato de contraseña incorrecto!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtPassword.setStyle(estiloMensajeError);
+            new FadeIn(txtPassword).play();
+        }
+        // Validacion confirmación de contraseña
+        if (!Validaciones.validarPassword(txtPasswordConfirm.getText()))
+        {
+            validado = false;
+            String textoError = "Formato de confirmación de contraseña incorrecto!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtPasswordConfirm.setStyle(estiloMensajeError);
+            new FadeIn(txtPasswordConfirm).play();
+        }
+        // Validacion contraseñas iguales
+        if (!txtPasswordConfirm.getText().equals(txtPassword.getText()))
+        {
+            validado = false;
+            String textoError = "Contraseñas no coinciden!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtPasswordConfirm.setStyle(estiloMensajeError);
+            new FadeIn(txtPasswordConfirm).play();
+            txtPassword.setStyle(estiloMensajeError);
+            new FadeIn(txtPassword).play();
+        }
+        // Validacion de telefono
+        if (!Validaciones.validarTelefono(txtTelefono.getText()))
+        {
+            validado = false;
+            String textoError = "Formato de telefono incorrecto!";
+            //System.out.println(textoError);
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtTelefono.setStyle(estiloMensajeError);
+            new FadeIn(txtTelefono).play();
+        }
+        // Se comprueba la longitud del nombre del usuario
+        if (txtNombre.getText().length() < 4 ||  txtNombre.getText().length() > 20)
+        {
+            validado = false;
+            String textoError = "El usuario debe tener de 4 a 20 caracteres!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtNombre.setStyle(estiloMensajeError);
+            new FadeIn(txtNombre).play();
+        }
+        // Se comprueba la longitud del nombre del usuario
+        if (txtApellido.getText().length() < 4 ||  txtApellido.getText().length() > 20)
+        {
+            validado = false;
+            String textoError = "El apellido debe tener de 4 a 20 caracteres!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtApellido.setStyle(estiloMensajeError);
+            new FadeIn(txtApellido).play();
+        }
+        // Validación Cédula
+        if (!Validaciones.validarCedula(txtDocumento.getText()))
+        {
+            validado = false;
+            String textoError = "Formato de la cédula incorrecto!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtDocumento.setStyle(estiloMensajeError);
+            new FadeIn(txtDocumento).play();
+        } else if (SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText())) {
+            // Validacion para saber si el usuario con esa cédula ya existe
+            System.out.println(SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText()));
+            validado = false;
+            String textoError = "Un usuario con ese número de cédula ya existe!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtDocumento.setStyle(estiloMensajeError);
+            new FadeIn(cargo).play();
+        }
+        // Validación Email
+        if (!Validaciones.validarEmail(txtMail.getText()))
+        {
+            validado = false;
+            String textoError = "Formato de email incorrecto!";
+            //System.out.println(textoError);
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtMail.setStyle(estiloMensajeError);
+            new FadeIn(txtMail).play();
+        }
+        // Validación Fecha
+        if (dtpNacimiento.getValue()==null && !Validaciones.validarFecha(String.valueOf(dtpNacimiento.getValue())))
+        {
+            validado = false;
+            String textoError = "Formato de fecha incorrecto!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            dtpNacimiento.setStyle(estiloMensajeError);
+            new FadeIn(dtpNacimiento).play();
+        }
+        // Validacion Cargo
+        if (cargo.getText().equals("Seleccionar Cargo") || (!cargo.getText().equals("Gerente") && !cargo.getText().equals("Administrador")) )
+        {
+            validado = false;
+            String textoError = "Formato de cargo incorrecto!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            cargo.setStyle(estiloMensajeError);
+            new FadeIn(cargo).play();
+        }
+
+        // Mensaje si el ingreso es correcto
+        return validado;
+    }
+
+    private void validadoLabelSet() {
+        validacionRegistroLabel.setText("");
+        System.out.println("Pasó Validaciones");
+        validacionRegistroLabel.setStyle(mensajeExito);
+        validacionRegistroLabel.setText("Registro éxitoso!");
+        txtNombre.setStyle(estiloMensajeExito);
+        txtPassword.setStyle(estiloMensajeExito);
+        new Tada(validacionRegistroLabel).play();
+    }
+
+    public void guardarUsuario() {
+        try {
+            Usuario usuarioModelo = new Usuario();
+
+            String contraseña = txtPassword.getText();
+            String contraseñaCifrada = Hash.md5(contraseña);
+
+            usuarioModelo.setNombre(txtNombre.getText());
+            usuarioModelo.setApellido(txtApellido.getText());
+            usuarioModelo.setCedula(txtDocumento.getText());
+            usuarioModelo.setContraseña(contraseñaCifrada);
+            usuarioModelo.setEmail(txtMail.getText());
+
+            DateTimeFormatter fechaHoraFormato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String stringDataFormateada = dtpNacimiento.getValue().format(fechaHoraFormato);
+            Date fechaNacimientoFormat = new SimpleDateFormat("dd/MM/yyyy").parse(stringDataFormateada);
+            usuarioModelo.setFecha_nacimiento(fechaNacimientoFormat);
+            usuarioModelo.setTelefono(txtTelefono.getText());
+
+            int idTipoUsuario = 0;
+            if (cargo.getText().equals("Administrador")) {
+                idTipoUsuario = 1;
+            } else if (cargo.getText().equals("Gerente")) {
+                idTipoUsuario = 2;
+            }
+            usuarioModelo.setId_tipo_usuario(idTipoUsuario);
+
+            SQL_Usuario.crearUsuario(usuarioModelo);
+            this.validadoLabelSet();
+            this.limpiar();
+
+        } catch (Exception e) {
+            System.err.println(e);
+            JOptionPane.showMessageDialog(null,"Error registrando el usuario");
+        }
+    }
+
+    public void limpiar() {
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtDocumento.setText("");
+        txtPassword.setText("");
+        txtPasswordConfirm.setText("");
+        txtMail.setText("");
+        txtTelefono.setText("");
+        cargo.setText("Seleccionar Cargo");
+        dtpNacimiento.setValue(null);
+
+    }
+
+    /**
+     * UPDATE - READ - DELETE
+     */
     private void loadDate() {
         refreshTable();
 
@@ -137,6 +414,36 @@ public class GestionUsuarioController implements Initializable {
         }
     }
 
+    //@FXML
+    private void refreshTable() {
+        usuariosList.clear();
+        this.readUsers();
+    }
+
+    /**
+     * Botones
+     * @throws IOException
+     */
+    @FXML
+    protected void btnCancelarClick() throws IOException {
+        if (Dialogs.showConfirm("Seleccione una opción", "¿Está seguro que quiere cancelar el registro?", Dialogs.YES, Dialogs.NO).equals(Dialogs.YES)) {
+            EmpresaAutosABC.setRoot("menuAdmin");
+        }
+    }
+    @FXML
+    protected void btnInicio() throws IOException {
+        EmpresaAutosABC.setRoot("menuAdmin");
+    }
+    // Para salir de la aplicación
+    @FXML
+    protected void btnSalirClick() {
+        Stage stage = (Stage) btnSalir.getScene().getWindow();
+        stage.close();
+    }
+    @FXML
+    private void print(MouseEvent event) {
+    }
+
     /**
      * Initializes the controller class.
      */
@@ -147,94 +454,4 @@ public class GestionUsuarioController implements Initializable {
         tableGestionAdmin.setItems(usuariosList);
     }
 
-    @FXML
-    private void getAddView(MouseEvent event) {
-        try {
-            Parent parent = FXMLLoader.load(getClass().getResource("registrarUsuario.fxml"));
-            Scene scene = new Scene(parent);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            //stage.initStyle(StageStyle.UTILITY);
-            stage.show();
-        } catch (IOException ex) {
-            Logger.getLogger(GestionUsuarioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-
-    //@FXML
-    private void refreshTable() {
-        usuariosList.clear();
-        this.readUsers();
-    }
-
-    //@FXML
-    private void print(MouseEvent event) {
-    }
-
-    public void setFirstItem(ActionEvent actionEvent) {
-    }
-
-    public void setSecondItem(ActionEvent actionEvent) {
-    }
-    public void btnCancelarClick(ActionEvent actionEvent) {
-    }
-
-    /**
-     * Aux Class to Model the Table
-     */
-    public class ModelTable {
-        private String cedula, nombre, cargo;
-        private Date modificado;
-        private boolean activo;
-
-        public ModelTable(String cedula, String nombre, String cargo, Date modificado, boolean activo) {
-            this.cedula = cedula;
-            this.nombre = nombre;
-            this.cargo = cargo;
-            this.modificado = modificado;
-            this.activo = activo;
-        }
-
-        public String getCedula() {
-            return cedula;
-        }
-
-        public void setCedula(String id) {
-            this.cedula = id;
-        }
-
-        public String getNombre() {
-            return nombre;
-        }
-
-        public void setNombre(String nombre) {
-            this.nombre = nombre;
-        }
-
-        public String getCargo() {
-            return cargo;
-        }
-
-        public void setCargo(String cargo) {
-            this.cargo = cargo;
-        }
-
-        public Date getModificado() {
-            return modificado;
-        }
-
-        public void setModificado(Date modificado) {
-            this.modificado = modificado;
-        }
-
-        public boolean isActivo() {
-            return activo;
-        }
-
-        public void setActivo(boolean activo) {
-            this.activo = activo;
-        }
-    }
-    
 }
