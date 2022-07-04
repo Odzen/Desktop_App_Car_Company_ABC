@@ -29,7 +29,6 @@
         <columns>
           <TableColumn fx:id="col_idGestionAdmin" prefWidth="79.0" text="Id" />
             <TableColumn fx:id="col_cedulaGestionAdmin" prefWidth="79.0" text="Cédula" />
-            <TableColumn fx:id="col_contraseñaGestionAdmin" prefWidth="156.0" text="Contraseña" />
             <TableColumn fx:id="col_emailGestionAdmin" prefWidth="156.0" text="Email" />
             <TableColumn fx:id="col_nombreGestionAdmin" prefWidth="156.0" text="Nombre" />
             <TableColumn fx:id="col_apellidoGestionAdmin" prefWidth="156.0" text="Apellido" />

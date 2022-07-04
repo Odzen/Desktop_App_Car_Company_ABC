@@ -44,8 +44,6 @@ public class GestionUsuarioController implements Initializable {
     @FXML
     private TableColumn<Usuario,String> col_cedulaGestionAdmin;
     @FXML
-    private TableColumn<Usuario,String> col_contraseñaGestionAdmin;
-    @FXML
     private TableColumn<Usuario,String> col_emailGestionAdmin;
     @FXML
     private TableColumn<Usuario,String> col_nombreGestionAdmin;
@@ -95,8 +93,7 @@ public class GestionUsuarioController implements Initializable {
 
         col_idGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("id_usuario"));
         col_cedulaGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("cedula"));
-        col_contraseñaGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("contraseña"));
-        col_emailGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("contraseña"));
+        col_emailGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("email"));
         col_nombreGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         col_apellidoGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("apellido"));
         col_modificarGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("modificado"));
@@ -104,9 +101,10 @@ public class GestionUsuarioController implements Initializable {
         col_telefonoGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("telefono"));
         col_joinedGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("joined"));
         col_activoGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("activo"));
-        col_nacimientoGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("Fecha_Nacimiento"));
+        col_nacimientoGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("fecha_nacimiento"));
         col_last_sessionGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("last_session"));
 
+        /*
         //add cell of button edit
         Callback<TableColumn<Usuario, String>, TableCell<Usuario, String>> cellFoctory = (TableColumn<Usuario, String> param) -> {
             // make cell containing buttons
@@ -180,6 +178,7 @@ public class GestionUsuarioController implements Initializable {
             return cell;
         };
         editCol.setCellFactory(cellFoctory);
+        */
         tableGestionAdmin.setItems(usuariosList);
 
     }
