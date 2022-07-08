@@ -27,11 +27,11 @@
       </ImageView>
       <TextField fx:id="txtUser" layoutX="332.0" layoutY="313.0" prefHeight="45.0" prefWidth="290.0" promptText="Nombre de usuario" style="-fx-background-radius: 14;">
          <font>
-            <Font size="24.0" />
+            <Font size="18.0" />
          </font></TextField>
       <PasswordField fx:id="txtContraseña" layoutX="334.0" layoutY="411.0" prefHeight="45.0" prefWidth="290.0" promptText="Contraseña" style="-fx-background-radius: 14;">
          <font>
-            <Font size="24.0" />
+            <Font size="18.0" />
          </font></PasswordField>
       <Button fx:id="btnLogin" graphicTextGap="5.0" layoutX="678.0" layoutY="509.0" mnemonicParsing="false" onAction="#btnLoginClick" prefHeight="37.0" prefWidth="161.0" style="-fx-background-color: #c8fcb3#c8fcb3 #c8fcb3#c8fcb3; -fx-background-radius: 50;" text="Entrar" underline="true">
          <effect>
