@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
@@ -15,22 +23,28 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #c7e9ff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.Controllers.RegistrarSedeController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="945.0" style="-fx-background-color: #c7e9ff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.Controllers.RegistrarSedeController">
    <children>
-      <TextField fx:id="txtNombreSede" layoutX="98.0" layoutY="203.0" prefHeight="25.0" prefWidth="161.0" promptText=" Nombre sede" style="-fx-background-radius: 8;">
+      <TextField fx:id="txtNombreSede" layoutX="180.0" layoutY="274.0" prefHeight="35.0" prefWidth="240.0" promptText=" Nombre sede" style="-fx-background-radius: 8;">
          <effect>
             <Blend />
          </effect>
          <cursor>
             <Cursor fx:constant="MOVE" />
-         </cursor></TextField>
-      <TextField fx:id="txtTelSede" layoutX="98.0" layoutY="248.0" promptText="Teléfono" style="-fx-background-radius: 8;">
+         </cursor>
+         <font>
+            <Font size="18.0" />
+         </font></TextField>
+      <TextField fx:id="txtTelSede" layoutX="177.0" layoutY="354.0" prefHeight="35.0" prefWidth="240.0" promptText="Teléfono" style="-fx-background-radius: 8;">
          <effect>
             <Blend />
-         </effect></TextField>
-      <Button fx:id="btnAgregar" layoutX="19.0" layoutY="356.0" mnemonicParsing="false" onAction="#btnAgregarClick" prefHeight="17.0" prefWidth="79.0" style="-fx-background-color: #c8fcb3#c8fcb3; -fx-background-radius: 8;" text="Confirmar" textAlignment="CENTER" underline="true" AnchorPane.leftAnchor="467.0" AnchorPane.rightAnchor="46.0" AnchorPane.topAnchor="356.0">
+         </effect>
          <font>
-            <Font size="14.0" />
+            <Font size="18.0" />
+         </font></TextField>
+      <Button fx:id="btnAgregar" layoutX="671.0" layoutY="501.0" mnemonicParsing="false" onAction="#btnAgregarClick" prefHeight="37.0" prefWidth="161.0" style="-fx-background-color: #c8fcb3#c8fcb3; -fx-background-radius: 8;" text="Confirmar" textAlignment="CENTER" underline="true" AnchorPane.leftAnchor="671.0" AnchorPane.rightAnchor="121.0" AnchorPane.topAnchor="501.0">
+         <font>
+            <Font size="18.0" />
          </font>
          <effect>
             <DropShadow>
@@ -38,40 +52,49 @@
                   <InnerShadow />
                </input>
                <color>
-                  <Color red="0.7929763793945312" green="0.9868420958518982" blue="0.6807383298873901" opacity="0.800000011920929" />
+                  <Color blue="0.6807383298873901" green="0.9868420958518982" opacity="0.800000011920929" red="0.7929763793945312" />
                </color></DropShadow>
          </effect>
       </Button>
-      <ImageView fitHeight="58.0" fitWidth="98.0" layoutX="495.0" layoutY="14.0">
+      <ImageView fitHeight="115.0" fitWidth="167.0" layoutX="752.0" layoutY="18.0">
          <image>
             <Image url="@recursos/logo.png" />
          </image>
       </ImageView>
-      <Separator layoutX="92.0" layoutY="8.0" orientation="VERTICAL" prefHeight="25.0" prefWidth="0.0" />
-      <Hyperlink layoutX="19.0" layoutY="5.0" onAction="#btnInicio" prefHeight="32.0" prefWidth="61.0" text="Inicio" />
-      <Label layoutX="98.0" layoutY="5.0" prefHeight="32.0" prefWidth="136.0" text="Registro de sede" />
-      <Button fx:id="btnCancelar" layoutX="19.0" layoutY="356.0" mnemonicParsing="false" onAction="#btnCancelarClick" prefHeight="17.0" prefWidth="79.0" style="-fx-background-color: #b8b9ba#b8b9ba #b8b9ba#b8b9ba; -fx-background-radius: 8;" text="Cancelar" textAlignment="CENTER" underline="true">
+      <Separator layoutX="105.0" layoutY="8.0" orientation="VERTICAL" prefHeight="25.0" prefWidth="0.0" />
+      <Hyperlink layoutX="19.0" layoutY="5.0" onAction="#btnInicio" prefHeight="32.0" prefWidth="61.0" text="Inicio" underline="true">
+         <font>
+            <Font size="18.0" />
+         </font></Hyperlink>
+      <Label layoutX="133.0" layoutY="4.0" prefHeight="32.0" prefWidth="136.0" text="Registro de sede">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <Button fx:id="btnCancelar" layoutX="105.0" layoutY="504.0" mnemonicParsing="false" onAction="#btnCancelarClick" prefHeight="37.0" prefWidth="161.0" style="-fx-background-color: #b8b9ba#b8b9ba #b8b9ba#b8b9ba; -fx-background-radius: 8;" text="Cancelar" textAlignment="CENTER" underline="true">
          <effect>
             <InnerShadow />
          </effect>
          <font>
-            <Font size="14.0" />
+            <Font name="System Bold" size="18.0" />
          </font>
       </Button>
-      <TextField fx:id="txtDirSede" layoutX="334.0" layoutY="203.0" prefHeight="25.0" prefWidth="161.0" promptText="Dirección" style="-fx-background-radius: 8;">
+      <TextField fx:id="txtDirSede" layoutX="534.0" layoutY="278.0" prefHeight="35.0" prefWidth="240.0" promptText="Dirección" style="-fx-background-radius: 8;">
          <effect>
             <Blend />
          </effect>
          <cursor>
             <Cursor fx:constant="MOVE" />
          </cursor>
+         <font>
+            <Font size="18.0" />
+         </font>
       </TextField>
       <Label fx:id="lbinvalidoRegistro" layoutX="257.0" layoutY="311.0" prefHeight="28.0" prefWidth="87.0" textAlignment="CENTER">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <ImageView fitHeight="111.0" fitWidth="154.0" layoutX="245.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="174.0" fitWidth="170.0" layoutX="405.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@recursos/avatar.png" />
          </image>
@@ -80,10 +103,13 @@
          </effect>
       </ImageView>
       <Label fx:id="lblMensajeContra" layoutX="429.0" layoutY="284.0" />
-      <TextField fx:id="txtCiudad" layoutX="334.0" layoutY="248.0" promptText="Ciudad" style="-fx-background-radius: 8;">
+      <TextField fx:id="txtCiudad" layoutX="534.0" layoutY="356.0" prefHeight="35.0" prefWidth="240.0" promptText="Ciudad" style="-fx-background-radius: 8;">
          <effect>
             <Blend />
          </effect>
+         <font>
+            <Font size="18.0" />
+         </font>
       </TextField>
    </children>
 </AnchorPane>
