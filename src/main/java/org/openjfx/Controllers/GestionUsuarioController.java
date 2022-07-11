@@ -320,7 +320,7 @@ public class GestionUsuarioController implements Initializable {
             Usuario usuarioModelo = new Usuario();
 
             String contraseña = txtPassword.getText();
-            String contraseñaCifrada = Hash.md5(contraseña);
+            String contraseñaCifrada = Hash.encrypt(contraseña);
 
             usuarioModelo.setNombre(txtNombre.getText());
             usuarioModelo.setApellido(txtApellido.getText());
@@ -520,7 +520,7 @@ public class GestionUsuarioController implements Initializable {
 
                 // Cambio valores en los labels
                 txtNombre.setText(readUsuario.getNombre());
-                txtPasswordConfirm.setText(Hash.md5(readUsuario.getContraseña()));
+                txtPasswordConfirm.setText(Hash.decrypt(readUsuario.getContraseña()));
                 txtApellido.setText(readUsuario.getApellido());
                 txtPassword.setText(readUsuario.getContraseña());
                 txtMail.setText(readUsuario.getEmail());

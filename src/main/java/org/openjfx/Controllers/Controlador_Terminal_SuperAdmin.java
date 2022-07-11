@@ -94,7 +94,7 @@ public class Controlador_Terminal_SuperAdmin {
                 System.out.println("Ingrese Contraseña");
                 String contraseña = scanner.nextLine();
                 if (Validaciones.validarPassword(contraseña)) {
-                    usuario.setContraseña(Hash.md5(contraseña));
+                    usuario.setContraseña(Hash.encrypt(contraseña));
                     contraseña_Valida = true;
                 } else {
                     System.err.println("Contraseña inválida");

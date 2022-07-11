@@ -269,7 +269,7 @@ public class RegistrarUsuarioController implements Initializable {
             Usuario usuarioModelo = new Usuario();
 
             String contraseña = txtPassword.getText();
-            String contraseñaCifrada = Hash.md5(contraseña);
+            String contraseñaCifrada = Hash.encrypt(contraseña);
 
             usuarioModelo.setNombre(txtNombre.getText());
             usuarioModelo.setApellido(txtApellido.getText());

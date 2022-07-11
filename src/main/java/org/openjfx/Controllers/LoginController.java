@@ -103,7 +103,7 @@ public class LoginController  {
         else {
             Usuario usuarioLogin = new Usuario();
             String contraseña = txtContraseña.getText();
-            String contraseñaCifrada = Hash.md5(contraseña);
+            String contraseñaCifrada = Hash.encrypt(contraseña);
 
             Date date = new Date();
             DateFormat fechaHora = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
