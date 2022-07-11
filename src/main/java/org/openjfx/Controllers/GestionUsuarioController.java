@@ -466,7 +466,6 @@ public class GestionUsuarioController implements Initializable {
             boolean validado = this.validacionCedula();
             if (validado) {
                 this.llenarCamposPorCedula();
-                this.refreshTable();
             }
         }
     }
@@ -491,7 +490,7 @@ public class GestionUsuarioController implements Initializable {
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumento.setStyle(estiloMensajeError);
-            new FadeIn(cargo).play();
+            new FadeIn(txtDocumento).play();
         }
         return validado;
     }
@@ -521,13 +520,21 @@ public class GestionUsuarioController implements Initializable {
 
                 // Cambio valores en los labels
                 txtNombre.setText(readUsuario.getNombre());
-                txtPasswordConfirm.setText(readUsuario.getContraseña());
+                txtPasswordConfirm.setText(Hash.md5(readUsuario.getContraseña()));
                 txtApellido.setText(readUsuario.getApellido());
                 txtPassword.setText(readUsuario.getContraseña());
                 txtMail.setText(readUsuario.getEmail());
                 txtTelefono.setText(readUsuario.getTelefono());
-                dtpNacimiento.setValue(LocalDate.ofInstant(readUsuario.getFecha_nacimiento().toInstant(), ZoneId.systemDefault()));
-                cargo.setText(readUsuario.getUser_type().toString());
+                dtpNacimiento.setValue(LocalDate.parse(readUsuario.getFecha_nacimiento().toString()));
+
+                String rol = "";
+                if (readUsuario.getUser_type().toString().equals("ADMIN")) {
+                    rol = "Administrador";
+                }
+                else {
+                    rol = "Gerente";
+                }
+                cargo.setText(rol);
 
             }
         } catch(SQLException exception) {
