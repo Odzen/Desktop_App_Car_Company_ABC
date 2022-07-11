@@ -6,6 +6,8 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -129,14 +131,14 @@ public class GestionUsuarioController implements Initializable {
                 txtApellido.getText().isEmpty() || txtPassword.getText().isEmpty() ||
                 txtMail.getText().isEmpty()|| txtDocumento.getText().isEmpty() ||
                 txtTelefono.getText().isEmpty() || dtpNacimiento.getValue()==null ||
-                cargo.getText().equals("Seleccionar Cargo"))
+                cargo.getText().equals("Cargo"))
         {
             validacionRegistroLabel.setStyle(mensajeError);
             if(txtNombre.getText().isEmpty() && txtPasswordConfirm.getText().isEmpty() &&
                     txtApellido.getText().isEmpty() && txtPassword.getText().isEmpty() &&
                     txtMail.getText().isEmpty()  && txtDocumento.getText().isEmpty() &&
                     txtTelefono.getText().isEmpty() && dtpNacimiento.getValue()==null &&
-                    cargo.getText().equals("Seleccionar Cargo"))
+                    cargo.getText().equals("Cargo"))
             {
                 validacionRegistroLabel.setText("Se requieren todos los campos!");
                 txtNombre.setStyle(estiloMensajeError);
@@ -265,7 +267,7 @@ public class GestionUsuarioController implements Initializable {
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumento.setStyle(estiloMensajeError);
-            new FadeIn(cargo).play();
+            new FadeIn(txtDocumento).play();
         }
         // Validación Email
         if (!Validaciones.validarEmail(txtMail.getText()))
@@ -440,6 +442,100 @@ public class GestionUsuarioController implements Initializable {
         Stage stage = (Stage) btnSalir.getScene().getWindow();
         stage.close();
     }
+
+    // Buscar por cedula para llenar campos y registrar o borrar
+    @FXML
+    protected void btnBuscarCedula() {
+        validacionRegistroLabel.setText("");
+        txtNombre.setStyle(null);
+        txtPasswordConfirm.setStyle(null);
+        txtApellido.setStyle(null);
+        txtPassword.setStyle(null);
+        txtMail.setStyle(null);
+        txtDocumento.setStyle(null);
+        txtTelefono.setStyle(null);
+        dtpNacimiento.setStyle(null);
+        cargo.setStyle(null);
+        if(txtDocumento.getText().isEmpty())
+        {
+            validacionRegistroLabel.setStyle(mensajeError);
+            new Shake(txtDocumento).play();
+            validacionRegistroLabel.setText("La cédula está vacía!");
+        }
+        else {
+            boolean validado = this.validacionCedula();
+            if (validado) {
+                this.llenarCamposPorCedula();
+                this.refreshTable();
+            }
+        }
+    }
+
+    private boolean validacionCedula() {
+        // Validación Cédula
+        boolean validado = true;
+        validacionRegistroLabel.setText("");
+        if (!Validaciones.validarCedula(txtDocumento.getText())) {
+            validado = false;
+            String textoError = "Formato de la cédula incorrecto!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtDocumento.setStyle(estiloMensajeError);
+            new FadeIn(txtDocumento).play();
+        }
+
+        if (!SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText())) {
+            // Validacion para saber si el usuario con esa cédula ya existe
+            validado = false;
+            String textoError = "Un usuario con ese número de cédula ya existe!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtDocumento.setStyle(estiloMensajeError);
+            new FadeIn(cargo).play();
+        }
+        return validado;
+    }
+
+    private void llenarCamposPorCedula() {
+        String cedula = txtDocumento.getText();
+        try {
+            ResultSet result = SQL_Usuario.obtenerUsuario_Cedula(cedula);
+            while (result.next()) {
+                Usuario readUsuario = new Usuario();
+
+                readUsuario.setId_usuario(result.getInt("id_usuario"));
+                readUsuario.setCedula(result.getString("cedula"));
+                readUsuario.setContraseña(result.getString("contraseña"));
+                readUsuario.setEmail(result.getString("email"));
+                readUsuario.setNombre(result.getString("nombre"));
+                readUsuario.setApellido(result.getString("apellido"));
+                readUsuario.setModificado(result.getDate("modificado"));
+                readUsuario.setAvatar(result.getString("avatar"));
+                readUsuario.setJoined(result.getDate("joined"));
+                readUsuario.setUser_type(Rol.valueOf(result.getString("user_type")));
+                readUsuario.setTelefono(result.getString("telefono"));
+                readUsuario.setActivo(result.getBoolean("activo"));
+                readUsuario.setFecha_nacimiento(result.getDate("fecha_nacimiento"));
+                readUsuario.setLast_session(result.getString("last_session"));
+                readUsuario.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
+
+                // Cambio valores en los labels
+                txtNombre.setText(readUsuario.getNombre());
+                txtPasswordConfirm.setText(readUsuario.getContraseña());
+                txtApellido.setText(readUsuario.getApellido());
+                txtPassword.setText(readUsuario.getContraseña());
+                txtMail.setText(readUsuario.getEmail());
+                txtTelefono.setText(readUsuario.getTelefono());
+                dtpNacimiento.setValue(LocalDate.ofInstant(readUsuario.getFecha_nacimiento().toInstant(), ZoneId.systemDefault()));
+                cargo.setText(readUsuario.getUser_type().toString());
+
+            }
+        } catch(SQLException exception) {
+            throw new RuntimeException(exception);
+        }
+
+    }
+
     @FXML
     private void print(MouseEvent event) {
     }

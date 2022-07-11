@@ -72,6 +72,24 @@ public class SQL_Usuario {
         }
     }
 
+    // Verifica si un usuario existe o no en la base de datos, basado en su cédula
+    public static ResultSet obtenerUsuario_Cedula(String cedula)  {
+        try {
+            PreparedStatement sentencia = connection.prepareStatement(
+                    "SELECT * FROM usuario WHERE cedula= ?"
+            );
+
+            sentencia.setString(1, cedula);
+            ResultSet resultado = sentencia.executeQuery();
+            return resultado;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
     // Verifica si un usuario existe o no en la base de datos, basado en su ID
     public static boolean login(Usuario usuario)  {
         try {
