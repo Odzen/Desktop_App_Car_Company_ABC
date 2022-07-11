@@ -20,7 +20,7 @@
          <effect>
             <InnerShadow />
          </effect></Button>
-      <Button fx:id="bttnRegistroAdmin" layoutX="514.0" layoutY="285.0" mnemonicParsing="false" onAction="#btnRegistroAdminClick" prefHeight="43.0" prefWidth="142.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Registrar usuario">
+      <Button fx:id="bttnGestionSedes" layoutX="514.0" layoutY="285.0" mnemonicParsing="false" onAction="#bttnGestionSedes" prefHeight="43.0" prefWidth="142.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Gestionar Sedes">
          <effect>
             <InnerShadow />
          </effect></Button>
