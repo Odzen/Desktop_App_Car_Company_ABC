@@ -1,10 +1,11 @@
 -- Alterar secuencias
 ALTER SEQUENCE usuario_id_usuario_seq RESTART;
---ALTER SEQUENCE sede_id_sede_seq RESTART;
+ALTER SEQUENCE sede_id_sede_seq RESTART;
 
 -- Dropping tables for testing
 DROP TABLE IF EXISTS usuario CASCADE;
 DROP TABLE IF EXISTS tipo_usuario CASCADE;
+DROP TABLE IF EXISTS sede CASCADE;
 
 --Table creation
 

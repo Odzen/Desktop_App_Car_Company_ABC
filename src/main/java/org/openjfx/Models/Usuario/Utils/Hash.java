@@ -1,9 +1,14 @@
 package org.openjfx.Models.Usuario.Utils;
 
 import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import org.apache.commons.codec.binary.Base64;
 
@@ -11,22 +16,62 @@ public class Hash {
 
     private static final String UNICODE_FORMAT = "UTF8";
     public static final String DESEDE_ENCRYPTION_SCHEME = "DESede";
-    private KeySpec ks;
-    private SecretKeyFactory skf;
+
+    private static String myEncryptionScheme= DESEDE_ENCRYPTION_SCHEME;
+    private static SecretKeyFactory skf;
+
+    static {
+        try {
+            skf = SecretKeyFactory.getInstance(myEncryptionScheme);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static String myEncryptionKey= "ThisIsSpartaThisIsSparta";
     private static Cipher cipher;
-    byte[] arrayBytes;
-    private String myEncryptionKey;
-    private String myEncryptionScheme;
+
+    static {
+        try {
+            cipher = Cipher.getInstance(myEncryptionScheme);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchPaddingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    static byte[] arrayBytes;
+
+    static {
+        try {
+            arrayBytes = myEncryptionKey.getBytes(UNICODE_FORMAT);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static KeySpec ks;
+
+    static {
+        try {
+            ks = new DESedeKeySpec(arrayBytes);
+        } catch (InvalidKeyException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     static SecretKey key;
 
-    public Hash() throws Exception {
-        myEncryptionKey = "ThisIsSpartaThisIsSparta";
-        myEncryptionScheme = DESEDE_ENCRYPTION_SCHEME;
-        arrayBytes = myEncryptionKey.getBytes(UNICODE_FORMAT);
-        ks = new DESedeKeySpec(arrayBytes);
-        skf = SecretKeyFactory.getInstance(myEncryptionScheme);
-        cipher = Cipher.getInstance(myEncryptionScheme);
-        key = skf.generateSecret(ks);
+    static {
+        try {
+            key = skf.generateSecret(ks);
+        } catch (InvalidKeySpecException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Hash() throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException {
     }
 
 

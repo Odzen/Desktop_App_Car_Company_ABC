@@ -105,6 +105,10 @@ public class GestionUsuarioController implements Initializable {
     MenuItem firstItem;
     @FXML
     MenuItem secondItem;
+
+    @FXML
+    private SplitMenuButton sede;
+
     @FXML
     private Label validacionRegistroLabel;
 
@@ -113,8 +117,9 @@ public class GestionUsuarioController implements Initializable {
      * @throws IOException
      */
     //Para validar los campos de usuario y contraseña
-    @FXML
-    protected void bttnNuevoUsuarioClicked() throws IOException{
+
+    private void crearActualizarUsuario(boolean crear) {
+
         validacionRegistroLabel.setText("");
         txtNombre.setStyle(null);
         txtPasswordConfirm.setStyle(null);
@@ -161,18 +166,23 @@ public class GestionUsuarioController implements Initializable {
                 new Shake(cargo).play();
             } else {
                 validacionRegistroLabel.setText("Algunos campos están vacíos!");
-                boolean validado = this.validaciones();
+                boolean validado = this.validaciones(crear);
                 if (validado) {
-                    this.guardarUsuario();
+                    this.guardarActualizarUsuario(crear);
                 }
             }
         } else {
-            boolean validado = this.validaciones();
+            boolean validado = this.validaciones(crear);
             if (validado) {
-                this.guardarUsuario();
+                this.guardarActualizarUsuario(crear);
                 this.refreshTable();
             }
         }
+    }
+
+    @FXML
+    protected void bttnNuevoUsuarioClicked() throws IOException{
+        this.crearActualizarUsuario(true);
     }
     @FXML
     private void setFirstItem() {
@@ -184,7 +194,7 @@ public class GestionUsuarioController implements Initializable {
         cargo.setText(secondItem.getText());
     }
 
-    private boolean validaciones() {
+    private boolean validaciones(boolean crear) {
         // Validacion contraseña
         boolean validado = true;
         validacionRegistroLabel.setText("");
@@ -259,7 +269,7 @@ public class GestionUsuarioController implements Initializable {
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumento.setStyle(estiloMensajeError);
             new FadeIn(txtDocumento).play();
-        } else if (SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText())) {
+        } else if (SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText()) && crear) {
             // Validacion para saber si el usuario con esa cédula ya existe
             System.out.println(SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText()));
             validado = false;
@@ -309,18 +319,19 @@ public class GestionUsuarioController implements Initializable {
         validacionRegistroLabel.setText("");
         System.out.println("Pasó Validaciones");
         validacionRegistroLabel.setStyle(mensajeExito);
-        validacionRegistroLabel.setText("Registro éxitoso!");
+        validacionRegistroLabel.setText("Operación Exitosa!");
         txtNombre.setStyle(estiloMensajeExito);
         txtPassword.setStyle(estiloMensajeExito);
         new Tada(validacionRegistroLabel).play();
     }
 
-    public void guardarUsuario() {
+    public void guardarActualizarUsuario(boolean crear) {
         try {
             Usuario usuarioModelo = new Usuario();
 
             String contraseña = txtPassword.getText();
             String contraseñaCifrada = Hash.encrypt(contraseña);
+
 
             usuarioModelo.setNombre(txtNombre.getText());
             usuarioModelo.setApellido(txtApellido.getText());
@@ -342,7 +353,12 @@ public class GestionUsuarioController implements Initializable {
             }
             usuarioModelo.setId_tipo_usuario(idTipoUsuario);
 
-            SQL_Usuario.crearUsuario(usuarioModelo);
+            // SI la orden es para crear, o para actualizar, llamo al metodo respectivo
+            if (crear)
+                SQL_Usuario.crearUsuario(usuarioModelo);
+            else
+                SQL_Usuario.editarUsuarios(usuarioModelo.getCedula(), usuarioModelo);
+
             this.validadoLabelSet();
             this.limpiar();
 
@@ -362,13 +378,12 @@ public class GestionUsuarioController implements Initializable {
         txtTelefono.setText("");
         cargo.setText("Seleccionar Cargo");
         dtpNacimiento.setValue(null);
-
     }
 
     /**
      * UPDATE - READ - DELETE
      */
-    private void loadDate() {
+    private void loadData() {
         refreshTable();
 
         col_idGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("id_usuario"));
@@ -385,6 +400,15 @@ public class GestionUsuarioController implements Initializable {
         col_last_sessionGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("last_session"));
 
         tableGestionAdmin.setItems(usuariosList);
+
+    }
+    private void loadSedes() {
+
+        //respuesta = SQL_Sedes.getAllSedes()
+
+        // while (respuesta.next())
+        //      MenuItem firstItem;
+
 
     }
 
@@ -441,6 +465,10 @@ public class GestionUsuarioController implements Initializable {
     protected void btnSalirClick() {
         Stage stage = (Stage) btnSalir.getScene().getWindow();
         stage.close();
+    }
+    @FXML
+    protected void btnLimpiar() {
+        this.limpiar();
     }
 
     // Buscar por cedula para llenar campos y registrar o borrar
@@ -522,7 +550,7 @@ public class GestionUsuarioController implements Initializable {
                 txtNombre.setText(readUsuario.getNombre());
                 txtPasswordConfirm.setText(Hash.decrypt(readUsuario.getContraseña()));
                 txtApellido.setText(readUsuario.getApellido());
-                txtPassword.setText(readUsuario.getContraseña());
+                txtPassword.setText(Hash.decrypt(readUsuario.getContraseña()));
                 txtMail.setText(readUsuario.getEmail());
                 txtTelefono.setText(readUsuario.getTelefono());
                 dtpNacimiento.setValue(LocalDate.parse(readUsuario.getFecha_nacimiento().toString()));
@@ -543,8 +571,32 @@ public class GestionUsuarioController implements Initializable {
 
     }
 
+    // Borrar - poner inactivo
     @FXML
-    private void print(MouseEvent event) {
+    private void btnBorrarClicked() {
+        String cedula = txtDocumento.getText();
+        if (SQL_Usuario.existeUsuario_Cedula(cedula)) {
+            SQL_Usuario.eliminarUsuarioPorCedula(cedula);
+        }
+        else {
+            String textoError = "No existe un usuario con esa cédula!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtDocumento.setStyle(estiloMensajeError);
+            new FadeIn(txtDocumento).play();
+        }
+        this.refreshTable();
+    }
+
+    // Actualizar
+    @FXML
+    private void btnActualizarClicked() {
+        this.crearActualizarUsuario(false);
+    }
+
+    @FXML
+    private void btnImprimirCsv() {
+        // TODO export to pdf or csv
     }
 
     /**
@@ -553,7 +605,8 @@ public class GestionUsuarioController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.readUsers();
-        this.loadDate();
+        this.loadData();
+        this.loadSedes();
         tableGestionAdmin.setItems(usuariosList);
     }
 

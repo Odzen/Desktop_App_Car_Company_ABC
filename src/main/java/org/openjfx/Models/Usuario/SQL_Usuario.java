@@ -233,9 +233,9 @@ public class SQL_Usuario {
 
 
     // Edita un usuario en la base de datos
-    public static void editarUsuarios(int id_usuario, Usuario usuarioActualizado) {
+    public static void editarUsuarios(String cedula, Usuario usuarioActualizado) {
 
-        if ( existeUsuario_Id(id_usuario)) {
+        if ( existeUsuario_Cedula(cedula)) {
             java.util.Date modificado = new java.util.Date();
             java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
             try {
@@ -253,8 +253,8 @@ public class SQL_Usuario {
                                 "last_session= ?, " +
                                 "id_tipo_usuario= ?, " +
                                 "user_type= ? " +
-                                "WHERE id_usuario = ?");
-                sentencia.setString(1, usuarioActualizado.getCedula());
+                                "WHERE cedula = ?");
+                sentencia.setString(1, cedula);
                 sentencia.setString(2, usuarioActualizado.getContraseña());
                 sentencia.setString(3, usuarioActualizado.getEmail());
                 sentencia.setString(4, usuarioActualizado.getNombre());
@@ -266,7 +266,7 @@ public class SQL_Usuario {
                 sentencia.setString(10, usuarioActualizado.getLast_session());
                 sentencia.setInt(11, usuarioActualizado.getId_tipo_usuario());
                 sentencia.setString(12, usuarioActualizado.getUser_type().toString());
-                sentencia.setInt(13, id_usuario);
+                sentencia.setString(13, cedula);
 
                 int filasAfectadas = sentencia.executeUpdate();
                 System.out.println(filasAfectadas);
@@ -284,7 +284,7 @@ public class SQL_Usuario {
         }
     }
 
-    // Elimina al usuario poniendolo inactivo en la base de datos
+    // Elimina al usuario poniendolo inactivo en la base de datos - SOFT DELETE
     public static void eliminarUsuario(int id_usuario) {
         if(existeUsuario_Id(id_usuario)) {
             java.util.Date modificado = new java.util.Date();
