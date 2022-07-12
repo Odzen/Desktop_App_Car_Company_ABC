@@ -514,7 +514,7 @@ public class GestionUsuarioController implements Initializable {
         if (!SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText())) {
             // Validacion para saber si el usuario con esa cédula ya existe
             validado = false;
-            String textoError = "Un usuario con ese número de cédula ya existe!";
+            String textoError = "Un usuario con ese número de cédula NO existe!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumento.setStyle(estiloMensajeError);

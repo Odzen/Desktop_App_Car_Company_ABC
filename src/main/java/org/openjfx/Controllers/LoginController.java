@@ -122,7 +122,6 @@ public class LoginController  {
                 this.btnLogin_MouseClicked(usuarioLogin);
             }
             else {
-                //JOptionPane.showMessageDialog(null, "Datos Incorrectos!");
                 invalidoUser.setText("Cedula o Contraseña incorrectos!");
                 invalidoUser.setStyle(mensajeError);
                 txtUser.setStyle(estiloMensajeError);

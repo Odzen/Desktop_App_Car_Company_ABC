@@ -346,7 +346,6 @@ public class SQL_Usuario {
         }
     }
 
-
     /* Metodos para DEV y NO produccion: Los metodos sgtes son para el ambiente de desarrollo pero no se deberían de usar en producción*/
     public static void eliminarTodosUsuarios() {
         try {
