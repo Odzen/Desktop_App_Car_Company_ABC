@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -112,6 +114,24 @@ public class LoginController  {
             usuarioLogin.setCedula(txtUser.getText());
             usuarioLogin.setContraseña(contraseñaCifrada);
 
+
+            // Check si el usuario está inactivo o no
+            boolean activo;
+            try {
+                ResultSet resultSet = SQL_Usuario.obtenerUsuario_Cedula(txtUser.getText());
+                activo = resultSet.getBoolean("activo");
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            if(!activo) {
+                invalidoUser.setText("El usuario con esa cédula está inactivo!");
+                invalidoUser.setStyle(mensajeError);
+                txtUser.setStyle(estiloMensajeError);
+                new animatefx.animation.FadeIn(txtUser).play();
+                new animatefx.animation.Shake(txtUser).play();
+                return;
+            }
+
             // Check si existe un usuario con esa cedula y compara contraseñas
             if(SQL_Usuario.login(usuarioLogin)) {
                 validoUser.setText("Ingreso éxitoso!");
@@ -151,7 +171,6 @@ public class LoginController  {
         else {
             System.err.println("Rol undefined");
         }
-
     }
      @FXML
     public void initialize (URL url, ResourceBundle rb){
