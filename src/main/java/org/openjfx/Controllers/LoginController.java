@@ -119,7 +119,9 @@ public class LoginController  {
             boolean activo;
             try {
                 ResultSet resultSet = SQL_Usuario.obtenerUsuario_Cedula(txtUser.getText());
+                resultSet.next();
                 activo = resultSet.getBoolean("activo");
+                System.out.println(activo);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
