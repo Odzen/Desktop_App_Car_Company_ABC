@@ -316,7 +316,7 @@ public class SQL_Usuario {
     }
 
     // Elimina al usuario poniendolo inactivo en la base de datos
-    public static void eliminarUsuarioPorCedula(String cedula) {
+    public static void cambiarEstadoUsuarioPorCedula(String cedula, boolean activo) {
         if(existeUsuario_Cedula(cedula)) {
             java.util.Date modificado = new java.util.Date();
             java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
@@ -327,7 +327,12 @@ public class SQL_Usuario {
                                 "activo= ?  " +
                                 "WHERE cedula = ?");
                 sentencia.setDate(1, modificadoSql);
-                sentencia.setBoolean(2, false);
+
+                if (activo)
+                    sentencia.setBoolean(2, false);
+                else
+                    sentencia.setBoolean(2, true);
+
                 sentencia.setString(3, cedula);
 
                 int filasAfectadas = sentencia.executeUpdate();
