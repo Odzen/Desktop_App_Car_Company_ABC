@@ -1,40 +1,26 @@
 package org.openjfx.Controllers;
 
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import GlobalUtils.Dialogs;
 import animatefx.animation.FadeIn;
 import animatefx.animation.Shake;
 import animatefx.animation.Tada;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.util.Callback;
 import org.openjfx.EmpresaAutosABC;
 import org.openjfx.Models.Usuario.SQL_Usuario;
 import org.openjfx.Models.Usuario.Usuario;
@@ -576,7 +562,15 @@ public class GestionUsuarioController implements Initializable {
     private void btnBorrarClicked() {
         String cedula = txtDocumento.getText();
         if (SQL_Usuario.existeUsuario_Cedula(cedula)) {
-            SQL_Usuario.eliminarUsuarioPorCedula(cedula);
+            try {
+                ResultSet result = SQL_Usuario.obtenerUsuario_Cedula(cedula);
+                result.next();
+                boolean activo = result.getBoolean("activo");
+                SQL_Usuario.cambiarEstadoUsuarioPorCedula(cedula, activo);
+
+            } catch (SQLException exception) {
+                throw new RuntimeException(exception);
+            }
         }
         else {
             String textoError = "No existe un usuario con esa cédula!";
