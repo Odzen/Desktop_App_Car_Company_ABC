@@ -116,7 +116,6 @@ public class GestionUsuarioController implements Initializable {
         txtTelefono.setStyle(null);
         dtpNacimiento.setStyle(null);
         cargo.setStyle(null);
-        //System.out.println("Presionó Confirmar");
         // Cuando los campos están en blanco
         if(txtNombre.getText().isEmpty() || txtPasswordConfirm.getText().isEmpty() ||
                 txtApellido.getText().isEmpty() || txtPassword.getText().isEmpty() ||
@@ -385,7 +384,7 @@ public class GestionUsuarioController implements Initializable {
         col_nacimientoGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("fecha_nacimiento"));
         col_last_sessionGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("last_session"));
 
-        tableGestionAdmin.setItems(usuariosList);
+        tableGestionAdmin.setItems(usuariosList.sorted());
 
     }
     private void loadSedes() {
@@ -421,6 +420,7 @@ public class GestionUsuarioController implements Initializable {
                 readUsuario.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
                 usuariosList.add(readUsuario);
             }
+            usuariosList.sorted();
         } catch(SQLException exception) {
             throw new RuntimeException(exception);
         }
@@ -567,6 +567,8 @@ public class GestionUsuarioController implements Initializable {
                 result.next();
                 boolean activo = result.getBoolean("activo");
                 SQL_Usuario.cambiarEstadoUsuarioPorCedula(cedula, activo);
+                this.validadoLabelSet();
+                this.limpiar();
 
             } catch (SQLException exception) {
                 throw new RuntimeException(exception);
@@ -601,7 +603,7 @@ public class GestionUsuarioController implements Initializable {
         this.readUsers();
         this.loadData();
         this.loadSedes();
-        tableGestionAdmin.setItems(usuariosList);
+        tableGestionAdmin.setItems(usuariosList.sorted());
     }
 
 }

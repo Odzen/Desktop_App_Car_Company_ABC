@@ -103,12 +103,12 @@
             <Font size="10.0" />
          </font>
       </Button>
-       <Label fx:id="validacionRegistroLabel" layoutX="662.0" layoutY="103.0" prefHeight="128.0" prefWidth="210.0" textAlignment="LEFT">
+       <Label fx:id="validacionRegistroLabel" layoutX="662.0" layoutY="103.0" prefHeight="128.0" prefWidth="265.0" textAlignment="LEFT">
            <font>
                <Font size="10.0" />
            </font>
        </Label>
-       <Label fx:id="lblMensajeContra" layoutX="692.0" layoutY="91.0" prefHeight="128.0" prefWidth="174.0" textAlignment="CENTER" textFill="RED" />
+       <Label fx:id="lblMensajeContra" layoutX="674.0" layoutY="103.0" prefHeight="128.0" prefWidth="233.0" textAlignment="CENTER" textFill="RED" />
       <Button fx:id="buscarCedula" layoutX="193.0" layoutY="65.0" mnemonicParsing="false" onAction="#btnBuscarCedula" style="-fx-background-radius: 12; -fx-background-color: gold; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Buscar">
          <effect>
             <InnerShadow color="#f5f2f2c7" />
