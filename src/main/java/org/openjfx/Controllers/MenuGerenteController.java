@@ -38,12 +38,6 @@ public class MenuGerenteController implements Initializable {
     private Button bttnGestionSede;
 
     @FXML
-    private Button bttnRegistroGerente;
-
-    @FXML
-    private Button bttnRegistrosede;
-
-    @FXML
     private Button bttnReporteGer;
 
     @FXML
@@ -63,14 +57,7 @@ public class MenuGerenteController implements Initializable {
         EmpresaAutosABC.setRoot("GestionUsuGerente");
     }
 
-    @FXML
-    private void btnRegistroAdminClick() throws IOException{
-        EmpresaAutosABC.setRoot("registrarUsuario");
-    }
-    @FXML
-    private void bttnRegistroSedeClick() throws IOException{
-        EmpresaAutosABC.setRoot("registrarSede");
-    }
+
     @FXML
     private void btnCerrarSesionClick() throws IOException{
         EmpresaAutosABC.setRoot("Login");
