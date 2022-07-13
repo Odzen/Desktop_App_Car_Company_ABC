@@ -1,6 +1,7 @@
 package org.openjfx.Models.Usuario;
 
 import org.openjfx.Models.Conexion;
+import org.openjfx.Models.Usuario.Utils.Rol;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -31,6 +32,26 @@ public class SQL_Usuario {
         }
     }
 
+    public static ResultSet obtenerTodosUsuariosPorRol(Rol rol) {
+        try {
+
+            if(rol.equals(Rol.ADMIN)) {
+                PreparedStatement sentencia = connection.prepareStatement(
+                        "SELECT * FROM usuario WHERE user_type= ? or user_type= ? "
+                );
+                sentencia.setString(1, "ADMIN");
+                sentencia.setString(2, "GERENTE");
+
+                ResultSet resultado = sentencia.executeQuery();
+                return resultado;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
     // Verifica si un usuario existe o no en la base de datos, basado en su cédula
     public static boolean existeUsuario_Cedula(String cedula)  {
         try {
@@ -50,6 +71,24 @@ public class SQL_Usuario {
             throw new RuntimeException(e);
         }
     }
+
+    // Verifica si un usuario existe o no en la base de datos, basado en su cédula
+    public static ResultSet obtenerUsuario_Cedula(String cedula)  {
+        try {
+            PreparedStatement sentencia = connection.prepareStatement(
+                    "SELECT * FROM usuario WHERE cedula= ?"
+            );
+
+            sentencia.setString(1, cedula);
+            ResultSet resultado = sentencia.executeQuery();
+            return resultado;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
     // Verifica si un usuario existe o no en la base de datos, basado en su ID
     public static boolean login(Usuario usuario)  {
@@ -194,9 +233,9 @@ public class SQL_Usuario {
 
 
     // Edita un usuario en la base de datos
-    public static void editarUsuarios(int id_usuario, Usuario usuarioActualizado) {
+    public static void editarUsuarios(String cedula, Usuario usuarioActualizado) {
 
-        if ( existeUsuario_Id(id_usuario)) {
+        if ( existeUsuario_Cedula(cedula)) {
             java.util.Date modificado = new java.util.Date();
             java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
             try {
@@ -214,8 +253,8 @@ public class SQL_Usuario {
                                 "last_session= ?, " +
                                 "id_tipo_usuario= ?, " +
                                 "user_type= ? " +
-                                "WHERE id_usuario = ?");
-                sentencia.setString(1, usuarioActualizado.getCedula());
+                                "WHERE cedula = ?");
+                sentencia.setString(1, cedula);
                 sentencia.setString(2, usuarioActualizado.getContraseña());
                 sentencia.setString(3, usuarioActualizado.getEmail());
                 sentencia.setString(4, usuarioActualizado.getNombre());
@@ -227,7 +266,7 @@ public class SQL_Usuario {
                 sentencia.setString(10, usuarioActualizado.getLast_session());
                 sentencia.setInt(11, usuarioActualizado.getId_tipo_usuario());
                 sentencia.setString(12, usuarioActualizado.getUser_type().toString());
-                sentencia.setInt(13, id_usuario);
+                sentencia.setString(13, cedula);
 
                 int filasAfectadas = sentencia.executeUpdate();
                 System.out.println(filasAfectadas);
@@ -245,7 +284,7 @@ public class SQL_Usuario {
         }
     }
 
-    // Elimina al usuario poniendolo inactivo en la base de datos
+    // Elimina al usuario poniendolo inactivo en la base de datos - SOFT DELETE
     public static void eliminarUsuario(int id_usuario) {
         if(existeUsuario_Id(id_usuario)) {
             java.util.Date modificado = new java.util.Date();
@@ -276,6 +315,36 @@ public class SQL_Usuario {
         }
     }
 
+    // Elimina al usuario poniendolo inactivo en la base de datos
+    public static void eliminarUsuarioPorCedula(String cedula) {
+        if(existeUsuario_Cedula(cedula)) {
+            java.util.Date modificado = new java.util.Date();
+            java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
+            try {
+                PreparedStatement sentencia = connection.prepareStatement(
+                        "UPDATE usuario SET " +
+                                "modificado = ? , " +
+                                "activo= ?  " +
+                                "WHERE cedula = ?");
+                sentencia.setDate(1, modificadoSql);
+                sentencia.setBoolean(2, false);
+                sentencia.setString(3, cedula);
+
+                int filasAfectadas = sentencia.executeUpdate();
+
+                if (filasAfectadas == 0) {
+                    System.out.println("No se modificó nada !");
+                } else {
+                    System.out.println("Se cambio el estado a INACTIVO del usuario en la base de datos");
+                }
+
+            } catch (SQLException e) {
+                System.err.println(e);
+            }
+        } else {
+            System.out.println("El usuario con ese id NO existe, por favor dijiste un id correcto!");
+        }
+    }
 
     /* Metodos para DEV y NO produccion: Los metodos sgtes son para el ambiente de desarrollo pero no se deberían de usar en producción*/
     public static void eliminarTodosUsuarios() {
