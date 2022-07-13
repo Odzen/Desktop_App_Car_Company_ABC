@@ -340,7 +340,7 @@ public class SQL_Usuario {
                 if (filasAfectadas == 0) {
                     System.out.println("No se modificó nada !");
                 } else {
-                    System.out.println("Se cambio el estado a INACTIVO del usuario en la base de datos");
+                    System.out.println("Se cambio el estado del usuario en la base de datos!");
                 }
 
             } catch (SQLException e) {
