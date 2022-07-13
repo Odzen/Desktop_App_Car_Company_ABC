@@ -1,7 +1,6 @@
 package org.openjfx.Controllers;
 
-import org.openjfx.Models.Conexion;
-import org.openjfx.Models.Usuario.CRUD_Usuario;
+import org.openjfx.Models.Usuario.SQL_Usuario;
 import org.openjfx.Models.Usuario.Usuario;
 import org.openjfx.Models.Usuario.Utils.Hash;
 import org.openjfx.Models.Usuario.Utils.Validaciones;
@@ -14,13 +13,13 @@ import java.util.Scanner;
 
 public class Controlador_Terminal_SuperAdmin {
     private Usuario usr;
-    private CRUD_Usuario usrConsulta;
+    private SQL_Usuario usrConsulta;
 
     //Scanner para simular la vista en consola
     private static final Scanner scanner = new Scanner(System.in);
     private int opcion = 0;
 
-    public Controlador_Terminal_SuperAdmin(Usuario usr, CRUD_Usuario usrConsulta){
+    public Controlador_Terminal_SuperAdmin(Usuario usr, SQL_Usuario usrConsulta){
         this.usr = usr;
         this.usrConsulta = usrConsulta;
     }
@@ -54,10 +53,10 @@ public class Controlador_Terminal_SuperAdmin {
             } else if( opcion == 2) {
                 usrConsulta.crearUsuario(this.pedirDatosUsuario());
             } else if( opcion == 3) {
-                System.out.println("Ingrese Id del Usuario que quiere modificar");
-                int id_usuario = scanner.nextInt();
+                System.out.println("Ingrese la cedula del Usuario que quiere modificar");
+                String cedula = scanner.nextLine();
                 Usuario usuarioActualizado = pedirDatosUsuario();
-                usrConsulta.editarUsuarios(id_usuario,usuarioActualizado);
+                usrConsulta.editarUsuarios(cedula,usuarioActualizado);
             } else if( opcion == 4) {
                 System.out.println("Ingrese Id del Usuario que quiere eliminar");
                 int id_usuario = scanner.nextInt();
@@ -66,7 +65,6 @@ public class Controlador_Terminal_SuperAdmin {
                 usrConsulta.eliminarTodosUsuarios();
             } else if( opcion == 6) {
                 System.out.println("Salió del menu Usuario!!");
-                Conexion.closeConnection();
             }
 
         } while (opcion != 6);
@@ -96,7 +94,7 @@ public class Controlador_Terminal_SuperAdmin {
                 System.out.println("Ingrese Contraseña");
                 String contraseña = scanner.nextLine();
                 if (Validaciones.validarPassword(contraseña)) {
-                    usuario.setContraseña(Hash.md5(contraseña));
+                    usuario.setContraseña(Hash.encrypt(contraseña));
                     contraseña_Valida = true;
                 } else {
                     System.err.println("Contraseña inválida");

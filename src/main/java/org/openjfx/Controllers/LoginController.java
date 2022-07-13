@@ -1,30 +1,23 @@
 package org.openjfx.Controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
-
-import javafx.scene.control.Label;
 import org.openjfx.EmpresaAutosABC;
-import org.openjfx.Models.Usuario.CRUD_Usuario;
+import org.openjfx.Models.Usuario.SQL_Usuario;
 import org.openjfx.Models.Usuario.Usuario;
 import org.openjfx.Models.Usuario.Utils.Hash;
+import org.openjfx.Models.Usuario.Utils.Rol;
 
 import javax.print.DocFlavor.URL;
 
-/**
- * FXML Controller class
- *
- * @author Mavel Sterling
- * @author Juan Velasquez
- */
 public class LoginController  {
     protected String mensajeExito = String.format("-fx-text-fill: GREEN;");
     protected String estiloMensajeExito = String.format("-fx-border-color: #A9A9A9; -fx-border-width: 2; -fx-border-radius: 5;");
@@ -110,10 +103,9 @@ public class LoginController  {
         }
         // Si el ingreso es correcto
         else {
-            CRUD_Usuario usuarioSql = new CRUD_Usuario();
             Usuario usuarioLogin = new Usuario();
             String contraseña = txtContraseña.getText();
-            String contraseñaCifrada = Hash.md5(contraseña);
+            String contraseñaCifrada = Hash.encrypt(contraseña);
 
             Date date = new Date();
             DateFormat fechaHora = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
@@ -122,17 +114,36 @@ public class LoginController  {
             usuarioLogin.setCedula(txtUser.getText());
             usuarioLogin.setContraseña(contraseñaCifrada);
 
+
+            // Check si el usuario está inactivo o no
+            boolean activo;
+            try {
+                ResultSet resultSet = SQL_Usuario.obtenerUsuario_Cedula(txtUser.getText());
+                resultSet.next();
+                activo = resultSet.getBoolean("activo");
+                System.out.println(activo);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            if(!activo) {
+                invalidoUser.setText("El usuario con esa cédula está inactivo!");
+                invalidoUser.setStyle(mensajeError);
+                txtUser.setStyle(estiloMensajeError);
+                new animatefx.animation.FadeIn(txtUser).play();
+                new animatefx.animation.Shake(txtUser).play();
+                return;
+            }
+
             // Check si existe un usuario con esa cedula y compara contraseñas
-            if(usuarioSql.login(usuarioLogin)) {
+            if(SQL_Usuario.login(usuarioLogin)) {
                 validoUser.setText("Ingreso éxitoso!");
                 validoUser.setStyle(mensajeExito);
                 txtUser.setStyle(estiloMensajeExito);
                 txtContraseña.setStyle(estiloMensajeExito);
                 new animatefx.animation.Tada(validoUser).play();
-                this.btnLogin_MouseClicked();
+                this.btnLogin_MouseClicked(usuarioLogin);
             }
             else {
-                //JOptionPane.showMessageDialog(null, "Datos Incorrectos!");
                 invalidoUser.setText("Cedula o Contraseña incorrectos!");
                 invalidoUser.setStyle(mensajeError);
                 txtUser.setStyle(estiloMensajeError);
@@ -146,8 +157,22 @@ public class LoginController  {
 
     // Cuando el usuario hace click en el boton Login, pasa al menú
     @FXML
-    protected void btnLogin_MouseClicked() throws IOException {
-        EmpresaAutosABC.setRoot("menu");
+    protected void btnLogin_MouseClicked(Usuario usuarioLogin) throws IOException {
+        if (usuarioLogin.getUser_type().equals(Rol.ADMIN)) {
+            EmpresaAutosABC.setRoot("menuAdmin");
+        }
+        else if (usuarioLogin.getUser_type().equals(Rol.GERENTE)) {
+            EmpresaAutosABC.setRoot("menuGerente");
+        }
+        else if (usuarioLogin.getUser_type().equals(Rol.JEFE_TALLER)) {
+            // EmpresaAutosABC.setRoot("menuJefeTaller");
+        }
+        else if (usuarioLogin.getUser_type().equals(Rol.VENDEDOR)) {
+            // EmpresaAutosABC.setRoot("menuVendedor");
+        }
+        else {
+            System.err.println("Rol undefined");
+        }
     }
      @FXML
     public void initialize (URL url, ResourceBundle rb){

@@ -1,9 +1,11 @@
 -- Alterar secuencias
 ALTER SEQUENCE usuario_id_usuario_seq RESTART;
+ALTER SEQUENCE sede_id_sede_seq RESTART;
 
 -- Dropping tables for testing
 DROP TABLE IF EXISTS usuario CASCADE;
 DROP TABLE IF EXISTS tipo_usuario CASCADE;
+DROP TABLE IF EXISTS sede CASCADE;
 
 --Table creation
 
@@ -44,3 +46,19 @@ CREATE TABLE usuario (
          FOREIGN KEY (id_tipo_usuario)
              REFERENCES tipo_usuario(id_tipo_usuario)
 );
+
+
+CREATE TABLE sede (
+     id_sede SERIAL,
+     direccion text NOT NULL,
+     telefono text NOT NULL,
+     nombre_sede text NOT NULL,
+     activo boolean NOT NULL,
+     ciudad text NOT NULL,
+     id_creado_por INT,
+     PRIMARY KEY (id_sede),
+     CONSTRAINT "FK_sede.id_creado_por"
+         FOREIGN KEY (id_creado_por)
+             REFERENCES usuario(id_usuario)
+);
+
