@@ -15,6 +15,7 @@ import org.openjfx.Models.Usuario.SQL_Usuario;
 import org.openjfx.Models.Usuario.Usuario;
 import org.openjfx.Models.Usuario.Utils.Hash;
 import org.openjfx.Models.Usuario.Utils.Rol;
+import org.openjfx.Models.Usuario.Utils.Validaciones;
 
 import javax.print.DocFlavor.URL;
 
@@ -84,7 +85,7 @@ public class LoginController  {
             new animatefx.animation.Shake(txtContraseña).play();
         }
         // Se comprueba la longitud de la cedula
-        else if (txtUser.getText().length() < 10) {
+        else if (!Validaciones.validarCedula(txtUser.getText())) {
             invalidoUser.setText("Al menos 10 caracteres!");
             invalidoUser.setStyle(mensajeError);
             txtUser.setStyle(estiloMensajeError);
