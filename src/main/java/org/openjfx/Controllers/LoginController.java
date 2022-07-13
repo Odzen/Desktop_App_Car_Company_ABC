@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -103,7 +105,7 @@ public class LoginController  {
         else {
             Usuario usuarioLogin = new Usuario();
             String contraseña = txtContraseña.getText();
-            String contraseñaCifrada = Hash.md5(contraseña);
+            String contraseñaCifrada = Hash.encrypt(contraseña);
 
             Date date = new Date();
             DateFormat fechaHora = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
@@ -111,6 +113,26 @@ public class LoginController  {
 
             usuarioLogin.setCedula(txtUser.getText());
             usuarioLogin.setContraseña(contraseñaCifrada);
+
+
+            // Check si el usuario está inactivo o no
+            boolean activo;
+            try {
+                ResultSet resultSet = SQL_Usuario.obtenerUsuario_Cedula(txtUser.getText());
+                resultSet.next();
+                activo = resultSet.getBoolean("activo");
+                System.out.println(activo);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            if(!activo) {
+                invalidoUser.setText("El usuario con esa cédula está inactivo!");
+                invalidoUser.setStyle(mensajeError);
+                txtUser.setStyle(estiloMensajeError);
+                new animatefx.animation.FadeIn(txtUser).play();
+                new animatefx.animation.Shake(txtUser).play();
+                return;
+            }
 
             // Check si existe un usuario con esa cedula y compara contraseñas
             if(SQL_Usuario.login(usuarioLogin)) {
@@ -122,7 +144,6 @@ public class LoginController  {
                 this.btnLogin_MouseClicked(usuarioLogin);
             }
             else {
-                //JOptionPane.showMessageDialog(null, "Datos Incorrectos!");
                 invalidoUser.setText("Cedula o Contraseña incorrectos!");
                 invalidoUser.setStyle(mensajeError);
                 txtUser.setStyle(estiloMensajeError);
@@ -152,7 +173,6 @@ public class LoginController  {
         else {
             System.err.println("Rol undefined");
         }
-
     }
      @FXML
     public void initialize (URL url, ResourceBundle rb){
