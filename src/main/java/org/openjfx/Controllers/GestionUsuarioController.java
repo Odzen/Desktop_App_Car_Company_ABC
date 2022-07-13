@@ -567,6 +567,8 @@ public class GestionUsuarioController implements Initializable {
                 result.next();
                 boolean activo = result.getBoolean("activo");
                 SQL_Usuario.cambiarEstadoUsuarioPorCedula(cedula, activo);
+                this.validadoLabelSet();
+                this.limpiar();
 
             } catch (SQLException exception) {
                 throw new RuntimeException(exception);
