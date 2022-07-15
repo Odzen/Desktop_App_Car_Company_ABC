@@ -57,10 +57,6 @@ CREATE TABLE sede (
      ciudad text NOT NULL,
      fecha_creacion date NOT NULL,
      fecha_modificado date NOT NULL,
-     id_creado_por INT,
-     PRIMARY KEY (id_sede),
-     CONSTRAINT "FK_sede.id_creado_por"
-         FOREIGN KEY (id_creado_por)
-             REFERENCES usuario(id_usuario)
+     PRIMARY KEY (id_sede)
 );
 

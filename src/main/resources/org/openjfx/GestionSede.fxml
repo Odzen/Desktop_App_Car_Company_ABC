@@ -97,19 +97,19 @@
             <Font size="18.0" />
          </font>
       </TextField>
-      <TableView fx:id="tableGestionAdmin" layoutX="40.0" layoutY="284.0" prefHeight="238.0" prefWidth="845.0">
+      <TableView fx:id="tableGestionSedes" layoutX="40.0" layoutY="284.0" prefHeight="238.0" prefWidth="845.0">
          <columns>
-            <TableColumn fx:id="col_idGestionAdmin" prefWidth="68.0" text="Id" />
-            <TableColumn fx:id="col_nombreGestionAdmin" prefWidth="156.0" text="Nombre Sede" />
-            <TableColumn fx:id="col_apellidoGestionAdmin" prefWidth="156.0" text="Teléfono" />
-            <TableColumn fx:id="col_modificarGestionAdmin" prefWidth="128.0" text="Dirección" />
-            <TableColumn fx:id="col_apellidoGestionAdmin1" prefWidth="156.0" text="Dirección" />
-            <TableColumn fx:id="col_cargoGestionAdmin" prefWidth="112.0" text="Creado en la fecha" />
-            <TableColumn fx:id="col_telefonoGestionAdmin" prefWidth="128.0" text="Última Modificación" />
-            <TableColumn fx:id="col_activoGestionAdmin" prefWidth="82.0" text="Activo" />
+            <TableColumn fx:id="col_idSede" prefWidth="68.0" text="Id" />
+            <TableColumn fx:id="col_nombreSede" prefWidth="156.0" text="Nombre Sede" />
+            <TableColumn fx:id="col_telefonoSede" prefWidth="156.0" text="Teléfono" />
+            <TableColumn fx:id="col_direccionSede" prefWidth="128.0" text="Dirección" />
+            <TableColumn fx:id="col_ciudadSede" prefWidth="128.0" text="Ciudad" />
+            <TableColumn fx:id="col_fecha_creacion_sede" prefWidth="112.0" text="Creado en la fecha" />
+            <TableColumn fx:id="col_fecha_modificacion_sede" prefWidth="128.0" text="Última Modificación" />
+            <TableColumn fx:id="col_activo_sede" prefWidth="82.0" text="Activo" />
          </columns>
       </TableView>
-      <Button fx:id="bttnNuevoSede" layoutX="57.0" layoutY="221.0" mnemonicParsing="false" onAction="#bttnNuevoUsuarioClicked" prefHeight="34.0" prefWidth="88.0" style="-fx-background-color: #c8fcb3#c8fcb3; -fx-background-radius: 50;" text="Registrar" textAlignment="CENTER">
+      <Button fx:id="bttnNuevaSede" layoutX="57.0" layoutY="221.0" mnemonicParsing="false" onAction="#bttnNuevaSedeClicked" prefHeight="34.0" prefWidth="88.0" style="-fx-background-color: #c8fcb3#c8fcb3; -fx-background-radius: 50;" text="Registrar" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
@@ -149,7 +149,7 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="buscarNombreSede" layoutX="259.0" layoutY="97.0" mnemonicParsing="false" onAction="#btnBuscarCedula" style="-fx-background-radius: 12; -fx-background-color: gold; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Buscar">
+      <Button fx:id="buscarNombreSede" layoutX="259.0" layoutY="97.0" mnemonicParsing="false" onAction="#btnBuscarNombre" style="-fx-background-radius: 12; -fx-background-color: gold; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Buscar">
          <effect>
             <InnerShadow color="#f5f2f2c7" />
          </effect>

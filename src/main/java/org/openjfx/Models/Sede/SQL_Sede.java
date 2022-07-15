@@ -1,6 +1,8 @@
 package org.openjfx.Models.Sede;
 
 import org.openjfx.Models.Conexion;
+import org.openjfx.Models.Usuario.Utils.Rol;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -87,6 +89,36 @@ public class SQL_Sede {
 
         } catch (SQLException e) {
             System.out.printf("Error al leer las Sedes", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Verifica si una sede existe o no en la base de datos, basado en su nombre
+    public static ResultSet obtenerSede_Nombre(String nombre)  {
+        try {
+            PreparedStatement sentencia = connection.prepareStatement(
+                    "SELECT * FROM sede WHERE nombre_sede= ?"
+            );
+
+            sentencia.setString(1, nombre);
+            ResultSet resultado = sentencia.executeQuery();
+            return resultado;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static ResultSet obtenerTodasSedesSet() {
+        try {
+            PreparedStatement sentencia = connection.prepareStatement(
+                    "SELECT * FROM sede ORDER BY id_sede"
+            );
+
+            ResultSet resultado = sentencia.executeQuery();
+            return resultado;
+
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
