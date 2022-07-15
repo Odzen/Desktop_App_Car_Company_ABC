@@ -36,31 +36,31 @@ public class GestionUsuGerenteController implements Initializable {
     @FXML
     private Button btnSalir;
     @FXML
-    private TableView<Usuario> tableGestionAdmin;
+    private TableView<Usuario> tableGestionGerente;
     @FXML
-    private TableColumn<Usuario,String> col_idGestionAdmin;
+    private TableColumn<Usuario,String> col_idGestionGerente;
     @FXML
-    private TableColumn<Usuario,String> col_cedulaGestionAdmin;
+    private TableColumn<Usuario,String> col_cedulaGestionGerente;
     @FXML
-    private TableColumn<Usuario,String> col_emailGestionAdmin;
+    private TableColumn<Usuario,String> col_emailGestionGerente;
     @FXML
-    private TableColumn<Usuario,String> col_nombreGestionAdmin;
+    private TableColumn<Usuario,String> col_nombreGestionGerente;
     @FXML
-    private TableColumn<Usuario,String> col_apellidoGestionAdmin;
+    private TableColumn<Usuario,String> col_apellidoGestionGerente;
     @FXML
-    private TableColumn<Usuario, Date> col_modificarGestionAdmin;
+    private TableColumn<Usuario, Date> col_modificarGestionGerente;
     @FXML
-    private TableColumn<Usuario, Date> col_joinedGestionAdmin;
+    private TableColumn<Usuario, Date> col_joinedGestionGerente;
     @FXML
-    private TableColumn<Usuario, String> col_cargoGestionAdmin;
+    private TableColumn<Usuario, String> col_cargoGestionGerente;
     @FXML
-    private TableColumn<Usuario, String> col_telefonoGestionAdmin;
+    private TableColumn<Usuario, String> col_telefonoGestionGerente;
     @FXML
-    private TableColumn<Usuario, Boolean> col_activoGestionAdmin;
+    private TableColumn<Usuario, Boolean> col_activoGestionGerente;
     @FXML
-    private TableColumn<Usuario, Date> col_nacimientoGestionAdmin;
+    private TableColumn<Usuario, Date> col_nacimientoGestionGerente;
     @FXML
-    private TableColumn<Usuario, String> col_last_sessionGestionAdmin;
+    private TableColumn<Usuario, String> col_last_sessionGestionGerente;
 
     private ObservableList<Usuario> usuariosList = FXCollections.observableArrayList();
 
@@ -329,9 +329,9 @@ public class GestionUsuGerenteController implements Initializable {
 
             int idTipoUsuario = 0;
             if (cargo.getText().equals("Vendedor")) {
-                idTipoUsuario = 3;
-            } else if (cargo.getText().equals("Jefe de taller")) {
                 idTipoUsuario = 4;
+            } else if (cargo.getText().equals("Jefe de taller")) {
+                idTipoUsuario = 3;
             }
             usuarioModelo.setId_tipo_usuario(idTipoUsuario);
 
@@ -368,26 +368,26 @@ public class GestionUsuGerenteController implements Initializable {
     private void loadData() {
         refreshTable();
 
-        col_idGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("id_usuario"));
-        col_cedulaGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("cedula"));
-        col_emailGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("email"));
-        col_nombreGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        col_apellidoGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("apellido"));
-        col_modificarGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("modificado"));
-        col_cargoGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("user_type"));
-        col_telefonoGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("telefono"));
-        col_joinedGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("joined"));
-        col_activoGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("activo"));
-        col_nacimientoGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("fecha_nacimiento"));
-        col_last_sessionGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("last_session"));
+        col_idGestionGerente.setCellValueFactory(new PropertyValueFactory<>("id_usuario"));
+        col_cedulaGestionGerente.setCellValueFactory(new PropertyValueFactory<>("cedula"));
+        col_emailGestionGerente.setCellValueFactory(new PropertyValueFactory<>("email"));
+        col_nombreGestionGerente.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        col_apellidoGestionGerente.setCellValueFactory(new PropertyValueFactory<>("apellido"));
+        col_modificarGestionGerente.setCellValueFactory(new PropertyValueFactory<>("modificado"));
+        col_cargoGestionGerente.setCellValueFactory(new PropertyValueFactory<>("user_type"));
+        col_telefonoGestionGerente.setCellValueFactory(new PropertyValueFactory<>("telefono"));
+        col_joinedGestionGerente.setCellValueFactory(new PropertyValueFactory<>("joined"));
+        col_activoGestionGerente.setCellValueFactory(new PropertyValueFactory<>("activo"));
+        col_nacimientoGestionGerente.setCellValueFactory(new PropertyValueFactory<>("fecha_nacimiento"));
+        col_last_sessionGestionGerente.setCellValueFactory(new PropertyValueFactory<>("last_session"));
 
-        tableGestionAdmin.setItems(usuariosList.sorted());
+        tableGestionGerente.setItems(usuariosList.sorted());
 
     }
 
     private void readUsers() {
         try {
-            ResultSet result = SQL_Usuario.obtenerTodosUsuariosPorRol(Rol.ADMIN);
+            ResultSet result = SQL_Usuario.obtenerTodosUsuariosPorRol(Rol.GERENTE);
             while (result.next()) {
                 Usuario readUsuario = new Usuario();
 
@@ -590,7 +590,7 @@ public class GestionUsuGerenteController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         this.readUsers();
         this.loadData();
-        tableGestionAdmin.setItems(usuariosList.sorted());
+        tableGestionGerente.setItems(usuariosList.sorted());
     }
 
 }
