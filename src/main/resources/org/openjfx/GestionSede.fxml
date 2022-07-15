@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="945.0" style="-fx-background-color: #c7e9ff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.Controllers.GestionSedeController">
+   <children>
+      <TextField fx:id="txtNombreSede" layoutX="57.0" layoutY="93.0" prefHeight="40.0" prefWidth="188.0" promptText=" Nombre sede" style="-fx-background-radius: 8;">
+         <effect>
+            <Blend />
+         </effect>
+         <cursor>
+            <Cursor fx:constant="MOVE" />
+         </cursor>
+         <font>
+            <Font size="18.0" />
+         </font></TextField>
+      <TextField fx:id="txtTelSede" layoutX="57.0" layoutY="158.0" prefHeight="40.0" prefWidth="188.0" promptText="Teléfono" style="-fx-background-radius: 8;">
+         <effect>
+            <Blend />
+         </effect>
+         <font>
+            <Font size="18.0" />
+         </font></TextField>
+      <ImageView fitHeight="94.0" fitWidth="126.0" layoutX="810.0">
+         <image>
+            <Image url="@recursos/logo.png" />
+         </image>
+      </ImageView>
+      <Separator layoutX="105.0" layoutY="8.0" orientation="VERTICAL" prefHeight="25.0" prefWidth="0.0" />
+      <Hyperlink layoutX="19.0" layoutY="5.0" onAction="#btnInicio" prefHeight="32.0" prefWidth="61.0" text="Inicio" underline="true">
+         <font>
+            <Font size="18.0" />
+         </font></Hyperlink>
+      <Label layoutX="133.0" layoutY="4.0" prefHeight="32.0" prefWidth="136.0" text="Registro de sede">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <Button fx:id="btnCancelar" layoutX="51.0" layoutY="537.0" mnemonicParsing="false" onAction="#btnCancelarClick" prefHeight="26.0" prefWidth="119.0" style="-fx-background-color: #b8b9ba#b8b9ba #b8b9ba#b8b9ba; -fx-background-radius: 8;" text="Cancelar" textAlignment="CENTER" underline="true">
+         <effect>
+            <InnerShadow />
+         </effect>
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <TextField fx:id="txtDirSede" layoutX="429.0" layoutY="93.0" prefHeight="40.0" prefWidth="172.0" promptText="Dirección" style="-fx-background-radius: 8;">
+         <effect>
+            <Blend />
+         </effect>
+         <cursor>
+            <Cursor fx:constant="MOVE" />
+         </cursor>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <Label fx:id="validacionRegistroLabel" layoutX="662.0" layoutY="103.0" prefHeight="128.0" prefWidth="265.0" textAlignment="LEFT">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbinvalidoRegistro" layoutX="650.0" layoutY="95.0" prefHeight="133.0" prefWidth="269.0" textAlignment="CENTER">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblMensajeContra" layoutX="649.0" layoutY="99.0" prefHeight="122.0" prefWidth="262.0" />
+      <TextField fx:id="txtCiudad" layoutX="429.0" layoutY="158.0" prefHeight="40.0" prefWidth="172.0" promptText="Ciudad" style="-fx-background-radius: 8;">
+         <effect>
+            <Blend />
+         </effect>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <TableView fx:id="tableGestionSedes" layoutX="40.0" layoutY="284.0" prefHeight="238.0" prefWidth="845.0">
+         <columns>
+            <TableColumn fx:id="col_idSede" prefWidth="68.0" text="Id" />
+            <TableColumn fx:id="col_nombreSede" prefWidth="156.0" text="Nombre Sede" />
+            <TableColumn fx:id="col_telefonoSede" prefWidth="156.0" text="Teléfono" />
+            <TableColumn fx:id="col_direccionSede" prefWidth="128.0" text="Dirección" />
+            <TableColumn fx:id="col_ciudadSede" prefWidth="128.0" text="Ciudad" />
+            <TableColumn fx:id="col_fecha_creacion_sede" prefWidth="112.0" text="Creado en la fecha" />
+            <TableColumn fx:id="col_fecha_modificacion_sede" prefWidth="128.0" text="Última Modificación" />
+            <TableColumn fx:id="col_activo_sede" prefWidth="82.0" text="Activo" />
+         </columns>
+      </TableView>
+      <Button fx:id="bttnNuevaSede" layoutX="57.0" layoutY="221.0" mnemonicParsing="false" onAction="#bttnNuevaSedeClicked" prefHeight="34.0" prefWidth="88.0" style="-fx-background-color: #c8fcb3#c8fcb3; -fx-background-radius: 50;" text="Registrar" textAlignment="CENTER">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+      <Button fx:id="btnActualizarSede" layoutX="177.0" layoutY="223.0" mnemonicParsing="false" onAction="#btnActualizarClicked" prefHeight="34.0" prefWidth="99.0" style="-fx-background-radius: 12; -fx-background-color: blue; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Actualizar" textFill="WHITE">
+         <effect>
+            <InnerShadow color="#f5f2f2c7" />
+         </effect>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnCambiarEstadoSede" layoutX="297.0" layoutY="221.0" mnemonicParsing="false" onAction="#btnBorrarClicked" prefHeight="34.0" prefWidth="132.0" style="-fx-background-radius: 12; -fx-background-color: red; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Cambiar estado" textFill="#ffffffed">
+         <effect>
+            <InnerShadow color="#f5f2f2c7" />
+         </effect>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="limpiar" layoutX="469.0" layoutY="224.0" mnemonicParsing="false" onAction="#btnLimpiar" style="-fx-background-radius: 12; -fx-background-color: gold; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Limpiar">
+         <effect>
+            <InnerShadow color="#f5f2f2c7" />
+         </effect>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="imprimirReporteSedes" layoutX="564.0" layoutY="224.0" mnemonicParsing="false" onAction="#btnImprimirCsv" style="-fx-background-radius: 12; -fx-background-color: #899bab; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Imprimir Reporte">
+         <effect>
+            <InnerShadow color="#f5f2f2c7" />
+         </effect>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="buscarNombreSede" layoutX="259.0" layoutY="97.0" mnemonicParsing="false" onAction="#btnBuscarNombre" style="-fx-background-radius: 12; -fx-background-color: gold; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Buscar">
+         <effect>
+            <InnerShadow color="#f5f2f2c7" />
+         </effect>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
