@@ -1,40 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="945.0" style="-fx-background-color: #c7e9ff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.Controllers.GestionUsuGerenteController">
+<AnchorPane prefHeight="600.0" prefWidth="945.0" style="-fx-background-color: #c7e9ff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.Controllers.GestionUsuGerenteController">
    <children>
-      <TableView layoutX="52.0" layoutY="184.0" prefHeight="332.0" prefWidth="834.0">
-         <columns>
-            <TableColumn prefWidth="103.68551635742188" text="ID" />
-            <TableColumn prefWidth="297.3144836425781" text="Nombre" />
-            <TableColumn prefWidth="172.91549682617188" text="Cargo" />
-            <TableColumn prefWidth="116.74441528320312" text="Modificar" />
-            <TableColumn minWidth="0.0" prefWidth="116.51568603515625" text="Inhabilitar" />
-         </columns>
-      </TableView>
-      <ImageView fitHeight="94.0" fitWidth="153.0" layoutX="727.0" layoutY="22.0">
-         <image>
-            <Image url="@recursos/logo.png" />
-         </image>
-      </ImageView>
-      <TextField layoutX="699.0" layoutY="143.0" promptText=" Buscar ID" style="-fx-background-radius: 12;" />
       <Label layoutX="88.0" layoutY="26.0" text="Gerente">
          <font>
             <Font size="18.0" />
@@ -44,15 +30,113 @@
             <Font size="18.0" />
          </font></Hyperlink>
       <Separator layoutX="73.0" layoutY="14.0" orientation="VERTICAL" prefHeight="43.0" prefWidth="0.0" />
-      <Button fx:id="bttnNuevoUsuGerente" layoutX="57.0" layoutY="146.0" mnemonicParsing="false" onAction="#bttnNuevoUsuGerenteClicked" prefHeight="28.0" prefWidth="104.0" style="-fx-background-radius: 12; -fx-background-color: #899bab; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Nuevo Usuario" textAlignment="CENTER">
+      <TextField fx:id="txtDocumento" layoutX="46.0" layoutY="76.0" promptText="Cédula" style="-fx-background-radius: 12;" />
+      <Button fx:id="buscarCedula" layoutX="203.0" layoutY="75.0" mnemonicParsing="false" onAction="#btnBuscarCedula" style="-fx-background-radius: 12; -fx-background-color: gold; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Buscar">
          <effect>
             <InnerShadow color="#f5f2f2c7" />
          </effect>
+         <font>
+            <Font size="14.0" />
+         </font>
       </Button>
-      <Button fx:id="btnSalir" layoutX="72.0" layoutY="533.0" mnemonicParsing="false" onAction="#btnSalirClick" prefHeight="27.0" prefWidth="99.0" style="-fx-background-radius: 12; -fx-background-color: #b8b9ba#b8b9ba; -fx-border-color: #2b3238#2b3238; -fx-border-radius: 12;" text="Salir" textAlignment="CENTER" underline="true">
+      <TextField fx:id="txtApellido" layoutX="290.0" layoutY="76.0" promptText="Apellido" style="-fx-background-radius: 12;" />
+      <ImageView fitHeight="57.0" fitWidth="77.0" layoutX="430.0" layoutY="18.0">
+         <image>
+            <Image url="@recursos/logo.png" />
+         </image>
+      </ImageView>
+      <TableView fx:id="tableGestionAdmin" layoutX="60.0" layoutY="319.0" prefHeight="238.0" prefWidth="845.0">
+         <columns>
+            <TableColumn fx:id="col_idGestionAdmin" prefWidth="68.0" text="Id" />
+            <TableColumn fx:id="col_cedulaGestionAdmin" prefWidth="111.0" text="Cédula" />
+            <TableColumn fx:id="col_emailGestionAdmin" prefWidth="135.0" text="Email" />
+            <TableColumn fx:id="col_nombreGestionAdmin" prefWidth="156.0" text="Nombre" />
+            <TableColumn fx:id="col_apellidoGestionAdmin" prefWidth="156.0" text="Apellido" />
+            <TableColumn fx:id="col_modificarGestionAdmin" prefWidth="128.0" text="Modificado" />
+            <TableColumn fx:id="col_cargoGestionAdmin" prefWidth="112.0" text="Cargo" />
+            <TableColumn fx:id="col_telefonoGestionAdmin" prefWidth="128.0" text="Telefono" />
+            <TableColumn fx:id="col_joinedGestionAdmin" prefWidth="128.0" text="Joined" />
+            <TableColumn fx:id="col_activoGestionAdmin" prefWidth="82.0" text="Activo" />
+            <TableColumn fx:id="col_nacimientoGestionAdmin" prefWidth="128.0" text="Fecha de Nacimiento" />
+            <TableColumn fx:id="col_last_sessionGestionAdmin" prefWidth="128.0" text="Last Session" />
+         </columns>
+      </TableView>
+      <Button fx:id="btnSalir" layoutX="56.0" layoutY="569.0" mnemonicParsing="false" onAction="#btnSalirClick" prefHeight="27.0" prefWidth="99.0" style="-fx-background-radius: 12; -fx-background-color: #b8b9ba#b8b9ba; -fx-border-color: #2b3238#2b3238; -fx-border-radius: 12;" text="Salir" underline="true">
          <effect>
             <InnerShadow color="#000000ab" />
          </effect>
       </Button>
+      <Button fx:id="btnCancelar" layoutX="801.0" layoutY="570.0" mnemonicParsing="false" onAction="#btnCancelarClick" prefHeight="17.0" prefWidth="79.0" style="-fx-background-color: #b8b9ba#b8b9ba #b8b9ba#b8b9ba; -fx-background-radius: 12; -fx-border-radius: 12; -fx-border-color: #2b3238;" text="Cancelar" textAlignment="CENTER">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color opacity="0.2260536402463913" />
+               </color></DropShadow>
+         </effect>
+      </Button>
+      <DatePicker fx:id="dtpNacimiento" layoutX="485.0" layoutY="76.0" promptText="Fecha de Nacimiento" />
+      <Button fx:id="bttnNuevoUsuario" layoutX="62.0" layoutY="256.0" mnemonicParsing="false" onAction="#bttnNuevoUsuarioClicked" prefHeight="34.0" prefWidth="88.0" style="-fx-background-color: #c8fcb3#c8fcb3; -fx-background-radius: 50;" text="Registrar" textAlignment="CENTER">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+      <Button fx:id="btnActualizar" layoutX="184.0" layoutY="255.0" mnemonicParsing="false" onAction="#btnActualizarClicked" prefHeight="34.0" prefWidth="99.0" style="-fx-background-radius: 12; -fx-background-color: blue; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Actualizar" textFill="WHITE">
+         <effect>
+            <InnerShadow color="#f5f2f2c7" />
+         </effect>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnBorrar" layoutX="317.0" layoutY="256.0" mnemonicParsing="false" onAction="#btnBorrarClicked" prefHeight="34.0" prefWidth="132.0" style="-fx-background-radius: 12; -fx-background-color: red; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Cambiar estado" textFill="#ffffffed">
+         <effect>
+            <InnerShadow color="#f5f2f2c7" />
+         </effect>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="limpiar" layoutX="473.0" layoutY="258.0" mnemonicParsing="false" onAction="#btnLimpiar" style="-fx-background-radius: 12; -fx-background-color: gold; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Limpiar">
+         <effect>
+            <InnerShadow color="#f5f2f2c7" />
+         </effect>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="imprimirReporte" layoutX="561.0" layoutY="258.0" mnemonicParsing="false" onAction="#btnImprimirCsv" style="-fx-background-radius: 12; -fx-background-color: #899bab; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Imprimir Reporte">
+         <effect>
+            <InnerShadow color="#f5f2f2c7" />
+         </effect>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <TextField fx:id="telefono1" layoutX="703.0" layoutY="289.0" promptText="Filtrar por cédula" style="-fx-background-radius: 12;" />
+      <Button fx:id="filtrarCedula" layoutX="859.0" layoutY="288.0" mnemonicParsing="false" onAction="#bttnNuevoUsuarioClicked" style="-fx-background-radius: 12; -fx-background-color: gold; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Filtrar">
+         <effect>
+            <InnerShadow color="#f5f2f2c7" />
+         </effect>
+      </Button>
+      <SplitMenuButton fx:id="cargo" layoutX="493.0" layoutY="126.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="132.0" text="Cargo">
+         <items>
+            <MenuItem fx:id="firstItem" mnemonicParsing="false" onAction="#setFirstItem" text="Vendedor" />
+            <MenuItem fx:id="secondItem" mnemonicParsing="false" onAction="#setSecondItem" text="Jefe de taller" />
+         </items>
+      </SplitMenuButton>
+      <PasswordField fx:id="txtPassword" layoutX="290.0" layoutY="126.0" promptText="Contraseña" />
+      <TextField fx:id="txtMail" layoutX="46.0" layoutY="126.0" promptText="Email" style="-fx-background-radius: 12;" />
+      <TextField fx:id="txtNombre" layoutX="46.0" layoutY="164.0" promptText="Nombre" style="-fx-background-radius: 12;" />
+      <PasswordField fx:id="txtPasswordConfirm" layoutX="290.0" layoutY="165.0" promptText="Confirmar Contraseña" />
+      <TextField fx:id="txtTelefono" layoutX="484.0" layoutY="164.0" promptText="Teléfono" style="-fx-background-radius: 12;" />
+      <Label fx:id="lblMensajeContra" layoutX="684.0" layoutY="113.0" prefHeight="128.0" prefWidth="233.0" textAlignment="CENTER" textFill="RED" />
+      <Label fx:id="validacionRegistroLabel" layoutX="672.0" layoutY="113.0" prefHeight="128.0" prefWidth="265.0" textAlignment="LEFT">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
