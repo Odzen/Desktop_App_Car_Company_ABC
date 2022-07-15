@@ -32,7 +32,7 @@ public class MenuGerenteController implements Initializable {
     private Button bttnBodegaGer;
 
     @FXML
-    private Button bttnGerente;
+    private Button btnGerente;
 
     @FXML
     private Button bttnGestionSede;
