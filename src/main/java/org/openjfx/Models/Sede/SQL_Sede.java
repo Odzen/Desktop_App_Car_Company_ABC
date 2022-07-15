@@ -55,7 +55,7 @@ public class SQL_Sede {
     public static ArrayList<Sede> leerTodasLasSedes() {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
-                    "SELECT * FROM sede ORDER BY id_sede"
+                    "SELECT * FROM sede"
             );
             ResultSet resultado = sentencia.executeQuery();
 
@@ -129,7 +129,7 @@ public class SQL_Sede {
             PreparedStatement sentencia = connection.prepareStatement(
                     "INSERT INTO sede " +
                             "(direccion, telefono, nombre_sede, activo, ciudad, fecha_creacion, fecha_modificado)" +
-                            "VALUES  (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                            "VALUES  (?,?,?,?,?,?,?)");
             sentencia.setString(1, sede.getDireccion());
             sentencia.setString(2, sede.getTelefono());
             sentencia.setString(3, sede.getNombre_sede());
@@ -170,6 +170,7 @@ public class SQL_Sede {
                 sentencia.setString(3, nombre);
                 sentencia.setString(4, sedeActualizada.getCiudad());
                 sentencia.setDate(5, modificadoSql);
+                sentencia.setString(6, nombre);
 
                 int filasAfectadas = sentencia.executeUpdate();
                 System.out.println(filasAfectadas);

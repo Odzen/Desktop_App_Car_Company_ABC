@@ -36,20 +36,6 @@
          <font>
             <Font size="18.0" />
          </font></TextField>
-      <Button fx:id="btnAgregar" layoutX="720.0" layoutY="543.0" mnemonicParsing="false" onAction="#btnAgregarClick" prefHeight="34.0" prefWidth="132.0" style="-fx-background-color: #c8fcb3#c8fcb3; -fx-background-radius: 8;" text="Confirmar" textAlignment="CENTER" underline="true" AnchorPane.leftAnchor="720.0" AnchorPane.rightAnchor="93.0" AnchorPane.topAnchor="543.0">
-         <font>
-            <Font size="18.0" />
-         </font>
-         <effect>
-            <DropShadow>
-               <input>
-                  <InnerShadow />
-               </input>
-               <color>
-                  <Color red="0.7929763793945312" green="0.9868420958518982" blue="0.6807383298873901" opacity="0.800000011920929" />
-               </color></DropShadow>
-         </effect>
-      </Button>
       <ImageView fitHeight="94.0" fitWidth="126.0" layoutX="810.0">
          <image>
             <Image url="@recursos/logo.png" />
@@ -83,6 +69,11 @@
             <Font size="18.0" />
          </font>
       </TextField>
+      <Label fx:id="validacionRegistroLabel" layoutX="662.0" layoutY="103.0" prefHeight="128.0" prefWidth="265.0" textAlignment="LEFT">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
       <Label fx:id="lbinvalidoRegistro" layoutX="650.0" layoutY="95.0" prefHeight="133.0" prefWidth="269.0" textAlignment="CENTER">
          <font>
             <Font size="24.0" />

@@ -36,7 +36,7 @@ public class MenuAdminController implements Initializable {
 
     @FXML
     private void bttnGestionSedes() throws IOException{
-        EmpresaAutosABC.setRoot("registrarSede");
+        EmpresaAutosABC.setRoot("GestionSede");
     }
     @FXML
     private void btnCerrarSesionClick() throws IOException{

@@ -9,9 +9,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -25,7 +22,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
 import org.openjfx.Models.Sede.SQL_Sede;
 import org.openjfx.Models.Sede.Sede;
@@ -239,7 +235,7 @@ public class GestionSedeController implements Initializable {// Variables para A
         col_activo_sede.setCellValueFactory(new PropertyValueFactory<>("activo"));
         col_ciudadSede.setCellValueFactory(new PropertyValueFactory<>("ciudad"));
         col_fecha_creacion_sede.setCellValueFactory(new PropertyValueFactory<>("fecha_creacion"));
-        col_fecha_modificacion_sede.setCellValueFactory(new PropertyValueFactory<>("fecha_modificados"));
+        col_fecha_modificacion_sede.setCellValueFactory(new PropertyValueFactory<>("fecha_modificado"));
 
         tableGestionSedes.setItems(sedesList.sorted());
 
