@@ -44,6 +44,15 @@ public class SQL_Usuario {
 
                 ResultSet resultado = sentencia.executeQuery();
                 return resultado;
+            } else if (rol.equals(Rol.GERENTE)) {
+                PreparedStatement sentencia = connection.prepareStatement(
+                        "SELECT * FROM usuario WHERE user_type= ? or user_type= ? "
+                );
+                sentencia.setString(1, "JEFE_TALLER");
+                sentencia.setString(2, "VENDEDOR");
+
+                ResultSet resultadoGerente = sentencia.executeQuery();
+                return resultadoGerente;
             }
 
         } catch (SQLException e) {
