@@ -24,7 +24,7 @@ import javax.swing.*;
  *
  * @author mavel
  */
-public class RegistrarSedeController implements Initializable {
+public class GestionSedeController implements Initializable {
 
     private String mensajeExito = String.format("-fx-text-fill: GREEN;");
 

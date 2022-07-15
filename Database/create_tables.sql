@@ -55,6 +55,8 @@ CREATE TABLE sede (
      nombre_sede text NOT NULL,
      activo boolean NOT NULL,
      ciudad text NOT NULL,
+     fecha_creacion date NOT NULL,
+     fecha_modificado date NOT NULL,
      id_creado_por INT,
      PRIMARY KEY (id_sede),
      CONSTRAINT "FK_sede.id_creado_por"
