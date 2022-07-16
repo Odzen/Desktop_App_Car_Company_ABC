@@ -176,11 +176,18 @@ public class GestionUsuarioController implements Initializable {
         cargo.setText(firstItem.getText());
     }
 
-
-
     @FXML
     private void setSecondItem() {
         cargo.setText(secondItem.getText());
+    }
+
+    private void setTextSedeSplitButton() {
+        for (MenuItem item:
+                sede.getItems()) {
+            item.setOnAction(e -> {
+                sede.setText(item.getText());
+            });
+        }
     }
 
     private boolean validaciones(boolean crear) {
@@ -394,9 +401,9 @@ public class GestionUsuarioController implements Initializable {
 
 
     private void loadSedes() {
-        ArrayList<MenuItem> itemSedes = new ArrayList<MenuItem>();
         ResultSet respuesta = SQL_Sede.obtenerTodasSedesSet();
         try {
+            ArrayList<MenuItem> itemSedes = new ArrayList<MenuItem>();
             while (respuesta.next())
             {
                 MenuItem sedeItem = new MenuItem(respuesta.getString("nombre_sede"));
@@ -620,6 +627,7 @@ public class GestionUsuarioController implements Initializable {
         this.readUsers();
         this.loadData();
         this.loadSedes();
+        this.setTextSedeSplitButton();
         tableGestionAdmin.setItems(usuariosList.sorted());
     }
 
