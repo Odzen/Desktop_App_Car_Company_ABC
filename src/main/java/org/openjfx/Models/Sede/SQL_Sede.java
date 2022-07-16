@@ -109,6 +109,22 @@ public class SQL_Sede {
         }
     }
 
+    // Verifica si una sede existe o no en la base de datos, basado en su nombre
+    public static ResultSet obtenerSede_Id(int id_sede)  {
+        try {
+            PreparedStatement sentencia = connection.prepareStatement(
+                    "SELECT * FROM sede WHERE id_sede= ?"
+            );
+
+            sentencia.setInt(1, id_sede);
+            ResultSet resultado = sentencia.executeQuery();
+            return resultado;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static ResultSet obtenerTodasSedesSet() {
         try {
             PreparedStatement sentencia = connection.prepareStatement(

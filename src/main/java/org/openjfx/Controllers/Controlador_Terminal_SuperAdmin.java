@@ -129,14 +129,14 @@ public class Controlador_Terminal_SuperAdmin {
             while (!id_sede_valido)
             {
                 System.out.println("Ingrese la sede en la que trabaja el usuario, si aplica");
-                int sede = scanner.nextInt();
-                if (SQL_Sede.existeSede_Id(sede)) {
+                String sede = scanner.nextLine();
+                if (SQL_Sede.existeSede_Nombre(sede)) {
                     id_sede_valido = true;
-                    usuario.setId_sede(sede);
+                    usuario.setSede(sede);
                 }
                  else {
                     id_sede_valido = false;
-                    System.err.println("Id de esta sede no existe");
+                    System.err.println("Una sede con este nombre NO existe");
                 }
             }
 

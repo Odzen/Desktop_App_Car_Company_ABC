@@ -228,7 +228,7 @@ public class SQL_Usuario {
             sentencia.setString(12, usuario.getLast_session());
             sentencia.setString(13, usuario.getUser_type().name());
             sentencia.setInt(14, usuario.getId_tipo_usuario());
-            sentencia.setInt(15, usuario.getId_sede());
+            sentencia.setString(15, usuario.getSede());
 
             sentencia.execute();
 
@@ -277,7 +277,7 @@ public class SQL_Usuario {
                 sentencia.setString(10, usuarioActualizado.getLast_session());
                 sentencia.setInt(11, usuarioActualizado.getId_tipo_usuario());
                 sentencia.setString(12, usuarioActualizado.getUser_type().toString());
-                sentencia.setInt(13, usuarioActualizado.getId_sede());
+                sentencia.setString(13, usuarioActualizado.getSede());
                 sentencia.setString(14, cedula);
 
                 int filasAfectadas = sentencia.executeUpdate();

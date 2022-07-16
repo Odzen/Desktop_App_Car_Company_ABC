@@ -366,6 +366,17 @@ public class GestionUsuarioController implements Initializable {
             usuarioModelo.setFecha_nacimiento(fechaNacimientoFormat);
             usuarioModelo.setTelefono(txtTelefono.getText());
 
+            String sedeNombre = sede.getText();
+            ResultSet resultSede = SQL_Sede.obtenerSede_Nombre(sedeNombre);
+
+            if(resultSede.next())
+            {
+                int sede_id = resultSede.getInt("id_sede");
+                usuarioModelo.setSede(sede.getText());
+            } else {
+                usuarioModelo.setSede(null);
+            }
+
             int idTipoUsuario = 0;
             if (cargo.getText().equals("Administrador")) {
                 idTipoUsuario = 1;
@@ -398,6 +409,7 @@ public class GestionUsuarioController implements Initializable {
         txtMail.setText("");
         txtTelefono.setText("");
         cargo.setText("Seleccionar Cargo");
+        sede.setText("Sede");
         dtpNacimiento.setValue(null);
     }
 
@@ -419,6 +431,7 @@ public class GestionUsuarioController implements Initializable {
         col_activoGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("activo"));
         col_nacimientoGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("fecha_nacimiento"));
         col_last_sessionGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("last_session"));
+        col_sedeGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("sede"));
 
         tableGestionAdmin.setItems(usuariosList.sorted());
 
@@ -438,12 +451,7 @@ public class GestionUsuarioController implements Initializable {
 
         } catch (SQLException e) {
                 throw new RuntimeException(e);
-            }
-
-
-        //      MenuItem firstItem;
-
-
+        }
     }
 
     private void readUsers() {
@@ -467,6 +475,7 @@ public class GestionUsuarioController implements Initializable {
                 readUsuario.setFecha_nacimiento(result.getDate("fecha_nacimiento"));
                 readUsuario.setLast_session(result.getString("last_session"));
                 readUsuario.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
+                readUsuario.setSede(result.getString("sede"));
                 usuariosList.add(readUsuario);
             }
             usuariosList.sorted();
@@ -519,6 +528,7 @@ public class GestionUsuarioController implements Initializable {
         txtTelefono.setStyle(null);
         dtpNacimiento.setStyle(null);
         cargo.setStyle(null);
+        sede.setStyle(null);
         if(txtDocumento.getText().isEmpty())
         {
             validacionRegistroLabel.setStyle(mensajeError);
@@ -580,6 +590,7 @@ public class GestionUsuarioController implements Initializable {
                 readUsuario.setFecha_nacimiento(result.getDate("fecha_nacimiento"));
                 readUsuario.setLast_session(result.getString("last_session"));
                 readUsuario.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
+                readUsuario.setSede(result.getString("sede"));
 
                 // Cambio valores en los labels
                 txtNombre.setText(readUsuario.getNombre());
@@ -598,6 +609,13 @@ public class GestionUsuarioController implements Initializable {
                     rol = "Gerente";
                 }
                 cargo.setText(rol);
+
+                String sedeUsuario = readUsuario.getSede();
+
+                if(sedeUsuario.equals(null))
+                    sede.setText("Sede");
+                else
+                    sede.setText(readUsuario.getSede());
 
             }
         } catch(SQLException exception) {

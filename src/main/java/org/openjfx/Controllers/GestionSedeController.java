@@ -240,15 +240,6 @@ public class GestionSedeController implements Initializable {// Variables para A
         tableGestionSedes.setItems(sedesList.sorted());
 
     }
-    private void loadSedes() {
-
-        //respuesta = SQL_Sedes.getAllSedes()
-
-        // while (respuesta.next())
-        //      MenuItem firstItem;
-
-
-    }
 
     private void readSedes() {
         try {
@@ -420,7 +411,6 @@ public class GestionSedeController implements Initializable {// Variables para A
     public void initialize(URL url, ResourceBundle rb) {
         this.readSedes();
         this.loadData();
-        this.loadSedes();
         tableGestionSedes.setItems(sedesList.sorted());
     }
 }
