@@ -19,6 +19,8 @@ public class Usuario {
     private Date joined;
     private Date fecha_nacimiento;
     private String telefono;
+
+    private int id_sede;
     private String last_session;
     private Rol user_type;
     private int id_tipo_usuario;
@@ -40,10 +42,19 @@ public class Usuario {
         this.fecha_nacimiento = null;
         this.last_session = "";
         this.id_tipo_usuario = 0;
+        this.id_sede = 0;
     }
 
     public int getId_usuario() {
         return id_usuario;
+    }
+
+    public int getId_sede() {
+        return id_sede;
+    }
+
+    public void setId_sede(int id_sede) {
+        this.id_sede = id_sede;
     }
 
     public void setId_usuario(int id_usuario) {

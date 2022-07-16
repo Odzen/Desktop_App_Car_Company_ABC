@@ -56,6 +56,8 @@ public class GestionUsuarioController implements Initializable {
     @FXML
     private TableColumn<Usuario, String> col_cargoGestionAdmin;
     @FXML
+    private TableColumn<Usuario, String> col_sedeGestionAdmin;
+    @FXML
     private TableColumn<Usuario, String> col_telefonoGestionAdmin;
     @FXML
     private TableColumn<Usuario, Boolean> col_activoGestionAdmin;
@@ -118,20 +120,21 @@ public class GestionUsuarioController implements Initializable {
         txtTelefono.setStyle(null);
         dtpNacimiento.setStyle(null);
         cargo.setStyle(null);
+        sede.setStyle(null);
         // Cuando los campos están en blanco
         if(txtNombre.getText().isEmpty() || txtPasswordConfirm.getText().isEmpty() ||
                 txtApellido.getText().isEmpty() || txtPassword.getText().isEmpty() ||
                 txtMail.getText().isEmpty()|| txtDocumento.getText().isEmpty() ||
                 txtTelefono.getText().isEmpty() || dtpNacimiento.getValue()==null ||
-                cargo.getText().equals("Cargo"))
+                cargo.getText().equals("Cargo") || sede.getText().equals("Sede"))
         {
             validacionRegistroLabel.setStyle(mensajeError);
             if(txtNombre.getText().isEmpty() && txtPasswordConfirm.getText().isEmpty() &&
                     txtApellido.getText().isEmpty() && txtPassword.getText().isEmpty() &&
                     txtMail.getText().isEmpty()  && txtDocumento.getText().isEmpty() &&
                     txtTelefono.getText().isEmpty() && dtpNacimiento.getValue()==null &&
-                    cargo.getText().equals("Cargo"))
-            {
+                    cargo.getText().equals("Cargo") && sede.getText().equals("Sede")) {
+
                 validacionRegistroLabel.setText("Se requieren todos los campos!");
                 txtNombre.setStyle(estiloMensajeError);
                 txtPasswordConfirm.setStyle(estiloMensajeError);
@@ -142,6 +145,7 @@ public class GestionUsuarioController implements Initializable {
                 txtTelefono.setStyle(estiloMensajeError);
                 dtpNacimiento.setStyle(estiloMensajeError);
                 cargo.setStyle(estiloMensajeError);
+                sede.setStyle(estiloMensajeError);
                 new Shake(txtNombre).play();
                 new Shake(txtPasswordConfirm).play();
                 new Shake(txtApellido).play();
@@ -151,7 +155,9 @@ public class GestionUsuarioController implements Initializable {
                 new Shake(txtTelefono).play();
                 new Shake(dtpNacimiento).play();
                 new Shake(cargo).play();
-            } else {
+                new Shake(sede).play();
+            }
+            else {
                 validacionRegistroLabel.setText("Algunos campos están vacíos!");
                 boolean validado = this.validaciones(crear);
                 if (validado) {
@@ -230,11 +236,30 @@ public class GestionUsuarioController implements Initializable {
         {
             validado = false;
             String textoError = "Formato de telefono incorrecto!";
-            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtTelefono.setStyle(estiloMensajeError);
             new FadeIn(txtTelefono).play();
+        }
+        // Validacion de sede cuando el rol es admin
+        if (cargo.getText().equals("Administrador") && !sede.getText().equals("Sede"))
+        {
+            validado = false;
+            String textoError = "Adminstrador no puede tener sede asociada!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            sede.setStyle(estiloMensajeError);
+            new FadeIn(sede).play();
+        }
+        // Validacion de sede cuando el rol es gerente
+        if (cargo.getText().equals("Gerente") && sede.getText().equals("Sede"))
+        {
+            validado = false;
+            String textoError = "Gerente debe de tener una sede asociada!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            sede.setStyle(estiloMensajeError);
+            new FadeIn(sede).play();
         }
         // Se comprueba la longitud del nombre del usuario
         if (txtNombre.getText().length() < 4 ||  txtNombre.getText().length() > 20)

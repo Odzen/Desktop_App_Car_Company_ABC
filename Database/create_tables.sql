@@ -25,7 +25,7 @@ INSERT INTO tipo_usuario (nombre)
 VALUES ('admin'), ('gerente'), ('jefe_taller'),( 'vendedor'), ( 'indefinido') ;
 
 
-CREATE TABLE usuario (
+CREATE TABLE IF NOT EXISTS usuario (
      id_usuario SERIAL,
      cedula text NOT NULL,
      contraseña text NOT NULL,
@@ -41,14 +41,18 @@ CREATE TABLE usuario (
      last_session text,
      id_tipo_usuario INT,
      user_type varchar(20) NOT NULL,
+     sede INT,
      PRIMARY KEY (id_usuario),
      CONSTRAINT "FK_usuario.id_tipo"
          FOREIGN KEY (id_tipo_usuario)
-             REFERENCES tipo_usuario(id_tipo_usuario)
+             REFERENCES tipo_usuario(id_tipo_usuario),
+     CONSTRAINT "FK_usuario.sede"
+        FOREIGN KEY (sede)
+            REFERENCES sede(id_sede)
 );
 
 
-CREATE TABLE sede (
+CREATE TABLE IF NOT EXISTS sede (
      id_sede SERIAL,
      direccion text NOT NULL,
      telefono text NOT NULL,
