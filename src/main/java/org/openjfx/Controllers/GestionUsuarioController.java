@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -22,6 +23,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
+import org.openjfx.Models.Sede.SQL_Sede;
 import org.openjfx.Models.Usuario.SQL_Usuario;
 import org.openjfx.Models.Usuario.Usuario;
 import org.openjfx.Models.Usuario.Utils.Hash;
@@ -173,6 +175,8 @@ public class GestionUsuarioController implements Initializable {
     private void setFirstItem() {
         cargo.setText(firstItem.getText());
     }
+
+
 
     @FXML
     private void setSecondItem() {
@@ -387,11 +391,24 @@ public class GestionUsuarioController implements Initializable {
         tableGestionAdmin.setItems(usuariosList.sorted());
 
     }
+
+
     private void loadSedes() {
+        ArrayList<MenuItem> itemSedes = new ArrayList<MenuItem>();
+        ResultSet respuesta = SQL_Sede.obtenerTodasSedesSet();
+        try {
+            while (respuesta.next())
+            {
+                MenuItem sedeItem = new MenuItem(respuesta.getString("nombre_sede"));
+                itemSedes.add(sedeItem);
+            }
+            sede.getItems().addAll(itemSedes);
 
-        //respuesta = SQL_Sedes.getAllSedes()
+        } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
 
-        // while (respuesta.next())
+
         //      MenuItem firstItem;
 
 
