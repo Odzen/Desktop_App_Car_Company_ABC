@@ -371,10 +371,9 @@ public class GestionUsuarioController implements Initializable {
 
             if(resultSede.next())
             {
-                int sede_id = resultSede.getInt("id_sede");
                 usuarioModelo.setSede(sede.getText());
             } else {
-                usuarioModelo.setSede(null);
+                usuarioModelo.setSede("");
             }
 
             int idTipoUsuario = 0;
@@ -612,7 +611,7 @@ public class GestionUsuarioController implements Initializable {
 
                 String sedeUsuario = readUsuario.getSede();
 
-                if(sedeUsuario.equals(null))
+                if(sedeUsuario.equals(""))
                     sede.setText("Sede");
                 else
                     sede.setText(readUsuario.getSede());

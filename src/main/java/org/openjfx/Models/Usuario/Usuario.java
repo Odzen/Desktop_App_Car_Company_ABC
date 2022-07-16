@@ -41,7 +41,7 @@ public class Usuario {
         this.fecha_nacimiento = null;
         this.last_session = "";
         this.id_tipo_usuario = 0;
-        this.sede = null;
+        this.sede = "";
     }
 
     public int getId_usuario() {

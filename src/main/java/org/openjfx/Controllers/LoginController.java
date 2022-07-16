@@ -115,17 +115,17 @@ public class LoginController  {
             usuarioLogin.setCedula(txtUser.getText());
             usuarioLogin.setContraseña(contraseñaCifrada);
 
-
-            // Check si el usuario está inactivo o no
             boolean activo;
+            // Check si el usuario está inactivo o no
             try {
                 ResultSet resultSet = SQL_Usuario.obtenerUsuario_Cedula(txtUser.getText());
                 resultSet.next();
                 activo = resultSet.getBoolean("activo");
-                System.out.println(activo);
+
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+
             if(!activo) {
                 invalidoUser.setText("El usuario con esa cédula está inactivo!");
                 invalidoUser.setStyle(mensajeError);
