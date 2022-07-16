@@ -1,6 +1,6 @@
 -- Alterar secuencias
-ALTER SEQUENCE usuario_id_usuario_seq RESTART;
-ALTER SEQUENCE sede_id_sede_seq RESTART;
+ALTER SEQUENCE IF EXISTS usuario_id_usuario_seq RESTART;
+ALTER SEQUENCE IF EXISTS sede_id_sede_seq RESTART;
 
 -- Dropping tables for testing
 DROP TABLE IF EXISTS usuario CASCADE;
@@ -25,7 +25,7 @@ INSERT INTO tipo_usuario (nombre)
 VALUES ('admin'), ('gerente'), ('jefe_taller'),( 'vendedor'), ( 'indefinido') ;
 
 
-CREATE TABLE usuario (
+CREATE TABLE IF NOT EXISTS usuario (
      id_usuario SERIAL,
      cedula text NOT NULL,
      contraseña text NOT NULL,
@@ -41,14 +41,14 @@ CREATE TABLE usuario (
      last_session text,
      id_tipo_usuario INT,
      user_type varchar(20) NOT NULL,
+     sede text,
      PRIMARY KEY (id_usuario),
      CONSTRAINT "FK_usuario.id_tipo"
          FOREIGN KEY (id_tipo_usuario)
              REFERENCES tipo_usuario(id_tipo_usuario)
 );
 
-
-CREATE TABLE sede (
+CREATE TABLE IF NOT EXISTS sede (
      id_sede SERIAL,
      direccion text NOT NULL,
      telefono text NOT NULL,
@@ -59,4 +59,7 @@ CREATE TABLE sede (
      fecha_modificado date NOT NULL,
      PRIMARY KEY (id_sede)
 );
+
+INSERT INTO sede (direccion, telefono, nombre_sede, activo, ciudad, fecha_creacion, fecha_modificado)
+VALUES ('Cra 1cBIs', '342 345 5433', 'Simon Bolivar', true, 'Cali', '08-08-2000', '08-08-2000');
 

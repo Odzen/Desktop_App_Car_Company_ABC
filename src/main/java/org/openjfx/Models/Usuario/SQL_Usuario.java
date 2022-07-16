@@ -212,8 +212,8 @@ public class SQL_Usuario {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
                     "INSERT INTO usuario " +
-                            "(cedula, nombre, apellido, contraseña, email, joined, modificado, activo, avatar, fecha_nacimiento, telefono, last_session, user_type, id_tipo_usuario )" +
-                            "VALUES  (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                            "(cedula, nombre, apellido, contraseña, email, joined, modificado, activo, avatar, fecha_nacimiento, telefono, last_session, user_type, id_tipo_usuario, sede )" +
+                            "VALUES  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             sentencia.setString(1, usuario.getCedula());
             sentencia.setString(2, usuario.getNombre());
             sentencia.setString(3, usuario.getApellido());
@@ -228,6 +228,7 @@ public class SQL_Usuario {
             sentencia.setString(12, usuario.getLast_session());
             sentencia.setString(13, usuario.getUser_type().name());
             sentencia.setInt(14, usuario.getId_tipo_usuario());
+            sentencia.setString(15, usuario.getSede());
 
             sentencia.execute();
 
@@ -261,7 +262,8 @@ public class SQL_Usuario {
                                 "telefono = ?, " +
                                 "last_session= ?, " +
                                 "id_tipo_usuario= ?, " +
-                                "user_type= ? " +
+                                "user_type= ?, " +
+                                "sede= ? " +
                                 "WHERE cedula = ?");
                 sentencia.setString(1, cedula);
                 sentencia.setString(2, usuarioActualizado.getContraseña());
@@ -275,7 +277,8 @@ public class SQL_Usuario {
                 sentencia.setString(10, usuarioActualizado.getLast_session());
                 sentencia.setInt(11, usuarioActualizado.getId_tipo_usuario());
                 sentencia.setString(12, usuarioActualizado.getUser_type().toString());
-                sentencia.setString(13, cedula);
+                sentencia.setString(13, usuarioActualizado.getSede());
+                sentencia.setString(14, cedula);
 
                 int filasAfectadas = sentencia.executeUpdate();
                 System.out.println(filasAfectadas);

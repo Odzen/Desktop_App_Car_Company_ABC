@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -22,6 +23,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
+import org.openjfx.Models.Sede.SQL_Sede;
 import org.openjfx.Models.Usuario.SQL_Usuario;
 import org.openjfx.Models.Usuario.Usuario;
 import org.openjfx.Models.Usuario.Utils.Hash;
@@ -53,6 +55,8 @@ public class GestionUsuarioController implements Initializable {
     private TableColumn<Usuario, Date> col_joinedGestionAdmin;
     @FXML
     private TableColumn<Usuario, String> col_cargoGestionAdmin;
+    @FXML
+    private TableColumn<Usuario, String> col_sedeGestionAdmin;
     @FXML
     private TableColumn<Usuario, String> col_telefonoGestionAdmin;
     @FXML
@@ -116,20 +120,21 @@ public class GestionUsuarioController implements Initializable {
         txtTelefono.setStyle(null);
         dtpNacimiento.setStyle(null);
         cargo.setStyle(null);
+        sede.setStyle(null);
         // Cuando los campos están en blanco
         if(txtNombre.getText().isEmpty() || txtPasswordConfirm.getText().isEmpty() ||
                 txtApellido.getText().isEmpty() || txtPassword.getText().isEmpty() ||
                 txtMail.getText().isEmpty()|| txtDocumento.getText().isEmpty() ||
                 txtTelefono.getText().isEmpty() || dtpNacimiento.getValue()==null ||
-                cargo.getText().equals("Cargo"))
+                cargo.getText().equals("Cargo") || sede.getText().equals("Sede"))
         {
             validacionRegistroLabel.setStyle(mensajeError);
             if(txtNombre.getText().isEmpty() && txtPasswordConfirm.getText().isEmpty() &&
                     txtApellido.getText().isEmpty() && txtPassword.getText().isEmpty() &&
                     txtMail.getText().isEmpty()  && txtDocumento.getText().isEmpty() &&
                     txtTelefono.getText().isEmpty() && dtpNacimiento.getValue()==null &&
-                    cargo.getText().equals("Cargo"))
-            {
+                    cargo.getText().equals("Cargo") && sede.getText().equals("Sede")) {
+
                 validacionRegistroLabel.setText("Se requieren todos los campos!");
                 txtNombre.setStyle(estiloMensajeError);
                 txtPasswordConfirm.setStyle(estiloMensajeError);
@@ -140,6 +145,7 @@ public class GestionUsuarioController implements Initializable {
                 txtTelefono.setStyle(estiloMensajeError);
                 dtpNacimiento.setStyle(estiloMensajeError);
                 cargo.setStyle(estiloMensajeError);
+                sede.setStyle(estiloMensajeError);
                 new Shake(txtNombre).play();
                 new Shake(txtPasswordConfirm).play();
                 new Shake(txtApellido).play();
@@ -149,7 +155,9 @@ public class GestionUsuarioController implements Initializable {
                 new Shake(txtTelefono).play();
                 new Shake(dtpNacimiento).play();
                 new Shake(cargo).play();
-            } else {
+                new Shake(sede).play();
+            }
+            else {
                 validacionRegistroLabel.setText("Algunos campos están vacíos!");
                 boolean validado = this.validaciones(crear);
                 if (validado) {
@@ -177,6 +185,15 @@ public class GestionUsuarioController implements Initializable {
     @FXML
     private void setSecondItem() {
         cargo.setText(secondItem.getText());
+    }
+
+    private void setTextSedeSplitButton() {
+        for (MenuItem item:
+                sede.getItems()) {
+            item.setOnAction(e -> {
+                sede.setText(item.getText());
+            });
+        }
     }
 
     private boolean validaciones(boolean crear) {
@@ -219,11 +236,30 @@ public class GestionUsuarioController implements Initializable {
         {
             validado = false;
             String textoError = "Formato de telefono incorrecto!";
-            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtTelefono.setStyle(estiloMensajeError);
             new FadeIn(txtTelefono).play();
+        }
+        // Validacion de sede cuando el rol es admin
+        if (cargo.getText().equals("Administrador") && !sede.getText().equals("Sede"))
+        {
+            validado = false;
+            String textoError = "Adminstrador no puede tener sede asociada!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            sede.setStyle(estiloMensajeError);
+            new FadeIn(sede).play();
+        }
+        // Validacion de sede cuando el rol es gerente
+        if (cargo.getText().equals("Gerente") && sede.getText().equals("Sede"))
+        {
+            validado = false;
+            String textoError = "Gerente debe de tener una sede asociada!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            sede.setStyle(estiloMensajeError);
+            new FadeIn(sede).play();
         }
         // Se comprueba la longitud del nombre del usuario
         if (txtNombre.getText().length() < 4 ||  txtNombre.getText().length() > 20)
@@ -330,6 +366,16 @@ public class GestionUsuarioController implements Initializable {
             usuarioModelo.setFecha_nacimiento(fechaNacimientoFormat);
             usuarioModelo.setTelefono(txtTelefono.getText());
 
+            String sedeNombre = sede.getText();
+            ResultSet resultSede = SQL_Sede.obtenerSede_Nombre(sedeNombre);
+
+            if(resultSede.next())
+            {
+                usuarioModelo.setSede(sede.getText());
+            } else {
+                usuarioModelo.setSede("");
+            }
+
             int idTipoUsuario = 0;
             if (cargo.getText().equals("Administrador")) {
                 idTipoUsuario = 1;
@@ -362,6 +408,7 @@ public class GestionUsuarioController implements Initializable {
         txtMail.setText("");
         txtTelefono.setText("");
         cargo.setText("Seleccionar Cargo");
+        sede.setText("Sede");
         dtpNacimiento.setValue(null);
     }
 
@@ -383,18 +430,27 @@ public class GestionUsuarioController implements Initializable {
         col_activoGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("activo"));
         col_nacimientoGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("fecha_nacimiento"));
         col_last_sessionGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("last_session"));
+        col_sedeGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("sede"));
 
         tableGestionAdmin.setItems(usuariosList.sorted());
 
     }
+
+
     private void loadSedes() {
+        ResultSet respuesta = SQL_Sede.obtenerTodasSedesSet();
+        try {
+            ArrayList<MenuItem> itemSedes = new ArrayList<MenuItem>();
+            while (respuesta.next())
+            {
+                MenuItem sedeItem = new MenuItem(respuesta.getString("nombre_sede"));
+                itemSedes.add(sedeItem);
+            }
+            sede.getItems().addAll(itemSedes);
 
-        //respuesta = SQL_Sedes.getAllSedes()
-
-        // while (respuesta.next())
-        //      MenuItem firstItem;
-
-
+        } catch (SQLException e) {
+                throw new RuntimeException(e);
+        }
     }
 
     private void readUsers() {
@@ -418,6 +474,7 @@ public class GestionUsuarioController implements Initializable {
                 readUsuario.setFecha_nacimiento(result.getDate("fecha_nacimiento"));
                 readUsuario.setLast_session(result.getString("last_session"));
                 readUsuario.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
+                readUsuario.setSede(result.getString("sede"));
                 usuariosList.add(readUsuario);
             }
             usuariosList.sorted();
@@ -470,6 +527,7 @@ public class GestionUsuarioController implements Initializable {
         txtTelefono.setStyle(null);
         dtpNacimiento.setStyle(null);
         cargo.setStyle(null);
+        sede.setStyle(null);
         if(txtDocumento.getText().isEmpty())
         {
             validacionRegistroLabel.setStyle(mensajeError);
@@ -531,6 +589,7 @@ public class GestionUsuarioController implements Initializable {
                 readUsuario.setFecha_nacimiento(result.getDate("fecha_nacimiento"));
                 readUsuario.setLast_session(result.getString("last_session"));
                 readUsuario.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
+                readUsuario.setSede(result.getString("sede"));
 
                 // Cambio valores en los labels
                 txtNombre.setText(readUsuario.getNombre());
@@ -549,6 +608,13 @@ public class GestionUsuarioController implements Initializable {
                     rol = "Gerente";
                 }
                 cargo.setText(rol);
+
+                String sedeUsuario = readUsuario.getSede();
+
+                if(sedeUsuario.equals(""))
+                    sede.setText("Sede");
+                else
+                    sede.setText(readUsuario.getSede());
 
             }
         } catch(SQLException exception) {
@@ -603,6 +669,7 @@ public class GestionUsuarioController implements Initializable {
         this.readUsers();
         this.loadData();
         this.loadSedes();
+        this.setTextSedeSplitButton();
         tableGestionAdmin.setItems(usuariosList.sorted());
     }
 
