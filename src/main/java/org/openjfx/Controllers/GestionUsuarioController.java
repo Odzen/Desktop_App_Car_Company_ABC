@@ -164,6 +164,7 @@ public class GestionUsuarioController implements Initializable {
                 boolean validado = this.validaciones(crear);
                 if (validado) {
                     this.guardarActualizarUsuario(crear);
+                    this.refreshTable();
                 }
             }
         } else {
