@@ -62,16 +62,6 @@ CREATE TABLE IF NOT EXISTS sede (
      PRIMARY KEY (id_sede)
 );
 
--- Tabla sesión, guarda los usuarios que están loggeados en este momento en la aplicación
--- Una vez los usuarios cierran la aplicación o cierran sesión, el usuario se borra de esta tabla.
-CREATE TABLE IF NOT EXISTS sesion (
-    id_sesion SERIAL,
-    id_usuario INT,
-    CONSTRAINT "FK_usuario.id_usuario"
-        FOREIGN KEY (id_usuario)
-            REFERENCES usuario(id_usuario)
-
-);
 
 INSERT INTO sede (direccion, telefono, nombre_sede, activo, ciudad, fecha_creacion, fecha_modificado)
 VALUES ('Cra 1cBIs', '342 345 5433', 'Simon Bolivar', true, 'Cali', '08-08-2000', '08-08-2000');
