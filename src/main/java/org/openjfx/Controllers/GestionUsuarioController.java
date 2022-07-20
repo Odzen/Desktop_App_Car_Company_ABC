@@ -65,6 +65,8 @@ public class GestionUsuarioController implements Initializable {
     private TableColumn<Usuario, Date> col_nacimientoGestionAdmin;
     @FXML
     private TableColumn<Usuario, String> col_last_sessionGestionAdmin;
+    @FXML
+    private TableColumn<Usuario, String> col_creadoPorGestionAdmin;
 
     private ObservableList<Usuario> usuariosList = FXCollections.observableArrayList();
 
@@ -162,6 +164,7 @@ public class GestionUsuarioController implements Initializable {
                 boolean validado = this.validaciones(crear);
                 if (validado) {
                     this.guardarActualizarUsuario(crear);
+                    this.refreshTable();
                 }
             }
         } else {
@@ -384,6 +387,9 @@ public class GestionUsuarioController implements Initializable {
             }
             usuarioModelo.setId_tipo_usuario(idTipoUsuario);
 
+
+            usuarioModelo.setCedula_creado_por(LoginController.obtenerUsuarioLogeado().getCedula());
+
             // SI la orden es para crear, o para actualizar, llamo al metodo respectivo
             if (crear)
                 SQL_Usuario.crearUsuario(usuarioModelo);
@@ -431,6 +437,7 @@ public class GestionUsuarioController implements Initializable {
         col_nacimientoGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("fecha_nacimiento"));
         col_last_sessionGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("last_session"));
         col_sedeGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("sede"));
+        col_creadoPorGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("cedula_creado_por"));
 
         tableGestionAdmin.setItems(usuariosList.sorted());
 
@@ -475,6 +482,7 @@ public class GestionUsuarioController implements Initializable {
                 readUsuario.setLast_session(result.getString("last_session"));
                 readUsuario.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
                 readUsuario.setSede(result.getString("sede"));
+                readUsuario.setCedula_creado_por(result.getString("cedula_creado_por"));
                 usuariosList.add(readUsuario);
             }
             usuariosList.sorted();
@@ -506,8 +514,10 @@ public class GestionUsuarioController implements Initializable {
     // Para salir de la aplicación
     @FXML
     protected void btnSalirClick() {
-        Stage stage = (Stage) btnSalir.getScene().getWindow();
-        stage.close();
+        if (Dialogs.showConfirm("Seleccione una opción", "¿Está seguro que quiere salir de la aplicación?", Dialogs.YES, Dialogs.NO).equals(Dialogs.YES)) {
+            Stage stage = (Stage) btnSalir.getScene().getWindow();
+            stage.close();
+        }
     }
     @FXML
     protected void btnLimpiar() {
@@ -590,6 +600,7 @@ public class GestionUsuarioController implements Initializable {
                 readUsuario.setLast_session(result.getString("last_session"));
                 readUsuario.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
                 readUsuario.setSede(result.getString("sede"));
+                readUsuario.setCedula_creado_por(result.getString("cedula_creado_por"));
 
                 // Cambio valores en los labels
                 txtNombre.setText(readUsuario.getNombre());

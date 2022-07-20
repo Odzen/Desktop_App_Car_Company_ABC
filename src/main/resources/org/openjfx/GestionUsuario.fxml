@@ -27,16 +27,17 @@
         <columns>
           <TableColumn fx:id="col_idGestionAdmin" prefWidth="68.0" text="Id" />
             <TableColumn fx:id="col_cedulaGestionAdmin" prefWidth="111.0" text="Cédula" />
-            <TableColumn fx:id="col_emailGestionAdmin" prefWidth="135.0" text="Email" />
+            <TableColumn fx:id="col_emailGestionAdmin" prefWidth="85.60003662109375" text="Email" />
             <TableColumn fx:id="col_nombreGestionAdmin" prefWidth="156.0" text="Nombre" />
             <TableColumn fx:id="col_apellidoGestionAdmin" prefWidth="156.0" text="Apellido" />
             <TableColumn fx:id="col_modificarGestionAdmin" prefWidth="128.0" text="Modificado" />
             <TableColumn fx:id="col_cargoGestionAdmin" prefWidth="112.0" text="Cargo" />
             <TableColumn fx:id="col_telefonoGestionAdmin" prefWidth="128.0" text="Telefono" />
             <TableColumn fx:id="col_sedeGestionAdmin" prefWidth="156.0" text="Sede" />
-            <TableColumn fx:id="col_joinedGestionAdmin" prefWidth="128.0" text="Joined" />
-            <TableColumn fx:id="col_activoGestionAdmin" prefWidth="82.0" text="Activo" />
             <TableColumn fx:id="col_nacimientoGestionAdmin" prefWidth="128.0" text="Fecha de Nacimiento" />
+            <TableColumn fx:id="col_activoGestionAdmin" prefWidth="82.0" text="Activo" />
+            <TableColumn fx:id="col_creadoPorGestionAdmin" prefWidth="117.59996032714844" text="Creado Por" />
+            <TableColumn fx:id="col_joinedGestionAdmin" prefWidth="128.0" text="Joined" />
             <TableColumn fx:id="col_last_sessionGestionAdmin" prefWidth="128.0" text="Last Session" />
         </columns>
       </TableView>
