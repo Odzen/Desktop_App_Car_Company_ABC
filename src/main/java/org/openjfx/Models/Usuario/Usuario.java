@@ -24,6 +24,8 @@ public class Usuario {
     private Rol user_type;
     private int id_tipo_usuario;
 
+    private String cedulaCreadoPor;
+
 
     public Usuario() {
         this.id_usuario = 0;
@@ -42,6 +44,7 @@ public class Usuario {
         this.last_session = "";
         this.id_tipo_usuario = 0;
         this.sede = "";
+        this.cedulaCreadoPor= "";
     }
 
     public int getId_usuario() {
@@ -166,6 +169,14 @@ public class Usuario {
         return id_tipo_usuario;
     }
 
+    public String getCedulaCreadoPor() {
+        return cedulaCreadoPor;
+    }
+
+    public void setCedulaCreadoPor(String cedulaCreadoPor) {
+        this.cedulaCreadoPor = cedulaCreadoPor;
+    }
+
     public void setId_tipo_usuario(int id_tipo_usuario) {
         this.id_tipo_usuario = id_tipo_usuario;
         if (this.id_tipo_usuario == 1) {
@@ -199,6 +210,7 @@ public class Usuario {
                 ", last_session='" + last_session + '\'' +
                 ", user_type='" + user_type + '\'' +
                 ", id_tipo_usuario='" + id_tipo_usuario + '\'' +
+                ", creado por='" + cedulaCreadoPor + '\'' +
                 '}';
     }
 }

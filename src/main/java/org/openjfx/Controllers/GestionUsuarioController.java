@@ -66,6 +66,9 @@ public class GestionUsuarioController implements Initializable {
     @FXML
     private TableColumn<Usuario, String> col_last_sessionGestionAdmin;
 
+    @FXML
+    private TableColumn<Usuario, String> col_creadoPorGestionAdmin;
+
     private ObservableList<Usuario> usuariosList = FXCollections.observableArrayList();
 
     private Usuario usuario = null;
@@ -384,6 +387,8 @@ public class GestionUsuarioController implements Initializable {
             }
             usuarioModelo.setId_tipo_usuario(idTipoUsuario);
 
+            usuarioModelo.setCedulaCreadoPor(LoginController.obtenerUsuarioLogeado().getCedulaCreadoPor());
+
             // SI la orden es para crear, o para actualizar, llamo al metodo respectivo
             if (crear)
                 SQL_Usuario.crearUsuario(usuarioModelo);
@@ -431,6 +436,7 @@ public class GestionUsuarioController implements Initializable {
         col_nacimientoGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("fecha_nacimiento"));
         col_last_sessionGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("last_session"));
         col_sedeGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("sede"));
+        col_creadoPorGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("cedula_creado_por"));
 
         tableGestionAdmin.setItems(usuariosList.sorted());
 
@@ -475,6 +481,7 @@ public class GestionUsuarioController implements Initializable {
                 readUsuario.setLast_session(result.getString("last_session"));
                 readUsuario.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
                 readUsuario.setSede(result.getString("sede"));
+                readUsuario.setCedulaCreadoPor(result.getString("cedula_creado_por"));
                 usuariosList.add(readUsuario);
             }
             usuariosList.sorted();
@@ -590,6 +597,7 @@ public class GestionUsuarioController implements Initializable {
                 readUsuario.setLast_session(result.getString("last_session"));
                 readUsuario.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
                 readUsuario.setSede(result.getString("sede"));
+                readUsuario.setCedulaCreadoPor(result.getString("cedula_creado_por"));
 
                 // Cambio valores en los labels
                 txtNombre.setText(readUsuario.getNombre());

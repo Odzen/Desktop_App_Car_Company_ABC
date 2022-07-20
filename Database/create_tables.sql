@@ -42,14 +42,11 @@ CREATE TABLE IF NOT EXISTS usuario (
      id_tipo_usuario INT,
      user_type varchar(20) NOT NULL,
      sede text,
-     id_creado_por INT,
+     cedula_creado_por text NOT NULL,
      PRIMARY KEY (id_usuario),
      CONSTRAINT "FK_usuario.id_tipo"
          FOREIGN KEY (id_tipo_usuario)
-             REFERENCES tipo_usuario(id_tipo_usuario),
-     CONSTRAINT "FK_usuario.id_creado_por"
-         FOREIGN KEY (id_creado_por)
-             REFERENCES usuario(id_usuario)
+             REFERENCES tipo_usuario(id_tipo_usuario)
 );
 
 -- Tabla sede

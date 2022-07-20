@@ -38,6 +38,7 @@
             <TableColumn fx:id="col_activoGestionAdmin" prefWidth="82.0" text="Activo" />
             <TableColumn fx:id="col_nacimientoGestionAdmin" prefWidth="128.0" text="Fecha de Nacimiento" />
             <TableColumn fx:id="col_last_sessionGestionAdmin" prefWidth="128.0" text="Last Session" />
+            <TableColumn fx:id="col_creadoPorGestionAdmin" prefWidth="68.0" text="Creado Por" />
         </columns>
       </TableView>
       <Button fx:id="btnSalir" layoutX="46.0" layoutY="552.0" mnemonicParsing="false" onAction="#btnSalirClick" prefHeight="34.0" prefWidth="114.0" style="-fx-background-radius: 12; -fx-background-color: #b8b9ba#b8b9ba; -fx-border-color: #2b3238#2b3238; -fx-border-radius: 12;" text="Salir" underline="true">
