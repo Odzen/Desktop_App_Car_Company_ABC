@@ -213,7 +213,7 @@ public class SQL_Usuario {
             PreparedStatement sentencia = connection.prepareStatement(
                     "INSERT INTO usuario " +
                             "(cedula, nombre, apellido, contraseña, email, joined, modificado, activo, avatar, fecha_nacimiento, telefono, last_session, user_type, id_tipo_usuario, sede, cedula_creado_por )" +
-                            "VALUES  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                            "VALUES  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             sentencia.setString(1, usuario.getCedula());
             sentencia.setString(2, usuario.getNombre());
             sentencia.setString(3, usuario.getApellido());
@@ -229,7 +229,7 @@ public class SQL_Usuario {
             sentencia.setString(13, usuario.getUser_type().name());
             sentencia.setInt(14, usuario.getId_tipo_usuario());
             sentencia.setString(15, usuario.getSede());
-            sentencia.setString(15, usuario.getCedulaCreadoPor());
+            sentencia.setString(16, usuario.getCedula_creado_por());
 
             sentencia.execute();
 
@@ -280,8 +280,8 @@ public class SQL_Usuario {
                 sentencia.setInt(11, usuarioActualizado.getId_tipo_usuario());
                 sentencia.setString(12, usuarioActualizado.getUser_type().toString());
                 sentencia.setString(13, usuarioActualizado.getSede());
-                sentencia.setString(13, usuarioActualizado.getCedulaCreadoPor());
-                sentencia.setString(14, cedula);
+                sentencia.setString(14, usuarioActualizado.getCedula_creado_por());
+                sentencia.setString(15, cedula);
 
                 int filasAfectadas = sentencia.executeUpdate();
                 System.out.println(filasAfectadas);

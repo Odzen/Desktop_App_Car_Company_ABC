@@ -65,7 +65,6 @@ public class GestionUsuarioController implements Initializable {
     private TableColumn<Usuario, Date> col_nacimientoGestionAdmin;
     @FXML
     private TableColumn<Usuario, String> col_last_sessionGestionAdmin;
-
     @FXML
     private TableColumn<Usuario, String> col_creadoPorGestionAdmin;
 
@@ -387,7 +386,8 @@ public class GestionUsuarioController implements Initializable {
             }
             usuarioModelo.setId_tipo_usuario(idTipoUsuario);
 
-            usuarioModelo.setCedulaCreadoPor(LoginController.obtenerUsuarioLogeado().getCedulaCreadoPor());
+
+            usuarioModelo.setCedula_creado_por(LoginController.obtenerUsuarioLogeado().getCedula());
 
             // SI la orden es para crear, o para actualizar, llamo al metodo respectivo
             if (crear)
@@ -481,7 +481,7 @@ public class GestionUsuarioController implements Initializable {
                 readUsuario.setLast_session(result.getString("last_session"));
                 readUsuario.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
                 readUsuario.setSede(result.getString("sede"));
-                readUsuario.setCedulaCreadoPor(result.getString("cedula_creado_por"));
+                readUsuario.setCedula_creado_por(result.getString("cedula_creado_por"));
                 usuariosList.add(readUsuario);
             }
             usuariosList.sorted();
@@ -597,7 +597,7 @@ public class GestionUsuarioController implements Initializable {
                 readUsuario.setLast_session(result.getString("last_session"));
                 readUsuario.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
                 readUsuario.setSede(result.getString("sede"));
-                readUsuario.setCedulaCreadoPor(result.getString("cedula_creado_por"));
+                readUsuario.setCedula_creado_por(result.getString("cedula_creado_por"));
 
                 // Cambio valores en los labels
                 txtNombre.setText(readUsuario.getNombre());
