@@ -24,7 +24,7 @@ CREATE TABLE tipo_usuario (
 INSERT INTO tipo_usuario (nombre)
 VALUES ('admin'), ('gerente'), ('jefe_taller'),( 'vendedor'), ( 'indefinido') ;
 
-
+-- Tabla usuario
 CREATE TABLE IF NOT EXISTS usuario (
      id_usuario SERIAL,
      cedula text NOT NULL,
@@ -42,12 +42,17 @@ CREATE TABLE IF NOT EXISTS usuario (
      id_tipo_usuario INT,
      user_type varchar(20) NOT NULL,
      sede text,
+     id_creado_por INT,
      PRIMARY KEY (id_usuario),
      CONSTRAINT "FK_usuario.id_tipo"
          FOREIGN KEY (id_tipo_usuario)
-             REFERENCES tipo_usuario(id_tipo_usuario)
+             REFERENCES tipo_usuario(id_tipo_usuario),
+     CONSTRAINT "FK_usuario.id_creado_por"
+         FOREIGN KEY (id_creado_por)
+             REFERENCES usuario(id_usuario)
 );
 
+-- Tabla sede
 CREATE TABLE IF NOT EXISTS sede (
      id_sede SERIAL,
      direccion text NOT NULL,
@@ -58,6 +63,17 @@ CREATE TABLE IF NOT EXISTS sede (
      fecha_creacion date NOT NULL,
      fecha_modificado date NOT NULL,
      PRIMARY KEY (id_sede)
+);
+
+-- Tabla sesión, guarda los usuarios que están loggeados en este momento en la aplicación
+-- Una vez los usuarios cierran la aplicación o cierran sesión, el usuario se borra de esta tabla.
+CREATE TABLE IF NOT EXISTS sesion (
+    id_sesion SERIAL,
+    id_usuario INT,
+    CONSTRAINT "FK_usuario.id_usuario"
+        FOREIGN KEY (id_usuario)
+            REFERENCES usuario(id_usuario)
+
 );
 
 INSERT INTO sede (direccion, telefono, nombre_sede, activo, ciudad, fecha_creacion, fecha_modificado)
