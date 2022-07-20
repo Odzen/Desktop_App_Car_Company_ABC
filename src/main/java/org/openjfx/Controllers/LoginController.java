@@ -39,6 +39,8 @@ public class LoginController  {
 
     @FXML
     private TextField txtUser;
+
+    private static Usuario usuarioLoggeado = new Usuario();
     
     // Para salir de la aplicación
     @FXML
@@ -104,16 +106,15 @@ public class LoginController  {
         }
         // Si el ingreso es correcto
         else {
-            Usuario usuarioLogin = new Usuario();
             String contraseña = txtContraseña.getText();
             String contraseñaCifrada = Hash.encrypt(contraseña);
 
             Date date = new Date();
             DateFormat fechaHora = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
-            usuarioLogin.setLast_session(fechaHora.format(date));
+            usuarioLoggeado.setLast_session(fechaHora.format(date));
 
-            usuarioLogin.setCedula(txtUser.getText());
-            usuarioLogin.setContraseña(contraseñaCifrada);
+            usuarioLoggeado.setCedula(txtUser.getText());
+            usuarioLoggeado.setContraseña(contraseñaCifrada);
 
             boolean activo;
             // Check si el usuario está inactivo o no
@@ -121,6 +122,7 @@ public class LoginController  {
                 ResultSet resultSet = SQL_Usuario.obtenerUsuario_Cedula(txtUser.getText());
                 resultSet.next();
                 activo = resultSet.getBoolean("activo");
+
 
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -136,13 +138,29 @@ public class LoginController  {
             }
 
             // Check si existe un usuario con esa cedula y compara contraseñas
-            if(SQL_Usuario.login(usuarioLogin)) {
+            // También llama otro método para identificar que usuario inició sesión
+            // Y así mismo se le muestra, dependiendo de los permisos
+            if(SQL_Usuario.login(usuarioLoggeado)) {
                 validoUser.setText("Ingreso éxitoso!");
                 validoUser.setStyle(mensajeExito);
                 txtUser.setStyle(estiloMensajeExito);
                 txtContraseña.setStyle(estiloMensajeExito);
                 new animatefx.animation.Tada(validoUser).play();
-                this.btnLogin_MouseClicked(usuarioLogin);
+
+                // Se inicia sesión, y se guarda el usuario loggeado
+                // Para poder acceder a estos datos luego
+
+                ResultSet result = SQL_Usuario.obtenerUsuario_Cedula(usuarioLoggeado.getCedula());
+                try {
+                    result.next();
+                    usuarioLoggeado.setId_usuario(result.getInt("id_usuario"));
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+
+                // Se redirige al usuario a un menú, dependiendo de su rol
+                this.btnLogin_MouseClicked(usuarioLoggeado);
             }
             else {
                 invalidoUser.setText("Cedula o Contraseña incorrectos!");
@@ -178,5 +196,10 @@ public class LoginController  {
      @FXML
     public void initialize (URL url, ResourceBundle rb){
         //TODO
+    }
+
+
+    public static Usuario obtenerUsuarioLogeado() {
+        return usuarioLoggeado;
     }
 }
