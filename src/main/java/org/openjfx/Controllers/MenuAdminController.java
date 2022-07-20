@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import GlobalUtils.Dialogs;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -26,8 +27,10 @@ public class MenuAdminController implements Initializable {
     // Para salir de la aplicación
     @FXML
     private void btnSalirClickmenu() {
-        Stage stage = (Stage) btnSalir.getScene().getWindow();
-        stage.close();
+        if (Dialogs.showConfirm("Seleccione una opción", "¿Está seguro que quiere salir de la aplicación?", Dialogs.YES, Dialogs.NO).equals(Dialogs.YES)) {
+            Stage stage = (Stage) btnSalir.getScene().getWindow();
+            stage.close();
+        }
     }
     @FXML
     private void btnGestationUsuariosClick() throws IOException{

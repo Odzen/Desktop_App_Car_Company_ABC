@@ -514,8 +514,10 @@ public class GestionUsuarioController implements Initializable {
     // Para salir de la aplicación
     @FXML
     protected void btnSalirClick() {
-        Stage stage = (Stage) btnSalir.getScene().getWindow();
-        stage.close();
+        if (Dialogs.showConfirm("Seleccione una opción", "¿Está seguro que quiere salir de la aplicación?", Dialogs.YES, Dialogs.NO).equals(Dialogs.YES)) {
+            Stage stage = (Stage) btnSalir.getScene().getWindow();
+            stage.close();
+        }
     }
     @FXML
     protected void btnLimpiar() {
