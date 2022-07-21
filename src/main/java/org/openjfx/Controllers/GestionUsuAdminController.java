@@ -612,7 +612,7 @@ public class GestionUsuAdminController implements Initializable {
                 dtpNacimiento.setValue(LocalDate.parse(readUsuario.getFecha_nacimiento().toString()));
 
                 String rol = "";
-                if (readUsuario.getUser_type().toString().equals("ADMIN")) {
+                if (readUsuario.getUser_type().toString().equals(Rol.ADMIN.toString())) {
                     rol = "Administrador";
                 }
                 else {

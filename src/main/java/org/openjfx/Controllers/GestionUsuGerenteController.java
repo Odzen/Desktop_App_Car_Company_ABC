@@ -553,11 +553,11 @@ public class GestionUsuGerenteController implements Initializable {
                 dtpNacimiento.setValue(LocalDate.parse(readUsuario.getFecha_nacimiento().toString()));
 
                 String rol = "";
-                if (readUsuario.getUser_type().toString().equals("GERENTE")) {
-                    rol = "Vendedor";
+                if (readUsuario.getUser_type().toString().equals(Rol.JEFE_TALLER.toString())) {
+                    rol = "Jefe de Taller";
                 }
                 else {
-                    rol = "Jefe de taller";
+                    rol = "Vendedor";
                 }
                 cargo.setText(rol);
 
