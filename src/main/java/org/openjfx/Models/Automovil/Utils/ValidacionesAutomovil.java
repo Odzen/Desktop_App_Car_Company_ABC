@@ -10,10 +10,10 @@ public class ValidacionesAutomovil {
                     + "|^(\\+\\d{1,3}( )?)?(\\d{3}[ ]?)(\\d{2}[ ]?){2}\\d{2}$", Pattern.CASE_INSENSITIVE);
 
     public static final Pattern VALID_CILINDRAJE =
-            Pattern.compile("^[0-9_a-z]{6,8}$", Pattern.CASE_INSENSITIVE);
+            Pattern.compile("^[0-9]{3,4}$", Pattern.CASE_INSENSITIVE);
 
-    public static final Pattern VALID_NOMBRE =
-            Pattern.compile("^[a-z A-Z]{8,20}$", Pattern.CASE_INSENSITIVE);
+    public static final Pattern VALID_MODELO =
+            Pattern.compile("^[a-z A-Z 0-9]{1,6}$", Pattern.CASE_INSENSITIVE);
 
     public static final Pattern VALID_MARCA =
             Pattern.compile("^[a-z A-Z]{4,20}$", Pattern.CASE_INSENSITIVE);
@@ -33,8 +33,8 @@ public class ValidacionesAutomovil {
     }
 
     // Verifica si el nombre es correcto
-    public static boolean validarNombre(String nombre) {
-        Matcher matcher = VALID_NOMBRE.matcher(nombre);
+    public static boolean validarModelo(String modelo) {
+        Matcher matcher = VALID_MODELO.matcher(modelo);
         return matcher.find();
     }
 

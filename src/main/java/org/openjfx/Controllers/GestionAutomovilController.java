@@ -118,7 +118,7 @@ public class GestionAutomovilController implements Initializable {// Variables p
 
 
                // new Shake(txtPlacaAuto).play();
-              //  new Shake(txtMarcaAuto).play();
+               // new Shake(txtMarcaAuto).play();
                // new Shake(txtCilindrajeAuto).play();
                 //new Shake(txtColorAuto).play();
                // new Shake(txtModeloAuto).play();
@@ -151,26 +151,26 @@ public class GestionAutomovilController implements Initializable {// Variables p
     private boolean validaciones(boolean crear) {
         boolean validado = true;
         validacionRegistroLabel.setText("");
-        // Validacion de la placa
-        if (!ValidacionesAutomovil.validarPlaca(txtPlacaAuto.getText()))
+        // Validacion del modelo
+        if (!ValidacionesAutomovil.validarModelo(txtModeloAuto.getText()))
         {
             validado = false;
-            String textoError = "Formato de la placa es incorrecto!";
+            String textoError = "Formato del modelo es incorrecto!";
             //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
-            txtPlacaAuto.setStyle(estiloMensajeError);
-         //   new FadeIn(txtPlacaAuto).play();
+            txtModeloAuto.setStyle(estiloMensajeError);
+         //   new FadeIn(txtModeloAuto).play();
         }
         // Se comprueba la longitud del modelo del automovil
-        if (!ValidacionesAutomovil.validarPlaca(txtPlacaAuto.getText()))
+        if (!ValidacionesAutomovil.validarModelo(txtModeloAuto.getText()))
         {
             validado = false;
-            String textoError = "El nombre de la sede debe tener de 6 caracteres!";
+            String textoError = "El modelo del automovil debe tener menos de 6 caracteres!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
-            txtPlacaAuto.setStyle(estiloMensajeError);
-          //  new FadeIn(txtPlacaAuto).play();
+            txtModeloAuto.setStyle(estiloMensajeError);
+          //  new FadeIn(txtModeloAuto).play();
         }
         else if (SQL_Automovil.existeautomovil_placa(txtPlacaAuto.getText()) && crear) {
             // Validacion para saber si un automovil con esa placa ya existe
@@ -183,7 +183,7 @@ public class GestionAutomovilController implements Initializable {// Variables p
          //   new FadeIn(txtPlacaAuto).play();
         }
         // Validación cilindraje
-        if (!ValidacionesAutomovil.validarCilindraje(txtCilindrajeAuto.getText()))
+      /*  if (!ValidacionesAutomovil.validarCilindraje(txtCilindrajeAuto.getText()))
         {
             validado = false;
             String textoError = "Formato de cilindraje incorrecto!";
@@ -192,8 +192,8 @@ public class GestionAutomovilController implements Initializable {// Variables p
             validacionRegistroLabel.setStyle(mensajeError);
             txtCilindrajeAuto.setStyle(estiloMensajeError);
            // new FadeIn(txtCilindrajeAuto).play();
-        }
-        // Validación Direccion
+        }*/
+        // Validación marca
         if (!ValidacionesAutomovil.validarMarca(txtMarcaAuto.getText()))
         {
             validado = false;
@@ -381,7 +381,7 @@ public class GestionAutomovilController implements Initializable {// Variables p
         if (!SQL_Automovil.existeautomovil_placa(txtPlacaAuto.getText())) {
             // Validacion para saber si una sede con esa nombre ya existe
             validado = false;
-            String textoError = "Una sede con ese nombre NO existe!";
+            String textoError = "Un Automovil con esa placa NO existe!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtPlacaAuto.setStyle(estiloMensajeError);
