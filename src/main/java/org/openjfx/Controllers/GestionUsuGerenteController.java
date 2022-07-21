@@ -521,7 +521,7 @@ public class GestionUsuGerenteController implements Initializable {
     private void llenarCamposPorCedula() {
         String cedula = txtDocumento.getText();
         try {
-            ResultSet result = SQL_Usuario.obtenerUsuario_Cedula(cedula);
+            ResultSet result = SQL_Usuario.obtenerUsuario_CedulaGerente(cedula);
             while (result.next()) {
                 Usuario readUsuario = new Usuario();
 

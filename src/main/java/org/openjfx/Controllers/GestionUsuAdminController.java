@@ -32,7 +32,7 @@ import org.openjfx.Models.Usuario.Utils.Validaciones;
 
 import javax.swing.*;
 
-public class GestionUsuarioController implements Initializable {
+public class GestionUsuAdminController implements Initializable {
 
     // Variables para Actualizar, Leer y Borrar Usuarios
     @FXML
@@ -580,7 +580,7 @@ public class GestionUsuarioController implements Initializable {
     private void llenarCamposPorCedula() {
         String cedula = txtDocumento.getText();
         try {
-            ResultSet result = SQL_Usuario.obtenerUsuario_Cedula(cedula);
+            ResultSet result = SQL_Usuario.obtenerUsuario_CedulaAdmin(cedula);
             while (result.next()) {
                 Usuario readUsuario = new Usuario();
 
