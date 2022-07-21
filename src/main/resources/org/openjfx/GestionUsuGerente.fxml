@@ -55,6 +55,7 @@
             <TableColumn fx:id="col_modificarGestionGerente" prefWidth="128.0" text="Modificado" />
             <TableColumn fx:id="col_cargoGestionGerente" prefWidth="112.0" text="Cargo" />
             <TableColumn fx:id="col_telefonoGestionGerente" prefWidth="128.0" text="Telefono" />
+            <TableColumn fx:id="col_sedeGestionGerente" prefWidth="128.0" text="Telefono" />
             <TableColumn fx:id="col_joinedGestionGerente" prefWidth="128.0" text="Joined" />
             <TableColumn fx:id="col_activoGestionGerente" prefWidth="82.0" text="Activo" />
             <TableColumn fx:id="col_nacimientoGestionGerente" prefWidth="128.0" text="Fecha de Nacimiento" />
