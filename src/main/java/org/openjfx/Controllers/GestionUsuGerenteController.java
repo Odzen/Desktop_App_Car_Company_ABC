@@ -396,7 +396,7 @@ public class GestionUsuGerenteController implements Initializable {
         col_nacimientoGestionGerente.setCellValueFactory(new PropertyValueFactory<>("fecha_nacimiento"));
         col_last_sessionGestionGerente.setCellValueFactory(new PropertyValueFactory<>("last_session"));
         col_creadoPorGestionGerente.setCellValueFactory(new PropertyValueFactory<>("cedula_creado_por"));
-        col_sedeGestionGerente.setCellValueFactory(new PropertyValueFactory<>("sede"));
+//        col_sedeGestionGerente.setCellValueFactory(new PropertyValueFactory<>("sede"));
         tableGestionGerente.setItems(usuariosList.sorted());
 
     }
