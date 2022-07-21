@@ -128,8 +128,8 @@
       <TextField fx:id="txtNombre" layoutX="46.0" layoutY="172.0" prefHeight="34.0" promptText="Nombre" style="-fx-background-radius: 12;" />
       <PasswordField fx:id="txtPasswordConfirm" layoutX="317.0" layoutY="172.0" prefHeight="34.0" promptText="Confirmar Contraseña" />
       <TextField fx:id="txtTelefono" layoutX="511.0" layoutY="176.0" prefHeight="34.0" promptText="Teléfono" style="-fx-background-radius: 12;" />
-      <Label fx:id="lblMensajeContra" layoutX="684.0" layoutY="113.0" prefHeight="128.0" prefWidth="233.0" textAlignment="CENTER" textFill="RED" />
-      <Label fx:id="validacionRegistroLabel" layoutX="704.0" layoutY="79.0" prefHeight="128.0" prefWidth="226.0" textAlignment="LEFT">
+      <Label fx:id="lblMensajeContra" layoutX="700.0" layoutY="78.0" prefHeight="194.0" prefWidth="234.0" textAlignment="CENTER" textFill="RED" />
+      <Label fx:id="validacionRegistroLabel" layoutX="704.0" layoutY="75.0" prefHeight="194.0" prefWidth="226.0" textAlignment="LEFT">
          <font>
             <Font size="10.0" />
          </font>
