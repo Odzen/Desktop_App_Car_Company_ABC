@@ -1,11 +1,25 @@
 -- Alterar secuencias
 ALTER SEQUENCE IF EXISTS usuario_id_usuario_seq RESTART;
 ALTER SEQUENCE IF EXISTS sede_id_sede_seq RESTART;
+ALTER SEQUENCE IF EXISTS tipo_usuario_id_tipo_usuario_seq RESTART;
+ALTER SEQUENCE IF EXISTS repuesto_id_repuesto_seq RESTART;
+ALTER SEQUENCE IF EXISTS venta_id_venta_seq RESTART;
+ALTER SEQUENCE IF EXISTS orden_de_trabajo_id_orden_seq RESTART;
+ALTER SEQUENCE IF EXISTS cotizacion_id_cotizacion_seq RESTART;
+ALTER SEQUENCE IF EXISTS solicitud_id_solicitud_seq RESTART;
 
 -- Dropping tables for testing
 DROP TABLE IF EXISTS usuario CASCADE;
 DROP TABLE IF EXISTS tipo_usuario CASCADE;
 DROP TABLE IF EXISTS sede CASCADE;
+DROP TABLE IF EXISTS repuesto CASCADE;
+DROP TABLE IF EXISTS automovil CASCADE;
+DROP TABLE IF EXISTS cliente CASCADE;
+DROP TABLE IF EXISTS venta CASCADE;
+DROP TABLE IF EXISTS orden_de_trabajo CASCADE;
+DROP TABLE IF EXISTS repuestos_por_ordenes CASCADE;
+DROP TABLE IF EXISTS cotizacion CASCADE;
+DROP TABLE IF EXISTS solicitud CASCADE;
 
 --Table creation
 
@@ -61,8 +75,141 @@ CREATE TABLE IF NOT EXISTS sede (
      fecha_modificado date NOT NULL,
      PRIMARY KEY (id_sede)
 );
-
-
 INSERT INTO sede (direccion, telefono, nombre_sede, activo, ciudad, fecha_creacion, fecha_modificado)
 VALUES ('Cra 1cBIs', '342 345 5433', 'Simon Bolivar', true, 'Cali', '08-08-2000', '08-08-2000');
+
+-- Tabla repuesto
+CREATE TABLE IF NOT EXISTS repuesto (
+    id_repuesto SERIAL,
+    activo bool NOT NULL,
+    marca text NOT NULL,
+    nombre text NOT NULL,
+    cantidad INT NOT NULL,
+    cedula_creado_por text NOT NULL,
+    placa_automovil text NOT NULL,
+    fecha_creacion date NOT NULL,
+    fecha_modificado date NOT NULL,
+    PRIMARY KEY (id_repuesto),
+    CONSTRAINT "FK_repuesto.placa_automovil"
+        FOREIGN KEY (placa_automovil)
+            REFERENCES automovil(placa)
+);
+
+
+-- Tabla de Automoviles
+CREATE TABLE IF NOT EXISTS automovil (
+    placa text NOT NULL,
+    marca text NOT NULL,
+    cilindraje INT NOT NULL,
+    color text NOT NULL,
+    modelo text NOT NULL,
+    año text NOT NULL,
+    precio INT NOT NULL,
+    activo bool NOT NULL,
+    cedula_creado_por text NOT NULL,
+    sede text,
+    fecha_creacion date NOT NULL,
+    fecha_modificado date NOT NULL,
+    PRIMARY KEY (placa)
+);
+
+-- Tabla de Clientes
+CREATE TABLE IF NOT EXISTS cliente (
+   cedula_cliente text NOT NULL,
+   email text NOT NULL,
+   nombre text NOT NULL,
+   apellido text NOT NULL,
+   fecha_modificado date NOT NULL,
+   fecha_creacion date NOT NULL,
+   direccion text NOT NULL,
+   activo bool NOT NULL,
+   fecha_nacimiento date NOT NULL,
+   telefono text NOT NULL,
+   cedula_creado_por text NOT NULL,
+   sede text,
+   PRIMARY KEY (cedula_cliente)
+);
+
+-- Tabla de Ventas
+CREATE TABLE IF NOT EXISTS venta (
+     id_venta SERIAL,
+     fecha DATE NOT NULL,
+     IVA INT NOT NULL,
+     descripcion text,
+     cedula_cliente text NOT NULL,
+     cedula_vendedor text NOT NULL,
+     placa_automovil INT,
+     PRIMARY KEY (id_venta),
+     CONSTRAINT "FK_venta.id_automovil"
+         FOREIGN KEY (placa_automovil)
+             REFERENCES automovil(placa),
+     CONSTRAINT "FK_venta.cedula_cliente"
+         FOREIGN KEY (cedula_cliente)
+             REFERENCES cliente(cedula_cliente)
+);
+
+-- Tabla de Ordenes de trabajo
+CREATE TABLE IF NOT EXISTS orden_de_trabajo (
+     id_orden SERIAL,
+     fecha_creacion DATE NOT NULL,
+     fecha_modificado DATE NOT NULL,
+     activo bool NOT NULL,
+     cedula_cliente text NOT NULL,
+     cedula_jefe_de_taller text NOT NULL,
+     placa_automovil text NOT NULL,
+     PRIMARY KEY (id_orden),
+     CONSTRAINT "FK_orden_de_trabajo.placa_automovil"
+         FOREIGN KEY (placa_automovil)
+             REFERENCES automovil(placa),
+    CONSTRAINT "FK_orden_de_trabajo.cedula_cliente"
+         FOREIGN KEY (cedula_cliente)
+            REFERENCES cliente(cedula_cliente)
+);
+
+-- Tabla de Respuestos por ordenes
+CREATE TABLE IF NOT EXISTS repuestos_por_ordenes (
+    id_orden INT,
+    id_repuesto INT,
+    cantidad INT NOT NULL,
+    PRIMARY KEY (id_orden, id_repuesto),
+    CONSTRAINT "FK_repuestos_por_ordenes.id_orden"
+        FOREIGN KEY (id_orden)
+            REFERENCES orden_de_trabajo(id_orden),
+    CONSTRAINT "FK_repuestos_por_ordenes.id_repuesto"
+        FOREIGN KEY (id_repuesto)
+            REFERENCES repuesto(id_repuesto)
+);
+
+-- Tabla de Cotizaciones
+CREATE TABLE IF NOT EXISTS cotizacion (
+    id_cotizacion SERIAL,
+    IVA INT NOT NULL ,
+    descripcion text,
+    fecha_modificado date NOT NULL,
+    fecha_creacion date NOT NULL,
+    cedula_cliente text NOT NULL,
+    cedula_vendedor text NOT NULL,
+    CONSTRAINT "FK_cotizacion.cedula_cliente"
+        FOREIGN KEY (cedula_cliente)
+            REFERENCES cliente(cedula_cliente)
+);
+
+-- Tabla de Solicitudes
+CREATE TABLE IF NOT EXISTS solicitud (
+  id_solicitud SERIAL,
+  estado bool NOT NULL,
+  fecha_creacion date NOT NULL,
+  fecha_modificado date NOT NULL,
+  cedula_vendedor text NOT NULL,
+  cedula_gerente text NOT NULL,
+  placa_automovil text NOT NULL,
+  CONSTRAINT "FK_solicitud.placa_automovil"
+      FOREIGN KEY (placa_automovil)
+          REFERENCES automovil(placa)
+);
+
+
+
+
+
 
