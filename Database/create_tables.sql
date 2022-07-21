@@ -78,6 +78,25 @@ CREATE TABLE IF NOT EXISTS sede (
 INSERT INTO sede (direccion, telefono, nombre_sede, activo, ciudad, fecha_creacion, fecha_modificado)
 VALUES ('Cra 1cBIs', '342 345 5433', 'Simon Bolivar', true, 'Cali', '08-08-2000', '08-08-2000');
 
+
+
+-- Tabla de Automoviles
+CREATE TABLE IF NOT EXISTS automovil (
+     placa text NOT NULL,
+     marca text NOT NULL,
+     cilindraje INT NOT NULL,
+     color text NOT NULL,
+     modelo text NOT NULL,
+     año text NOT NULL,
+     precio INT NOT NULL,
+     activo bool NOT NULL,
+     cedula_creado_por text NOT NULL,
+     sede text,
+     fecha_creacion date NOT NULL,
+     fecha_modificado date NOT NULL,
+     PRIMARY KEY (placa)
+);
+
 -- Tabla repuesto
 CREATE TABLE IF NOT EXISTS repuesto (
     id_repuesto SERIAL,
@@ -95,23 +114,6 @@ CREATE TABLE IF NOT EXISTS repuesto (
             REFERENCES automovil(placa)
 );
 
-
--- Tabla de Automoviles
-CREATE TABLE IF NOT EXISTS automovil (
-    placa text NOT NULL,
-    marca text NOT NULL,
-    cilindraje INT NOT NULL,
-    color text NOT NULL,
-    modelo text NOT NULL,
-    año text NOT NULL,
-    precio INT NOT NULL,
-    activo bool NOT NULL,
-    cedula_creado_por text NOT NULL,
-    sede text,
-    fecha_creacion date NOT NULL,
-    fecha_modificado date NOT NULL,
-    PRIMARY KEY (placa)
-);
 
 -- Tabla de Clientes
 CREATE TABLE IF NOT EXISTS cliente (
@@ -138,7 +140,7 @@ CREATE TABLE IF NOT EXISTS venta (
      descripcion text,
      cedula_cliente text NOT NULL,
      cedula_vendedor text NOT NULL,
-     placa_automovil INT,
+     placa_automovil text NOT NULL,
      PRIMARY KEY (id_venta),
      CONSTRAINT "FK_venta.id_automovil"
          FOREIGN KEY (placa_automovil)
