@@ -22,6 +22,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
+import org.openjfx.Models.Sede.SQL_Sede;
 import org.openjfx.Models.Usuario.SQL_Usuario;
 import org.openjfx.Models.Usuario.Usuario;
 import org.openjfx.Models.Usuario.Utils.Hash;
@@ -53,6 +54,10 @@ public class GestionUsuGerenteController implements Initializable {
     private TableColumn<Usuario, Date> col_joinedGestionGerente;
     @FXML
     private TableColumn<Usuario, String> col_cargoGestionGerente;
+
+    @FXML
+    private TableColumn<Usuario, String> col_sedeGestionGerente;
+
     @FXML
     private TableColumn<Usuario, String> col_telefonoGestionGerente;
     @FXML
@@ -61,6 +66,10 @@ public class GestionUsuGerenteController implements Initializable {
     private TableColumn<Usuario, Date> col_nacimientoGestionGerente;
     @FXML
     private TableColumn<Usuario, String> col_last_sessionGestionGerente;
+    @FXML
+    private TableColumn<Usuario, String> col_creadoPorGestionGerente;
+
+
 
     private ObservableList<Usuario> usuariosList = FXCollections.observableArrayList();
 
@@ -151,6 +160,8 @@ public class GestionUsuGerenteController implements Initializable {
                 boolean validado = this.validaciones(crear);
                 if (validado) {
                     this.guardarActualizarUsuario(crear);
+                    this.refreshTable();
+
                 }
             }
         } else {
@@ -335,6 +346,10 @@ public class GestionUsuGerenteController implements Initializable {
             }
             usuarioModelo.setId_tipo_usuario(idTipoUsuario);
 
+            usuarioModelo.setCedula_creado_por(LoginController.obtenerUsuarioLogeado().getCedula());
+            usuarioModelo.setSede(LoginController.obtenerUsuarioLogeado().getSede());
+
+
             // SI la orden es para crear, o para actualizar, llamo al metodo respectivo
             if (crear)
                 SQL_Usuario.crearUsuario(usuarioModelo);
@@ -380,7 +395,8 @@ public class GestionUsuGerenteController implements Initializable {
         col_activoGestionGerente.setCellValueFactory(new PropertyValueFactory<>("activo"));
         col_nacimientoGestionGerente.setCellValueFactory(new PropertyValueFactory<>("fecha_nacimiento"));
         col_last_sessionGestionGerente.setCellValueFactory(new PropertyValueFactory<>("last_session"));
-
+        col_creadoPorGestionGerente.setCellValueFactory(new PropertyValueFactory<>("cedula_creado_por"));
+        col_sedeGestionGerente.setCellValueFactory(new PropertyValueFactory<>("sede"));
         tableGestionGerente.setItems(usuariosList.sorted());
 
     }
@@ -405,7 +421,9 @@ public class GestionUsuGerenteController implements Initializable {
                 readUsuario.setActivo(result.getBoolean("activo"));
                 readUsuario.setFecha_nacimiento(result.getDate("fecha_nacimiento"));
                 readUsuario.setLast_session(result.getString("last_session"));
-                readUsuario.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
+                readUsuario.setCedula_creado_por(result.getString("cedula_creado_por"));
+                readUsuario.setSede(result.getString("sede"));
+
                 usuariosList.add(readUsuario);
             }
             usuariosList.sorted();
@@ -426,7 +444,8 @@ public class GestionUsuGerenteController implements Initializable {
      */
     @FXML
     protected void btnCancelarClick() throws IOException {
-        if (Dialogs.showConfirm("Seleccione una opción", "¿Está seguro que quiere cancelar el registro?", Dialogs.YES, Dialogs.NO).equals(Dialogs.YES)) {
+        if (Dialogs.showConfirm("Seleccione una opción", "¿Está seguro que quiere cancelar el registro?",
+                Dialogs.YES, Dialogs.NO).equals(Dialogs.YES)) {
             EmpresaAutosABC.setRoot("menuGerente");
         }
     }
@@ -437,8 +456,10 @@ public class GestionUsuGerenteController implements Initializable {
     // Para salir de la aplicación
     @FXML
     protected void btnSalirClick() {
-        Stage stage = (Stage) btnSalir.getScene().getWindow();
-        stage.close();
+        if (Dialogs.showConfirm("Seleccione una opción", "¿Está seguro que quiere salir de la aplicación?", Dialogs.YES, Dialogs.NO).equals(Dialogs.YES)) {
+            Stage stage = (Stage) btnSalir.getScene().getWindow();
+            stage.close();
+        }
     }
     @FXML
     protected void btnLimpiar() {
@@ -519,6 +540,8 @@ public class GestionUsuGerenteController implements Initializable {
                 readUsuario.setFecha_nacimiento(result.getDate("fecha_nacimiento"));
                 readUsuario.setLast_session(result.getString("last_session"));
                 readUsuario.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
+                readUsuario.setCedula_creado_por(result.getString("cedula_creado_por"));
+                readUsuario.setSede(result.getString("sede"));
 
                 // Cambio valores en los labels
                 txtNombre.setText(readUsuario.getNombre());
