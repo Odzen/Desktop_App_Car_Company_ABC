@@ -284,7 +284,9 @@ public class GestionUsuAdminController implements Initializable {
             txtApellido.setStyle(estiloMensajeError);
             new FadeIn(txtApellido).play();
         }
-        // Validación Cédula
+        // Validación Cédula, primero revisa el formato
+        // Luego si el formato está correcto, entonces revisa que el usuario con ese número de cédula no exista si la orden es crear
+        // Si la orden es modificar, revisa que la cédula sea de un gerente o un administrador
         if (!Validaciones.validarCedula(txtDocumento.getText()))
         {
             validado = false;
@@ -298,6 +300,15 @@ public class GestionUsuAdminController implements Initializable {
             System.out.println(SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText()));
             validado = false;
             String textoError = "Un usuario con ese número de cédula ya existe!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtDocumento.setStyle(estiloMensajeError);
+            new FadeIn(txtDocumento).play();
+        } else if (!SQL_Usuario.puedoModificarAdmin(txtDocumento.getText()) && !crear) {
+            // Validacion para saber si tengo permisos para modificar este usuario
+            System.out.println(SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText()));
+            validado = false;
+            String textoError = "No tiene permisos para modificar este usuario!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumento.setStyle(estiloMensajeError);
@@ -628,6 +639,7 @@ public class GestionUsuAdminController implements Initializable {
                     sede.setText(readUsuario.getSede());
 
             }
+
         } catch(SQLException exception) {
             throw new RuntimeException(exception);
         }
