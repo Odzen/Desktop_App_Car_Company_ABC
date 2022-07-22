@@ -205,19 +205,19 @@ public class SQL_Repuesto {
     }
 
     // Elimina la sede poniendola inactiva en la base de datos - SOFT DELETE
-    public static void eliminarSede(int id_sede) {
-        if(existeSede_Id(id_sede)) {
+    public static void eliminarRepuesto(int id_repuesto) {
+        if(existeRepuesto_Id(id_repuesto)) {
             java.util.Date modificado = new java.util.Date();
             java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
             try {
                 PreparedStatement sentencia = connection.prepareStatement(
-                        "UPDATE sede SET " +
+                        "UPDATE repuesto SET " +
                                 "fecha_modificado = ? , " +
                                 "activo= ?  " +
-                                "WHERE id_sede = ?");
+                                "WHERE id_repuesto = ?");
                 sentencia.setDate(1, modificadoSql);
                 sentencia.setBoolean(2, false);
-                sentencia.setInt(3, id_sede);
+                sentencia.setInt(3, id_repuesto);
 
                 int filasAfectadas = sentencia.executeUpdate();
 
@@ -237,15 +237,15 @@ public class SQL_Repuesto {
 
     // Elimina al repuesto poniendolo inactivo en la base de datos
     public static void cambiarEstadoRepuestoPorNombreMarca(String nombre, String marca, boolean activo) {
-        if(existeSede_Nombre(nombre)) {
+        if(existeRepuesto_NombreMarca(nombre, marca)) {
             java.util.Date modificado = new java.util.Date();
             java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
             try {
                 PreparedStatement sentencia = connection.prepareStatement(
-                        "UPDATE sede SET " +
+                        "UPDATE repuesto SET " +
                                 "fecha_modificado = ? , " +
                                 "activo= ?  " +
-                                "WHERE nombre_sede = ?");
+                                "WHERE nombre = ? AND marca=?");
                 sentencia.setDate(1, modificadoSql);
 
                 if (activo)
@@ -254,6 +254,7 @@ public class SQL_Repuesto {
                     sentencia.setBoolean(2, true);
 
                 sentencia.setString(3, nombre);
+                sentencia.setString(4, marca);
 
                 int filasAfectadas = sentencia.executeUpdate();
 
