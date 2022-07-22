@@ -235,8 +235,8 @@ public class SQL_Repuesto {
         }
     }
 
-    // Elimina al usuario poniendolo inactivo en la base de datos
-    public static void cambiarEstadoUsuarioPorNombre(String nombre, boolean activo) {
+    // Elimina al repuesto poniendolo inactivo en la base de datos
+    public static void cambiarEstadoRepuestoPorNombreMarca(String nombre, String marca, boolean activo) {
         if(existeSede_Nombre(nombre)) {
             java.util.Date modificado = new java.util.Date();
             java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
