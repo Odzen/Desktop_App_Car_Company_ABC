@@ -1,16 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package org.openjfx.Controllers;
-
-
-import java.io.IOException;
-import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.ResourceBundle;
 
 import GlobalUtils.Dialogs;
 import animatefx.animation.FadeIn;
@@ -20,39 +8,54 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.openjfx.EmpresaAutosABC;
+import org.openjfx.Models.Repuesto.Repuesto;
+import org.openjfx.Models.Repuesto.Utils.ValidacionesRepuesto;
 import org.openjfx.Models.Sede.SQL_Sede;
 import org.openjfx.Models.Sede.Sede;
 import org.openjfx.Models.Sede.Utils.ValidacionesSede;
 
 import javax.swing.*;
-
-public class GestionSedeController implements Initializable {// Variables para Actualizar, Leer y Borrar Usuarios
-    @FXML
-    private TableView<Sede> tableGestionSedes;
-    @FXML
-    private TableColumn<Sede,String> col_idSede;
-    @FXML
-    private TableColumn<Sede,String> col_nombreSede;
-    @FXML
-    private TableColumn<Sede,String> col_telefonoSede;
-    @FXML
-    private TableColumn<Sede,String> col_direccionSede;
-    @FXML
-    private TableColumn<Sede, String> col_ciudadSede;
-    @FXML
-    private TableColumn<Sede, Date> col_fecha_modificacion_sede;
-    @FXML
-    private TableColumn<Sede, Date> col_fecha_creacion_sede;
-    @FXML
-    private TableColumn<Sede, Boolean> col_activo_sede;
-
-    private ObservableList<Sede> sedesList = FXCollections.observableArrayList();
+import java.io.IOException;
+import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.ResourceBundle;
 
 
-    // Variables para registrar sedes
+public class GestionUsuJefeTallerRespuestosController implements Initializable {
+    // Variables para Crear, Actualizar, Leer y Borrar Repuestos
+    @FXML
+    private TableView<Repuesto> tableGestionRepuestos;
+    @FXML
+    private TableColumn<Repuesto,Integer> col_idRepuesto;
+    @FXML
+    private TableColumn<Repuesto,String> col_marcaRepuesto;
+    @FXML
+    private TableColumn<Repuesto,String> col_nombreRepuesto;
+    @FXML
+    private TableColumn<Repuesto,Integer> col_cantidadRepuesto;
+    @FXML
+    private TableColumn<Repuesto, String> col_sedeRepuesto;
+    @FXML
+    private TableColumn<Repuesto, String> col_creado_por;
+    @FXML
+    private TableColumn<Repuesto, Date> col_fecha_creacion_repuesto;
+    @FXML
+    private TableColumn<Repuesto, Date> col_fecha_modificacion_repuesto;
+    @FXML
+    private TableColumn<Repuesto, Boolean> col_activo_repuesto;
+
+    private ObservableList<Repuesto> repuestosList = FXCollections.observableArrayList();
+
+
+    // Variables para registrar repuestos
     private String mensajeExito = String.format("-fx-text-fill: GREEN;");
     private String estiloMensajeExito = String.format("-fx-border-color: #A9A9A9; -fx-border-width: 2; -fx-border-radius: 5;");
 
@@ -60,85 +63,81 @@ public class GestionSedeController implements Initializable {// Variables para A
     private String mensajeError = String.format("-fx-text-fill: RED;");
     private String estiloMensajeError = String.format("-fx-border-color: RED; -fx-border-width: 2; -fx-border-radius: 5;");
     @FXML
-    private TextField txtNombreSede, txtTelSede, txtDirSede, txtCiudad;
+    private TextField txtMarcaRepuesto, txtNombreRepuesto, txtCantidadRepuesto;
 
     @FXML
     private Label validacionRegistroLabel;
 
     /**
-     * CREATE - Registrar Sede
+     * CREATE - Registrar Repuesto
      * @throws IOException
      */
-    //Para validar los campos de sede
+    //Para validar los campos de repuesto
 
-    private void crearActualizarSede(boolean crear) {
+    private void crearActualizarRepuesto(boolean crear) {
 
         validacionRegistroLabel.setText("");
-        txtNombreSede.setStyle(null);
-        txtTelSede.setStyle(null);
-        txtDirSede.setStyle(null);
-        txtCiudad.setStyle(null);
+        txtMarcaRepuesto.setStyle(null);
+        txtNombreRepuesto.setStyle(null);
+        txtCantidadRepuesto.setStyle(null);
         // Cuando los campos están en blanco
-        if(txtNombreSede.getText().isEmpty() || txtTelSede.getText().isEmpty() ||
-                txtDirSede.getText().isEmpty() || txtCiudad.getText().isEmpty())
+        if(txtMarcaRepuesto.getText().isEmpty() || txtNombreRepuesto.getText().isEmpty() ||
+                txtCantidadRepuesto.getText().isEmpty())
         {
             validacionRegistroLabel.setStyle(mensajeError);
-            if(txtNombreSede.getText().isEmpty() && txtTelSede.getText().isEmpty() &&
-                    txtDirSede.getText().isEmpty() && txtCiudad.getText().isEmpty())
+            if(txtMarcaRepuesto.getText().isEmpty() && txtNombreRepuesto.getText().isEmpty() &&
+                    txtCantidadRepuesto.getText().isEmpty())
             {
                 validacionRegistroLabel.setText("Se requieren todos los campos!");
-                txtNombreSede.setStyle(estiloMensajeError);
-                txtTelSede.setStyle(estiloMensajeError);
-                txtDirSede.setStyle(estiloMensajeError);
-                txtCiudad.setStyle(estiloMensajeError);
-                new Shake(txtNombreSede).play();
-                new Shake(txtTelSede).play();
-                new Shake(txtDirSede).play();
-                new Shake(txtCiudad).play();
+                txtMarcaRepuesto.setStyle(estiloMensajeError);
+                txtNombreRepuesto.setStyle(estiloMensajeError);
+                txtCantidadRepuesto.setStyle(estiloMensajeError);
+                new Shake(txtMarcaRepuesto).play();
+                new Shake(txtNombreRepuesto).play();
+                new Shake(txtCantidadRepuesto).play();
             } else {
                 validacionRegistroLabel.setText("Algunos campos están vacíos!");
                 boolean validado = this.validaciones(crear);
                 if (validado) {
-                    this.guardarActualizarSede(crear);
+                    this.guardarActualizarRepuesto(crear);
                 }
             }
         } else {
             boolean validado = this.validaciones(crear);
             if (validado) {
-                this.guardarActualizarSede(crear);
+                this.guardarActualizarRepuesto(crear);
                 this.refreshTable();
             }
         }
     }
 
     @FXML
-    protected void bttnNuevaSedeClicked() throws IOException{
-        this.crearActualizarSede(true);
+    protected void bttnNuevoRepuesto() throws IOException{
+        this.crearActualizarRepuesto(true);
     }
 
     private boolean validaciones(boolean crear) {
         boolean validado = true;
         validacionRegistroLabel.setText("");
-        // Validacion de telefono
-        if (!ValidacionesSede.validarTelefono(txtTelSede.getText()))
+        // Validacion de cantidad
+        if (!ValidacionesRepuesto.validarCantidadRepuesto(txtCantidadRepuesto.getText()))
         {
             validado = false;
-            String textoError = "Formato de telefono incorrecto!";
-            //System.out.println(textoError);
+            String textoError = "Formato de la cantidad está incorrecto!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
-            txtTelSede.setStyle(estiloMensajeError);
-            new FadeIn(txtTelSede).play();
+            txtCantidadRepuesto.setStyle(estiloMensajeError);
+            new FadeIn(txtCantidadRepuesto).play();
         }
-        // Se comprueba la longitud del nombre de la sede
-        if (!ValidacionesSede.validarNombre(txtNombreSede.getText()))
+        // Se comprueba la longitud del nombre del repuesto
+        if (!ValidacionesRepuesto.validarNombreRepuesto(txtNombreRepuesto.getText()))
         {
             validado = false;
-            String textoError = "El nombre de la sede debe tener de 4 a 20 caracteres!";
+            String textoError = "El nombre del repuesto debe tener entre 4 a 20 caracteres!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
-            txtNombreSede.setStyle(estiloMensajeError);
-            new FadeIn(txtNombreSede).play();
+            txtNombreRepuesto.setStyle(estiloMensajeError);
+            new FadeIn(txtNombreRepuesto).play();
         }
         else if (SQL_Sede.existeSede_Nombre(txtNombreSede.getText()) && crear) {
             // Validacion para saber si el la sede con ese nombre ya existe
@@ -150,27 +149,15 @@ public class GestionSedeController implements Initializable {// Variables para A
             txtNombreSede.setStyle(estiloMensajeError);
             new FadeIn(txtNombreSede).play();
         }
-        // Validación Ciudad
-        if (!ValidacionesSede.validarCiudad(txtCiudad.getText()))
+        // Validación Marca
+        if (!ValidacionesRepuesto.validarMarcaRepuesto(txtMarcaRepuesto.getText()))
         {
             validado = false;
-            String textoError = "Formato de ciudad incorrecto!";
-            //System.out.println(textoError);
+            String textoError = "La marca del repuesto debe tener entre 4 a 20 caracteres!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
-            txtCiudad.setStyle(estiloMensajeError);
-            new FadeIn(txtCiudad).play();
-        }
-        // Validación Direccion
-        if (!ValidacionesSede.validarDireccion(txtDirSede.getText()))
-        {
-            validado = false;
-            String textoError = "Formato de direccion incorrecto!";
-            //System.out.println(textoError);
-            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
-            validacionRegistroLabel.setStyle(mensajeError);
-            txtDirSede.setStyle(estiloMensajeError);
-            new FadeIn(txtDirSede).play();
+            txtMarcaRepuesto.setStyle(estiloMensajeError);
+            new FadeIn(txtMarcaRepuesto).play();
         }
 
 
@@ -186,14 +173,13 @@ public class GestionSedeController implements Initializable {// Variables para A
         new Tada(validacionRegistroLabel).play();
     }
 
-    public void guardarActualizarSede(boolean crear) {
+    public void guardarActualizarRepuesto(boolean crear) {
         try {
-            Sede sede = new Sede();
+            Repuesto repuesto = new Repuesto();
 
-            sede.setNombre_sede(txtNombreSede.getText());
-            sede.setCiudad(txtCiudad.getText());
-            sede.setDireccion(txtDirSede.getText());
-            sede.setTelefono(txtTelSede.getText());
+            repuesto.setMarca(txtMarcaRepuesto.getText());
+            repuesto.setNombre(txtNombreRepuesto.getText());
+            repuesto.set(txtCantidadRepuesto.getText());
 
             // SI la orden es para crear, o para actualizar, llamo al metodo respectivo
             if (crear)
@@ -211,10 +197,9 @@ public class GestionSedeController implements Initializable {// Variables para A
     }
 
     public void limpiar() {
-        txtNombreSede.setText("");
-        txtCiudad.setText("");
-        txtDirSede.setText("");
-        txtTelSede.setText("");
+        txtCantidadRepuesto.setText("");
+        txtMarcaRepuesto.setText("");
+        txtMarcaRepuesto.setText("");
     }
 
     /**
@@ -223,20 +208,20 @@ public class GestionSedeController implements Initializable {// Variables para A
     private void loadData() {
         refreshTable();
 
-        col_idSede.setCellValueFactory(new PropertyValueFactory<>("id_sede"));
-        col_nombreSede.setCellValueFactory(new PropertyValueFactory<>("nombre_sede"));
-        col_direccionSede.setCellValueFactory(new PropertyValueFactory<>("direccion"));
-        col_telefonoSede.setCellValueFactory(new PropertyValueFactory<>("telefono"));
-        col_activo_sede.setCellValueFactory(new PropertyValueFactory<>("activo"));
-        col_ciudadSede.setCellValueFactory(new PropertyValueFactory<>("ciudad"));
-        col_fecha_creacion_sede.setCellValueFactory(new PropertyValueFactory<>("fecha_creacion"));
-        col_fecha_modificacion_sede.setCellValueFactory(new PropertyValueFactory<>("fecha_modificado"));
+        col_activo_repuesto.setCellValueFactory(new PropertyValueFactory<>("activo"));
+        col_cantidadRepuesto.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
+        col_creado_por.setCellValueFactory(new PropertyValueFactory<>("cedula_creado_por"));
+        col_fecha_creacion_repuesto.setCellValueFactory(new PropertyValueFactory<>("fecha_creacion"));
+        col_idRepuesto.setCellValueFactory(new PropertyValueFactory<>("id_repuesto"));
+        col_fecha_modificacion_repuesto.setCellValueFactory(new PropertyValueFactory<>("fecha_modificado"));
+        col_marcaRepuesto.setCellValueFactory(new PropertyValueFactory<>("marca"));
+        col_nombreRepuesto.setCellValueFactory(new PropertyValueFactory<>("nombre"));
 
-        tableGestionSedes.setItems(sedesList.sorted());
+        tableGestionRepuestos.setItems(repuestosList.sorted());
 
     }
 
-    private void readSedes() {
+    private void readRepuestos() {
         try {
             ResultSet result = SQL_Sede.obtenerTodasSedesSet();
             while (result.next()) {
@@ -261,8 +246,8 @@ public class GestionSedeController implements Initializable {// Variables para A
 
     //@FXML
     private void refreshTable() {
-        sedesList.clear();
-        this.readSedes();
+        repuestosList.clear();
+        this.readRepuestos();
     }
 
     /**
@@ -287,27 +272,27 @@ public class GestionSedeController implements Initializable {// Variables para A
 
     // Buscar por cedula para llenar campos y registrar o borrar
     @FXML
-    protected void btnBuscarNombre() {
+    protected void btnbuscarNombreMarcaRepuesto() {
         validacionRegistroLabel.setText("");
-        txtDirSede.setStyle(null);
-        txtNombreSede.setStyle(null);
-        txtCiudad.setStyle(null);
-        txtTelSede.setStyle(null);
-        if(txtNombreSede.getText().isEmpty())
+        txtNombreRepuesto.setStyle(null);
+        txtMarcaRepuesto.setStyle(null);
+        txtCantidadRepuesto.setStyle(null);
+        if(txtNombreRepuesto.getText().isEmpty() || txtMarcaRepuesto.getText().isEmpty())
         {
             validacionRegistroLabel.setStyle(mensajeError);
-            new Shake(txtNombreSede).play();
-            validacionRegistroLabel.setText("El nombre está vacío!");
+            new Shake(txtNombreRepuesto).play();
+            new Shake(txtMarcaRepuesto).play();
+            validacionRegistroLabel.setText("El nombre o la marca del repuesto están vacias!");
         }
         else {
-            boolean validado = this.validacionNombre();
+            boolean validado = this.validacionNombreMarca();
             if (validado) {
-                this.llenarCamposPorNombreSede();
+                this.llenarCamposPorNombreMarcaRepuesto();
             }
         }
     }
 
-    private boolean validacionNombre() {
+    private boolean validacionNombreMarca() {
         // Validación Cédula
         boolean validado = true;
         validacionRegistroLabel.setText("");
@@ -332,10 +317,11 @@ public class GestionSedeController implements Initializable {// Variables para A
         return validado;
     }
 
-    private void llenarCamposPorNombreSede() {
-        String nombre_sede = txtNombreSede.getText();
+    private void llenarCamposPorNombreMarcaRepuesto() {
+        String nombreRepuesto = txtNombreRepuesto.getText();
+        String marcaRepuesto = txtMarcaRepuesto.getText();
         try {
-            ResultSet result = SQL_Sede.obtenerSede_Nombre(nombre_sede);
+            ResultSet result = SQL_Sede.obtenerSede_Nombre(nombreRepuesto);
             while (result.next()) {
                 Sede readSede = new Sede();
 
@@ -363,8 +349,9 @@ public class GestionSedeController implements Initializable {// Variables para A
 
     // Borrar - poner inactivo
     @FXML
-    private void btnBorrarClicked() {
-        String nombre = txtNombreSede.getText();
+    private void btnBorrarRepuestoClicked() {
+        String nombreRepuesto = txtNombreRepuesto.getText();
+        String marcaRepuesto = txtNombreRepuesto.getText();
         if (SQL_Sede.existeSede_Nombre(nombre)) {
             try {
                 ResultSet result = SQL_Sede.obtenerSede_Nombre(nombre);
@@ -390,8 +377,8 @@ public class GestionSedeController implements Initializable {// Variables para A
 
     // Actualizar
     @FXML
-    private void btnActualizarClicked() {
-        this.crearActualizarSede(false);
+    private void btnActualizarRepuestoClicked() {
+        this.crearActualizarRepuesto(false);
     }
 
     @FXML
@@ -404,10 +391,12 @@ public class GestionSedeController implements Initializable {// Variables para A
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.readSedes();
+        this.readRepuestos();
         this.loadData();
-        tableGestionSedes.setItems(sedesList.sorted());
+        tableGestionRepuestos.setItems(repuestosList.sorted());
     }
 }
+
+
 
 

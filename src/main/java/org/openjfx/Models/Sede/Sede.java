@@ -5,7 +5,6 @@ import java.util.Date;
 public class Sede {
 
     private int id_sede;
-
     private String direccion;
     private String telefono;
     private String nombre_sede;

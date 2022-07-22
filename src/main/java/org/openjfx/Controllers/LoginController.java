@@ -154,6 +154,7 @@ public class LoginController  {
                 try {
                     result.next();
                     usuarioLoggeado.setId_usuario(result.getInt("id_usuario"));
+                    usuarioLoggeado.setSede(result.getString("sede"));
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }

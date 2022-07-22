@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
+
 package org.openjfx.Controllers;
 
 import java.io.IOException;
@@ -14,11 +11,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
 
-/**
- * FXML Controller class
- *
- * @author mavel
- */
+
 public class MenuController implements Initializable {
     @FXML
     private Button bttnAdmin, bttnRegistroAdmin, btnCerrarSesion;

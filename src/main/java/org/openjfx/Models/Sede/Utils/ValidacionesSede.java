@@ -35,14 +35,14 @@ public class ValidacionesSede {
     }
 
     // Verifica si la dirección es correcta
-    public static boolean validarDireccion(String email) {
-        Matcher matcher = VALID_DIRECCION.matcher(email);
+    public static boolean validarDireccion(String direccion) {
+        Matcher matcher = VALID_DIRECCION.matcher(direccion);
         return matcher.find();
     }
 
     // Verifica si la ciudad es correcta
-    public static boolean validarCiudad(String email) {
-        Matcher matcher = VALID_CIUDAD.matcher(email);
+    public static boolean validarCiudad(String ciudad) {
+        Matcher matcher = VALID_CIUDAD.matcher(ciudad);
         return matcher.find();
     }
 

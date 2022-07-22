@@ -1,12 +1,6 @@
-
 package org.openjfx.Controllers;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import GlobalUtils.Dialogs;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -14,8 +8,11 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class MenuGerenteController implements Initializable {
+public class MenuJefeTallerController implements Initializable {
     @FXML
     private Button btnCerrarSesion;
 
@@ -49,14 +46,15 @@ public class MenuGerenteController implements Initializable {
         }
     }
     @FXML
-    private void btnGestionGerenteClick() throws IOException{
-        EmpresaAutosABC.setRoot("GestionUsuGerente");
+    private void btnGestionRespuestosJefeTallerClick() throws IOException {
+        EmpresaAutosABC.setRoot("GestionRespuestos");
     }
 
     @FXML
-    private void btnGestionAutomovilClick() throws IOException{
-        EmpresaAutosABC.setRoot("GestionAutomovil");
+    private void btnGestionOrdenesJefeTallerClick() throws IOException {
+        EmpresaAutosABC.setRoot("GestionOrdenes");
     }
+
 
     @FXML
     private void btnCerrarSesionClick() throws IOException{
@@ -73,3 +71,4 @@ public class MenuGerenteController implements Initializable {
 
 
 }
+

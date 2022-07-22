@@ -12,11 +12,6 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
 
-/**
- * FXML Controller class
- *
- * @author mavel
- */
 public class MenuAdminController implements Initializable {
     @FXML
     private Label labelNameUsuario;
@@ -34,7 +29,7 @@ public class MenuAdminController implements Initializable {
     }
     @FXML
     private void btnGestationUsuariosClick() throws IOException{
-        EmpresaAutosABC.setRoot("GestionUsuario");
+        EmpresaAutosABC.setRoot("GestionUsuAdmin");
     }
 
     @FXML

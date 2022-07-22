@@ -30,7 +30,7 @@
             <Font size="18.0" />
          </font></Hyperlink>
       <Separator layoutX="73.0" layoutY="14.0" orientation="VERTICAL" prefHeight="43.0" prefWidth="0.0" />
-      <TextField fx:id="txtDocumento" layoutX="52.0" layoutY="76.0" prefHeight="34.0" prefWidth="158.0" promptText="Cédula" style="-fx-background-radius: 12;" />
+      <TextField fx:id="txtDocumento" layoutX="41.0" layoutY="76.0" prefHeight="34.0" prefWidth="158.0" promptText="Cédula" style="-fx-background-radius: 12;" />
       <Button fx:id="buscarCedula" layoutX="216.0" layoutY="78.0" mnemonicParsing="false" onAction="#btnBuscarCedula" style="-fx-background-radius: 12; -fx-background-color: gold; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Buscar">
          <effect>
             <InnerShadow color="#f5f2f2c7" />
@@ -55,6 +55,7 @@
             <TableColumn fx:id="col_modificarGestionGerente" prefWidth="128.0" text="Modificado" />
             <TableColumn fx:id="col_cargoGestionGerente" prefWidth="112.0" text="Cargo" />
             <TableColumn fx:id="col_telefonoGestionGerente" prefWidth="128.0" text="Telefono" />
+            <TableColumn fx:id="col_sedeGestionGerente" prefWidth="128.0" text="Sede" />
             <TableColumn fx:id="col_joinedGestionGerente" prefWidth="128.0" text="Joined" />
             <TableColumn fx:id="col_activoGestionGerente" prefWidth="82.0" text="Activo" />
             <TableColumn fx:id="col_nacimientoGestionGerente" prefWidth="128.0" text="Fecha de Nacimiento" />
@@ -75,7 +76,7 @@
                </color></DropShadow>
          </effect>
       </Button>
-      <DatePicker fx:id="dtpNacimiento" layoutX="526.0" layoutY="76.0" prefHeight="34.0" promptText="Fecha de Nacimiento" />
+      <DatePicker fx:id="dtpNacimiento" layoutX="511.0" layoutY="75.0" prefHeight="34.0" promptText="Fecha de Nacimiento" />
       <Button fx:id="bttnNuevoUsuario" layoutX="32.0" layoutY="232.0" mnemonicParsing="false" onAction="#bttnNuevoUsuarioClicked" prefHeight="34.0" prefWidth="88.0" style="-fx-background-color: #c8fcb3#c8fcb3; -fx-background-radius: 50;" text="Registrar" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
@@ -116,7 +117,7 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <SplitMenuButton fx:id="cargo" layoutX="526.0" layoutY="126.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="132.0" text="Cargo">
+      <SplitMenuButton fx:id="cargo" layoutX="511.0" layoutY="125.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="132.0" text="Cargo">
          <items>
             <MenuItem fx:id="firstItem" mnemonicParsing="false" onAction="#setFirstItem" text="Vendedor" />
             <MenuItem fx:id="secondItem" mnemonicParsing="false" onAction="#setSecondItem" text="Jefe de taller" />
@@ -126,9 +127,9 @@
       <TextField fx:id="txtMail" layoutX="46.0" layoutY="126.0" prefHeight="34.0" promptText="Email" style="-fx-background-radius: 12;" />
       <TextField fx:id="txtNombre" layoutX="46.0" layoutY="172.0" prefHeight="34.0" promptText="Nombre" style="-fx-background-radius: 12;" />
       <PasswordField fx:id="txtPasswordConfirm" layoutX="317.0" layoutY="172.0" prefHeight="34.0" promptText="Confirmar Contraseña" />
-      <TextField fx:id="txtTelefono" layoutX="526.0" layoutY="177.0" prefHeight="34.0" promptText="Teléfono" style="-fx-background-radius: 12;" />
-      <Label fx:id="lblMensajeContra" layoutX="684.0" layoutY="113.0" prefHeight="128.0" prefWidth="233.0" textAlignment="CENTER" textFill="RED" />
-      <Label fx:id="validacionRegistroLabel" layoutX="672.0" layoutY="113.0" prefHeight="128.0" prefWidth="265.0" textAlignment="LEFT">
+      <TextField fx:id="txtTelefono" layoutX="511.0" layoutY="176.0" prefHeight="34.0" promptText="Teléfono" style="-fx-background-radius: 12;" />
+      <Label fx:id="lblMensajeContra" layoutX="700.0" layoutY="78.0" prefHeight="194.0" prefWidth="234.0" textAlignment="CENTER" textFill="RED" />
+      <Label fx:id="validacionRegistroLabel" layoutX="704.0" layoutY="75.0" prefHeight="194.0" prefWidth="226.0" textAlignment="LEFT">
          <font>
             <Font size="10.0" />
          </font>

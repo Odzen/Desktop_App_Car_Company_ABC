@@ -16,11 +16,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
 
-/**
- * FXML Controller class
- *
- * @author mavel
- */
+
 public class MenuVendedorController implements Initializable {
     @FXML
     private Button btnCerrarSesion;
