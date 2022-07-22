@@ -186,6 +186,8 @@ public class Usuario {
             this.setUser_type(Rol.JEFE_TALLER);
         } else if (this.id_tipo_usuario == 4) {
             this.setUser_type(Rol.VENDEDOR);
+        } else if (this.id_tipo_usuario == 5) {
+            this.setUser_type(Rol.CLIENTE);
         } else {
             this.setUser_type(Rol.INDEFINIDO);
         }

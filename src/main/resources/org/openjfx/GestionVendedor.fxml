@@ -52,6 +52,7 @@
             <TableColumn fx:id="col_modificarGestionVendedor" prefWidth="128.0" text="Modificado" />
             <TableColumn fx:id="col_telefonoGestionVendedor" prefWidth="128.0" text="Telefono" />
             <TableColumn fx:id="col_joinedGestionVendedor" prefWidth="128.0" text="Joined" />
+            <TableColumn fx:id="col_sedeGestionVendedor" prefWidth="128.0" text="Sede" />
             <TableColumn fx:id="col_activoGestionVendedor" prefWidth="82.0" text="Activo" />
             <TableColumn fx:id="col_nacimientoGestionVendedor" prefWidth="128.0" text="Fecha de Nacimiento" />
             <TableColumn fx:id="col_creadoPorGestionVendedor" prefWidth="128.0" text="Creado por" />
