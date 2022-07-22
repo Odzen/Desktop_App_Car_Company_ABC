@@ -25,14 +25,20 @@ public class MenuVendedorController implements Initializable {
     private Button btnSalir;
 
     @FXML
-    private Button bttnBodegaVendedor;
+    private Button btnVendedor;
+
 
     @FXML
-    private Button btnVendedor;
+    private Button bttnBodegaVendedor;
 
     @FXML
     private Button bttnReporteVendedor;
 
+    @FXML
+    private  Button bttnCotizacion;
+
+    @FXML
+    private  Button bttnVentas;
     @FXML
     private Label bttnSalir;
 
@@ -55,6 +61,7 @@ public class MenuVendedorController implements Initializable {
     private void btnCerrarSesionClick() throws IOException{
         EmpresaAutosABC.setRoot("Login");
     }
+
 
     /**
      * Initializes the controller class.
