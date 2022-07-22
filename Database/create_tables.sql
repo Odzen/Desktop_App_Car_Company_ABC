@@ -36,7 +36,7 @@ CREATE TABLE tipo_usuario (
 
 -- Datos estáticos, no se cambian a menos que queramos agregar más tipos de usuarios
 INSERT INTO tipo_usuario (nombre)
-VALUES ('admin'), ('gerente'), ('jefe_taller'),( 'vendedor'), ( 'indefinido') ;
+VALUES ('admin'), ('gerente'), ('jefe_taller'),( 'vendedor'),( 'cliente'), ( 'indefinido') ;
 
 -- Tabla usuario
 CREATE TABLE IF NOT EXISTS usuario (
