@@ -270,8 +270,10 @@ public class GestionVendedorController implements Initializable {
             usuarioModelo.setFecha_nacimiento(fechaNacimientoFormat);
             usuarioModelo.setTelefono(txtTelefono.getText());
 
+
             usuarioModelo.setCedula_creado_por(LoginController.obtenerUsuarioLogeado().getCedula());
             usuarioModelo.setSede(LoginController.obtenerUsuarioLogeado().getSede());
+
 
 
             // SI la orden es para crear, o para actualizar, llamo al metodo respectivo
