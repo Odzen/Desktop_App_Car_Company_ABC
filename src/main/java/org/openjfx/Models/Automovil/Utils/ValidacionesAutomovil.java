@@ -10,7 +10,7 @@ public class ValidacionesAutomovil {
                     + "|^(\\+\\d{1,3}( )?)?(\\d{3}[ ]?)(\\d{2}[ ]?){2}\\d{2}$", Pattern.CASE_INSENSITIVE);
 
     public static final Pattern VALID_CILINDRAJE =
-            Pattern.compile("^[0-9]{3,4}$", Pattern.CASE_INSENSITIVE);
+            Pattern.compile("^[0-9]{3,6}$", Pattern.CASE_INSENSITIVE);
 
     public static final Pattern VALID_MODELO =
             Pattern.compile("^[a-z A-Z 0-9]{1,6}$", Pattern.CASE_INSENSITIVE);

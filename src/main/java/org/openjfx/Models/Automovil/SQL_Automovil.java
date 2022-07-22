@@ -51,7 +51,7 @@ public class SQL_Automovil {
                 Automovil.setPlaca(placa);
                 String marca = resultado.getString("marca");
                 Automovil.setMarca(marca);
-                String cilindraje = resultado.getString("cilindraje");
+                Integer cilindraje = resultado.getInt("cilindraje");
                 Automovil.setCilindraje(cilindraje);
                 java.sql.Date modificado = resultado.getDate("fecha_modificado");
                 Automovil.setFecha_modificado(modificado);
@@ -124,7 +124,7 @@ public class SQL_Automovil {
                             "VALUES  (?,?,?,?,?,?,?,?,?,?,?,?)");
             sentencia.setString(1, automovil.getPlaca());
             sentencia.setString(2, automovil.getMarca());
-            sentencia.setString(3, automovil.getCilindraje());
+            sentencia.setInt(3, automovil.getCilindraje());
             sentencia.setString(4, automovil.getColor());
             sentencia.setString(5, automovil.getModelo());
             sentencia.setString(6, automovil.getAño());
@@ -169,7 +169,7 @@ public class SQL_Automovil {
                                 "WHERE placa = ?");
                 sentencia.setString(1, automovilActualizado.getPlaca());
                 sentencia.setString(2, automovilActualizado.getMarca());
-                sentencia.setString(3, automovilActualizado.getCilindraje());
+                sentencia.setInt(3, automovilActualizado.getCilindraje());
                 sentencia.setString(4, automovilActualizado.getColor());
                 sentencia.setString(5, automovilActualizado.getModelo());
                 sentencia.setString(6, automovilActualizado.getAño());

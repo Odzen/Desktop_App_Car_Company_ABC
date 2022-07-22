@@ -6,7 +6,7 @@ public class Automovil {
 
     private String Placa;
     private String marca;
-    private String cilindraje;
+    private int cilindraje;
     private String color;
     private String modelo;
     private String año;
@@ -21,7 +21,7 @@ public class Automovil {
     public Automovil() {
         this.Placa = "";
         this.marca = "";
-        this.cilindraje = "";
+        this.cilindraje = 0;
         this.color = "";
         this.modelo = "";
         this.año = "";
@@ -50,11 +50,11 @@ public class Automovil {
         this.marca = marca;
     }
 
-    public String getCilindraje() {
+    public int getCilindraje() {
         return cilindraje;
     }
 
-    public void setCilindraje(String cilindraje) {
+    public void setCilindraje(int cilindraje) {
         this.cilindraje = cilindraje;
     }
 

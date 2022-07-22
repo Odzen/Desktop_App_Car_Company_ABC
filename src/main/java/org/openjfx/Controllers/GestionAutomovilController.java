@@ -43,7 +43,7 @@ public class GestionAutomovilController implements Initializable {// Variables p
     @FXML
     private TableColumn<Automovil,String> col_marcaAuto;
     @FXML
-    private TableColumn<Automovil,String> col_cilindrajeAuto;
+    private TableColumn<Automovil,Integer> col_cilindrajeAuto;
     @FXML
     private TableColumn<Automovil,String> col_colorAuto;
     @FXML
@@ -117,13 +117,13 @@ public class GestionAutomovilController implements Initializable {// Variables p
                 txtPrecioAuto.setStyle(estiloMensajeError);
 
 
-               // new Shake(txtPlacaAuto).play();
-               // new Shake(txtMarcaAuto).play();
-               // new Shake(txtCilindrajeAuto).play();
-                //new Shake(txtColorAuto).play();
-               // new Shake(txtModeloAuto).play();
-               // new Shake(txtPrecioAuto).play();
-               // new Shake(txtYearAuto).play();
+                new Shake(txtPlacaAuto).play();
+                new Shake(txtMarcaAuto).play();
+                new Shake(txtCilindrajeAuto).play();
+                new Shake(txtColorAuto).play();
+                new Shake(txtModeloAuto).play();
+                new Shake(txtPrecioAuto).play();
+                new Shake(txtYearAuto).play();
 
 
 
@@ -223,7 +223,7 @@ public class GestionAutomovilController implements Initializable {// Variables p
 
             automovil.setPlaca(txtPlacaAuto.getText());
             automovil.setModelo(txtModeloAuto.getText());
-            automovil.setCilindraje(txtCilindrajeAuto.getText());
+            automovil.setCilindraje(Integer.parseInt(txtCilindrajeAuto.getText()));
             automovil.setColor(txtColorAuto.getText());
             automovil.setAño(txtYearAuto.getText());
             automovil.setPrecio(Integer.parseInt(txtPrecioAuto.getText()));
@@ -291,11 +291,11 @@ public class GestionAutomovilController implements Initializable {// Variables p
 
                 readAutomovil.setMarca (result.getString("Marca"));
                 readAutomovil.setPlaca(result.getString("Placa"));
-                readAutomovil.setCilindraje(result.getString("Cilindraje"));
+                readAutomovil.setCilindraje(result.getInt("Cilindraje"));
                 readAutomovil.setColor(result.getString("Color"));
                 readAutomovil.setModelo(result.getString("Modelo"));
-                readAutomovil.setPrecio(result.getInt("Modelo"));
-      //          readAutomovil.setAño(result.getString("Año"));
+                readAutomovil.setPrecio(result.getInt("Precio"));
+                readAutomovil.setAño(result.getString("Año"));
        //         readAutomovil.setActivo(result.getBoolean("activo"));
        //         readAutomovil.setFecha_creacion(result.getDate("fecha_creacion"));
         //        readAutomovil.setFecha_modificado(result.getDate("fecha_modificado"));
@@ -398,7 +398,7 @@ public class GestionAutomovilController implements Initializable {// Variables p
 
                 readAutomovil.setMarca (result.getString("Marca"));
                 readAutomovil.setPlaca(result.getString("Placa"));
-                readAutomovil.setCilindraje(result.getString("Cilindraje"));
+                readAutomovil.setCilindraje(result.getInt("Cilindraje"));
                 readAutomovil.setColor(result.getString("Color"));
                 readAutomovil.setModelo(result.getString("Modelo"));
                 readAutomovil.setPrecio(result.getInt("Modelo"));
@@ -412,7 +412,7 @@ public class GestionAutomovilController implements Initializable {// Variables p
                 txtMarcaAuto.setText(readAutomovil.getMarca());
                 txtModeloAuto.setText(readAutomovil.getModelo());
                 txtColorAuto.setText(readAutomovil.getColor());
-                txtCilindrajeAuto.setText(readAutomovil.getCilindraje());
+               // txtCilindrajeAuto.setText(readAutomovil.getCilindraje());
                 txtYearAuto.setText(readAutomovil.getAño());
 
 
