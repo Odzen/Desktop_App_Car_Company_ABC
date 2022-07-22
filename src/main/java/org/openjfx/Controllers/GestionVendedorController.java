@@ -174,7 +174,7 @@ public class GestionVendedorController implements Initializable {
         {
             validado = false;
             String textoError = "Formato de telefono incorrecto!";
-            //System.out.println(textoError);
+            System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtTelefono.setStyle(estiloMensajeError);
@@ -271,6 +271,7 @@ public class GestionVendedorController implements Initializable {
             usuarioModelo.setTelefono(txtTelefono.getText());
 
 
+            //Traer sede y cedula de creado por
             usuarioModelo.setCedula_creado_por(LoginController.obtenerUsuarioLogeado().getCedula());
             usuarioModelo.setSede(LoginController.obtenerUsuarioLogeado().getSede());
 
@@ -295,11 +296,8 @@ public class GestionVendedorController implements Initializable {
         txtNombre.setText("");
         txtApellido.setText("");
         txtDocumento.setText("");
-        //txtPassword.setText("");
-        //txtPasswordConfirm.setText("");
         txtMail.setText("");
         txtTelefono.setText("");
-        //cargo.setText("Seleccionar Cargo");
         dtpNacimiento.setValue(null);
     }
 
@@ -321,7 +319,7 @@ public class GestionVendedorController implements Initializable {
         col_nacimientoGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("fecha_nacimiento"));
         col_last_sessionGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("last_session"));
         col_creadoPorGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("cedula_creado_por"));
-  //      col_sedeGestionGerente.setCellValueFactory(new PropertyValueFactory<>("sede"));
+        col_sedeGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("sede"));
         tableGestionVendedor.setItems(usuariosList.sorted());
 
     }
