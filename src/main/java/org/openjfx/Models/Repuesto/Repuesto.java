@@ -13,12 +13,15 @@ public class Repuesto {
     private Date fecha_creacion;
     private Date fecha_modificado;
 
+    private String sede;
+
 
     public Repuesto() {
         this.id_repuesto =0;
         this.activo = true;
         this.marca = "";
         this.nombre = "";
+        this.sede = "";
         this.cantidad = 0;
         this.cedula_creado_por = "";
         this.fecha_creacion= new Date();
@@ -79,6 +82,14 @@ public class Repuesto {
 
     public void setFecha_creacion(Date fecha_creacion) {
         this.fecha_creacion = fecha_creacion;
+    }
+
+    public String getSede() {
+        return sede;
+    }
+
+    public void setSede(String sede) {
+        this.sede = sede;
     }
 
     public Date getFecha_modificado() {
