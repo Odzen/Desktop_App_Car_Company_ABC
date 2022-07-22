@@ -39,21 +39,21 @@ public class ValidacionesAutomovil {
     }
 
     // Verifica si la ciudad es correcta
-    public static boolean validarMarca(String email) {
-        Matcher matcher = VALID_MARCA.matcher(email);
+    public static boolean validarMarca(String marca) {
+        Matcher matcher = VALID_MARCA.matcher(marca);
         return matcher.find();
     }
 
 
     // Verifica si la PLACA es correcta
-    public static boolean validarPlaca(String email) {
-        Matcher matcher = VALID_PLACA.matcher(email);
+    public static boolean validarPlaca(String placa) {
+        Matcher matcher = VALID_PLACA.matcher(placa);
         return matcher.find();
     }
 
     // Verifica si el cilindraje es correcto
-    public static boolean validarCilindraje(String email) {
-        Matcher matcher = VALID_CILINDRAJE.matcher(email);
+    public static boolean validarCilindraje(String cilindraje) {
+        Matcher matcher = VALID_CILINDRAJE.matcher(cilindraje);
         return matcher.find();
     }
 
