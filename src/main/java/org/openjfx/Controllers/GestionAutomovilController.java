@@ -205,7 +205,6 @@ public class GestionAutomovilController implements Initializable {// Variables p
            // new FadeIn(txtMarcaAuto).play();
         }
 
-
         // Mensaje si el ingreso es correcto
         return validado;
     }

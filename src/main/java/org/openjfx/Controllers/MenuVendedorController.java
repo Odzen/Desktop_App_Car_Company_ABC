@@ -51,7 +51,7 @@ public class MenuVendedorController implements Initializable {
     }
     @FXML
     private void btnGestionVendedorClick() throws IOException{
-        EmpresaAutosABC.setRoot("GestionUsuGerente");
+        EmpresaAutosABC.setRoot("GestionVendedor");
     }
 
 
