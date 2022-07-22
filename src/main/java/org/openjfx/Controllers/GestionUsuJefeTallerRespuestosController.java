@@ -15,10 +15,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.openjfx.EmpresaAutosABC;
 import org.openjfx.Models.Repuesto.Repuesto;
+import org.openjfx.Models.Repuesto.SQL_Repuesto;
 import org.openjfx.Models.Repuesto.Utils.ValidacionesRepuesto;
 import org.openjfx.Models.Sede.SQL_Sede;
 import org.openjfx.Models.Sede.Sede;
 import org.openjfx.Models.Sede.Utils.ValidacionesSede;
+import org.openjfx.Models.Usuario.Utils.Validaciones;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -139,15 +141,16 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
             txtNombreRepuesto.setStyle(estiloMensajeError);
             new FadeIn(txtNombreRepuesto).play();
         }
-        else if (SQL_Sede.existeSede_Nombre(txtNombreSede.getText()) && crear) {
-            // Validacion para saber si el la sede con ese nombre ya existe
-            System.out.println(SQL_Sede.existeSede_Nombre(txtNombreSede.getText()));
+        else if (SQL_Repuesto.existeRepuesto_NombreMarca(txtNombreRepuesto.getText(), txtMarcaRepuesto.getText()) && crear) {
+            // Validacion para saber si el repuesto con ese nombre y esa marca ya existe
             validado = false;
-            String textoError = "Una sede con ese nombre ya existe!";
+            String textoError = "Un repuesto con ese nombre y esa marca ya existe!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
-            txtNombreSede.setStyle(estiloMensajeError);
-            new FadeIn(txtNombreSede).play();
+            txtMarcaRepuesto.setStyle(estiloMensajeError);
+            new FadeIn(txtMarcaRepuesto).play();
+            txtNombreRepuesto.setStyle(estiloMensajeError);
+            new FadeIn(txtNombreRepuesto).play();
         }
         // Validación Marca
         if (!ValidacionesRepuesto.validarMarcaRepuesto(txtMarcaRepuesto.getText()))
@@ -179,13 +182,13 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
 
             repuesto.setMarca(txtMarcaRepuesto.getText());
             repuesto.setNombre(txtNombreRepuesto.getText());
-            repuesto.set(txtCantidadRepuesto.getText());
+            repuesto.setCantidad(Integer.parseInt(txtCantidadRepuesto.getText()));
 
             // SI la orden es para crear, o para actualizar, llamo al metodo respectivo
             if (crear)
-                SQL_Sede.crearSede(sede);
+                SQL_Repuesto.crearRepuesto(repuesto);
             else
-                SQL_Sede.editarSede(sede.getNombre_sede(), sede);
+                SQL_Repuesto.editarRepuesto(repuesto.getNombre(),repuesto.getMarca(), repuesto);
 
             this.validadoLabelSet();
             this.limpiar();
@@ -223,22 +226,23 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
 
     private void readRepuestos() {
         try {
-            ResultSet result = SQL_Sede.obtenerTodasSedesSet();
+            ResultSet result = SQL_Repuesto.obtenerTodosRepuestosSet();
             while (result.next()) {
-                Sede readSede = new Sede();
+                Repuesto readRepuesto = new Repuesto();
 
-                readSede.setId_sede(result.getInt("id_sede"));
-                readSede.setDireccion(result.getString("direccion"));
-                readSede.setTelefono(result.getString("telefono"));
-                readSede.setNombre_sede(result.getString("nombre_sede"));
-                readSede.setActivo(result.getBoolean("activo"));
-                readSede.setCiudad(result.getString("ciudad"));
-                readSede.setFecha_creacion(result.getDate("fecha_creacion"));
-                readSede.setFecha_modificado(result.getDate("fecha_modificado"));
+                readRepuesto.setId_repuesto(result.getInt("id_repuesto"));
+                readRepuesto.setActivo(result.getBoolean("activo"));
+                readRepuesto.setMarca(result.getString("marca"));
+                readRepuesto.setNombre(result.getString("nombre"));
+                readRepuesto.setCantidad(result.getInt("cantidad"));
+                readRepuesto.setCedula_creado_por(result.getString("cedula_creado_por"));
+                readRepuesto.setFecha_creacion(result.getDate("fecha_creacion"));
+                readRepuesto.setFecha_modificado(result.getDate("fecha_modificado"));
+                readRepuesto.setSede(result.getString("sede"));
 
-                sedesList.add(readSede);
+                repuestosList.add(readRepuesto);
             }
-            sedesList.sorted();
+            repuestosList.sorted();
         } catch(SQLException exception) {
             throw new RuntimeException(exception);
         }
@@ -296,23 +300,34 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
         // Validación Cédula
         boolean validado = true;
         validacionRegistroLabel.setText("");
-        if (!ValidacionesSede.validarNombre(txtNombreSede.getText())) {
+        if (!ValidacionesRepuesto.validarNombreRepuesto(txtNombreRepuesto.getText())) {
             validado = false;
-            String textoError = "Formato del nombre de la sede incorrecto!";
+            String textoError = "Formato del nombre del repuesto incorrecto!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
-            txtNombreSede.setStyle(estiloMensajeError);
-            new FadeIn(txtNombreSede).play();
+            txtNombreRepuesto.setStyle(estiloMensajeError);
+            new FadeIn(txtNombreRepuesto).play();
         }
-
-        if (!SQL_Sede.existeSede_Nombre(txtNombreSede.getText())) {
+        // Validación Marca
+        if (!ValidacionesRepuesto.validarMarcaRepuesto(txtMarcaRepuesto.getText()))
+        {
+            validado = false;
+            String textoError = "La marca del repuesto debe tener entre 4 a 20 caracteres!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtMarcaRepuesto.setStyle(estiloMensajeError);
+            new FadeIn(txtMarcaRepuesto).play();
+        }
+        if (!SQL_Repuesto.existeRepuesto_NombreMarca(txtNombreRepuesto.getText(), txtMarcaRepuesto.getText())) {
             // Validacion para saber si una sede con esa nombre ya existe
             validado = false;
             String textoError = "Una sede con ese nombre NO existe!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
-            txtNombreSede.setStyle(estiloMensajeError);
-            new FadeIn(txtNombreSede).play();
+            txtNombreRepuesto.setStyle(estiloMensajeError);
+            new FadeIn(txtNombreRepuesto).play();
+            txtMarcaRepuesto.setStyle(estiloMensajeError);
+            new FadeIn(txtMarcaRepuesto).play();
         }
         return validado;
     }
@@ -321,24 +336,24 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
         String nombreRepuesto = txtNombreRepuesto.getText();
         String marcaRepuesto = txtMarcaRepuesto.getText();
         try {
-            ResultSet result = SQL_Sede.obtenerSede_Nombre(nombreRepuesto);
+            ResultSet result = SQL_Repuesto.obtenerRepuesto_NombreMarca(nombreRepuesto, marcaRepuesto);
             while (result.next()) {
-                Sede readSede = new Sede();
+                Repuesto readRepuesto = new Repuesto();
 
-                readSede.setId_sede(result.getInt("id_sede"));
-                readSede.setDireccion(result.getString("direccion"));
-                readSede.setTelefono(result.getString("telefono"));
-                readSede.setNombre_sede(result.getString("nombre_sede"));
-                readSede.setActivo(result.getBoolean("activo"));
-                readSede.setCiudad(result.getString("ciudad"));
-                readSede.setFecha_creacion(result.getDate("fecha_creacion"));
-                readSede.setFecha_modificado(result.getDate("fecha_modificado"));
+                readRepuesto.setId_repuesto(result.getInt("id_repuesto"));
+                readRepuesto.setActivo(result.getBoolean("activo"));
+                readRepuesto.setMarca(result.getString("marca"));
+                readRepuesto.setNombre(result.getString("nombre"));
+                readRepuesto.setCantidad(result.getInt("cantidad"));
+                readRepuesto.setCedula_creado_por(result.getString("cedula_creado_por"));
+                readRepuesto.setFecha_creacion(result.getDate("fecha_creacion"));
+                readRepuesto.setFecha_modificado(result.getDate("fecha_modificado"));
+                readRepuesto.setSede(result.getString("sede"));
 
                 // Cambio valores en los labels
-                txtNombreSede.setText(readSede.getNombre_sede());
-                txtTelSede.setText(readSede.getTelefono());
-                txtCiudad.setText(readSede.getCiudad());
-                txtDirSede.setText(readSede.getDireccion());
+                txtMarcaRepuesto.setText(readRepuesto.getMarca());
+                txtNombreRepuesto.setText(readRepuesto.getNombre());
+                txtCantidadRepuesto.setText(Integer.toString(readRepuesto.getCantidad()));
 
             }
         } catch(SQLException exception) {
@@ -351,13 +366,13 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
     @FXML
     private void btnBorrarRepuestoClicked() {
         String nombreRepuesto = txtNombreRepuesto.getText();
-        String marcaRepuesto = txtNombreRepuesto.getText();
-        if (SQL_Sede.existeSede_Nombre(nombre)) {
+        String marcaRepuesto = txtMarcaRepuesto.getText();
+        if (SQL_Repuesto.existeRepuesto_NombreMarca(nombreRepuesto, marcaRepuesto)) {
             try {
-                ResultSet result = SQL_Sede.obtenerSede_Nombre(nombre);
+                ResultSet result = SQL_Repuesto.obtenerRepuesto_NombreMarca(nombreRepuesto, marcaRepuesto);
                 result.next();
                 boolean activo = result.getBoolean("activo");
-                SQL_Sede.cambiarEstadoUsuarioPorNombre(nombre, activo);
+                SQL_Sede.cambiarEstadoUsuarioPorNombre(nombreRepuesto, activo);
                 this.validadoLabelSet();
                 this.limpiar();
 
@@ -366,11 +381,13 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
             }
         }
         else {
-            String textoError = "No existe una sede con ese nombre!";
+            String textoError = "No existe un repuesto con ese nombre y marca!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
-            txtNombreSede.setStyle(estiloMensajeError);
-            new FadeIn(txtNombreSede).play();
+            txtNombreRepuesto.setStyle(estiloMensajeError);
+            new FadeIn(txtNombreRepuesto).play();
+            txtMarcaRepuesto.setStyle(estiloMensajeError);
+            new FadeIn(txtMarcaRepuesto).play();
         }
         this.refreshTable();
     }
