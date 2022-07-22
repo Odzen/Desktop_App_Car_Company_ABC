@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Automovil {
 
-    private String Placa;
+    private String placa;
     private String marca;
     private int cilindraje;
     private String color;
@@ -14,12 +14,12 @@ public class Automovil {
     private boolean activo;
     private Date fecha_creacion;
     private Date fecha_modificado;
-    private int id_creado_por;
+    private String cedula_creado_por;
     private String sede;
 
 
     public Automovil() {
-        this.Placa = "";
+        this.placa = "";
         this.marca = "";
         this.cilindraje = 0;
         this.color = "";
@@ -29,17 +29,17 @@ public class Automovil {
         this.fecha_modificado = new Date();
         this.fecha_creacion = new Date();
         this.activo = true;
-        this.id_creado_por = 0;
+        this.cedula_creado_por = "";
         this.sede = "";
     }
 
 
     public String getPlaca() {
-        return Placa;
+        return placa;
     }
 
     public void setPlaca(String placa) {
-        this.Placa = placa;
+        this.placa = placa;
     }
 
     public String getMarca() {
@@ -114,12 +114,12 @@ public class Automovil {
         this.fecha_modificado = fecha_modificado;
     }
 
-    public int getId_creado_por() {
-        return id_creado_por;
+    public String getCedula_creado_por() {
+        return cedula_creado_por;
     }
 
-    public void setId_creado_por(int id_creado_por) {
-        this.id_creado_por = id_creado_por;
+    public void setCedula_creado_por(String cedula_creado_por) {
+        this.cedula_creado_por = cedula_creado_por;
     }
 
     public String getSede() {

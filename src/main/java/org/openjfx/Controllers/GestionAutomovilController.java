@@ -51,16 +51,17 @@ public class GestionAutomovilController implements Initializable {// Variables p
     private TableColumn<Automovil, String> col_yearAuto;
     @FXML
     private TableColumn<Automovil, Integer> col_precioAuto;
-   // @FXML
-   // private TableColumn<Automovil, Date> col_fecha_modificacion_Automovil;
-    // private TableColumn<Automovil, Date> col_fecha_creacion_Automovil;
-    //@FXML
-   // private TableColumn<Automovil, Boolean> col_activo_Automovil;
-   // @FXML
-//    private TableColumn<Automovil, String> col_creadoPorAutomovil;
+    @FXML
+    private TableColumn<Automovil, Date> col_fecha_modificacion_Auto;
+    @FXML
+    private TableColumn<Automovil, Date> col_fecha_creacion_Auto;
+    @FXML
+    private TableColumn<Automovil, Boolean> col_activo_Auto;
+    @FXML
+    private TableColumn<Automovil, String> col_creadoPorAutomovil;
 
-  //  @FXML
-   // private TableColumn<Automovil, String> col_sede_Auto;
+    @FXML
+    private TableColumn<Automovil, String> col_Sede_Auto;
 
     private ObservableList<Automovil> automovilList = FXCollections.observableArrayList();
 
@@ -181,22 +182,20 @@ public class GestionAutomovilController implements Initializable {// Variables p
            new FadeIn(txtPlacaAuto).play();
         }
         // Validación cilindraje
-      /*  if (!ValidacionesAutomovil.validarCilindraje(txtCilindrajeAuto.getText()))
+        if (!ValidacionesAutomovil.validarCilindraje(txtCilindrajeAuto.getText()))
         {
             validado = false;
             String textoError = "Formato de cilindraje incorrecto!";
-            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtCilindrajeAuto.setStyle(estiloMensajeError);
            // new FadeIn(txtCilindrajeAuto).play();
-        }*/
+        }
         // Validación marca
         if (!ValidacionesAutomovil.validarMarca(txtMarcaAuto.getText()))
         {
             validado = false;
             String textoError = "Formato de marca incorrecto!";
-            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtMarcaAuto.setStyle(estiloMensajeError);
@@ -221,18 +220,20 @@ public class GestionAutomovilController implements Initializable {// Variables p
 
             automovil.setPlaca(txtPlacaAuto.getText());
             automovil.setModelo(txtModeloAuto.getText());
+            automovil.setMarca(txtMarcaAuto.getText());
             automovil.setCilindraje(Integer.parseInt(txtCilindrajeAuto.getText()));
             automovil.setColor(txtColorAuto.getText());
             automovil.setAño(txtYearAuto.getText());
             automovil.setPrecio(Integer.parseInt(txtPrecioAuto.getText()));
-
-
 
             // SI la orden es para crear, o para actualizar, llamo al metodo respectivo
             if (crear)
                 SQL_Automovil.crearAutomovil(automovil);
             else
                 SQL_Automovil.editarAutomovil(automovil.getPlaca(), automovil);
+
+            automovil.setCedula_creado_por(LoginController.obtenerUsuarioLogeado().getCedula());
+            automovil.setSede(LoginController.obtenerUsuarioLogeado().getSede());
 
             this.validadoLabelSet();
             this.limpiar();
@@ -255,27 +256,24 @@ public class GestionAutomovilController implements Initializable {// Variables p
 
     }
 
-    
-
-
     /**
      * UPDATE - READ - DELETE
      */
     private void loadData() {
         refreshTable();
 
-        col_PlacaAuto.setCellValueFactory(new PropertyValueFactory<>("Placa"));
-        col_marcaAuto.setCellValueFactory(new PropertyValueFactory<>("marca_Auto"));
+        col_PlacaAuto.setCellValueFactory(new PropertyValueFactory<>("placa"));
+        col_marcaAuto.setCellValueFactory(new PropertyValueFactory<>("marca"));
         col_cilindrajeAuto.setCellValueFactory(new PropertyValueFactory<>("cilindraje"));
         col_colorAuto.setCellValueFactory(new PropertyValueFactory<>("color"));
         col_modeloAuto.setCellValueFactory(new PropertyValueFactory<>("modelo"));
-        col_yearAuto.setCellValueFactory(new PropertyValueFactory<>("Año"));
+        col_yearAuto.setCellValueFactory(new PropertyValueFactory<>("año"));
         col_precioAuto.setCellValueFactory(new PropertyValueFactory<>("precio"));
-        //col_activo_Automovil.setCellValueFactory(new PropertyValueFactory<>("activo"));
-       // col_fecha_creacion_Automovil.setCellValueFactory(new PropertyValueFactory<>("fecha_creacion"));
-       // col_fecha_modificacion_Automovil.setCellValueFactory(new PropertyValueFactory<>("fecha_modificado"));
-  //      col_creadoPorAutomovil.setCellValueFactory(new PropertyValueFactory<>("creado_por"));
-       // col_sede_Auto.setCellValueFactory(new PropertyValueFactory<>("sede"));
+        col_activo_Auto.setCellValueFactory(new PropertyValueFactory<>("activo"));
+        col_Sede_Auto.setCellValueFactory(new PropertyValueFactory<>("fecha_creacion"));
+        col_fecha_modificacion_Auto.setCellValueFactory(new PropertyValueFactory<>("fecha_modificado"));
+        col_creadoPorAutomovil.setCellValueFactory(new PropertyValueFactory<>("cedula_creado_por"));
+        col_Sede_Auto.setCellValueFactory(new PropertyValueFactory<>("sede"));
 
         tableGestionAutomovil.setItems(automovilList.sorted());
 
@@ -287,16 +285,17 @@ public class GestionAutomovilController implements Initializable {// Variables p
             while (result.next()) {
                 Automovil readAutomovil = new Automovil();
 
-                readAutomovil.setMarca (result.getString("Marca"));
-                readAutomovil.setPlaca(result.getString("Placa"));
-                readAutomovil.setCilindraje(result.getInt("Cilindraje"));
-                readAutomovil.setColor(result.getString("Color"));
-                readAutomovil.setModelo(result.getString("Modelo"));
-                readAutomovil.setPrecio(result.getInt("Precio"));
-                readAutomovil.setAño(result.getString("Año"));
-                //readAutomovil.setActivo(result.getBoolean("activo"));
-              //  readAutomovil.setFecha_creacion(result.getDate("fecha_creacion"));
-               // readAutomovil.setFecha_modificado(result.getDate("fecha_modificado"));
+                readAutomovil.setMarca(result.getString("marca"));
+                readAutomovil.setPlaca(result.getString("placa"));
+                readAutomovil.setCilindraje(result.getInt("cilindraje"));
+                readAutomovil.setColor(result.getString("color"));
+                readAutomovil.setModelo(result.getString("modelo"));
+                readAutomovil.setPrecio(result.getInt("precio"));
+                readAutomovil.setAño(result.getString("año"));
+                readAutomovil.setActivo(result.getBoolean("activo"));
+                readAutomovil.setFecha_creacion(result.getDate("fecha_creacion"));
+                readAutomovil.setFecha_modificado(result.getDate("fecha_modificado"));
+                readAutomovil.setCedula_creado_por(result.getString("cedula_creado_por"));
 
                 automovilList.add(readAutomovil);
             }
@@ -394,23 +393,25 @@ public class GestionAutomovilController implements Initializable {// Variables p
             while (result.next()) {
                 Automovil readAutomovil = new Automovil();
 
-                readAutomovil.setMarca (result.getString("Marca"));
-                readAutomovil.setPlaca(result.getString("Placa"));
-                readAutomovil.setCilindraje(result.getInt("Cilindraje"));
-                readAutomovil.setColor(result.getString("Color"));
-                readAutomovil.setModelo(result.getString("Modelo"));
-                readAutomovil.setPrecio(result.getInt("Modelo"));
-                readAutomovil.setAño(result.getString("Año"));
-                //readAutomovil.setActivo(result.getBoolean("activo"));
-              //  readAutomovil.setFecha_creacion(result.getDate("fecha_creacion"));
-               // readAutomovil.setFecha_modificado(result.getDate("fecha_modificado"));
+                readAutomovil.setMarca (result.getString("marca"));
+                readAutomovil.setPlaca(result.getString("placa"));
+                readAutomovil.setCilindraje(result.getInt("cilindraje"));
+                readAutomovil.setColor(result.getString("color"));
+                readAutomovil.setModelo(result.getString("modelo"));
+                readAutomovil.setPrecio(result.getInt("precio"));
+                readAutomovil.setAño(result.getString("año"));
+                readAutomovil.setActivo(result.getBoolean("activo"));
+                readAutomovil.setFecha_creacion(result.getDate("fecha_creacion"));
+                readAutomovil.setFecha_modificado(result.getDate("fecha_modificado"));
+                readAutomovil.setSede(result.getString("sede"));
 
                 // Cambio valores en los labels
                 txtPlacaAuto.setText(readAutomovil.getPlaca());
                 txtMarcaAuto.setText(readAutomovil.getMarca());
+                txtPrecioAuto.setText(Integer.toString(readAutomovil.getPrecio()));
                 txtModeloAuto.setText(readAutomovil.getModelo());
                 txtColorAuto.setText(readAutomovil.getColor());
-               // txtCilindrajeAuto.setText(readAutomovil.getCilindraje());
+                txtCilindrajeAuto.setText(Integer.toString(readAutomovil.getCilindraje()));
                 txtYearAuto.setText(readAutomovil.getAño());
 
 
@@ -430,7 +431,7 @@ public class GestionAutomovilController implements Initializable {// Variables p
                 ResultSet result = SQL_Automovil.obtenerAutomovil_placa(placa);
                 result.next();
                 boolean activo = result.getBoolean("activo");
-                SQL_Automovil.cambiarEstadoUsuarioPorNombre(placa, activo);
+                SQL_Automovil.cambiarEstadoAutomovilPorPlaca(placa, activo);
                 this.validadoLabelSet();
                 this.limpiar();
 

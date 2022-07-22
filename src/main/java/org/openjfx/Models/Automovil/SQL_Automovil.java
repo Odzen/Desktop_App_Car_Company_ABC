@@ -1,7 +1,6 @@
 package org.openjfx.Models.Automovil;
 
 import org.openjfx.Models.Conexion;
-import org.openjfx.Models.Usuario.Utils.Rol;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -130,7 +129,7 @@ public class SQL_Automovil {
             sentencia.setString(6, automovil.getAño());
             sentencia.setInt(7, automovil.getPrecio());
             sentencia.setBoolean(8, automovil.isActivo());
-            sentencia.setInt(9, automovil.getId_creado_por());
+            sentencia.setString(9, automovil.getCedula_creado_por());
             sentencia.setDate(10,  new java.sql.Date(automovil.getFecha_creacion().getTime()));
             sentencia.setString(11, automovil.getSede());
             sentencia.setDate(12,  new java.sql.Date(automovil.getFecha_modificado().getTime()));
@@ -156,30 +155,26 @@ public class SQL_Automovil {
             try {
                 PreparedStatement sentencia = connection.prepareStatement(
                         "UPDATE automovil SET " +
-                                "placa = ? , " +
                                 "marca = ? , " +
                                 "cilindraje = ? , " +
                                 "color = ? , " +
                                 "modelo = ? , " +
                                 "año = ? , " +
                                 "precio = ? , " +
-                                "creado_por = ?," +
+                                "cedula_creado_por = ?," +
                                 "sede = ?,"+
                                "fecha_modificado= ?  " +
                                 "WHERE placa = ?");
-                sentencia.setString(1, automovilActualizado.getPlaca());
-                sentencia.setString(2, automovilActualizado.getMarca());
-                sentencia.setInt(3, automovilActualizado.getCilindraje());
-                sentencia.setString(4, automovilActualizado.getColor());
-                sentencia.setString(5, automovilActualizado.getModelo());
-                sentencia.setString(6, automovilActualizado.getAño());
-                sentencia.setInt(7, automovilActualizado.getPrecio());
-                sentencia.setString(8, placa);
+                sentencia.setString(1, automovilActualizado.getMarca());
+                sentencia.setInt(2, automovilActualizado.getCilindraje());
+                sentencia.setString(3, automovilActualizado.getColor());
+                sentencia.setString(4, automovilActualizado.getModelo());
+                sentencia.setString(5, automovilActualizado.getAño());
+                sentencia.setInt(6, automovilActualizado.getPrecio());
+                sentencia.setString(7, automovilActualizado.getCedula_creado_por());
+                sentencia.setString(8, automovilActualizado.getSede());
                 sentencia.setDate(9, modificadoSql);
                 sentencia.setString(10, placa);
-                sentencia.setInt(11, automovilActualizado.getId_creado_por());
-                sentencia.setString(11, automovilActualizado.getSede());
-
 
                 int filasAfectadas = sentencia.executeUpdate();
                 System.out.println(filasAfectadas);
@@ -207,7 +202,7 @@ public class SQL_Automovil {
                         "UPDATE automovil SET " +
                                 "fecha_modificado = ? , " +
                                 "activo= ?  " +
-                                "WHERE id_automovil = ?");
+                                "WHERE placa = ?");
                 sentencia.setDate(1, modificadoSql);
                 sentencia.setBoolean(2, false);
                 sentencia.setString(3, placa);
@@ -229,7 +224,7 @@ public class SQL_Automovil {
     }
 
     // Elimina al usuario poniendolo inactivo en la base de datos
-    public static void cambiarEstadoUsuarioPorNombre(String placa, boolean activo) {
+    public static void cambiarEstadoAutomovilPorPlaca(String placa, boolean activo) {
         if(existeautomovil_placa(placa)) {
             java.util.Date modificado = new java.util.Date();
             java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
