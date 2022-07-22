@@ -36,7 +36,7 @@ CREATE TABLE tipo_usuario (
 
 -- Datos estáticos, no se cambian a menos que queramos agregar más tipos de usuarios
 INSERT INTO tipo_usuario (nombre)
-VALUES ('admin'), ('gerente'), ('jefe_taller'),( 'vendedor'), ( 'indefinido') ;
+VALUES ('admin'), ('gerente'), ('jefe_taller'),( 'vendedor'),( 'cliente'), ( 'indefinido') ;
 
 -- Tabla usuario
 CREATE TABLE IF NOT EXISTS usuario (
@@ -124,9 +124,14 @@ CREATE TABLE IF NOT EXISTS cliente (
    activo bool NOT NULL,
    fecha_nacimiento date NOT NULL,
    telefono text NOT NULL,
+   id_tipo_usuario INT,
+   user_type varchar(20) NOT NULL,
    cedula_creado_por text NOT NULL,
    sede text,
-   PRIMARY KEY (cedula_cliente)
+   PRIMARY KEY (cedula_cliente),
+   CONSTRAINT "FK_cliente.id_tipo"
+       FOREIGN KEY (id_tipo_usuario)
+           REFERENCES tipo_usuario(id_tipo_usuario)
 );
 
 -- Tabla de Ventas
