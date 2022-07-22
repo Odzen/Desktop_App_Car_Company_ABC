@@ -12,11 +12,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-/**
- * FXML Controller class
- *
- * @author mavel
- */
 public class MenuJefeTallerController implements Initializable {
     @FXML
     private Button btnCerrarSesion;

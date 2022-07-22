@@ -29,11 +29,6 @@ import org.openjfx.Models.Sede.Utils.ValidacionesSede;
 
 import javax.swing.*;
 
-/**
- * FXML Controller class
- *
- * @author mavel
- */
 public class GestionSedeController implements Initializable {// Variables para Actualizar, Leer y Borrar Usuarios
     @FXML
     private TableView<Sede> tableGestionSedes;
@@ -104,13 +99,13 @@ public class GestionSedeController implements Initializable {// Variables para A
                 validacionRegistroLabel.setText("Algunos campos están vacíos!");
                 boolean validado = this.validaciones(crear);
                 if (validado) {
-                    this.guardarActualizarUsuario(crear);
+                    this.guardarActualizarSede(crear);
                 }
             }
         } else {
             boolean validado = this.validaciones(crear);
             if (validado) {
-                this.guardarActualizarUsuario(crear);
+                this.guardarActualizarSede(crear);
                 this.refreshTable();
             }
         }
@@ -191,7 +186,7 @@ public class GestionSedeController implements Initializable {// Variables para A
         new Tada(validacionRegistroLabel).play();
     }
 
-    public void guardarActualizarUsuario(boolean crear) {
+    public void guardarActualizarSede(boolean crear) {
         try {
             Sede sede = new Sede();
 
