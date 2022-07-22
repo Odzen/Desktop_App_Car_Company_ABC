@@ -272,6 +272,16 @@ public class GestionUsuGerenteController implements Initializable {
             txtDocumento.setStyle(estiloMensajeError);
             new FadeIn(txtDocumento).play();
         }
+        else if (!SQL_Usuario.puedoModificarGerente(txtDocumento.getText()) && !crear) {
+            // Validacion para saber si tengo permisos para modificar este usuario
+            System.out.println(SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText()));
+            validado = false;
+            String textoError = "No tiene permisos para modificar este usuario!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtDocumento.setStyle(estiloMensajeError);
+            new FadeIn(txtDocumento).play();
+        }
         // Validación Email
         if (!Validaciones.validarEmail(txtMail.getText()))
         {
@@ -521,7 +531,8 @@ public class GestionUsuGerenteController implements Initializable {
     private void llenarCamposPorCedula() {
         String cedula = txtDocumento.getText();
         try {
-            ResultSet result = SQL_Usuario.obtenerUsuario_Cedula(cedula);
+            ResultSet result = SQL_Usuario.obtenerUsuario_CedulaGerente(cedula);
+
             while (result.next()) {
                 Usuario readUsuario = new Usuario();
 
@@ -553,11 +564,11 @@ public class GestionUsuGerenteController implements Initializable {
                 dtpNacimiento.setValue(LocalDate.parse(readUsuario.getFecha_nacimiento().toString()));
 
                 String rol = "";
-                if (readUsuario.getUser_type().toString().equals("GERENTE")) {
-                    rol = "Vendedor";
+                if (readUsuario.getUser_type().toString().equals(Rol.JEFE_TALLER.toString())) {
+                    rol = "Jefe de Taller";
                 }
                 else {
-                    rol = "Jefe de taller";
+                    rol = "Vendedor";
                 }
                 cargo.setText(rol);
 

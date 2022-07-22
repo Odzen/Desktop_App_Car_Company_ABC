@@ -81,7 +81,51 @@ public class SQL_Usuario {
         }
     }
 
-    // Verifica si un usuario existe o no en la base de datos, basado en su cédula
+    // Verifica si un admin puede modificar
+    public static boolean puedoModificarAdmin(String cedula)  {
+        try {
+            PreparedStatement sentencia = connection.prepareStatement(
+                    "SELECT * FROM usuario WHERE cedula= ? AND (user_type=? OR user_type=?)"
+            );
+
+            sentencia.setString(1, cedula);
+            sentencia.setString(2, Rol.GERENTE.toString());
+            sentencia.setString(3, Rol.ADMIN.toString());
+            ResultSet resultado = sentencia.executeQuery();
+            if (resultado.next()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Verifica si un gerente puede modificar
+    public static boolean puedoModificarGerente(String cedula)  {
+        try {
+            PreparedStatement sentencia = connection.prepareStatement(
+                    "SELECT * FROM usuario WHERE cedula= ? AND (user_type=? OR user_type=?)"
+            );
+
+            sentencia.setString(1, cedula);
+            sentencia.setString(2, Rol.JEFE_TALLER.toString());
+            sentencia.setString(3, Rol.VENDEDOR.toString());
+            ResultSet resultado = sentencia.executeQuery();
+            if (resultado.next()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Obtiene un usuario buscandolo por su cédula
     public static ResultSet obtenerUsuario_Cedula(String cedula)  {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
@@ -89,6 +133,44 @@ public class SQL_Usuario {
             );
 
             sentencia.setString(1, cedula);
+            ResultSet resultado = sentencia.executeQuery();
+            return resultado;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Obtiene un usuario buscandolo por su cédula, para gerente
+    // Solo devuelve usuarios con el rol de vendendor o jefe de taller
+    public static ResultSet obtenerUsuario_CedulaGerente(String cedula)  {
+        try {
+            PreparedStatement sentencia = connection.prepareStatement(
+                    "SELECT * FROM usuario WHERE cedula= ? AND (user_type=? OR user_type=?)"
+            );
+
+            sentencia.setString(1, cedula);
+            sentencia.setString(2, Rol.JEFE_TALLER.toString());
+            sentencia.setString(3, Rol.VENDEDOR.toString());
+            ResultSet resultado = sentencia.executeQuery();
+            return resultado;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Obtiene un usuario buscandolo por su cédula, para gerente
+    // Solo devuelve usuarios con el rol de gerente o Admin
+    public static ResultSet obtenerUsuario_CedulaAdmin(String cedula)  {
+        try {
+            PreparedStatement sentencia = connection.prepareStatement(
+                    "SELECT * FROM usuario WHERE cedula= ? AND (user_type=? OR user_type=?)"
+            );
+
+            sentencia.setString(1, cedula);
+            sentencia.setString(2, Rol.GERENTE.toString());
+            sentencia.setString(3, Rol.ADMIN.toString());
             ResultSet resultado = sentencia.executeQuery();
             return resultado;
 

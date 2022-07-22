@@ -105,13 +105,10 @@ CREATE TABLE IF NOT EXISTS repuesto (
     nombre text NOT NULL,
     cantidad INT NOT NULL,
     cedula_creado_por text NOT NULL,
-    placa_automovil text NOT NULL,
     fecha_creacion date NOT NULL,
     fecha_modificado date NOT NULL,
-    PRIMARY KEY (id_repuesto),
-    CONSTRAINT "FK_repuesto.placa_automovil"
-        FOREIGN KEY (placa_automovil)
-            REFERENCES automovil(placa)
+    sede text NOT NULL,
+    PRIMARY KEY (id_repuesto)
 );
 
 

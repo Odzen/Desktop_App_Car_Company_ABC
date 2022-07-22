@@ -32,7 +32,7 @@ import org.openjfx.Models.Usuario.Utils.Validaciones;
 
 import javax.swing.*;
 
-public class GestionUsuarioController implements Initializable {
+public class GestionUsuAdminController implements Initializable {
 
     // Variables para Actualizar, Leer y Borrar Usuarios
     @FXML
@@ -284,7 +284,9 @@ public class GestionUsuarioController implements Initializable {
             txtApellido.setStyle(estiloMensajeError);
             new FadeIn(txtApellido).play();
         }
-        // Validación Cédula
+        // Validación Cédula, primero revisa el formato
+        // Luego si el formato está correcto, entonces revisa que el usuario con ese número de cédula no exista si la orden es crear
+        // Si la orden es modificar, revisa que la cédula sea de un gerente o un administrador
         if (!Validaciones.validarCedula(txtDocumento.getText()))
         {
             validado = false;
@@ -298,6 +300,15 @@ public class GestionUsuarioController implements Initializable {
             System.out.println(SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText()));
             validado = false;
             String textoError = "Un usuario con ese número de cédula ya existe!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtDocumento.setStyle(estiloMensajeError);
+            new FadeIn(txtDocumento).play();
+        } else if (!SQL_Usuario.puedoModificarAdmin(txtDocumento.getText()) && !crear) {
+            // Validacion para saber si tengo permisos para modificar este usuario
+            System.out.println(SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText()));
+            validado = false;
+            String textoError = "No tiene permisos para modificar este usuario!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumento.setStyle(estiloMensajeError);
@@ -580,7 +591,7 @@ public class GestionUsuarioController implements Initializable {
     private void llenarCamposPorCedula() {
         String cedula = txtDocumento.getText();
         try {
-            ResultSet result = SQL_Usuario.obtenerUsuario_Cedula(cedula);
+            ResultSet result = SQL_Usuario.obtenerUsuario_CedulaAdmin(cedula);
             while (result.next()) {
                 Usuario readUsuario = new Usuario();
 
@@ -612,7 +623,7 @@ public class GestionUsuarioController implements Initializable {
                 dtpNacimiento.setValue(LocalDate.parse(readUsuario.getFecha_nacimiento().toString()));
 
                 String rol = "";
-                if (readUsuario.getUser_type().toString().equals("ADMIN")) {
+                if (readUsuario.getUser_type().toString().equals(Rol.ADMIN.toString())) {
                     rol = "Administrador";
                 }
                 else {
@@ -628,6 +639,7 @@ public class GestionUsuarioController implements Initializable {
                     sede.setText(readUsuario.getSede());
 
             }
+
         } catch(SQLException exception) {
             throw new RuntimeException(exception);
         }
