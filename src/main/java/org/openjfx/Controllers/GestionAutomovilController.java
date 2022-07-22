@@ -26,7 +26,6 @@ import org.openjfx.EmpresaAutosABC;
 import org.openjfx.Models.Automovil.Automovil;
 import org.openjfx.Models.Automovil.SQL_Automovil;
 import org.openjfx.Models.Automovil.Utils.ValidacionesAutomovil;
-//import org.openjfx.Models.Usuario.Usuario;
 
 import javax.swing.*;
 
@@ -52,16 +51,15 @@ public class GestionAutomovilController implements Initializable {// Variables p
     private TableColumn<Automovil, String> col_yearAuto;
     @FXML
     private TableColumn<Automovil, Integer> col_precioAuto;
-    @FXML
-    private TableColumn<Automovil, Date> col_fecha_modificacion_Automovil;
-    @FXML
-    private TableColumn<Automovil, Date> col_fecha_creacion_Automovil;
-    @FXML
-    private TableColumn<Automovil, Boolean> col_activo_Automovil;
-    @FXML
-    private TableColumn<Automovil, String> col_creadoPorAutomovil;
+   // @FXML
+   // private TableColumn<Automovil, Date> col_fecha_modificacion_Automovil;
+    // private TableColumn<Automovil, Date> col_fecha_creacion_Automovil;
+    //@FXML
+   // private TableColumn<Automovil, Boolean> col_activo_Automovil;
+   // @FXML
+//    private TableColumn<Automovil, String> col_creadoPorAutomovil;
 
-    @FXML
+  //  @FXML
    // private TableColumn<Automovil, String> col_sede_Auto;
 
     private ObservableList<Automovil> automovilList = FXCollections.observableArrayList();
@@ -160,7 +158,7 @@ public class GestionAutomovilController implements Initializable {// Variables p
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtModeloAuto.setStyle(estiloMensajeError);
-         //   new FadeIn(txtModeloAuto).play();
+           new FadeIn(txtModeloAuto).play();
         }
         // Se comprueba la longitud del modelo del automovil
         if (!ValidacionesAutomovil.validarModelo(txtModeloAuto.getText()))
@@ -170,7 +168,7 @@ public class GestionAutomovilController implements Initializable {// Variables p
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtModeloAuto.setStyle(estiloMensajeError);
-          //  new FadeIn(txtModeloAuto).play();
+            new FadeIn(txtModeloAuto).play();
         }
         else if (SQL_Automovil.existeautomovil_placa(txtPlacaAuto.getText()) && crear) {
             // Validacion para saber si un automovil con esa placa ya existe
@@ -180,7 +178,7 @@ public class GestionAutomovilController implements Initializable {// Variables p
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtPlacaAuto.setStyle(estiloMensajeError);
-         //   new FadeIn(txtPlacaAuto).play();
+           new FadeIn(txtPlacaAuto).play();
         }
         // Validación cilindraje
       /*  if (!ValidacionesAutomovil.validarCilindraje(txtCilindrajeAuto.getText()))
@@ -202,7 +200,7 @@ public class GestionAutomovilController implements Initializable {// Variables p
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtMarcaAuto.setStyle(estiloMensajeError);
-           // new FadeIn(txtMarcaAuto).play();
+            new FadeIn(txtMarcaAuto).play();
         }
 
         // Mensaje si el ingreso es correcto
@@ -214,7 +212,7 @@ public class GestionAutomovilController implements Initializable {// Variables p
         System.out.println("Pasó Validaciones");
         validacionRegistroLabel.setStyle(mensajeExito);
         validacionRegistroLabel.setText("Operación Exitosa!");
-     //   new Tada(validacionRegistroLabel).play();
+        new Tada(validacionRegistroLabel).play();
     }
 
     public void guardarActualizarAutomovil(boolean crear) {
@@ -273,11 +271,11 @@ public class GestionAutomovilController implements Initializable {// Variables p
         col_modeloAuto.setCellValueFactory(new PropertyValueFactory<>("modelo"));
         col_yearAuto.setCellValueFactory(new PropertyValueFactory<>("Año"));
         col_precioAuto.setCellValueFactory(new PropertyValueFactory<>("precio"));
-//        col_activo_Automovil.setCellValueFactory(new PropertyValueFactory<>("activo"));
-//        col_fecha_creacion_Automovil.setCellValueFactory(new PropertyValueFactory<>("fecha_creacion"));
- //       col_fecha_modificacion_Automovil.setCellValueFactory(new PropertyValueFactory<>("fecha_modificado"));
-  //      col_creadoPorAutomovil.setCellValueFactory(new PropertyValueFactory<>("fecha_modificado"));
-       // col_sede_Auto.setCellValueFactory(new PropertyValueFactory<>("fecha_modificado"));
+        //col_activo_Automovil.setCellValueFactory(new PropertyValueFactory<>("activo"));
+       // col_fecha_creacion_Automovil.setCellValueFactory(new PropertyValueFactory<>("fecha_creacion"));
+       // col_fecha_modificacion_Automovil.setCellValueFactory(new PropertyValueFactory<>("fecha_modificado"));
+  //      col_creadoPorAutomovil.setCellValueFactory(new PropertyValueFactory<>("creado_por"));
+       // col_sede_Auto.setCellValueFactory(new PropertyValueFactory<>("sede"));
 
         tableGestionAutomovil.setItems(automovilList.sorted());
 
@@ -296,9 +294,9 @@ public class GestionAutomovilController implements Initializable {// Variables p
                 readAutomovil.setModelo(result.getString("Modelo"));
                 readAutomovil.setPrecio(result.getInt("Precio"));
                 readAutomovil.setAño(result.getString("Año"));
-       //         readAutomovil.setActivo(result.getBoolean("activo"));
-       //         readAutomovil.setFecha_creacion(result.getDate("fecha_creacion"));
-        //        readAutomovil.setFecha_modificado(result.getDate("fecha_modificado"));
+                //readAutomovil.setActivo(result.getBoolean("activo"));
+              //  readAutomovil.setFecha_creacion(result.getDate("fecha_creacion"));
+               // readAutomovil.setFecha_modificado(result.getDate("fecha_modificado"));
 
                 automovilList.add(readAutomovil);
             }
@@ -353,7 +351,7 @@ public class GestionAutomovilController implements Initializable {// Variables p
         if(txtPlacaAuto.getText().isEmpty())
         {
             validacionRegistroLabel.setStyle(mensajeError);
-           // new Shake(txtPlacaAuto).play();
+            new Shake(txtPlacaAuto).play();
             validacionRegistroLabel.setText("La placa está vacía!");
         }
         else {
@@ -374,7 +372,7 @@ public class GestionAutomovilController implements Initializable {// Variables p
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtPlacaAuto.setStyle(estiloMensajeError);
-           // new FadeIn(txtPlacaAuto).play();
+            new FadeIn(txtPlacaAuto).play();
         }
 
         if (!SQL_Automovil.existeautomovil_placa(txtPlacaAuto.getText())) {
@@ -384,7 +382,7 @@ public class GestionAutomovilController implements Initializable {// Variables p
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtPlacaAuto.setStyle(estiloMensajeError);
-           // new FadeIn(txtPlacaAuto).play();
+             new FadeIn(txtPlacaAuto).play();
         }
         return validado;
     }
@@ -403,9 +401,9 @@ public class GestionAutomovilController implements Initializable {// Variables p
                 readAutomovil.setModelo(result.getString("Modelo"));
                 readAutomovil.setPrecio(result.getInt("Modelo"));
                 readAutomovil.setAño(result.getString("Año"));
-        //        readAutomovil.setActivo(result.getBoolean("activo"));
-         //       readAutomovil.setFecha_creacion(result.getDate("fecha_creacion"));
-          //      readAutomovil.setFecha_modificado(result.getDate("fecha_modificado"));
+                //readAutomovil.setActivo(result.getBoolean("activo"));
+              //  readAutomovil.setFecha_creacion(result.getDate("fecha_creacion"));
+               // readAutomovil.setFecha_modificado(result.getDate("fecha_modificado"));
 
                 // Cambio valores en los labels
                 txtPlacaAuto.setText(readAutomovil.getPlaca());
@@ -445,7 +443,7 @@ public class GestionAutomovilController implements Initializable {// Variables p
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtPlacaAuto.setStyle(estiloMensajeError);
-           // new FadeIn(txtPlacaAuto).play();
+            new FadeIn(txtPlacaAuto).play();
         }
         this.refreshTable();
     }
