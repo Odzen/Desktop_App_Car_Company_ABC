@@ -27,6 +27,7 @@ import org.openjfx.Models.Automovil.Automovil;
 import org.openjfx.Models.Automovil.SQL_Automovil;
 import org.openjfx.Models.Automovil.Utils.ValidacionesAutomovil;
 
+import javax.sound.midi.SysexMessage;
 import javax.swing.*;
 
 /**
@@ -226,14 +227,18 @@ public class GestionAutomovilController implements Initializable {// Variables p
             automovil.setAño(txtYearAuto.getText());
             automovil.setPrecio(Integer.parseInt(txtPrecioAuto.getText()));
 
+            System.out.println("Cedula" + LoginController.obtenerUsuarioLogeado().getCedula());
+            System.out.println("Sede" + LoginController.obtenerUsuarioLogeado().getSede());
+
+            automovil.setCedula_creado_por(LoginController.obtenerUsuarioLogeado().getCedula());
+            automovil.setSede(LoginController.obtenerUsuarioLogeado().getSede());
+
             // SI la orden es para crear, o para actualizar, llamo al metodo respectivo
             if (crear)
                 SQL_Automovil.crearAutomovil(automovil);
             else
                 SQL_Automovil.editarAutomovil(automovil.getPlaca(), automovil);
 
-            automovil.setCedula_creado_por(LoginController.obtenerUsuarioLogeado().getCedula());
-            automovil.setSede(LoginController.obtenerUsuarioLogeado().getSede());
 
             this.validadoLabelSet();
             this.limpiar();
@@ -252,8 +257,6 @@ public class GestionAutomovilController implements Initializable {// Variables p
         txtColorAuto.setText("");
         txtYearAuto.setText("");
         txtPrecioAuto.setText("");
-
-
     }
 
     /**
@@ -270,7 +273,7 @@ public class GestionAutomovilController implements Initializable {// Variables p
         col_yearAuto.setCellValueFactory(new PropertyValueFactory<>("año"));
         col_precioAuto.setCellValueFactory(new PropertyValueFactory<>("precio"));
         col_activo_Auto.setCellValueFactory(new PropertyValueFactory<>("activo"));
-        col_Sede_Auto.setCellValueFactory(new PropertyValueFactory<>("fecha_creacion"));
+        col_fecha_creacion_Auto.setCellValueFactory(new PropertyValueFactory<>("fecha_creacion"));
         col_fecha_modificacion_Auto.setCellValueFactory(new PropertyValueFactory<>("fecha_modificado"));
         col_creadoPorAutomovil.setCellValueFactory(new PropertyValueFactory<>("cedula_creado_por"));
         col_Sede_Auto.setCellValueFactory(new PropertyValueFactory<>("sede"));
@@ -293,6 +296,7 @@ public class GestionAutomovilController implements Initializable {// Variables p
                 readAutomovil.setPrecio(result.getInt("precio"));
                 readAutomovil.setAño(result.getString("año"));
                 readAutomovil.setActivo(result.getBoolean("activo"));
+                readAutomovil.setSede(result.getString("sede"));
                 readAutomovil.setFecha_creacion(result.getDate("fecha_creacion"));
                 readAutomovil.setFecha_modificado(result.getDate("fecha_modificado"));
                 readAutomovil.setCedula_creado_por(result.getString("cedula_creado_por"));
