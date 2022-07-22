@@ -22,12 +22,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
+import org.openjfx.Models.Cliente.Cliente;
+import org.openjfx.Models.Cliente.SQL_Cliente;
+import org.openjfx.Models.Cliente.Utils.ValidacionesClientes;
 import org.openjfx.Models.Sede.SQL_Sede;
-import org.openjfx.Models.Usuario.SQL_Usuario;
 import org.openjfx.Models.Usuario.Usuario;
-import org.openjfx.Models.Usuario.Utils.Hash;
-import org.openjfx.Models.Usuario.Utils.Rol;
-import org.openjfx.Models.Usuario.Utils.Validaciones;
 
 import javax.swing.*;
 
@@ -38,8 +37,6 @@ public class GestionVendedorController implements Initializable {
     private Button btnSalir;
     @FXML
     private TableView<Usuario> tableGestionVendedor;
-    @FXML
-    private TableColumn<Usuario,String> col_idGestionVendedor;
     @FXML
     private TableColumn<Usuario,String> col_cedulaGestionVendedor;
     @FXML
@@ -69,7 +66,7 @@ public class GestionVendedorController implements Initializable {
 
 
 
-    private ObservableList<Usuario> usuariosList = FXCollections.observableArrayList();
+    private ObservableList<Usuario> clientesList = FXCollections.observableArrayList();
 
     private Usuario usuario = null;
 
@@ -170,7 +167,7 @@ public class GestionVendedorController implements Initializable {
         validacionRegistroLabel.setText("");
 
         // Validacion de telefono
-        if (!Validaciones.validarTelefono(txtTelefono.getText()))
+        if (!ValidacionesClientes.validarTelefono(txtTelefono.getText()))
         {
             validado = false;
             String textoError = "Formato de telefono incorrecto!";
@@ -201,7 +198,7 @@ public class GestionVendedorController implements Initializable {
             new FadeIn(txtApellido).play();
         }
         // Validación Cédula
-        if (!Validaciones.validarCedula(txtDocumento.getText()))
+        if (!ValidacionesClientes.validarCedula(txtDocumento.getText()))
         {
             validado = false;
             String textoError = "Formato de la cédula incorrecto!";
@@ -209,9 +206,9 @@ public class GestionVendedorController implements Initializable {
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumento.setStyle(estiloMensajeError);
             new FadeIn(txtDocumento).play();
-        } else if (SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText()) && crear) {
+        } else if (SQL_Cliente.existeCliente_Cedula(txtDocumento.getText()) && crear) {
             // Validacion para saber si el usuario con esa cédula ya existe
-            System.out.println(SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText()));
+            System.out.println(SQL_Cliente.existeCliente_Cedula(txtDocumento.getText()));
             validado = false;
             String textoError = "Un usuario con ese número de cédula ya existe!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
@@ -220,7 +217,7 @@ public class GestionVendedorController implements Initializable {
             new FadeIn(txtDocumento).play();
         }
         // Validación Email
-        if (!Validaciones.validarEmail(txtMail.getText()))
+        if (!ValidacionesClientes.validarEmail(txtMail.getText()))
         {
             validado = false;
             String textoError = "Formato de email incorrecto!";
@@ -231,7 +228,7 @@ public class GestionVendedorController implements Initializable {
             new FadeIn(txtMail).play();
         }
         // Validación Fecha
-        if (dtpNacimiento.getValue()==null && !Validaciones.validarFecha(String.valueOf(dtpNacimiento.getValue())))
+        if (dtpNacimiento.getValue()==null && !ValidacionesClientes.validarFecha(String.valueOf(dtpNacimiento.getValue())))
         {
             validado = false;
             String textoError = "Formato de fecha incorrecto!";
@@ -256,32 +253,32 @@ public class GestionVendedorController implements Initializable {
 
     public void guardarActualizarUsuario(boolean crear) {
         try {
-            Usuario usuarioModelo = new Usuario();
+            Cliente clienteModelo = new Cliente();
 
 
-            usuarioModelo.setNombre(txtNombre.getText());
-            usuarioModelo.setApellido(txtApellido.getText());
-            usuarioModelo.setCedula(txtDocumento.getText());
-            usuarioModelo.setEmail(txtMail.getText());
+            clienteModelo.setNombre(txtNombre.getText());
+            clienteModelo.setApellido(txtApellido.getText());
+            clienteModelo.setCedula(txtDocumento.getText());
+            clienteModelo.setEmail(txtMail.getText());
 
             DateTimeFormatter fechaHoraFormato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             String stringDataFormateada = dtpNacimiento.getValue().format(fechaHoraFormato);
             Date fechaNacimientoFormat = new SimpleDateFormat("dd/MM/yyyy").parse(stringDataFormateada);
-            usuarioModelo.setFecha_nacimiento(fechaNacimientoFormat);
-            usuarioModelo.setTelefono(txtTelefono.getText());
+            clienteModelo.setFecha_nacimiento(fechaNacimientoFormat);
+            clienteModelo.setTelefono(txtTelefono.getText());
 
 
             //Traer sede y cedula de creado por
-            usuarioModelo.setCedula_creado_por(LoginController.obtenerUsuarioLogeado().getCedula());
-            usuarioModelo.setSede(LoginController.obtenerUsuarioLogeado().getSede());
+            clienteModelo.setCedula_creado_por(LoginController.obtenerUsuarioLogeado().getCedula());
+            clienteModelo.setSede(LoginController.obtenerUsuarioLogeado().getSede());
 
 
 
             // SI la orden es para crear, o para actualizar, llamo al metodo respectivo
             if (crear)
-                SQL_Usuario.crearUsuario(usuarioModelo);
+                SQL_Cliente.crearCliente(clienteModelo);
             else
-                SQL_Usuario.editarUsuarios(usuarioModelo.getCedula(), usuarioModelo);
+                SQL_Cliente.editarClientes(clienteModelo.getCedula(), clienteModelo);
 
             this.validadoLabelSet();
             this.limpiar();
@@ -307,8 +304,7 @@ public class GestionVendedorController implements Initializable {
     private void loadData() {
         refreshTable();
 
-        col_idGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("id_usuario"));
-        col_cedulaGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("cedula"));
+        col_cedulaGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("cedula_cliente"));
         col_emailGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("email"));
         col_nombreGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         col_apellidoGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("apellido"));
@@ -320,34 +316,32 @@ public class GestionVendedorController implements Initializable {
         col_last_sessionGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("last_session"));
         col_creadoPorGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("cedula_creado_por"));
         col_sedeGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("sede"));
-        tableGestionVendedor.setItems(usuariosList.sorted());
+        tableGestionVendedor.setItems(clientesList.sorted());
 
     }
 
     private void readUsers() {
         try {
-            ResultSet result = SQL_Usuario.obtenerTodosUsuariosPorRol(Rol.VENDEDOR);
+            ResultSet result = SQL_Cliente.obtenerTodosClienteSet();
             while (result.next()) {
-                Usuario readUsuario = new Usuario();
+                Cliente readCliente = new Cliente();
 
-                readUsuario.setId_usuario(result.getInt("id_usuario"));
-                readUsuario.setCedula(result.getString("cedula"));
-                readUsuario.setEmail(result.getString("email"));
-                readUsuario.setNombre(result.getString("nombre"));
-                readUsuario.setApellido(result.getString("apellido"));
-                readUsuario.setModificado(result.getDate("modificado"));
-                readUsuario.setAvatar(result.getString("avatar"));
-                readUsuario.setJoined(result.getDate("joined"));
-                readUsuario.setTelefono(result.getString("telefono"));
-                readUsuario.setActivo(result.getBoolean("activo"));
-                readUsuario.setFecha_nacimiento(result.getDate("fecha_nacimiento"));
-                readUsuario.setLast_session(result.getString("last_session"));
-                readUsuario.setCedula_creado_por(result.getString("cedula_creado_por"));
-                readUsuario.setSede(result.getString("sede"));
+                readCliente.setCedula(result.getString("cedula"));
+                readCliente.setEmail(result.getString("email"));
+                readCliente.setNombre(result.getString("nombre"));
+                readCliente.setApellido(result.getString("apellido"));
+                readCliente.setModificado(result.getDate("modificado"));
+                readCliente.setJoined(result.getDate("joined"));
+                readCliente.setTelefono(result.getString("telefono"));
+                readCliente.setActivo(result.getBoolean("activo"));
+                readCliente.setFecha_nacimiento(result.getDate("fecha_nacimiento"));
+                readCliente.setLast_session(result.getString("last_session"));
+                readCliente.setCedula_creado_por(result.getString("cedula_creado_por"));
+                readCliente.setSede(result.getString("sede"));
 
-                usuariosList.add(readUsuario);
+                clientesList.add(readCliente);
             }
-            usuariosList.sorted();
+            clientesList.sorted();
         } catch(SQLException exception) {
             throw new RuntimeException(exception);
         }
@@ -355,7 +349,7 @@ public class GestionVendedorController implements Initializable {
 
     //@FXML
     private void refreshTable() {
-        usuariosList.clear();
+        clientesList.clear();
         this.readUsers();
     }
 
@@ -415,7 +409,7 @@ public class GestionVendedorController implements Initializable {
         // Validación Cédula
         boolean validado = true;
         validacionRegistroLabel.setText("");
-        if (!Validaciones.validarCedula(txtDocumento.getText())) {
+        if (!ValidacionesClientes.validarCedula(txtDocumento.getText())) {
             validado = false;
             String textoError = "Formato de la cédula incorrecto!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
@@ -424,7 +418,7 @@ public class GestionVendedorController implements Initializable {
             new FadeIn(txtDocumento).play();
         }
 
-        if (!SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText())) {
+        if (!SQL_Cliente.existeCliente_Cedula(txtDocumento.getText())) {
             // Validacion para saber si el usuario con esa cédula ya existe
             validado = false;
             String textoError = "Un usuario con ese número de cédula NO existe!";
@@ -437,44 +431,33 @@ public class GestionVendedorController implements Initializable {
     }
 
     private void llenarCamposPorCedula() {
-        String cedula = txtDocumento.getText();
+        String cedula_cliente = txtDocumento.getText();
         try {
-            ResultSet result = SQL_Usuario.obtenerUsuario_Cedula(cedula);
+            ResultSet result = SQL_Cliente.obtenerCliente_Cedula(cedula_cliente);
             while (result.next()) {
-                Usuario readUsuario = new Usuario();
+                Cliente readCliente = new Cliente();
 
-                readUsuario.setId_usuario(result.getInt("id_usuario"));
-                readUsuario.setCedula(result.getString("cedula"));
-                readUsuario.setEmail(result.getString("email"));
-                readUsuario.setNombre(result.getString("nombre"));
-                readUsuario.setApellido(result.getString("apellido"));
-                readUsuario.setModificado(result.getDate("modificado"));
-                readUsuario.setAvatar(result.getString("avatar"));
-                readUsuario.setJoined(result.getDate("joined"));
-                readUsuario.setTelefono(result.getString("telefono"));
-                readUsuario.setActivo(result.getBoolean("activo"));
-                readUsuario.setFecha_nacimiento(result.getDate("fecha_nacimiento"));
-                readUsuario.setLast_session(result.getString("last_session"));
-                readUsuario.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
-                readUsuario.setCedula_creado_por(result.getString("cedula_creado_por"));
-                readUsuario.setSede(result.getString("sede"));
+                readCliente.setCedula(result.getString("cedula_cliente"));
+                readCliente.setEmail(result.getString("email"));
+                readCliente.setNombre(result.getString("nombre"));
+                readCliente.setApellido(result.getString("apellido"));
+                readCliente.setModificado(result.getDate("modificado"));
+                readCliente.setJoined(result.getDate("joined"));
+                readCliente.setTelefono(result.getString("telefono"));
+                readCliente.setActivo(result.getBoolean("activo"));
+                readCliente.setFecha_nacimiento(result.getDate("fecha_nacimiento"));
+                readCliente.setLast_session(result.getString("last_session"));
+                //readCliente.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
+                readCliente.setCedula_creado_por(result.getString("cedula_creado_por"));
+                readCliente.setSede(result.getString("sede"));
 
                 // Cambio valores en los labels
-                txtNombre.setText(readUsuario.getNombre());
-                txtApellido.setText(readUsuario.getApellido());
-                txtMail.setText(readUsuario.getEmail());
-                txtTelefono.setText(readUsuario.getTelefono());
-                dtpNacimiento.setValue(LocalDate.parse(readUsuario.getFecha_nacimiento().toString()));
+                txtNombre.setText(readCliente.getNombre());
+                txtApellido.setText(readCliente.getApellido());
+                txtMail.setText(readCliente.getEmail());
+                txtTelefono.setText(readCliente.getTelefono());
+                dtpNacimiento.setValue(LocalDate.parse(readCliente.getFecha_nacimiento().toString()));
 
-                /*
-                String rol = "";
-                if (readUsuario.getUser_type().toString().equals("GERENTE")) {
-                    rol = "Vendedor";
-                }
-                else {
-                    rol = "Jefe de taller";
-                }
-                cargo.setText(rol);*/
 
             }
         } catch(SQLException exception) {
@@ -486,13 +469,13 @@ public class GestionVendedorController implements Initializable {
     // Borrar - poner inactivo
     @FXML
     private void btnBorrarClicked() {
-        String cedula = txtDocumento.getText();
-        if (SQL_Usuario.existeUsuario_Cedula(cedula)) {
+        String cedula_cliente = txtDocumento.getText();
+        if (SQL_Cliente.existeCliente_Cedula(cedula_cliente)) {
             try {
-                ResultSet result = SQL_Usuario.obtenerUsuario_Cedula(cedula);
+                ResultSet result = SQL_Cliente.obtenerCliente_Cedula(cedula_cliente);
                 result.next();
                 boolean activo = result.getBoolean("activo");
-                SQL_Usuario.cambiarEstadoUsuarioPorCedula(cedula, activo);
+                SQL_Cliente.cambiarEstadoClientePorCedula(cedula_cliente, activo);
                 this.validadoLabelSet();
                 this.limpiar();
 
@@ -528,7 +511,7 @@ public class GestionVendedorController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         this.readUsers();
         this.loadData();
-        tableGestionVendedor.setItems(usuariosList.sorted());
+        tableGestionVendedor.setItems(clientesList.sorted());
     }
 
 }

@@ -44,7 +44,6 @@
       </ImageView>
       <TableView fx:id="tableGestionVendedor" layoutX="44.0" layoutY="291.0" prefHeight="238.0" prefWidth="845.0">
          <columns>
-            <TableColumn fx:id="col_idGestionVendedor" prefWidth="68.0" text="Id" />
             <TableColumn fx:id="col_cedulaGestionVendedor" prefWidth="111.0" text="Cédula" />
             <TableColumn fx:id="col_emailGestionVendedor" prefWidth="135.0" text="Email" />
             <TableColumn fx:id="col_nombreGestionVendedor" prefWidth="156.0" text="Nombre" />
