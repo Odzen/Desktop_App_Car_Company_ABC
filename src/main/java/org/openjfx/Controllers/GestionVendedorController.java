@@ -35,7 +35,7 @@ public class GestionVendedorController implements Initializable {
     @FXML
     private Button btnSalir;
     @FXML
-    private TableView<Usuario> tableGestionVendedor;
+    private TableView<Cliente> tableGestionVendedor;
     @FXML
     private TableColumn<Cliente, Boolean> col_activoGestionVendedor;
 
@@ -100,10 +100,6 @@ public class GestionVendedorController implements Initializable {
     private TextField txtDireccion_cliente;
     @FXML
     private DatePicker dtpNacimiento;
-    @FXML
-    MenuItem firstItem;
-    @FXML
-    MenuItem secondItem;
 
     @FXML
     private Label validacionRegistroLabel;
@@ -312,7 +308,7 @@ public class GestionVendedorController implements Initializable {
 
         } catch (Exception e) {
             System.err.println(e);
-            JOptionPane.showMessageDialog(null,"Error registrando el cliente");
+            Dialogs.showError("Error en la base de datos", "Error registrando el cliente");
         }
     }
 

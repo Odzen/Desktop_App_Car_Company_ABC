@@ -17,10 +17,6 @@ import org.openjfx.EmpresaAutosABC;
 import org.openjfx.Models.Repuesto.Repuesto;
 import org.openjfx.Models.Repuesto.SQL_Repuesto;
 import org.openjfx.Models.Repuesto.Utils.ValidacionesRepuesto;
-import org.openjfx.Models.Sede.SQL_Sede;
-import org.openjfx.Models.Sede.Sede;
-import org.openjfx.Models.Sede.Utils.ValidacionesSede;
-import org.openjfx.Models.Usuario.Utils.Validaciones;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -135,7 +131,7 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
         if (!ValidacionesRepuesto.validarNombreRepuesto(txtNombreRepuesto.getText()))
         {
             validado = false;
-            String textoError = "El nombre del repuesto debe tener entre 4 a 20 caracteres!";
+            String textoError = "Formato del nombre del repuesto está incorrectos!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtNombreRepuesto.setStyle(estiloMensajeError);
@@ -156,7 +152,7 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
         if (!ValidacionesRepuesto.validarMarcaRepuesto(txtMarcaRepuesto.getText()))
         {
             validado = false;
-            String textoError = "La marca del repuesto debe tener entre 4 a 20 caracteres!";
+            String textoError = "El formato de la marca del repuesto está incorrecto!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtMarcaRepuesto.setStyle(estiloMensajeError);
@@ -183,6 +179,8 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
             repuesto.setMarca(txtMarcaRepuesto.getText());
             repuesto.setNombre(txtNombreRepuesto.getText());
             repuesto.setCantidad(Integer.parseInt(txtCantidadRepuesto.getText()));
+            repuesto.setSede(LoginController.obtenerUsuarioLogeado().getSede());
+            repuesto.setCedula_creado_por(LoginController.obtenerUsuarioLogeado().getCedula());
 
             // SI la orden es para crear, o para actualizar, llamo al metodo respectivo
             if (crear)
@@ -195,14 +193,17 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
 
         } catch (Exception e) {
             System.err.println(e);
-            JOptionPane.showMessageDialog(null,"Error registrando la sede");
+            Dialogs.showError("Error en la base de datos", "Error registrando el repuesto");
         }
     }
 
     public void limpiar() {
         txtCantidadRepuesto.setText("");
         txtMarcaRepuesto.setText("");
-        txtMarcaRepuesto.setText("");
+        txtNombreRepuesto.setText("");
+        txtNombreRepuesto.setStyle(null);
+        txtMarcaRepuesto.setStyle(null);
+        txtCantidadRepuesto.setStyle(null);
     }
 
     /**
@@ -219,6 +220,7 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
         col_fecha_modificacion_repuesto.setCellValueFactory(new PropertyValueFactory<>("fecha_modificado"));
         col_marcaRepuesto.setCellValueFactory(new PropertyValueFactory<>("marca"));
         col_nombreRepuesto.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        col_sedeRepuesto.setCellValueFactory(new PropertyValueFactory<>("sede"));
 
         tableGestionRepuestos.setItems(repuestosList.sorted());
 
@@ -261,20 +263,20 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
     @FXML
     protected void btnCancelarClick() throws IOException {
         if (Dialogs.showConfirm("Seleccione una opción", "¿Está seguro que quiere cancelar el registro?", Dialogs.YES, Dialogs.NO).equals(Dialogs.YES)) {
-            EmpresaAutosABC.setRoot("menuAdmin");
+            EmpresaAutosABC.setRoot("menuJefeTaller");
         }
     }
     @FXML
     protected void btnInicio() throws IOException {
-        EmpresaAutosABC.setRoot("menuAdmin");
+        EmpresaAutosABC.setRoot("menuJefeTaller");
     }
-    // Para salir de la aplicación
+    // Para limpiar datos
     @FXML
     protected void btnLimpiar() {
         this.limpiar();
     }
 
-    // Buscar por cedula para llenar campos y registrar o borrar
+    // Buscar por nombre y marca del repuesto para llenar campos y así poder registrar o borrar
     @FXML
     protected void btnbuscarNombreMarcaRepuesto() {
         validacionRegistroLabel.setText("");
@@ -297,7 +299,7 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
     }
 
     private boolean validacionNombreMarca() {
-        // Validación Cédula
+        // Validación nombre
         boolean validado = true;
         validacionRegistroLabel.setText("");
         if (!ValidacionesRepuesto.validarNombreRepuesto(txtNombreRepuesto.getText())) {
@@ -312,16 +314,16 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
         if (!ValidacionesRepuesto.validarMarcaRepuesto(txtMarcaRepuesto.getText()))
         {
             validado = false;
-            String textoError = "La marca del repuesto debe tener entre 4 a 20 caracteres!";
+            String textoError = "Formato de la marca del repuesto está incorrecto!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtMarcaRepuesto.setStyle(estiloMensajeError);
             new FadeIn(txtMarcaRepuesto).play();
         }
         if (!SQL_Repuesto.existeRepuesto_NombreMarca(txtNombreRepuesto.getText(), txtMarcaRepuesto.getText())) {
-            // Validacion para saber si una sede con esa nombre ya existe
+            // Validacion para saber si un repuesto con ese nombre y marca ya existe
             validado = false;
-            String textoError = "Una sede con ese nombre NO existe!";
+            String textoError = "Una repuesto con ese nombre y marca NO existe!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtNombreRepuesto.setStyle(estiloMensajeError);
@@ -362,25 +364,68 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
 
     }
 
-    // Borrar - poner inactivo
+    // Borrar - se hace SOFT DELETE solo cuando la cantidad del repuesto es = 0
+    // Borrar realmente lo que hace es borrar (actualizar) una determinada cantidad
+    // que se resta a la cantidad actual
+    // Esta cantidad NO puede ser mayor a la cantidad actual
+    // Si la cantidad actualizada queda en 0, entonces el repuesto se pone como inactivo (SOFT DELETE)
     @FXML
     private void btnBorrarRepuestoClicked() {
-        String nombreRepuesto = txtNombreRepuesto.getText();
-        String marcaRepuesto = txtMarcaRepuesto.getText();
-        if (SQL_Repuesto.existeRepuesto_NombreMarca(nombreRepuesto, marcaRepuesto)) {
-            try {
-                ResultSet result = SQL_Repuesto.obtenerRepuesto_NombreMarca(nombreRepuesto, marcaRepuesto);
-                result.next();
-                boolean activo = result.getBoolean("activo");
-                SQL_Sede.cambiarEstadoUsuarioPorNombre(nombreRepuesto, activo);
-                this.validadoLabelSet();
-                this.limpiar();
+        if(txtNombreRepuesto.getText().isEmpty() || txtMarcaRepuesto.getText().isEmpty() ||  txtCantidadRepuesto.getText().isEmpty())
+        {
+            validacionRegistroLabel.setStyle(mensajeError);
+            new Shake(txtNombreRepuesto).play();
+            new Shake(txtMarcaRepuesto).play();
+            new Shake(txtCantidadRepuesto).play();
+            validacionRegistroLabel.setText("El nombre, la marca o la cantidad del repuesto están vacias!");
+        }
+        else {
+            this.borrarRepuesto();
+        }
+    }
 
-            } catch (SQLException exception) {
-                throw new RuntimeException(exception);
+    private boolean borrarRepuesto() {
+        boolean validado = true;
+        validacionRegistroLabel.setText("");
+        // Validacion existencia
+        if (SQL_Repuesto.existeRepuesto_NombreMarca(txtNombreRepuesto.getText(), txtMarcaRepuesto.getText())) {
+            // Validación cantidad
+            int cantidadActual = 0;
+            ResultSet resultado =  SQL_Repuesto.obtenerRepuesto_NombreMarca(txtNombreRepuesto.getText(), txtMarcaRepuesto.getText());
+            try {
+                resultado.next();
+                cantidadActual = resultado.getInt("cantidad");
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println("Cantidad para cambiar: " + txtCantidadRepuesto.getText());
+            System.out.println("Cantidad actual: " + cantidadActual);
+            if (Integer.parseInt(txtCantidadRepuesto.getText()) > cantidadActual) {
+                validado = false;
+                String textoError = "La cantidad que quiere borrar NO puede ser mayor a la cantidad actual!";
+                System.out.println(textoError);
+                validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+                validacionRegistroLabel.setStyle(mensajeError);
+                txtCantidadRepuesto.setStyle(estiloMensajeError);
+                new FadeIn(txtCantidadRepuesto).play();
+            } else {
+                System.out.println("La cantidad es correcta");
+                Repuesto repuestoActualizado = new Repuesto();
+                int cantidadDespuesDeBorrar = cantidadActual - Integer.parseInt(txtCantidadRepuesto.getText());
+                try {
+                    repuestoActualizado.setNombre(resultado.getString("nombre"));
+                    repuestoActualizado.setMarca(resultado.getString("marca"));
+                    repuestoActualizado.setCantidad(cantidadDespuesDeBorrar);
+                    SQL_Repuesto.editarRepuesto(txtNombreRepuesto.getText(), txtMarcaRepuesto.getText(), repuestoActualizado);
+                    this.validadoLabelSet();
+                    this.limpiar();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
         else {
+            validado = false;
             String textoError = "No existe un repuesto con ese nombre y marca!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
@@ -390,6 +435,7 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
             new FadeIn(txtMarcaRepuesto).play();
         }
         this.refreshTable();
+        return validado;
     }
 
     // Actualizar
