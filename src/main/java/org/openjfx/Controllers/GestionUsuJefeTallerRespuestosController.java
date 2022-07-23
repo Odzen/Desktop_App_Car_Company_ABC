@@ -371,8 +371,6 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
     // Si la cantidad actualizada queda en 0, entonces el repuesto se pone como inactivo (SOFT DELETE)
     @FXML
     private void btnBorrarRepuestoClicked() {
-        String nombreRepuesto = txtNombreRepuesto.getText();
-        String marcaRepuesto = txtMarcaRepuesto.getText();
         if(txtNombreRepuesto.getText().isEmpty() || txtMarcaRepuesto.getText().isEmpty() ||  txtCantidadRepuesto.getText().isEmpty())
         {
             validacionRegistroLabel.setStyle(mensajeError);

@@ -276,7 +276,7 @@ public class GestionAutomovilController implements Initializable {// Variables p
 
         } catch (Exception e) {
             System.err.println(e);
-            JOptionPane.showMessageDialog(null,"Error registrando el automovil");
+            Dialogs.showError("Error en la base de datos", "Error registrando el automovil");
         }
     }
 

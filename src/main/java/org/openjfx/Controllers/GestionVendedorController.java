@@ -308,7 +308,7 @@ public class GestionVendedorController implements Initializable {
 
         } catch (Exception e) {
             System.err.println(e);
-            JOptionPane.showMessageDialog(null,"Error registrando el cliente");
+            Dialogs.showError("Error en la base de datos", "Error registrando el cliente");
         }
     }
 
