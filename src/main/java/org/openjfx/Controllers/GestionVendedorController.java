@@ -26,6 +26,8 @@ import org.openjfx.Models.Cliente.Cliente;
 import org.openjfx.Models.Cliente.SQL_Cliente;
 import org.openjfx.Models.Cliente.Utils.ValidacionesClientes;
 import org.openjfx.Models.Sede.SQL_Sede;
+import org.openjfx.Models.Sede.Utils.ValidacionesSede;
+import org.openjfx.Models.Usuario.SQL_Usuario;
 import org.openjfx.Models.Usuario.Usuario;
 
 import javax.swing.*;
@@ -38,32 +40,43 @@ public class GestionVendedorController implements Initializable {
     @FXML
     private TableView<Usuario> tableGestionVendedor;
     @FXML
-    private TableColumn<Usuario,String> col_cedulaGestionVendedor;
-    @FXML
-    private TableColumn<Usuario,String> col_emailGestionVendedor;
-    @FXML
-    private TableColumn<Usuario,String> col_nombreGestionVendedor;
-    @FXML
-    private TableColumn<Usuario,String> col_apellidoGestionVendedor;
-    @FXML
-    private TableColumn<Usuario, Date> col_modificarGestionVendedor;
-    @FXML
-    private TableColumn<Usuario, Date> col_joinedGestionVendedor;
+    private TableColumn<Cliente, Boolean> col_activoGestionVendedor;
 
     @FXML
-    private TableColumn<Usuario, String> col_sedeGestionVendedor;
+    private TableColumn<Cliente, String> col_apellidoGestionVendedor;
 
     @FXML
-    private TableColumn<Usuario, String> col_telefonoGestionVendedor;
-    @FXML
-    private TableColumn<Usuario, Boolean> col_activoGestionVendedor;
-    @FXML
-    private TableColumn<Usuario, Date> col_nacimientoGestionVendedor;
-    @FXML
-    private TableColumn<Usuario, String> col_last_sessionGestionVendedor;
-    @FXML
-    private TableColumn<Usuario, String> col_creadoPorGestionVendedor;
+    private TableColumn<Cliente, String> col_cedula_clienteGestionVendedor;
 
+    @FXML
+    private TableColumn<Cliente, String> col_creadoPorGestionVendedor;
+
+    @FXML
+    private TableColumn<Cliente, String> col_direccionGestionVendedor;
+
+    @FXML
+    private TableColumn<Cliente, String> col_emailGestionVendedor;
+
+    @FXML
+    private TableColumn<Cliente, Date> col_fecha_creacionGestionVendedor1;
+
+    @FXML
+    private TableColumn<Cliente, Date> col_fecha_modificadoGestionVendedor;
+
+    @FXML
+    private TableColumn<Cliente, Integer> col_id_tipo_usuarioGestionVendedor;
+
+    @FXML
+    private TableColumn<Cliente, Date> col_nacimientoGestionVendedor;
+
+    @FXML
+    private TableColumn<Cliente, String> col_nombreGestionVendedor;
+
+    @FXML
+    private TableColumn<Cliente, String> col_sedeGestionVendedor;
+
+    @FXML
+    private TableColumn<Cliente, String> col_telefonoGestionVendedor;
 
 
     private ObservableList<Usuario> clientesList = FXCollections.observableArrayList();
@@ -86,6 +99,8 @@ public class GestionVendedorController implements Initializable {
     private TextField txtDocumento;
     @FXML
     private TextField txtTelefono;
+    @FXML
+    private TextField txtDireccion_cliente;
     @FXML
     private DatePicker dtpNacimiento;
     @FXML
@@ -111,18 +126,20 @@ public class GestionVendedorController implements Initializable {
         txtDocumento.setStyle(null);
         txtTelefono.setStyle(null);
         dtpNacimiento.setStyle(null);
-      //  cargo.setStyle(null);
+        txtDireccion_cliente.setStyle(null);
         // Cuando los campos están en blanco
         if(txtNombre.getText().isEmpty() ||
                 txtApellido.getText().isEmpty() ||
                 txtMail.getText().isEmpty()|| txtDocumento.getText().isEmpty() ||
-                txtTelefono.getText().isEmpty() || dtpNacimiento.getValue()==null )
+                txtTelefono.getText().isEmpty() || dtpNacimiento.getValue()==null ||
+                txtDireccion_cliente.getText().isEmpty())
         {
             validacionRegistroLabel.setStyle(mensajeError);
             if(txtNombre.getText().isEmpty() &&
                     txtApellido.getText().isEmpty() &&
                     txtMail.getText().isEmpty()  && txtDocumento.getText().isEmpty() &&
-                    txtTelefono.getText().isEmpty() && dtpNacimiento.getValue()==null )
+                    txtTelefono.getText().isEmpty() && dtpNacimiento.getValue()==null &&
+                    txtDireccion_cliente.getText().isEmpty() )
             {
                 validacionRegistroLabel.setText("Se requieren todos los campos!");
                 txtNombre.setStyle(estiloMensajeError);
@@ -131,12 +148,14 @@ public class GestionVendedorController implements Initializable {
                 txtDocumento.setStyle(estiloMensajeError);
                 txtTelefono.setStyle(estiloMensajeError);
                 dtpNacimiento.setStyle(estiloMensajeError);
+                txtDireccion_cliente.setStyle(estiloMensajeError);
                 new Shake(txtNombre).play();
                 new Shake(txtApellido).play();
                 new Shake(txtMail).play();
                 new Shake(txtDocumento).play();
                 new Shake(txtTelefono).play();
                 new Shake(dtpNacimiento).play();
+                new Shake(txtDireccion_cliente).play();
             } else {
                 validacionRegistroLabel.setText("Algunos campos están vacíos!");
                 boolean validado = this.validaciones(crear);
@@ -221,11 +240,22 @@ public class GestionVendedorController implements Initializable {
         {
             validado = false;
             String textoError = "Formato de email incorrecto!";
-            //System.out.println(textoError);
+            System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtMail.setStyle(estiloMensajeError);
             new FadeIn(txtMail).play();
+        }
+        // Validación Direccion
+        if (!ValidacionesClientes.validarDireccion(txtDireccion_cliente.getText()))
+        {
+            validado = false;
+            String textoError = "Formato de direccion incorrecto!";
+            System.out.println(textoError);
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtDireccion_cliente.setStyle(estiloMensajeError);
+            new FadeIn(txtDireccion_cliente).play();
         }
         // Validación Fecha
         if (dtpNacimiento.getValue()==null && !ValidacionesClientes.validarFecha(String.valueOf(dtpNacimiento.getValue())))
@@ -258,8 +288,10 @@ public class GestionVendedorController implements Initializable {
 
             clienteModelo.setNombre(txtNombre.getText());
             clienteModelo.setApellido(txtApellido.getText());
-            clienteModelo.setCedula(txtDocumento.getText());
+            clienteModelo.setCedula_cliente(txtDocumento.getText());
             clienteModelo.setEmail(txtMail.getText());
+            clienteModelo.setDireccion(txtDireccion_cliente.getText());
+
 
             DateTimeFormatter fechaHoraFormato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             String stringDataFormateada = dtpNacimiento.getValue().format(fechaHoraFormato);
@@ -278,7 +310,7 @@ public class GestionVendedorController implements Initializable {
             if (crear)
                 SQL_Cliente.crearCliente(clienteModelo);
             else
-                SQL_Cliente.editarClientes(clienteModelo.getCedula(), clienteModelo);
+                SQL_Cliente.editarClientes(clienteModelo.getCedula_cliente(), clienteModelo);
 
             this.validadoLabelSet();
             this.limpiar();
@@ -295,6 +327,7 @@ public class GestionVendedorController implements Initializable {
         txtDocumento.setText("");
         txtMail.setText("");
         txtTelefono.setText("");
+        txtDireccion_cliente.setText("");
         dtpNacimiento.setValue(null);
     }
 
@@ -304,38 +337,40 @@ public class GestionVendedorController implements Initializable {
     private void loadData() {
         refreshTable();
 
-        col_cedulaGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("cedula_cliente"));
+        col_cedula_clienteGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("cedula_cliente"));
         col_emailGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("email"));
         col_nombreGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         col_apellidoGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("apellido"));
-        col_modificarGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("modificado"));
-        col_telefonoGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("telefono"));
-        col_joinedGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("joined"));
+        col_fecha_modificadoGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("fecha_modificado"));
+        col_fecha_creacionGestionVendedor1.setCellValueFactory(new PropertyValueFactory<>("fecha_creacion"));
+        col_direccionGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("direccion"));
         col_activoGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("activo"));
         col_nacimientoGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("fecha_nacimiento"));
-        col_last_sessionGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("last_session"));
+        col_telefonoGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("telefono"));
+        col_id_tipo_usuarioGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("id_tipo_usuario"));
         col_creadoPorGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("cedula_creado_por"));
         col_sedeGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("sede"));
         tableGestionVendedor.setItems(clientesList.sorted());
 
     }
 
-    private void readUsers() {
+    private void readCliente() {
         try {
             ResultSet result = SQL_Cliente.obtenerTodosClienteSet();
             while (result.next()) {
                 Cliente readCliente = new Cliente();
 
-                readCliente.setCedula(result.getString("cedula"));
+                readCliente.setCedula_cliente(result.getString("cedula_cliente"));
                 readCliente.setEmail(result.getString("email"));
                 readCliente.setNombre(result.getString("nombre"));
                 readCliente.setApellido(result.getString("apellido"));
-                readCliente.setModificado(result.getDate("modificado"));
-                readCliente.setJoined(result.getDate("joined"));
-                readCliente.setTelefono(result.getString("telefono"));
+                readCliente.setFecha_modificado(result.getDate("fecha_modificado"));
+                readCliente.setFecha_creacion(result.getDate("fecha_creacion"));
+                readCliente.setDireccion(result.getString("direccion"));
                 readCliente.setActivo(result.getBoolean("activo"));
                 readCliente.setFecha_nacimiento(result.getDate("fecha_nacimiento"));
-                readCliente.setLast_session(result.getString("last_session"));
+                readCliente.setTelefono(result.getString("telefono"));
+                readCliente.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
                 readCliente.setCedula_creado_por(result.getString("cedula_creado_por"));
                 readCliente.setSede(result.getString("sede"));
 
@@ -350,7 +385,7 @@ public class GestionVendedorController implements Initializable {
     //@FXML
     private void refreshTable() {
         clientesList.clear();
-        this.readUsers();
+        this.readCliente();
     }
 
     /**
@@ -391,6 +426,7 @@ public class GestionVendedorController implements Initializable {
         txtDocumento.setStyle(null);
         txtTelefono.setStyle(null);
         dtpNacimiento.setStyle(null);
+        txtDireccion_cliente.setStyle(null);
         if(txtDocumento.getText().isEmpty())
         {
             validacionRegistroLabel.setStyle(mensajeError);
@@ -437,17 +473,17 @@ public class GestionVendedorController implements Initializable {
             while (result.next()) {
                 Cliente readCliente = new Cliente();
 
-                readCliente.setCedula(result.getString("cedula_cliente"));
+                readCliente.setCedula_cliente(result.getString("cedula_cliente"));
                 readCliente.setEmail(result.getString("email"));
                 readCliente.setNombre(result.getString("nombre"));
                 readCliente.setApellido(result.getString("apellido"));
-                readCliente.setModificado(result.getDate("modificado"));
-                readCliente.setJoined(result.getDate("joined"));
+                readCliente.setFecha_modificado(result.getDate("fecha_modificado"));
+                readCliente.setFecha_creacion(result.getDate("fecha_creacion"));
+                readCliente.setDireccion(result.getString("direccion"));
                 readCliente.setTelefono(result.getString("telefono"));
                 readCliente.setActivo(result.getBoolean("activo"));
                 readCliente.setFecha_nacimiento(result.getDate("fecha_nacimiento"));
-                readCliente.setLast_session(result.getString("last_session"));
-                //readCliente.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
+                readCliente.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
                 readCliente.setCedula_creado_por(result.getString("cedula_creado_por"));
                 readCliente.setSede(result.getString("sede"));
 
@@ -457,6 +493,7 @@ public class GestionVendedorController implements Initializable {
                 txtMail.setText(readCliente.getEmail());
                 txtTelefono.setText(readCliente.getTelefono());
                 dtpNacimiento.setValue(LocalDate.parse(readCliente.getFecha_nacimiento().toString()));
+                txtDireccion_cliente.setText(readCliente.getDireccion());
 
 
             }
@@ -509,7 +546,7 @@ public class GestionVendedorController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.readUsers();
+        this.readCliente();
         this.loadData();
         tableGestionVendedor.setItems(clientesList.sorted());
     }

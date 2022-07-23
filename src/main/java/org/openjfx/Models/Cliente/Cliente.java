@@ -11,15 +11,22 @@ public class Cliente extends Usuario {
     private String email;
     private String nombre;
     private String apellido;
-    private Date modificado;
+
+    private Date fecha_modificado;
+
+    private Date fecha_creacion;
+
+    private String direccion;
     private boolean activo;
-    private Date joined;
     private Date fecha_nacimiento;
     private String telefono;
-    private String sede;
-    private String last_session;
     private int id_tipo_usuario;
+
+    private String user_type;
+
     private String cedula_creado_por;
+    private String sede;
+
 
 
     public Cliente() {
@@ -27,15 +34,17 @@ public class Cliente extends Usuario {
         this.email = "";
         this.nombre = "";
         this.apellido = "";
-        this.modificado = new Date();
-        this.joined = new Date();
-        this.telefono = "";
+        this.fecha_modificado = new Date();
+        this.fecha_creacion = new Date();
+        this.direccion = "";
         this.activo = true;
         this.fecha_nacimiento = null;
-        this.last_session = "";
+        this.telefono = "";
         this.id_tipo_usuario = 0;
-        this.sede = "";
+        this.user_type= "";
         this.cedula_creado_por= "";
+        this.sede = "";
+
     }
 
 
@@ -47,12 +56,12 @@ public class Cliente extends Usuario {
         this.sede = sede;
     }
 
-    public String getCedula() {
+    public String getCedula_cliente() {
         return cedula_cliente;
     }
 
-    public void setCedula(String cedula) {
-        this.cedula_cliente = cedula;
+    public void setCedula_cliente(String cedula_cliente) {
+        this.cedula_cliente = cedula_cliente;
     }
 
     public String getTelefono() {
@@ -87,14 +96,6 @@ public class Cliente extends Usuario {
         this.apellido = apellido;
     }
 
-    public Date getModificado() {
-        return modificado;
-    }
-
-    public void setModificado(Date modificado) {
-        this.modificado = modificado;
-    }
-
     public boolean isActivo() {
         return activo;
     }
@@ -103,12 +104,36 @@ public class Cliente extends Usuario {
         this.activo = activo;
     }
 
-    public Date getJoined() {
-        return joined;
+    public String getDireccion() {
+        return direccion;
     }
 
-    public void setJoined(Date joined) {
-        this.joined = joined;
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public Date getFecha_creacion() {
+        return fecha_creacion;
+    }
+
+    public void setFecha_creacion(Date fecha_creacion) {
+        this.fecha_creacion = fecha_creacion;
+    }
+
+    public void setId_tipo_usuario(int id_tipo_usuario) {
+        this.id_tipo_usuario = id_tipo_usuario;
+    }
+
+    public int getId_tipo_usuario() {
+        return id_tipo_usuario;
+    }
+
+    public Date getFecha_modificado() {
+        return fecha_modificado;
+    }
+
+    public void setFecha_modificado(Date fecha_modificado) {
+        this.fecha_modificado = fecha_modificado;
     }
 
     public Date getFecha_nacimiento() {
@@ -119,17 +144,6 @@ public class Cliente extends Usuario {
         this.fecha_nacimiento = fecha_nacimiento;
     }
 
-    public String getLast_session() {
-        return last_session;
-    }
-
-    public void setLast_session(String last_session) {
-        this.last_session = last_session;
-    }
-
-    public int getId_tipo_usuario() {
-        return id_tipo_usuario;
-    }
 
     public String getCedula_creado_por() {
         return cedula_creado_por;
@@ -139,6 +153,11 @@ public class Cliente extends Usuario {
         this.cedula_creado_por = cedula_creado_por;
     }
 
+    public String getUser_type() {return user_type;}
+
+    public void setUser_type(String user_type) {
+        this.user_type = user_type;
+    }
 
     @Override
     public String toString() {
@@ -147,14 +166,16 @@ public class Cliente extends Usuario {
                 ", email='" + email + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
-                ", modificado=" + modificado +
+                ", fecha_modificado=" + fecha_modificado + '\'' +
+                ", fecha_creacion=" + fecha_creacion +'\'' +
+                ", direccion=" + direccion +'\'' +
                 ", activo=" + activo +
-                ", joined=" + joined +
                 ", fecha_nacimiento='" + fecha_nacimiento + '\'' +
                 ", telefono='" + telefono + '\'' +
-                ", last_session='" + last_session + '\'' +
                 ", id_tipo_usuario='" + id_tipo_usuario + '\'' +
+                ", user_type='" + user_type + '\'' +
                 ", creado por='" + cedula_creado_por + '\'' +
+                ", sede='" + sede + '\'' +
                 '}';
     }
 }

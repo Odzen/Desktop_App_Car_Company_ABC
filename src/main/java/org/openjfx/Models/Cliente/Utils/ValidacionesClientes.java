@@ -22,6 +22,8 @@ public class ValidacionesClientes {
             Pattern.compile("^((?:(?:1[6-9]|2[0-9])\\d{2})(-)(?:(?:(?:0[13578]|1[02])(-)31)|((0[1,3-9]|1[0-2])(-)(29|30))))$|^(?:(?:(?:(?:1[6-9]|[2-9]\\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00)))(-)02(-)29)$|^(?:(?:1[6-9]|2[0-9])\\d{2})(-)(?:(?:0[1-9])|(?:1[0-2]))(-)(?:0[1-9]|1\\d|2[0-8])$", Pattern.CASE_INSENSITIVE);
 
 
+    public static final Pattern VALID_DIRECCION =
+            Pattern.compile("^[A-Z a-z 0-9_#-]{8,40}$", Pattern.CASE_INSENSITIVE);
 
 
     // Verifica si un fecha es correcta
@@ -48,6 +50,13 @@ public class ValidacionesClientes {
     // Verifica si la contraseña es correcta
     public static boolean validarPassword(String password) {
         Matcher matcher = VALID_PASSWORD_REGEX.matcher(password);
+        return matcher.find();
+    }
+
+
+    // Verifica si la dirección es correcta
+    public static boolean validarDireccion(String direccion) {
+        Matcher matcher = VALID_DIRECCION.matcher(direccion);
         return matcher.find();
     }
 

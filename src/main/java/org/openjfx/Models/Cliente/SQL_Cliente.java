@@ -3,6 +3,7 @@ package org.openjfx.Models.Cliente;
 import org.openjfx.Models.Conexion;
 import org.openjfx.Models.Cliente.Utils.*;
 import org.openjfx.Models.Usuario.Usuario;
+import org.openjfx.Models.Usuario.Utils.Rol;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class SQL_Cliente {
     public static boolean puedoModificarCliente(String cedula_cliente)  {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
-                    "SELECT * FROM cliente WHERE cedula_cliente= ? AND (user_type=? OR user_type=?)"
+                    "SELECT * FROM cliente WHERE cedula_cliente= ? AND (user_type=?)"
             );
 
             sentencia.setString(1, cedula_cliente);
@@ -122,27 +123,33 @@ public class SQL_Cliente {
                 Cliente cliente = new Cliente();
 
                 String cedula_cliente = resultadoCliente.getString("cedula_cliente");
-                cliente.setCedula(cedula_cliente);
+                cliente.cedula_cliente(cedula_cliente);
                 String email = resultadoCliente.getString("email");
                 cliente.setEmail(email);
                 String nombre = resultadoCliente.getString("nombre");
                 cliente.setNombre(nombre);
                 String apellido = resultadoCliente.getString("apellido");
                 cliente.setApellido(apellido);
-                Date modificado = resultadoCliente.getDate("modificado");
-                cliente.setModificado(modificado);
+                Date fecha_modificado = resultadoCliente.getDate("fecha_modificado");
+                cliente.setFecha_modificado(fecha_modificado);
+                Date fecha_creacion = resultadoCliente.getDate("fecha_creacion");
+                cliente.setFecha_creacion(fecha_creacion);
+                String direccion = resultadoCliente.getString("direccion");
+                cliente.setDireccion(direccion);
                 boolean activo = resultadoCliente.getBoolean("activo");
                 cliente.setActivo(activo);
-                Date joined = resultadoCliente.getDate("joined");
-                cliente.setJoined(joined);
                 Date fecha_nacimiento = resultadoCliente.getDate("fecha_nacimiento");
                 cliente.setFecha_nacimiento(fecha_nacimiento);
                 String telefono = resultadoCliente.getString("telefono");
                 cliente.setTelefono(telefono);
-                String last_session = resultadoCliente.getString("last_session");
-                cliente.setLast_session(last_session);
                 int id_tipo_usuario = resultadoCliente.getInt("id_tipo_usuario");
                 cliente.setId_tipo_usuario(id_tipo_usuario);
+                String user_type = resultadoCliente.getString("user_type");
+                cliente.setUser_type(user_type);
+                String cedula_creado_por = resultadoCliente.getString("cedula_creado_por");
+                cliente.setCedula_creado_por(cedula_creado_por);
+                String sede = resultadoCliente.getString("sede");
+                cliente.setSede(sede);
 
                 usuariosResultado.add(cliente);
 
@@ -161,22 +168,23 @@ public class SQL_Cliente {
     public static void crearCliente(Cliente cliente) {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
-                    "INSERT INTO usuario " +
-                            "(cedula_cliente, nombre, apellido, email, joined, modificado, activo, fecha_nacimiento, telefono, last_session, user_type, id_tipo_usuario, sede, cedula_creado_por )" +
-                            "VALUES  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-            sentencia.setString(1, cliente.getCedula());
-            sentencia.setString(2, cliente.getNombre());
-            sentencia.setString(3, cliente.getApellido());
-            sentencia.setString(4, cliente.getEmail());
-            sentencia.setDate(5,  new java.sql.Date(cliente.getJoined().getTime()));
-            sentencia.setDate(6,  new java.sql.Date(cliente.getModificado().getTime()));
-            sentencia.setBoolean(7, cliente.isActivo());
-            sentencia.setDate(8, new java.sql.Date(cliente.getFecha_nacimiento().getTime()));
-            sentencia.setString(9, cliente.getTelefono());
-            sentencia.setString(10, cliente.getLast_session());
-            sentencia.setInt(12, cliente.getId_tipo_usuario());
-            sentencia.setString(13, cliente.getSede());
-            sentencia.setString(14, cliente.getCedula_creado_por());
+                    "INSERT INTO cliente " +
+                            "(cedula_cliente,email,nombre, apellido, fecha_modificado, fecha_creacion, direccion, activo, fecha_nacimiento, telefono, id_tipo_usuario,user_type , cedula_creado_por,sede )" +
+                            "VALUES  (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            sentencia.setString(1, cliente.getCedula_cliente());
+            sentencia.setString(2, cliente.getEmail());
+            sentencia.setString(3, cliente.getNombre());
+            sentencia.setString(4, cliente.getApellido());
+            sentencia.setDate(5,  new java.sql.Date(cliente.getFecha_modificado().getTime()));
+            sentencia.setDate(6,  new java.sql.Date(cliente.getFecha_creacion().getTime()));
+            sentencia.setString(7, cliente.getDireccion());
+            sentencia.setBoolean(8, cliente.isActivo());
+            sentencia.setDate(9, new java.sql.Date(cliente.getFecha_nacimiento().getTime()));
+            sentencia.setString(10, cliente.getTelefono());
+            sentencia.setInt(11, cliente.getId_tipo_usuario());
+            sentencia.setString(12, Rol.CLIENTE.toString());
+            sentencia.setString(13, cliente.getCedula_creado_por());
+            sentencia.setString(14, cliente.getSede());
 
             sentencia.execute();
 
@@ -199,30 +207,34 @@ public class SQL_Cliente {
             try {
                 PreparedStatement sentencia = connection.prepareStatement(
                         "UPDATE cliente SET " +
-                                "cedula_cliente = ? , " +
                                 "email = ? , " +
                                 "nombre = ? , " +
                                 "apellido = ? , " +
-                                "modificado = ? , " +
+                                "fecha_modificado = ? , " +
+                                "fecha_creacion = ? , " +
+                                "direccion = ? , " +
                                 "fecha_nacimiento= ?, " +
                                 "telefono = ?, " +
-                                "last_session= ?, " +
                                 "id_tipo_usuario= ?, " +
                                 "user_type= ?, " +
-                                "sede= ?, " +
                                 "cedula_creado_por= ? " +
+                                "sede= ?, " +
                                 "WHERE cedula_cliente = ?");
+
                 sentencia.setString(1, cedula_cliente);
-                sentencia.setString(3, usuarioActualizado.getEmail());
-                sentencia.setString(4, usuarioActualizado.getNombre());
-                sentencia.setString(5, usuarioActualizado.getApellido());
-                sentencia.setDate(6, modificadoSql);
-                sentencia.setDate(8, new java.sql.Date(usuarioActualizado.getFecha_nacimiento().getTime()));
-                sentencia.setString(9, usuarioActualizado.getTelefono());
-                sentencia.setString(10, usuarioActualizado.getLast_session());
+                sentencia.setString(2, usuarioActualizado.getEmail());
+                sentencia.setString(3, usuarioActualizado.getNombre());
+                sentencia.setString(4, usuarioActualizado.getApellido());
+                sentencia.setDate(5,  new java.sql.Date(usuarioActualizado.getFecha_modificado().getTime()));
+                sentencia.setDate(6,  new java.sql.Date(usuarioActualizado.getFecha_creacion().getTime()));
+                sentencia.setString(7, usuarioActualizado.getDireccion());
+                sentencia.setBoolean(8, usuarioActualizado.isActivo());
+                sentencia.setDate(9, new java.sql.Date(usuarioActualizado.getFecha_nacimiento().getTime()));
+                sentencia.setString(10, usuarioActualizado.getTelefono());
                 sentencia.setInt(11, usuarioActualizado.getId_tipo_usuario());
-                sentencia.setString(12, usuarioActualizado.getSede());
+                sentencia.setString(12, Rol.CLIENTE.toString());
                 sentencia.setString(13, usuarioActualizado.getCedula_creado_por());
+                sentencia.setString(14, usuarioActualizado.getSede());
 
                 int filasAfectadas = sentencia.executeUpdate();
                 System.out.println(filasAfectadas);
@@ -243,12 +255,12 @@ public class SQL_Cliente {
     // Elimina al usuario poniendolo inactivo en la base de datos - SOFT DELETE
     public static void eliminarCliente(String cedula_cliente) {
         if(existeCliente_Cedula(cedula_cliente)) {
-            java.util.Date modificado = new java.util.Date();
-            java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
+            java.util.Date fecha_modificado = new java.util.Date();
+            java.sql.Date modificadoSql = new java.sql.Date(fecha_modificado.getTime());
             try {
                 PreparedStatement sentencia = connection.prepareStatement(
                         "UPDATE cliente SET " +
-                                "modificado = ? , " +
+                                "fecha_modificado = ? , " +
                                 "activo= ?  " +
                                 "WHERE cedula_cliente = ?");
                 sentencia.setDate(1, modificadoSql);
@@ -274,12 +286,12 @@ public class SQL_Cliente {
     // Elimina al usuario poniendolo inactivo en la base de datos
     public static void cambiarEstadoClientePorCedula(String cedula_cliente, boolean activo) {
         if(existeCliente_Cedula(cedula_cliente)) {
-            java.util.Date modificado = new java.util.Date();
-            java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
+            java.util.Date fecha_modificado = new java.util.Date();
+            java.sql.Date modificadoSql = new java.sql.Date(fecha_modificado.getTime());
             try {
                 PreparedStatement sentencia = connection.prepareStatement(
-                        "UPDATE usuario SET " +
-                                "modificado = ? , " +
+                        "UPDATE cliente SET " +
+                                "fecha_modificado = ? , " +
                                 "activo= ?  " +
                                 "WHERE cedula_cliente = ?");
                 sentencia.setDate(1, modificadoSql);
