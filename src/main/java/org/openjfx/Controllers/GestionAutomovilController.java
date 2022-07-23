@@ -260,6 +260,7 @@ public class GestionAutomovilController implements Initializable {// Variables p
             System.out.println("Cedula" + LoginController.obtenerUsuarioLogeado().getCedula());
             System.out.println("Sede" + LoginController.obtenerUsuarioLogeado().getSede());
 
+            //Traer sede y cedula de creado por
             automovil.setCedula_creado_por(LoginController.obtenerUsuarioLogeado().getCedula());
             automovil.setSede(LoginController.obtenerUsuarioLogeado().getSede());
 

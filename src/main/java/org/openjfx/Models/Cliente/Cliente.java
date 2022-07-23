@@ -5,7 +5,7 @@ import org.openjfx.Models.Usuario.Utils.Rol;
 
 import java.util.Date;
 
-//Clase para modelar el Usuario en la base de datos
+//Clase para modelar el cliente en la base de datos
 public class Cliente extends Usuario {
 
     private String cedula_cliente;
@@ -123,6 +123,9 @@ public class Cliente extends Usuario {
 
     public void setId_tipo_usuario(int id_tipo_usuario) {
         this.id_tipo_usuario = id_tipo_usuario;
+        if (this.id_tipo_usuario == 5) {
+            this.setUser_type(Rol.CLIENTE);
+        }
     }
 
     public int getId_tipo_usuario() {

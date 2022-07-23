@@ -56,7 +56,7 @@
             <TableColumn fx:id="col_activoGestionVendedor" prefWidth="82.0" text="Activo" />
             <TableColumn fx:id="col_nacimientoGestionVendedor" prefWidth="128.0" text="Fecha de Nacimiento" />
             <TableColumn fx:id="col_telefonoGestionVendedor" prefWidth="128.0" text="Telefono" />
-            <TableColumn fx:id="col_id_tipo_usuarioGestionVendedor" prefWidth="128.0" text="Tipo usuario" />
+            <TableColumn fx:id="col_tipo_usuarioGestionVendedor" prefWidth="128.0" text="Tipo usuario" />
             <TableColumn fx:id="col_creadoPorGestionVendedor" prefWidth="128.0" text="Creado por" />
             <TableColumn fx:id="col_sedeGestionVendedor" prefWidth="128.0" text="Sede" />
          </columns>
@@ -75,7 +75,7 @@
          </effect>
       </Button>
       <DatePicker fx:id="dtpNacimiento" layoutX="526.0" layoutY="76.0" prefHeight="34.0" promptText="Fecha de Nacimiento" />
-      <Button fx:id="bttnNuevoUsuario" layoutX="59.0" layoutY="232.0" mnemonicParsing="false" onAction="#bttnNuevoUsuarioClicked" prefHeight="34.0" prefWidth="88.0" style="-fx-background-color: #c8fcb3#c8fcb3; -fx-background-radius: 50;" text="Registrar" textAlignment="CENTER">
+      <Button fx:id="bttnNuevoUsuario" layoutX="59.0" layoutY="232.0" mnemonicParsing="false" onAction="#bttnNuevoClienteClicked" prefHeight="34.0" prefWidth="88.0" style="-fx-background-color: #c8fcb3#c8fcb3; -fx-background-radius: 50;" text="Registrar" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>

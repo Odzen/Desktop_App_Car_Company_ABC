@@ -25,16 +25,13 @@ import org.openjfx.EmpresaAutosABC;
 import org.openjfx.Models.Cliente.Cliente;
 import org.openjfx.Models.Cliente.SQL_Cliente;
 import org.openjfx.Models.Cliente.Utils.ValidacionesClientes;
-import org.openjfx.Models.Sede.SQL_Sede;
-import org.openjfx.Models.Sede.Utils.ValidacionesSede;
-import org.openjfx.Models.Usuario.SQL_Usuario;
 import org.openjfx.Models.Usuario.Usuario;
 
 import javax.swing.*;
 
 public class GestionVendedorController implements Initializable {
 
-    // Variables para Actualizar, Leer y Borrar Usuarios
+    // Variables para Actualizar, Leer y Borrar Clientes
     @FXML
     private Button btnSalir;
     @FXML
@@ -64,7 +61,7 @@ public class GestionVendedorController implements Initializable {
     private TableColumn<Cliente, Date> col_fecha_modificadoGestionVendedor;
 
     @FXML
-    private TableColumn<Cliente, Integer> col_id_tipo_usuarioGestionVendedor;
+    private TableColumn<Cliente, Integer> col_tipo_usuarioGestionVendedor;
 
     @FXML
     private TableColumn<Cliente, Date> col_nacimientoGestionVendedor;
@@ -79,11 +76,11 @@ public class GestionVendedorController implements Initializable {
     private TableColumn<Cliente, String> col_telefonoGestionVendedor;
 
 
-    private ObservableList<Usuario> clientesList = FXCollections.observableArrayList();
+    private ObservableList<Cliente> clientesList = FXCollections.observableArrayList();
 
-    private Usuario usuario = null;
+    private Cliente cliente = null;
 
-    // Variables para registrar usuarios
+    // Variables para registrar clientes
     private String mensajeExito = String.format("-fx-text-fill: GREEN;");
     private String estiloMensajeExito = String.format("-fx-border-color: #A9A9A9; -fx-border-width: 2; -fx-border-radius: 5;");
 
@@ -112,12 +109,11 @@ public class GestionVendedorController implements Initializable {
     private Label validacionRegistroLabel;
 
     /**
-     * CREATE - Registrar Usuario
+     * CREATE - Registrar Cliente
      * @throws IOException
      */
-    //Para validar los campos de usuario y contraseña
 
-    private void crearActualizarUsuario(boolean crear) {
+    private void crearActualizarCliente(boolean crear) {
 
         validacionRegistroLabel.setText("");
         txtNombre.setStyle(null);
@@ -160,7 +156,7 @@ public class GestionVendedorController implements Initializable {
                 validacionRegistroLabel.setText("Algunos campos están vacíos!");
                 boolean validado = this.validaciones(crear);
                 if (validado) {
-                    this.guardarActualizarUsuario(crear);
+                    this.guardarActualizarCliente(crear);
                     this.refreshTable();
 
                 }
@@ -168,15 +164,15 @@ public class GestionVendedorController implements Initializable {
         } else {
             boolean validado = this.validaciones(crear);
             if (validado) {
-                this.guardarActualizarUsuario(crear);
+                this.guardarActualizarCliente(crear);
                 this.refreshTable();
             }
         }
     }
 
     @FXML
-    protected void bttnNuevoUsuarioClicked() throws IOException{
-        this.crearActualizarUsuario(true);
+    protected void bttnNuevoClienteClicked() throws IOException{
+        this.crearActualizarCliente(true);
     }
 
 
@@ -196,17 +192,17 @@ public class GestionVendedorController implements Initializable {
             txtTelefono.setStyle(estiloMensajeError);
             new FadeIn(txtTelefono).play();
         }
-        // Se comprueba la longitud del nombre del usuario
+        // Se comprueba la longitud del nombre del cliente
         if (txtNombre.getText().length() < 4 ||  txtNombre.getText().length() > 20)
         {
             validado = false;
-            String textoError = "El usuario debe tener de 4 a 20 caracteres!";
+            String textoError = "El nombre debe tener de 4 a 20 caracteres!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtNombre.setStyle(estiloMensajeError);
             new FadeIn(txtNombre).play();
         }
-        // Se comprueba la longitud del nombre del usuario
+        // Se comprueba la longitud del apellido del cliente
         if (txtApellido.getText().length() < 4 ||  txtApellido.getText().length() > 20)
         {
             validado = false;
@@ -226,10 +222,10 @@ public class GestionVendedorController implements Initializable {
             txtDocumento.setStyle(estiloMensajeError);
             new FadeIn(txtDocumento).play();
         } else if (SQL_Cliente.existeCliente_Cedula(txtDocumento.getText()) && crear) {
-            // Validacion para saber si el usuario con esa cédula ya existe
+            // Validacion para saber si el cliente con esa cédula ya existe
             System.out.println(SQL_Cliente.existeCliente_Cedula(txtDocumento.getText()));
             validado = false;
-            String textoError = "Un usuario con ese número de cédula ya existe!";
+            String textoError = "Un cliente con ese número de cédula ya existe!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumento.setStyle(estiloMensajeError);
@@ -281,7 +277,7 @@ public class GestionVendedorController implements Initializable {
         new Tada(validacionRegistroLabel).play();
     }
 
-    public void guardarActualizarUsuario(boolean crear) {
+    public void guardarActualizarCliente(boolean crear) {
         try {
             Cliente clienteModelo = new Cliente();
 
@@ -291,8 +287,7 @@ public class GestionVendedorController implements Initializable {
             clienteModelo.setCedula_cliente(txtDocumento.getText());
             clienteModelo.setEmail(txtMail.getText());
             clienteModelo.setDireccion(txtDireccion_cliente.getText());
-
-
+            clienteModelo.setId_tipo_usuario(5);
             DateTimeFormatter fechaHoraFormato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             String stringDataFormateada = dtpNacimiento.getValue().format(fechaHoraFormato);
             Date fechaNacimientoFormat = new SimpleDateFormat("dd/MM/yyyy").parse(stringDataFormateada);
@@ -317,7 +312,7 @@ public class GestionVendedorController implements Initializable {
 
         } catch (Exception e) {
             System.err.println(e);
-            JOptionPane.showMessageDialog(null,"Error registrando el usuario");
+            JOptionPane.showMessageDialog(null,"Error registrando el cliente");
         }
     }
 
@@ -347,7 +342,7 @@ public class GestionVendedorController implements Initializable {
         col_activoGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("activo"));
         col_nacimientoGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("fecha_nacimiento"));
         col_telefonoGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("telefono"));
-        col_id_tipo_usuarioGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("id_tipo_usuario"));
+        col_tipo_usuarioGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("user_type"));
         col_creadoPorGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("cedula_creado_por"));
         col_sedeGestionVendedor.setCellValueFactory(new PropertyValueFactory<>("sede"));
         tableGestionVendedor.setItems(clientesList.sorted());
@@ -455,9 +450,9 @@ public class GestionVendedorController implements Initializable {
         }
 
         if (!SQL_Cliente.existeCliente_Cedula(txtDocumento.getText())) {
-            // Validacion para saber si el usuario con esa cédula ya existe
+            // Validacion para saber si el cliente con esa cédula ya existe
             validado = false;
-            String textoError = "Un usuario con ese número de cédula NO existe!";
+            String textoError = "Un cliente con ese número de cédula NO existe!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumento.setStyle(estiloMensajeError);
@@ -521,7 +516,7 @@ public class GestionVendedorController implements Initializable {
             }
         }
         else {
-            String textoError = "No existe un usuario con esa cédula!";
+            String textoError = "No existe un cliente con esa cédula!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumento.setStyle(estiloMensajeError);
@@ -533,7 +528,7 @@ public class GestionVendedorController implements Initializable {
     // Actualizar
     @FXML
     private void btnActualizarClicked() {
-        this.crearActualizarUsuario(false);
+        this.crearActualizarCliente(false);
     }
 
     @FXML

@@ -2,7 +2,6 @@ package org.openjfx.Models.Cliente;
 
 import org.openjfx.Models.Conexion;
 import org.openjfx.Models.Cliente.Utils.*;
-import org.openjfx.Models.Usuario.Usuario;
 import org.openjfx.Models.Usuario.Utils.Rol;
 
 import java.sql.*;
@@ -31,7 +30,7 @@ public class SQL_Cliente {
         }
     }
 
-    // Verifica si un usuario existe o no en la base de datos, basado en su cédula
+    // Verifica si un cliente existe o no en la base de datos, basado en su cédula
     public static boolean existeCliente_Cedula(String cedula_cliente)  {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
@@ -51,7 +50,7 @@ public class SQL_Cliente {
         }
     }
 
-    // Verifica si un admin puede modificar
+    // Verifica si un cliente puede modificar
     public static boolean puedoModificarCliente(String cedula_cliente)  {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
@@ -72,7 +71,7 @@ public class SQL_Cliente {
     }
 
 
-    // Obtiene un usuario buscandolo por su cédula
+    // Obtiene un cliente buscandolo por su cédula
     public static ResultSet obtenerCliente_Cedula(String cedula_cliente)  {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
@@ -89,7 +88,7 @@ public class SQL_Cliente {
     }
 
 
-    // Verifica si un usuario existe o no en la base de datos, basado en su nombre
+    // Verifica si un cliente existe o no en la base de datos, basado en su nombre
     public static boolean existeCliente_Nombre(String nombre)  {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
@@ -107,7 +106,7 @@ public class SQL_Cliente {
         }
     }
 
-    // Obtiene todos los registros de Usuario que están en la base de datos
+    // Obtiene todos los registros de cliente que están en la base de datos
 
     public static ArrayList<Cliente> leerTodosLosClientes() {
         try {
@@ -116,7 +115,7 @@ public class SQL_Cliente {
             );
             ResultSet resultadoCliente = sentencia.executeQuery();
 
-            ArrayList<Cliente> usuariosResultado = new ArrayList<Cliente>();
+            ArrayList<Cliente> clientesResultado = new ArrayList<Cliente>();
             int contador = 0;
 
             while (resultadoCliente.next()) {
@@ -144,19 +143,17 @@ public class SQL_Cliente {
                 cliente.setTelefono(telefono);
                 int id_tipo_usuario = resultadoCliente.getInt("id_tipo_usuario");
                 cliente.setId_tipo_usuario(id_tipo_usuario);
-                //String user_type = resultadoCliente.getString("user_type");
-                //cliente.setUser_type(user_type);
                 String cedula_creado_por = resultadoCliente.getString("cedula_creado_por");
                 cliente.setCedula_creado_por(cedula_creado_por);
                 String sede = resultadoCliente.getString("sede");
                 cliente.setSede(sede);
 
-                usuariosResultado.add(cliente);
+                clientesResultado.add(cliente);
 
                 contador++;
             }
             System.out.println("Operación Exitosa: Lectura de clientes de la Base de datos!!");
-            return usuariosResultado;
+            return clientesResultado;
 
         } catch (SQLException e) {
             System.out.printf("Error al leer los clientes", e);
@@ -164,7 +161,7 @@ public class SQL_Cliente {
         }
     }
 
-    // Crea un usuario con la base de datos
+    // Crea un cliente con la base de datos
     public static void crearCliente(Cliente cliente) {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
@@ -198,12 +195,12 @@ public class SQL_Cliente {
     }
 
 
-    // Edita un usuario en la base de datos
-    public static void editarClientes(String cedula_cliente, Cliente usuarioActualizado) {
+    // Edita un cliente en la base de datos
+    public static void editarClientes(String cedula_cliente, Cliente clienteActualizado) {
 
         if ( existeCliente_Cedula(cedula_cliente)) {
-            java.util.Date modificado = new java.util.Date();
-            java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
+            java.util.Date fecha_modificado = new java.util.Date();
+            java.sql.Date modificadoSql = new java.sql.Date(fecha_modificado.getTime());
             try {
                 PreparedStatement sentencia = connection.prepareStatement(
                         "UPDATE cliente SET " +
@@ -222,19 +219,19 @@ public class SQL_Cliente {
                                 "WHERE cedula_cliente = ?");
 
                 sentencia.setString(1, cedula_cliente);
-                sentencia.setString(2, usuarioActualizado.getEmail());
-                sentencia.setString(3, usuarioActualizado.getNombre());
-                sentencia.setString(4, usuarioActualizado.getApellido());
-                sentencia.setDate(5,  new java.sql.Date(usuarioActualizado.getFecha_modificado().getTime()));
-                sentencia.setDate(6,  new java.sql.Date(usuarioActualizado.getFecha_creacion().getTime()));
-                sentencia.setString(7, usuarioActualizado.getDireccion());
-                sentencia.setBoolean(8, usuarioActualizado.isActivo());
-                sentencia.setDate(9, new java.sql.Date(usuarioActualizado.getFecha_nacimiento().getTime()));
-                sentencia.setString(10, usuarioActualizado.getTelefono());
-                sentencia.setInt(11, usuarioActualizado.getId_tipo_usuario());
+                sentencia.setString(2, clienteActualizado.getEmail());
+                sentencia.setString(3, clienteActualizado.getNombre());
+                sentencia.setString(4, clienteActualizado.getApellido());
+                sentencia.setDate(5,  new java.sql.Date(clienteActualizado.getFecha_modificado().getTime()));
+                sentencia.setDate(6,  new java.sql.Date(clienteActualizado.getFecha_creacion().getTime()));
+                sentencia.setString(7, clienteActualizado.getDireccion());
+                sentencia.setBoolean(8, clienteActualizado.isActivo());
+                sentencia.setDate(9, new java.sql.Date(clienteActualizado.getFecha_nacimiento().getTime()));
+                sentencia.setString(10, clienteActualizado.getTelefono());
+                sentencia.setInt(11, clienteActualizado.getId_tipo_usuario());
                 sentencia.setString(12, Rol.CLIENTE.toString());
-                sentencia.setString(13, usuarioActualizado.getCedula_creado_por());
-                sentencia.setString(14, usuarioActualizado.getSede());
+                sentencia.setString(13, clienteActualizado.getCedula_creado_por());
+                sentencia.setString(14, clienteActualizado.getSede());
 
                 int filasAfectadas = sentencia.executeUpdate();
                 System.out.println(filasAfectadas);
@@ -248,11 +245,11 @@ public class SQL_Cliente {
                 System.err.println(e);
             }
         } else {
-            System.out.println("El usuario con ese id NO existe, por favor dijiste un id correcto!");
+            System.out.println("El cliente con ese id NO existe, por favor dijiste un id correcto!");
         }
     }
 
-    // Elimina al usuario poniendolo inactivo en la base de datos - SOFT DELETE
+    // Elimina al cliente poniendolo inactivo en la base de datos - SOFT DELETE
     public static void eliminarCliente(String cedula_cliente) {
         if(existeCliente_Cedula(cedula_cliente)) {
             java.util.Date fecha_modificado = new java.util.Date();
@@ -272,18 +269,18 @@ public class SQL_Cliente {
                 if (filasAfectadas == 0) {
                     System.out.println("No se modificó nada !");
                 } else {
-                    System.out.println("Se cambio el estado a INACTIVO del usuario en la base de datos");
+                    System.out.println("Se cambio el estado a INACTIVO del cliente en la base de datos");
                 }
 
             } catch (SQLException e) {
                 System.err.println(e);
             }
         } else {
-            System.out.println("El usuario con ese id NO existe, por favor dijiste un id correcto!");
+            System.out.println("El cliente con ese id NO existe, por favor dijiste un id correcto!");
         }
     }
 
-    // Elimina al usuario poniendolo inactivo en la base de datos
+    // Elimina al cliente poniendolo inactivo en la base de datos
     public static void cambiarEstadoClientePorCedula(String cedula_cliente, boolean activo) {
         if(existeCliente_Cedula(cedula_cliente)) {
             java.util.Date fecha_modificado = new java.util.Date();
@@ -308,7 +305,7 @@ public class SQL_Cliente {
                 if (filasAfectadas == 0) {
                     System.out.println("No se modificó nada !");
                 } else {
-                    System.out.println("Se cambio el estado del usuario en la base de datos!");
+                    System.out.println("Se cambio el estado del cliente en la base de datos!");
                 }
 
             } catch (SQLException e) {
@@ -331,13 +328,13 @@ public class SQL_Cliente {
 
             sentencia.executeUpdate();
             sentencia_alter_sequence.executeUpdate();
-            System.out.println("Borro TODOS LOS USUARIOS exitosamente!!");
+            System.out.println("Borro TODOS LOS CLIENTES exitosamente!!");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void eliminarUsuarioPorCedula(String cedula_cliente) {
+    public static void eliminarclientePorCedula(String cedula_cliente) {
         if (existeCliente_Cedula(cedula_cliente)) {
             try {
                 PreparedStatement sentencia = connection.prepareStatement(
@@ -345,13 +342,13 @@ public class SQL_Cliente {
                 );
                 sentencia.setString(1, cedula_cliente);
                 sentencia.executeUpdate();
-                System.out.println("Borro el usuario con la cedula" + cedula_cliente + " exitosamente!");
+                System.out.println("Borro el cliente con la cedula" + cedula_cliente + " exitosamente!");
 
             } catch (SQLException e) {
                 System.err.println(e);
             }
         } else {
-            System.out.println("El usuario con ese id NO existe, por favor dijiste un id correcto!");
+            System.out.println("El cliente con ese id NO existe, por favor dijiste un id correcto!");
         }
     }
 }
