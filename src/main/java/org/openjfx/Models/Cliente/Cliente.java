@@ -1,6 +1,7 @@
 package org.openjfx.Models.Cliente;
 
 import org.openjfx.Models.Usuario.Usuario;
+import org.openjfx.Models.Usuario.Utils.Rol;
 
 import java.util.Date;
 
@@ -153,11 +154,12 @@ public class Cliente extends Usuario {
         this.cedula_creado_por = cedula_creado_por;
     }
 
-    public String getUser_type() {return user_type;}
+    public Rol getUser_type() {return Rol.valueOf(user_type);}
 
-    public void setUser_type(String user_type) {
-        this.user_type = user_type;
+    public void setUser_type(Rol user_type) {
+        this.user_type = String.valueOf(user_type);
     }
+
 
     @Override
     public String toString() {
