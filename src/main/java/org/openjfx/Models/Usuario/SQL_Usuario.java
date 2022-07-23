@@ -39,8 +39,8 @@ public class SQL_Usuario {
                 PreparedStatement sentencia = connection.prepareStatement(
                         "SELECT * FROM usuario WHERE user_type= ? or user_type= ? "
                 );
-                sentencia.setString(1, "ADMIN");
-                sentencia.setString(2, "GERENTE");
+                sentencia.setString(1, Rol.ADMIN.toString());
+                sentencia.setString(2, Rol.GERENTE.toString());
 
                 ResultSet resultado = sentencia.executeQuery();
                 return resultado;
@@ -48,8 +48,8 @@ public class SQL_Usuario {
                 PreparedStatement sentencia = connection.prepareStatement(
                         "SELECT * FROM usuario WHERE user_type= ? or user_type= ? "
                 );
-                sentencia.setString(1, "JEFE_TALLER");
-                sentencia.setString(2, "VENDEDOR");
+                sentencia.setString(1, Rol.JEFE_TALLER.toString());
+                sentencia.setString(2, Rol.VENDEDOR.toString());
 
                 ResultSet resultadoGerente = sentencia.executeQuery();
                 return resultadoGerente;

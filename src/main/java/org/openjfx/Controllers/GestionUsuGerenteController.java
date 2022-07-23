@@ -22,7 +22,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
-import org.openjfx.Models.Sede.SQL_Sede;
 import org.openjfx.Models.Usuario.SQL_Usuario;
 import org.openjfx.Models.Usuario.Usuario;
 import org.openjfx.Models.Usuario.Utils.Hash;
@@ -33,7 +32,7 @@ import javax.swing.*;
 
 public class GestionUsuGerenteController implements Initializable {
 
-    // Variables para Actualizar, Leer y Borrar Usuarios
+    // Variables para Actualizar, Leer y Borrar Vendedores, jefe de taller
     @FXML
     private Button btnSalir;
     @FXML
@@ -71,7 +70,7 @@ public class GestionUsuGerenteController implements Initializable {
 
 
 
-    private ObservableList<Usuario> usuariosList = FXCollections.observableArrayList();
+    private ObservableList<Usuario> GerenteList = FXCollections.observableArrayList();
 
     private Usuario usuario = null;
 
@@ -105,12 +104,12 @@ public class GestionUsuGerenteController implements Initializable {
     private Label validacionRegistroLabel;
 
     /**
-     * CREATE - Registrar Usuario
+     * CREATE - Registrar vendedor, jefe de taller
      * @throws IOException
      */
     //Para validar los campos de usuario y contraseña
 
-    private void crearActualizarUsuario(boolean crear) {
+    private void crearActualizarGerente(boolean crear) {
 
         validacionRegistroLabel.setText("");
         txtNombre.setStyle(null);
@@ -159,7 +158,7 @@ public class GestionUsuGerenteController implements Initializable {
                 validacionRegistroLabel.setText("Algunos campos están vacíos!");
                 boolean validado = this.validaciones(crear);
                 if (validado) {
-                    this.guardarActualizarUsuario(crear);
+                    this.guardarActualizarGerente(crear);
                     this.refreshTable();
 
                 }
@@ -167,7 +166,7 @@ public class GestionUsuGerenteController implements Initializable {
         } else {
             boolean validado = this.validaciones(crear);
             if (validado) {
-                this.guardarActualizarUsuario(crear);
+                this.guardarActualizarGerente(crear);
                 this.refreshTable();
             }
         }
@@ -175,7 +174,7 @@ public class GestionUsuGerenteController implements Initializable {
 
     @FXML
     protected void bttnNuevoUsuarioClicked() throws IOException{
-        this.crearActualizarUsuario(true);
+        this.crearActualizarGerente(true);
     }
     @FXML
     private void setFirstItem() {
@@ -328,25 +327,25 @@ public class GestionUsuGerenteController implements Initializable {
         new Tada(validacionRegistroLabel).play();
     }
 
-    public void guardarActualizarUsuario(boolean crear) {
+    public void guardarActualizarGerente(boolean crear) {
         try {
-            Usuario usuarioModelo = new Usuario();
+            Usuario gerenteModelo = new Usuario();
 
             String contraseña = txtPassword.getText();
             String contraseñaCifrada = Hash.encrypt(contraseña);
 
 
-            usuarioModelo.setNombre(txtNombre.getText());
-            usuarioModelo.setApellido(txtApellido.getText());
-            usuarioModelo.setCedula(txtDocumento.getText());
-            usuarioModelo.setContraseña(contraseñaCifrada);
-            usuarioModelo.setEmail(txtMail.getText());
+            gerenteModelo.setNombre(txtNombre.getText());
+            gerenteModelo.setApellido(txtApellido.getText());
+            gerenteModelo.setCedula(txtDocumento.getText());
+            gerenteModelo.setContraseña(contraseñaCifrada);
+            gerenteModelo.setEmail(txtMail.getText());
 
             DateTimeFormatter fechaHoraFormato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             String stringDataFormateada = dtpNacimiento.getValue().format(fechaHoraFormato);
             Date fechaNacimientoFormat = new SimpleDateFormat("dd/MM/yyyy").parse(stringDataFormateada);
-            usuarioModelo.setFecha_nacimiento(fechaNacimientoFormat);
-            usuarioModelo.setTelefono(txtTelefono.getText());
+            gerenteModelo.setFecha_nacimiento(fechaNacimientoFormat);
+            gerenteModelo.setTelefono(txtTelefono.getText());
 
             int idTipoUsuario = 0;
             if (cargo.getText().equals("Vendedor")) {
@@ -354,17 +353,17 @@ public class GestionUsuGerenteController implements Initializable {
             } else if (cargo.getText().equals("Jefe de taller")) {
                 idTipoUsuario = 3;
             }
-            usuarioModelo.setId_tipo_usuario(idTipoUsuario);
+            gerenteModelo.setId_tipo_usuario(idTipoUsuario);
 
-            usuarioModelo.setCedula_creado_por(LoginController.obtenerUsuarioLogeado().getCedula());
-            usuarioModelo.setSede(LoginController.obtenerUsuarioLogeado().getSede());
+            gerenteModelo.setCedula_creado_por(LoginController.obtenerUsuarioLogeado().getCedula());
+            gerenteModelo.setSede(LoginController.obtenerUsuarioLogeado().getSede());
 
 
             // SI la orden es para crear, o para actualizar, llamo al metodo respectivo
             if (crear)
-                SQL_Usuario.crearUsuario(usuarioModelo);
+                SQL_Usuario.crearUsuario(gerenteModelo);
             else
-                SQL_Usuario.editarUsuarios(usuarioModelo.getCedula(), usuarioModelo);
+                SQL_Usuario.editarUsuarios(gerenteModelo.getCedula(), gerenteModelo);
 
             this.validadoLabelSet();
             this.limpiar();
@@ -407,7 +406,7 @@ public class GestionUsuGerenteController implements Initializable {
         col_last_sessionGestionGerente.setCellValueFactory(new PropertyValueFactory<>("last_session"));
         col_creadoPorGestionGerente.setCellValueFactory(new PropertyValueFactory<>("cedula_creado_por"));
         col_sedeGestionGerente.setCellValueFactory(new PropertyValueFactory<>("sede"));
-        tableGestionGerente.setItems(usuariosList.sorted());
+        tableGestionGerente.setItems(GerenteList.sorted());
 
     }
 
@@ -415,28 +414,28 @@ public class GestionUsuGerenteController implements Initializable {
         try {
             ResultSet result = SQL_Usuario.obtenerTodosUsuariosPorRol(Rol.GERENTE);
             while (result.next()) {
-                Usuario readUsuario = new Usuario();
+                Usuario readGerente = new Usuario();
 
-                readUsuario.setId_usuario(result.getInt("id_usuario"));
-                readUsuario.setCedula(result.getString("cedula"));
-                readUsuario.setContraseña(result.getString("contraseña"));
-                readUsuario.setEmail(result.getString("email"));
-                readUsuario.setNombre(result.getString("nombre"));
-                readUsuario.setApellido(result.getString("apellido"));
-                readUsuario.setModificado(result.getDate("modificado"));
-                readUsuario.setAvatar(result.getString("avatar"));
-                readUsuario.setJoined(result.getDate("joined"));
-                readUsuario.setUser_type(Rol.valueOf(result.getString("user_type")));
-                readUsuario.setTelefono(result.getString("telefono"));
-                readUsuario.setActivo(result.getBoolean("activo"));
-                readUsuario.setFecha_nacimiento(result.getDate("fecha_nacimiento"));
-                readUsuario.setLast_session(result.getString("last_session"));
-                readUsuario.setCedula_creado_por(result.getString("cedula_creado_por"));
-                readUsuario.setSede(result.getString("sede"));
+                readGerente.setId_usuario(result.getInt("id_usuario"));
+                readGerente.setCedula(result.getString("cedula"));
+                readGerente.setContraseña(result.getString("contraseña"));
+                readGerente.setEmail(result.getString("email"));
+                readGerente.setNombre(result.getString("nombre"));
+                readGerente.setApellido(result.getString("apellido"));
+                readGerente.setModificado(result.getDate("modificado"));
+                readGerente.setAvatar(result.getString("avatar"));
+                readGerente.setJoined(result.getDate("joined"));
+                readGerente.setUser_type(Rol.valueOf(result.getString("user_type")));
+                readGerente.setTelefono(result.getString("telefono"));
+                readGerente.setActivo(result.getBoolean("activo"));
+                readGerente.setFecha_nacimiento(result.getDate("fecha_nacimiento"));
+                readGerente.setLast_session(result.getString("last_session"));
+                readGerente.setCedula_creado_por(result.getString("cedula_creado_por"));
+                readGerente.setSede(result.getString("sede"));
 
-                usuariosList.add(readUsuario);
+                GerenteList.add(readGerente);
             }
-            usuariosList.sorted();
+            GerenteList.sorted();
         } catch(SQLException exception) {
             throw new RuntimeException(exception);
         }
@@ -444,7 +443,7 @@ public class GestionUsuGerenteController implements Initializable {
 
     //@FXML
     private void refreshTable() {
-        usuariosList.clear();
+        GerenteList.clear();
         this.readUsers();
     }
 
@@ -534,37 +533,37 @@ public class GestionUsuGerenteController implements Initializable {
             ResultSet result = SQL_Usuario.obtenerUsuario_CedulaGerente(cedula);
 
             while (result.next()) {
-                Usuario readUsuario = new Usuario();
+                Usuario readGerente = new Usuario();
 
-                readUsuario.setId_usuario(result.getInt("id_usuario"));
-                readUsuario.setCedula(result.getString("cedula"));
-                readUsuario.setContraseña(result.getString("contraseña"));
-                readUsuario.setEmail(result.getString("email"));
-                readUsuario.setNombre(result.getString("nombre"));
-                readUsuario.setApellido(result.getString("apellido"));
-                readUsuario.setModificado(result.getDate("modificado"));
-                readUsuario.setAvatar(result.getString("avatar"));
-                readUsuario.setJoined(result.getDate("joined"));
-                readUsuario.setUser_type(Rol.valueOf(result.getString("user_type")));
-                readUsuario.setTelefono(result.getString("telefono"));
-                readUsuario.setActivo(result.getBoolean("activo"));
-                readUsuario.setFecha_nacimiento(result.getDate("fecha_nacimiento"));
-                readUsuario.setLast_session(result.getString("last_session"));
-                readUsuario.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
-                readUsuario.setCedula_creado_por(result.getString("cedula_creado_por"));
-                readUsuario.setSede(result.getString("sede"));
+                readGerente.setId_usuario(result.getInt("id_usuario"));
+                readGerente.setCedula(result.getString("cedula"));
+                readGerente.setContraseña(result.getString("contraseña"));
+                readGerente.setEmail(result.getString("email"));
+                readGerente.setNombre(result.getString("nombre"));
+                readGerente.setApellido(result.getString("apellido"));
+                readGerente.setModificado(result.getDate("modificado"));
+                readGerente.setAvatar(result.getString("avatar"));
+                readGerente.setJoined(result.getDate("joined"));
+                readGerente.setUser_type(Rol.valueOf(result.getString("user_type")));
+                readGerente.setTelefono(result.getString("telefono"));
+                readGerente.setActivo(result.getBoolean("activo"));
+                readGerente.setFecha_nacimiento(result.getDate("fecha_nacimiento"));
+                readGerente.setLast_session(result.getString("last_session"));
+                readGerente.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
+                readGerente.setCedula_creado_por(result.getString("cedula_creado_por"));
+                readGerente.setSede(result.getString("sede"));
 
                 // Cambio valores en los labels
-                txtNombre.setText(readUsuario.getNombre());
-                txtPasswordConfirm.setText(Hash.decrypt(readUsuario.getContraseña()));
-                txtApellido.setText(readUsuario.getApellido());
-                txtPassword.setText(Hash.decrypt(readUsuario.getContraseña()));
-                txtMail.setText(readUsuario.getEmail());
-                txtTelefono.setText(readUsuario.getTelefono());
-                dtpNacimiento.setValue(LocalDate.parse(readUsuario.getFecha_nacimiento().toString()));
+                txtNombre.setText(readGerente.getNombre());
+                txtPasswordConfirm.setText(Hash.decrypt(readGerente.getContraseña()));
+                txtApellido.setText(readGerente.getApellido());
+                txtPassword.setText(Hash.decrypt(readGerente.getContraseña()));
+                txtMail.setText(readGerente.getEmail());
+                txtTelefono.setText(readGerente.getTelefono());
+                dtpNacimiento.setValue(LocalDate.parse(readGerente.getFecha_nacimiento().toString()));
 
                 String rol = "";
-                if (readUsuario.getUser_type().toString().equals(Rol.JEFE_TALLER.toString())) {
+                if (readGerente.getUser_type().toString().equals(Rol.JEFE_TALLER.toString())) {
                     rol = "Jefe de Taller";
                 }
                 else {
@@ -609,7 +608,7 @@ public class GestionUsuGerenteController implements Initializable {
     // Actualizar
     @FXML
     private void btnActualizarClicked() {
-        this.crearActualizarUsuario(false);
+        this.crearActualizarGerente(false);
     }
 
     @FXML
@@ -624,7 +623,7 @@ public class GestionUsuGerenteController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         this.readUsers();
         this.loadData();
-        tableGestionGerente.setItems(usuariosList.sorted());
+        tableGestionGerente.setItems(GerenteList.sorted());
     }
 
 }

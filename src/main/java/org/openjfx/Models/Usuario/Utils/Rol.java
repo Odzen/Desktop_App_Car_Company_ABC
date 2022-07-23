@@ -5,5 +5,6 @@ public enum Rol {
     GERENTE,
     VENDEDOR,
     JEFE_TALLER,
+    CLIENTE,
     INDEFINIDO
 }
