@@ -273,7 +273,7 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
         this.limpiar();
     }
 
-    // Buscar por cedula para llenar campos y registrar o borrar
+    // Buscar por nombre y marca del repuesto para llenar campos y así poder registrar o borrar
     @FXML
     protected void btnbuscarNombreMarcaRepuesto() {
         validacionRegistroLabel.setText("");
@@ -296,7 +296,7 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
     }
 
     private boolean validacionNombreMarca() {
-        // Validación Cédula
+        // Validación nombre
         boolean validado = true;
         validacionRegistroLabel.setText("");
         if (!ValidacionesRepuesto.validarNombreRepuesto(txtNombreRepuesto.getText())) {
@@ -361,23 +361,78 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
 
     }
 
-    // Borrar - poner inactivo
+    // Borrar - se hace SOFT DELETE solo cuando la cantidad del repuesto es = 0
+    // Borrar realmente lo que hace es borrar (actualizar) una determinada cantidad
+    // que se resta a la cantidad actual
+    // Esta cantidad NO puede ser mayor a la cantidad actual
+    // Si la cantidad actualizada queda en 0, entonces el repuesto se pone como inactivo (SOFT DELETE)
     @FXML
     private void btnBorrarRepuestoClicked() {
         String nombreRepuesto = txtNombreRepuesto.getText();
         String marcaRepuesto = txtMarcaRepuesto.getText();
-        if (SQL_Repuesto.existeRepuesto_NombreMarca(nombreRepuesto, marcaRepuesto)) {
-            try {
-                ResultSet result = SQL_Repuesto.obtenerRepuesto_NombreMarca(nombreRepuesto, marcaRepuesto);
-                result.next();
-                boolean activo = result.getBoolean("activo");
-                SQL_Repuesto.cambiarEstadoRepuestoPorNombreMarca(nombreRepuesto,marcaRepuesto, activo);
-                this.validadoLabelSet();
-                this.limpiar();
-
-            } catch (SQLException exception) {
-                throw new RuntimeException(exception);
+        if(txtNombreRepuesto.getText().isEmpty() || txtMarcaRepuesto.getText().isEmpty() ||  txtCantidadRepuesto.getText().isEmpty())
+        {
+            validacionRegistroLabel.setStyle(mensajeError);
+            new Shake(txtNombreRepuesto).play();
+            new Shake(txtMarcaRepuesto).play();
+            validacionRegistroLabel.setText("El nombre, la marca o la cantidad del repuesto están vacias!");
+        }
+        else {
+            boolean validado = this.validacionNombreMarcaBorrar();
+            if (validado) {
+                this.borrarRepuesto(nombreRepuesto, marcaRepuesto);
             }
+        }
+
+
+    }
+
+    private boolean validacionNombreMarcaBorrar() {
+        boolean validado = true;
+        validacionRegistroLabel.setText("");
+        // Validacion existencia
+        if (SQL_Repuesto.existeRepuesto_NombreMarca(txtNombreRepuesto.getText(), txtMarcaRepuesto.getText())) {
+            // Validación cantidad
+            int cantidadActual = 0;
+            ResultSet resultado =  SQL_Repuesto.obtenerRepuesto_NombreMarca(txtNombreRepuesto.getText(), txtMarcaRepuesto.getText());
+            try {
+                resultado.next();
+                cantidadActual = resultado.getInt("cantidad");
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (Integer.parseInt(txtCantidadRepuesto.getText()) > cantidadActual) {
+                String textoError = "La cantidad que quiere borrar NO puede ser mayor a la cantidad actual!";
+                validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+                validacionRegistroLabel.setStyle(mensajeError);
+                txtCantidadRepuesto.setStyle(estiloMensajeError);
+                new FadeIn(txtCantidadRepuesto).play();
+            } else {
+                Repuesto repuestoActualizado = new Repuesto();
+                int cantidadDespuesDeBorrar = cantidadActual - Integer.parseInt(txtCantidadRepuesto.getText());
+                try {
+                    repuestoActualizado.setNombre(resultado.getString("nombre"));
+                    repuestoActualizado.setMarca(resultado.getString("marca"));
+                    repuestoActualizado.setCantidad(cantidadDespuesDeBorrar);
+
+                    if (cantidadDespuesDeBorrar == 0) {
+                        SQL_Repuesto.cambiarEstadoRepuestoPorNombreMarca(txtNombreRepuesto.getText(), txtMarcaRepuesto.getText(), false);
+                    }
+
+
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+
+                SQL_Repuesto.editarRepuesto(txtNombreRepuesto.getText(), txtMarcaRepuesto.getText(), repuestoActualizado);
+            }
+
+
+
+
+
         }
         else {
             String textoError = "No existe un repuesto con ese nombre y marca!";
@@ -388,6 +443,24 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
             txtMarcaRepuesto.setStyle(estiloMensajeError);
             new FadeIn(txtMarcaRepuesto).play();
         }
+
+        return validado;
+    }
+
+    private void borrarRepuesto(String nombreRepuesto, String marcaRepuesto) {
+        try {
+            ResultSet result = SQL_Repuesto.obtenerRepuesto_NombreMarca(nombreRepuesto, marcaRepuesto);
+            result.next();
+            boolean activo = result.getBoolean("activo");
+            SQL_Repuesto.cambiarEstadoRepuestoPorNombreMarca(nombreRepuesto,marcaRepuesto, activo);
+            this.validadoLabelSet();
+            this.limpiar();
+
+        } catch (SQLException exception) {
+            throw new RuntimeException(exception);
+        }
+
+
         this.refreshTable();
     }
 
