@@ -263,7 +263,7 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
     @FXML
     protected void btnCancelarClick() throws IOException {
         if (Dialogs.showConfirm("Seleccione una opción", "¿Está seguro que quiere cancelar el registro?", Dialogs.YES, Dialogs.NO).equals(Dialogs.YES)) {
-            EmpresaAutosABC.setRoot("menuAdmin");
+            EmpresaAutosABC.setRoot("menuJefeTaller");
         }
     }
     @FXML
