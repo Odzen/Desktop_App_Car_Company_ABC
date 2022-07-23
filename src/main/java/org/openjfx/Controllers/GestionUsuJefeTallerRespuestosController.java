@@ -268,7 +268,7 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
     }
     @FXML
     protected void btnInicio() throws IOException {
-        EmpresaAutosABC.setRoot("menuAdmin");
+        EmpresaAutosABC.setRoot("menuJefeTaller");
     }
     // Para limpiar datos
     @FXML
