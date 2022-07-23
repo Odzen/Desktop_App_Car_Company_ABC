@@ -318,9 +318,9 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
             new FadeIn(txtMarcaRepuesto).play();
         }
         if (!SQL_Repuesto.existeRepuesto_NombreMarca(txtNombreRepuesto.getText(), txtMarcaRepuesto.getText())) {
-            // Validacion para saber si una sede con esa nombre ya existe
+            // Validacion para saber si un repuesto con ese nombre y marca ya existe
             validado = false;
-            String textoError = "Una sede con ese nombre NO existe!";
+            String textoError = "Una repuesto con ese nombre y marca NO existe!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtNombreRepuesto.setStyle(estiloMensajeError);
