@@ -175,6 +175,8 @@ public class SQL_Repuesto {
     // Edita un Repuesto en la base de datos, por nombre y marca
     public static void editarRepuesto(String nombre,String marca,  Repuesto repuestoActualizado) {
 
+
+
         if ( existeRepuesto_NombreMarca(nombre, marca)) {
             java.util.Date modificado = new java.util.Date();
             java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
@@ -188,6 +190,12 @@ public class SQL_Repuesto {
                 sentencia.setDate(2, modificadoSql);
                 sentencia.setString(3, nombre);
                 sentencia.setString(4, marca);
+
+                if (repuestoActualizado.getCantidad() == 0) {
+                    cambiarEstadoRepuestoPorNombreMarca(nombre, marca, false);
+                } else {
+                    cambiarEstadoRepuestoPorNombreMarca(nombre, marca, true);
+                }
 
                 int filasAfectadas = sentencia.executeUpdate();
                 System.out.println(filasAfectadas);
@@ -248,12 +256,7 @@ public class SQL_Repuesto {
                                 "activo= ?  " +
                                 "WHERE nombre = ? AND marca=?");
                 sentencia.setDate(1, modificadoSql);
-
-                if (activo)
-                    sentencia.setBoolean(2, false);
-                else
-                    sentencia.setBoolean(2, true);
-
+                sentencia.setBoolean(2, activo);
                 sentencia.setString(3, nombre);
                 sentencia.setString(4, marca);
 

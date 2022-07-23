@@ -201,6 +201,9 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
         txtCantidadRepuesto.setText("");
         txtMarcaRepuesto.setText("");
         txtNombreRepuesto.setText("");
+        txtNombreRepuesto.setStyle(null);
+        txtMarcaRepuesto.setStyle(null);
+        txtCantidadRepuesto.setStyle(null);
     }
 
     /**
@@ -375,19 +378,15 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
             validacionRegistroLabel.setStyle(mensajeError);
             new Shake(txtNombreRepuesto).play();
             new Shake(txtMarcaRepuesto).play();
+            new Shake(txtCantidadRepuesto).play();
             validacionRegistroLabel.setText("El nombre, la marca o la cantidad del repuesto están vacias!");
         }
         else {
-            boolean validado = this.validacionNombreMarcaBorrar();
-            if (validado) {
-                this.borrarRepuesto(nombreRepuesto, marcaRepuesto);
-            }
+            this.borrarRepuesto();
         }
-
-
     }
 
-    private boolean validacionNombreMarcaBorrar() {
+    private boolean borrarRepuesto() {
         boolean validado = true;
         validacionRegistroLabel.setText("");
         // Validacion existencia
@@ -401,40 +400,34 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-
+            System.out.println("Cantidad para cambiar: " + txtCantidadRepuesto.getText());
+            System.out.println("Cantidad actual: " + cantidadActual);
             if (Integer.parseInt(txtCantidadRepuesto.getText()) > cantidadActual) {
+                validado = false;
                 String textoError = "La cantidad que quiere borrar NO puede ser mayor a la cantidad actual!";
+                System.out.println(textoError);
                 validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
                 validacionRegistroLabel.setStyle(mensajeError);
                 txtCantidadRepuesto.setStyle(estiloMensajeError);
                 new FadeIn(txtCantidadRepuesto).play();
             } else {
+                System.out.println("La cantidad es correcta");
                 Repuesto repuestoActualizado = new Repuesto();
                 int cantidadDespuesDeBorrar = cantidadActual - Integer.parseInt(txtCantidadRepuesto.getText());
                 try {
                     repuestoActualizado.setNombre(resultado.getString("nombre"));
                     repuestoActualizado.setMarca(resultado.getString("marca"));
                     repuestoActualizado.setCantidad(cantidadDespuesDeBorrar);
-
-                    if (cantidadDespuesDeBorrar == 0) {
-                        SQL_Repuesto.cambiarEstadoRepuestoPorNombreMarca(txtNombreRepuesto.getText(), txtMarcaRepuesto.getText(), false);
-                    }
-
-
+                    SQL_Repuesto.editarRepuesto(txtNombreRepuesto.getText(), txtMarcaRepuesto.getText(), repuestoActualizado);
+                    this.validadoLabelSet();
+                    this.limpiar();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
-
-
-                SQL_Repuesto.editarRepuesto(txtNombreRepuesto.getText(), txtMarcaRepuesto.getText(), repuestoActualizado);
             }
-
-
-
-
-
         }
         else {
+            validado = false;
             String textoError = "No existe un repuesto con ese nombre y marca!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
@@ -443,25 +436,8 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
             txtMarcaRepuesto.setStyle(estiloMensajeError);
             new FadeIn(txtMarcaRepuesto).play();
         }
-
-        return validado;
-    }
-
-    private void borrarRepuesto(String nombreRepuesto, String marcaRepuesto) {
-        try {
-            ResultSet result = SQL_Repuesto.obtenerRepuesto_NombreMarca(nombreRepuesto, marcaRepuesto);
-            result.next();
-            boolean activo = result.getBoolean("activo");
-            SQL_Repuesto.cambiarEstadoRepuestoPorNombreMarca(nombreRepuesto,marcaRepuesto, activo);
-            this.validadoLabelSet();
-            this.limpiar();
-
-        } catch (SQLException exception) {
-            throw new RuntimeException(exception);
-        }
-
-
         this.refreshTable();
+        return validado;
     }
 
     // Actualizar
