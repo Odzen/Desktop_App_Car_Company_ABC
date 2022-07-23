@@ -123,7 +123,7 @@ public class SQL_Cliente {
                 Cliente cliente = new Cliente();
 
                 String cedula_cliente = resultadoCliente.getString("cedula_cliente");
-                cliente.cedula_cliente(cedula_cliente);
+                cliente.setCedula_cliente(cedula_cliente);
                 String email = resultadoCliente.getString("email");
                 cliente.setEmail(email);
                 String nombre = resultadoCliente.getString("nombre");
@@ -144,8 +144,8 @@ public class SQL_Cliente {
                 cliente.setTelefono(telefono);
                 int id_tipo_usuario = resultadoCliente.getInt("id_tipo_usuario");
                 cliente.setId_tipo_usuario(id_tipo_usuario);
-                String user_type = resultadoCliente.getString("user_type");
-                cliente.setUser_type(user_type);
+                //String user_type = resultadoCliente.getString("user_type");
+                //cliente.setUser_type(user_type);
                 String cedula_creado_por = resultadoCliente.getString("cedula_creado_por");
                 cliente.setCedula_creado_por(cedula_creado_por);
                 String sede = resultadoCliente.getString("sede");
