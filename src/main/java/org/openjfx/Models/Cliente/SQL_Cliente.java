@@ -316,39 +316,4 @@ public class SQL_Cliente {
         }
     }
 
-    /* Metodos para DEV y NO produccion: Los metodos sgtes son para el ambiente de desarrollo pero no se deberían de usar en producción*/
-    public static void eliminarTodosClientes() {
-        try {
-            PreparedStatement sentencia = connection.prepareStatement(
-                    "TRUNCATE cedula_cliente"
-            );
-            PreparedStatement sentencia_alter_sequence = connection.prepareStatement(
-                    "ALTER SEQUENCE cliente_cedula_cliente_seq RESTART;"
-            );
-
-            sentencia.executeUpdate();
-            sentencia_alter_sequence.executeUpdate();
-            System.out.println("Borro TODOS LOS CLIENTES exitosamente!!");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static void eliminarclientePorCedula(String cedula_cliente) {
-        if (existeCliente_Cedula(cedula_cliente)) {
-            try {
-                PreparedStatement sentencia = connection.prepareStatement(
-                        "DELETE FROM cliente WHERE cedula_cliente=?"
-                );
-                sentencia.setString(1, cedula_cliente);
-                sentencia.executeUpdate();
-                System.out.println("Borro el cliente con la cedula" + cedula_cliente + " exitosamente!");
-
-            } catch (SQLException e) {
-                System.err.println(e);
-            }
-        } else {
-            System.out.println("El cliente con ese id NO existe, por favor dijiste un id correcto!");
-        }
-    }
 }

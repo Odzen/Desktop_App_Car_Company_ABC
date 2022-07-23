@@ -4,10 +4,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ValidacionesAutomovil {
-    public static final Pattern VALID_PHONE_NUMBER_REGEX =
-            Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$"
-                    + "|^(\\+\\d{1,3}( )?)?(\\d{3}[ ]?){2}\\d{3}$"
-                    + "|^(\\+\\d{1,3}( )?)?(\\d{3}[ ]?)(\\d{2}[ ]?){2}\\d{2}$", Pattern.CASE_INSENSITIVE);
 
     public static final Pattern VALID_CILINDRAJE =
             Pattern.compile("^[0-9]{3,6}$", Pattern.CASE_INSENSITIVE);

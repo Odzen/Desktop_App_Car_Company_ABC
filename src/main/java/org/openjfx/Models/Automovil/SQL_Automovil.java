@@ -32,7 +32,7 @@ public class SQL_Automovil {
         }
     }
 
-    // Obtiene todos los registros de Sede que están en la base de datos
+    // Obtiene todos los registros de clientes que están en la base de datos
     public static ArrayList<Automovil> leerTodoslosAutomoviles() {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
@@ -83,7 +83,7 @@ public class SQL_Automovil {
         }
     }
 
-    // Verifica si un automovil existe o no en la base de datos, basado en su nombre
+    // Verifica si un automovil existe o no en la base de datos, basado en su placa
     public static ResultSet obtenerAutomovil_placa(String placa)  {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
@@ -114,7 +114,7 @@ public class SQL_Automovil {
         }
     }
 
-    // Crea una sede en la base de datos
+    // Crea un cliente en la base de datos
     public static void crearAutomovil(Automovil automovil) {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
@@ -223,7 +223,7 @@ public class SQL_Automovil {
         }
     }
 
-    // Elimina al usuario poniendolo inactivo en la base de datos
+    // Elimina al cliente poniendolo inactivo en la base de datos
     public static void cambiarEstadoAutomovilPorPlaca(String placa, boolean activo) {
         if(existeautomovil_placa(placa)) {
             java.util.Date modificado = new java.util.Date();
