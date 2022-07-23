@@ -185,7 +185,7 @@ public class LoginController  {
             EmpresaAutosABC.setRoot("menuGerente");
         }
         else if (usuarioLogin.getUser_type().equals(Rol.JEFE_TALLER)) {
-            // EmpresaAutosABC.setRoot("menuJefeTaller");
+            EmpresaAutosABC.setRoot("menuJefeTaller");
         }
         else if (usuarioLogin.getUser_type().equals(Rol.VENDEDOR)) {
             EmpresaAutosABC.setRoot("menuVendedor");

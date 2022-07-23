@@ -47,7 +47,7 @@ public class MenuJefeTallerController implements Initializable {
     }
     @FXML
     private void btnGestionRespuestosJefeTallerClick() throws IOException {
-        EmpresaAutosABC.setRoot("GestionRespuestos");
+        EmpresaAutosABC.setRoot("GestionRepuestos");
     }
 
     @FXML

@@ -371,7 +371,7 @@ public class GestionUsuGerenteController implements Initializable {
 
         } catch (Exception e) {
             System.err.println(e);
-            JOptionPane.showMessageDialog(null,"Error registrando el usuario");
+            Dialogs.showError("Error en la base de datos", "Error registrando el usuario");
         }
     }
 

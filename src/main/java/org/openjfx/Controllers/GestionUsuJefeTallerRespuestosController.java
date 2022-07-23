@@ -135,7 +135,7 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
         if (!ValidacionesRepuesto.validarNombreRepuesto(txtNombreRepuesto.getText()))
         {
             validado = false;
-            String textoError = "El nombre del repuesto debe tener entre 4 a 20 caracteres!";
+            String textoError = "Formato del nombre del repuesto está incorrectos!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtNombreRepuesto.setStyle(estiloMensajeError);
@@ -156,7 +156,7 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
         if (!ValidacionesRepuesto.validarMarcaRepuesto(txtMarcaRepuesto.getText()))
         {
             validado = false;
-            String textoError = "La marca del repuesto debe tener entre 4 a 20 caracteres!";
+            String textoError = "El formato de la marca del repuesto está incorrecto!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtMarcaRepuesto.setStyle(estiloMensajeError);
@@ -195,7 +195,7 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
 
         } catch (Exception e) {
             System.err.println(e);
-            JOptionPane.showMessageDialog(null,"Error registrando la sede");
+            Dialogs.showError("Error en la base de datos", "Error registrando el repuesto");
         }
     }
 
@@ -268,7 +268,7 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
     protected void btnInicio() throws IOException {
         EmpresaAutosABC.setRoot("menuAdmin");
     }
-    // Para salir de la aplicación
+    // Para limpiar datos
     @FXML
     protected void btnLimpiar() {
         this.limpiar();
@@ -312,7 +312,7 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
         if (!ValidacionesRepuesto.validarMarcaRepuesto(txtMarcaRepuesto.getText()))
         {
             validado = false;
-            String textoError = "La marca del repuesto debe tener entre 4 a 20 caracteres!";
+            String textoError = "Formato de la marca del repuesto está incorrecto!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtMarcaRepuesto.setStyle(estiloMensajeError);

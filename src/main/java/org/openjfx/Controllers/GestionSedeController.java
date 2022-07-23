@@ -206,7 +206,7 @@ public class GestionSedeController implements Initializable {// Variables para A
 
         } catch (Exception e) {
             System.err.println(e);
-            JOptionPane.showMessageDialog(null,"Error registrando la sede");
+            Dialogs.showError("Error en la base de datos", "Error registrando la sede");
         }
     }
 
