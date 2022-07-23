@@ -54,12 +54,12 @@
          <font>
             <Font name="System Bold" size="18.0" />
          </font></Button>
-      <Button fx:id="bttnBodegaGer" layoutX="374.0" layoutY="255.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Bodega">
+      <Button fx:id="btnGestionAutomovil" layoutX="374.0" layoutY="255.0" mnemonicParsing="false" onAction="#btnGestionAutomovilClick" prefHeight="40.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Gestión de Automóvil">
          <effect>
             <InnerShadow />
          </effect>
          <font>
-            <Font size="18.0" />
+            <Font size="14.0" />
          </font></Button>
       <Button fx:id="bttnReporteGer" layoutX="641.0" layoutY="255.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Reportes">
          <effect>

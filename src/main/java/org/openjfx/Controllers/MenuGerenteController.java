@@ -53,6 +53,10 @@ public class MenuGerenteController implements Initializable {
         EmpresaAutosABC.setRoot("GestionUsuGerente");
     }
 
+    @FXML
+    private void btnGestionAutomovilClick() throws IOException{
+        EmpresaAutosABC.setRoot("GestionAutomovil");
+    }
 
     @FXML
     private void btnCerrarSesionClick() throws IOException{
