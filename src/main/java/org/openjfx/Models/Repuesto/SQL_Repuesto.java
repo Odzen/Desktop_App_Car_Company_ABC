@@ -149,8 +149,8 @@ public class SQL_Repuesto {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
                     "INSERT INTO repuesto " +
-                            "(activo, marca, nombre, cantidad, cedula_creado_por, fecha_creacion, fecha_modificado)" +
-                            "VALUES  (?,?,?,?,?,?,?)");
+                            "(activo, marca, nombre, cantidad, cedula_creado_por, fecha_creacion, fecha_modificado, sede)" +
+                            "VALUES  (?,?,?,?,?,?,?,?)");
             sentencia.setBoolean(1, repuesto.isActivo());
             sentencia.setString(2, repuesto.getMarca());
             sentencia.setString(3, repuesto.getNombre());
@@ -158,6 +158,7 @@ public class SQL_Repuesto {
             sentencia.setString(5, repuesto.getCedula_creado_por());
             sentencia.setDate(6,  new java.sql.Date(repuesto.getFecha_creacion().getTime()));
             sentencia.setDate(7,  new java.sql.Date(repuesto.getFecha_modificado().getTime()));
+            sentencia.setString(8, repuesto.getSede());
 
             sentencia.execute();
 

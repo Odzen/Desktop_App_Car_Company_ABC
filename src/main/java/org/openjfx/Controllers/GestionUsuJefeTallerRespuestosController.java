@@ -17,10 +17,6 @@ import org.openjfx.EmpresaAutosABC;
 import org.openjfx.Models.Repuesto.Repuesto;
 import org.openjfx.Models.Repuesto.SQL_Repuesto;
 import org.openjfx.Models.Repuesto.Utils.ValidacionesRepuesto;
-import org.openjfx.Models.Sede.SQL_Sede;
-import org.openjfx.Models.Sede.Sede;
-import org.openjfx.Models.Sede.Utils.ValidacionesSede;
-import org.openjfx.Models.Usuario.Utils.Validaciones;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -183,6 +179,8 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
             repuesto.setMarca(txtMarcaRepuesto.getText());
             repuesto.setNombre(txtNombreRepuesto.getText());
             repuesto.setCantidad(Integer.parseInt(txtCantidadRepuesto.getText()));
+            repuesto.setSede(LoginController.obtenerUsuarioLogeado().getSede());
+            repuesto.setCedula_creado_por(LoginController.obtenerUsuarioLogeado().getCedula());
 
             // SI la orden es para crear, o para actualizar, llamo al metodo respectivo
             if (crear)
@@ -202,7 +200,7 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
     public void limpiar() {
         txtCantidadRepuesto.setText("");
         txtMarcaRepuesto.setText("");
-        txtMarcaRepuesto.setText("");
+        txtNombreRepuesto.setText("");
     }
 
     /**
@@ -219,6 +217,7 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
         col_fecha_modificacion_repuesto.setCellValueFactory(new PropertyValueFactory<>("fecha_modificado"));
         col_marcaRepuesto.setCellValueFactory(new PropertyValueFactory<>("marca"));
         col_nombreRepuesto.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        col_sedeRepuesto.setCellValueFactory(new PropertyValueFactory<>("sede"));
 
         tableGestionRepuestos.setItems(repuestosList.sorted());
 
@@ -372,7 +371,7 @@ public class GestionUsuJefeTallerRespuestosController implements Initializable {
                 ResultSet result = SQL_Repuesto.obtenerRepuesto_NombreMarca(nombreRepuesto, marcaRepuesto);
                 result.next();
                 boolean activo = result.getBoolean("activo");
-                SQL_Sede.cambiarEstadoUsuarioPorNombre(nombreRepuesto, activo);
+                SQL_Repuesto.cambiarEstadoRepuestoPorNombreMarca(nombreRepuesto,marcaRepuesto, activo);
                 this.validadoLabelSet();
                 this.limpiar();
 
