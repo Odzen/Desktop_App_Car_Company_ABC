@@ -224,6 +224,7 @@ CREATE TABLE IF NOT EXISTS venta (
     cedula_vendedor text NOT NULL,
     placa_automovil text,
     id_orden_trabajo INT,
+    sede text NOT NULL,
     PRIMARY KEY (id_venta),
     CONSTRAINT "FK_venta.placa_automovil"
      FOREIGN KEY (placa_automovil)

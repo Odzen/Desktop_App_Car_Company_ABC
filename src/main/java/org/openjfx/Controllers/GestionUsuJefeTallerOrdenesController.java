@@ -15,10 +15,6 @@ import org.openjfx.Models.Orden_Trabajo.Orden;
 import org.openjfx.Models.Orden_Trabajo.SQL_Orden;
 import org.openjfx.Models.Orden_Trabajo.Utils.Estado;
 import org.openjfx.Models.Orden_Trabajo.Utils.ValidacionesOrden;
-import org.openjfx.Models.Repuesto.Repuesto;
-import org.openjfx.Models.Repuesto.SQL_Repuesto;
-import org.openjfx.Models.Repuesto.Utils.ValidacionesRepuesto;
-import org.openjfx.Models.Usuario.SQL_Usuario;
 
 import java.io.IOException;
 import java.net.URL;
@@ -218,10 +214,25 @@ public class GestionUsuJefeTallerOrdenesController implements Initializable {
         }
     }
 
+    @FXML
+    private void setFirstItem() {
+        estado.setText(firstItem.getText());
+    }
+
+    @FXML
+    private void setSecondItem() {
+        estado.setText(secondItem.getText());
+    }
+
+    @FXML
+    private void setThirdItem() {
+        estado.setText(thirdItem.getText());
+    }
+
     public void limpiar() {
         txtPlaca.setText("");
         txtCedulaCliente.setText("");
-        estado.setText("");
+        estado.setText("Estado");
         txtPlaca.setStyle(null);
         txtCedulaCliente.setStyle(null);
         estado.setStyle(null);
@@ -299,7 +310,7 @@ public class GestionUsuJefeTallerOrdenesController implements Initializable {
 
     // Buscar por cedula y placa de la orden para llenar campos y así poder registrar o borrar
     @FXML
-    protected void buscarCedulaPlacaOrden() {
+    protected void btnCedulaPlacaOrden() {
         validacionRegistroLabel.setText("");
         txtPlaca.setStyle(null);
         txtCedulaCliente.setStyle(null);
@@ -388,7 +399,7 @@ public class GestionUsuJefeTallerOrdenesController implements Initializable {
 
     // Borrar - poner inactivo
     @FXML
-    private void btnBorrarOrden() {
+    private void btnBorrarOrdenClicked() {
         String cedulaCliente = txtCedulaCliente.getText();
         String placa = txtPlaca.getText();
         if (SQL_Orden.existeOrden_CedulaPlaca(cedulaCliente, placa)) {
@@ -421,7 +432,7 @@ public class GestionUsuJefeTallerOrdenesController implements Initializable {
 
     // Actualizar
     @FXML
-    private void btnActualizarOrden() {
+    private void btnActualizarOrdenClicked() {
         this.crearActualizarOrden(false);
     }
 

@@ -16,6 +16,18 @@ public class Orden {
     private int id_estado_orden;
     private Estado estado;
 
+    public Orden() {
+        this.id_orden = 0;
+        this.fecha_creacion = new Date();
+        this.fecha_modificado = new Date();
+        this.activo = true;
+        this.cedula_cliente = "";
+        this.cedula_jefe_de_taller = "";
+        this.placa_automovil = "";
+        this.id_estado_orden = 0;
+        this.estado = Estado.EN_ESPERA;
+    }
+
     public int getId_orden() {
         return id_orden;
     }

@@ -70,7 +70,7 @@
             </font>
         </Label>
         <Label fx:id="lblMensajeContra" layoutX="580.0" layoutY="71.0" prefHeight="146.0" prefWidth="350.0" />
-        <TableView fx:id="tableGestionRepuestos" layoutX="40.0" layoutY="284.0" prefHeight="238.0" prefWidth="845.0">
+        <TableView fx:id="tableGestionOrdenes" layoutX="40.0" layoutY="284.0" prefHeight="238.0" prefWidth="845.0">
             <columns>
                 <TableColumn fx:id="col_idOrden" prefWidth="68.0" text="Id" />
                 <TableColumn fx:id="col_cedulaCliente" prefWidth="156.0" text="Cédula cliente" />
@@ -134,7 +134,7 @@
          <items>
             <MenuItem fx:id="firstItem" mnemonicParsing="false" onAction="#setFirstItem" text="En espera" />
             <MenuItem fx:id="secondItem" mnemonicParsing="false" onAction="#setSecondItem" text="En progreso" />
-            <MenuItem fx:id="thirdItem" mnemonicParsing="false" onAction="#setSecondItem" text="Terminada" />
+            <MenuItem fx:id="thirdItem" mnemonicParsing="false" onAction="#setThirdItem" text="Terminada" />
          </items>
          <font>
             <Font size="14.0" />

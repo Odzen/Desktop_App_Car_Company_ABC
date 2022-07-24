@@ -12,7 +12,6 @@ public class Repuesto {
     private String cedula_creado_por;
     private Date fecha_creacion;
     private Date fecha_modificado;
-
     private String sede;
 
 

@@ -422,7 +422,7 @@ public class GestionUsuAdminController implements Initializable {
         txtPasswordConfirm.setText("");
         txtMail.setText("");
         txtTelefono.setText("");
-        cargo.setText("Seleccionar Cargo");
+        cargo.setText("Cargo");
         sede.setText("Sede");
         dtpNacimiento.setValue(null);
     }
