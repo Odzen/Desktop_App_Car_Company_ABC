@@ -143,8 +143,8 @@ public class SQL_Cotizacion {
                 cotizacion.setCedula_vendedor(cedula_vendedor);
                 String placa_automovil = resultadoCotizacion.getString("placa_automovil");
                 cotizacion.setPlaca_automovil(placa_automovil);
-                int id_tipo_usuario = resultadoCotizacion.getInt("id_tipo_usuario");
-                cotizacion.setId_tipo_usuario(id_tipo_usuario);
+                int id_orden_trabajo = resultadoCotizacion.getInt("id_orden_trabajo");
+                cotizacion.setid_orden_trabajo(id_orden_trabajo);
 
                 cotizacionResultado.add(cotizacion);
 
@@ -164,7 +164,7 @@ public class SQL_Cotizacion {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
                     "INSERT INTO cotizacion " +
-                            "(IVA,TOTAL_IVA,TOTAL_SIN_IVA, descripcion, fecha_modificado, fecha_creacion, cedula_cliente, cedula_vendedor, placa_automovil, id_tipo_usuario )" +
+                            "(IVA,TOTAL_IVA,TOTAL_SIN_IVA, descripcion, fecha_modificado, fecha_creacion, cedula_cliente, cedula_vendedor, placa_automovil, id_orden_trabajo )" +
                             "VALUES  (?,?,?,?,?,?,?,?,?,?)");
             sentencia.setInt(1, cotizacion.getIVA());
             sentencia.setInt(2, cotizacion.getTOTAL_IVA());
@@ -173,9 +173,9 @@ public class SQL_Cotizacion {
             sentencia.setDate(5,  new java.sql.Date(cotizacion.getFecha_modificado().getTime()));
             sentencia.setDate(6,  new java.sql.Date(cotizacion.getFecha_creacion().getTime()));
             sentencia.setString(7, cotizacion.getCedula_cliente());
-            sentencia.setString(7, cotizacion.getCedula_vendedor());
-            sentencia.setString(13, cotizacion.getPlaca_automovil());
-            sentencia.setInt(14, cotizacion.getId_tipo_usuario());
+            sentencia.setString(8, cotizacion.getCedula_vendedor());
+            sentencia.setString(9, cotizacion.getPlaca_automovil());
+            sentencia.setInt(10, cotizacion.getid_orden_trabajo());
 
             sentencia.execute();
 
@@ -190,42 +190,37 @@ public class SQL_Cotizacion {
 
 
     // Edita una cotizacion en la base de datos
-    public static void editarCotizacion(String cedula_cliente, Cotizacion usuarioActualizado) {
+    public static void editarCotizacion(String cedula_cliente, Cotizacion cotizacionActualizado) {
 
-        if ( existeCliente_Cedula(cedula_cliente)) {
+        if ( existeCotizacion_cedula(cedula_cliente)) {
             java.util.Date modificado = new java.util.Date();
             java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
             try {
                 PreparedStatement sentencia = connection.prepareStatement(
-                        "UPDATE cliente SET " +
-                                "email = ? , " +
-                                "nombre = ? , " +
-                                "apellido = ? , " +
+                        "UPDATE cotizacion SET " +
+                                "IVA = ? , " +
+                                "TOTAL_IVA= ?, " +
+                                "TOTAL_SIN_IVA= ?, " +
+                                "descripcion = ? , " +
                                 "fecha_modificado = ? , " +
                                 "fecha_creacion = ? , " +
-                                "direccion = ? , " +
-                                "fecha_nacimiento= ?, " +
-                                "telefono = ?, " +
-                                "id_tipo_usuario= ?, " +
-                                "user_type= ?, " +
-                                "cedula_creado_por= ? " +
-                                "sede= ?, " +
+                                "cedula_cliente = ? , " +
+                                "cedula_vendedor = ? , " +
+                                "placa_automovil = ?, " +
+                                "id_orden_trabajo= ?, " +
                                 "WHERE cedula_cliente = ?");
 
-                sentencia.setString(1, cedula_cliente);
-                sentencia.setString(2, usuarioActualizado.getEmail());
-                sentencia.setString(3, usuarioActualizado.getNombre());
-                sentencia.setString(4, usuarioActualizado.getApellido());
-                sentencia.setDate(5,  new java.sql.Date(usuarioActualizado.getFecha_modificado().getTime()));
-                sentencia.setDate(6,  new java.sql.Date(usuarioActualizado.getFecha_creacion().getTime()));
-                sentencia.setString(7, usuarioActualizado.getDireccion());
-                sentencia.setBoolean(8, usuarioActualizado.isActivo());
-                sentencia.setDate(9, new java.sql.Date(usuarioActualizado.getFecha_nacimiento().getTime()));
-                sentencia.setString(10, usuarioActualizado.getTelefono());
-                sentencia.setInt(11, usuarioActualizado.getId_tipo_usuario());
-                sentencia.setString(12, Rol.CLIENTE.toString());
-                sentencia.setString(13, usuarioActualizado.getCedula_creado_por());
-                sentencia.setString(14, usuarioActualizado.getSede());
+                sentencia.setInt(1, cotizacionActualizado.getIVA());
+                sentencia.setInt(2, cotizacionActualizado.getTOTAL_IVA());
+                sentencia.setInt(3, cotizacionActualizado.getTOTAL_SIN_IVA());
+                sentencia.setString(4, cotizacionActualizado.getDescripcion());
+                sentencia.setDate(5,  new java.sql.Date(cotizacionActualizado.getFecha_modificado().getTime()));
+                sentencia.setDate(6,  new java.sql.Date(cotizacionActualizado.getFecha_creacion().getTime()));
+                sentencia.setString(7, cedula_cliente);
+                sentencia.setString(8, cotizacionActualizado.getCedula_vendedor());
+                sentencia.setString(9, cotizacionActualizado.getPlaca_automovil());
+                sentencia.setInt(10, cotizacionActualizado.getid_orden_trabajo());
+
 
                 int filasAfectadas = sentencia.executeUpdate();
                 System.out.println(filasAfectadas);
@@ -239,7 +234,7 @@ public class SQL_Cotizacion {
                 System.err.println(e);
             }
         } else {
-            System.out.println("El usuario con ese id NO existe, por favor dijiste un id correcto!");
+            System.out.println("La cotización con ese cliente NO existe, por favor dijiste una cédula correcta!");
         }
     }
 }
