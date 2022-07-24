@@ -22,13 +22,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
-import org.openjfx.Models.Cliente.Cliente;
 import org.openjfx.Models.Cliente.SQL_Cliente;
 import org.openjfx.Models.Cliente.SQL_Cotizacion;
 import org.openjfx.Models.Cliente.Utils.ValidacionesClientes;
 import org.openjfx.Models.Cliente.Utils.ValidacionesCotizacion;
 import org.openjfx.Models.Cotizacion.Cotizacion;
-import org.openjfx.Models.Usuario.Usuario;
 
 
 import javax.swing.*;
@@ -76,7 +74,7 @@ public class CotizacionController implements Initializable {
     @FXML
     private TextField txtPlacaCotizacion, txtDescripcionCotizacion;
     @FXML
-    private TextField txtOrdenCotizacion;
+    private TextField txtid_orden_trabajo;
     @FXML
     private DatePicker dtpCotizacion;
     @FXML
@@ -98,28 +96,28 @@ public class CotizacionController implements Initializable {
         txtDocumentoVendedor.setStyle(null);
         txtDescripcionCotizacion.setStyle(null);
         txtPlacaCotizacion.setStyle(null);
-        txtOrdenCotizacion.setStyle(null);
+        txtid_orden_trabajo.setStyle(null);
         dtpCotizacion.setStyle(null);
         // Cuando los campos están en blanco
         if(txtDocumentoCliente.getText().isEmpty() ||
                 txtDocumentoVendedor.getText().isEmpty() ||txtDescripcionCotizacion.getText().isEmpty()||
-                txtPlacaCotizacion.getText().isEmpty()|| txtOrdenCotizacion.getText().isEmpty() ||
+                txtPlacaCotizacion.getText().isEmpty()|| txtid_orden_trabajo.getText().isEmpty() ||
                 dtpCotizacion.getValue()==null )
         {
             validacionRegistroLabel.setStyle(mensajeError);
             if(txtDocumentoCliente.getText().isEmpty() &&
                     txtDocumentoVendedor.getText().isEmpty() && txtDescripcionCotizacion.getText().isEmpty() &&
-                    txtPlacaCotizacion.getText().isEmpty() && txtOrdenCotizacion.getText().isEmpty() &&
+                    txtPlacaCotizacion.getText().isEmpty() && txtid_orden_trabajo.getText().isEmpty() &&
                     dtpCotizacion.getValue()==null )
             {
                 validacionRegistroLabel.setText("Se requieren todos los campos!");
                 txtDocumentoCliente.setStyle(estiloMensajeError);
                 txtDocumentoVendedor.setStyle(estiloMensajeError);
-                txtOrdenCotizacion.setStyle(estiloMensajeError);
+                txtid_orden_trabajo.setStyle(estiloMensajeError);
                 txtPlacaCotizacion.setStyle(estiloMensajeError);
                 txtDescripcionCotizacion.setStyle(estiloMensajeError);
                 dtpCotizacion.setStyle(estiloMensajeError);
-                new Shake(txtOrdenCotizacion).play();
+                new Shake(txtid_orden_trabajo).play();
                 new Shake(txtDocumentoCliente).play();
                 new Shake(txtDocumentoVendedor).play();
                 new Shake(txtPlacaCotizacion).play();
@@ -241,8 +239,8 @@ public class CotizacionController implements Initializable {
             cotizacionModelo.setFecha_creacion(cotizacionFormat);
 
 
-            //Traer sede y cedula de creado por
-           // clienteModelo.setSede(LoginController.obtenerUsuarioLogeado().getSede());
+            //Traer cedula vendedor
+            cotizacionModelo.setCedula_vendedor(LoginController.obtenerUsuarioLogeado().getCedula());
 
 
 
@@ -250,7 +248,7 @@ public class CotizacionController implements Initializable {
             if (crear)
                 SQL_Cotizacion.crearCotizacion(cotizacionModelo);
             else
-                SQL_Cliente.editarClientes(cotizacionModelo.getCedula_cliente(), cotizacionModelo);
+                SQL_Cotizacion.editarCotizacion(cotizacionModelo.getCedula_cliente(), cotizacionModelo);
 
             this.validadoLabelSet();
             this.limpiar();
@@ -266,7 +264,7 @@ public class CotizacionController implements Initializable {
         txtDocumentoVendedor.setText("");
         txtDescripcionCotizacion.setText("");
         txtPlacaCotizacion.setText("");
-        txtOrdenCotizacion.setText("");
+        txtid_orden_trabajo.setText("");
         dtpCotizacion.setValue(null);
     }
 
@@ -289,20 +287,21 @@ public class CotizacionController implements Initializable {
 
     }
 
-    private void readUsers() {
+    private void readCotizacion() {
         try {
             ResultSet result = SQL_Cotizacion.obtenerTodasCotizacionesSet();
             while (result.next()) {
                 Cotizacion readCotizacion = new Cotizacion();
 
-                Cotizacion.setEmail(result.getString("cedula_vendedor"));
-                Cotizacion.setNombre(result.getString("nombre"));
-                Cotizacion.setApellido(result.getString("apellido"));
-                Cotizacion.setModificado(result.getDate("modificado"));
-                Cotizacion.setJoined(result.getDate("joined"));
-                Cotizacion.setTelefono(result.getString("telefono"));
-                Cotizacion.setActivo(result.getBoolean("activo"));
-                Cotizacion.setFecha_nacimiento(result.getDate("fecha_nacimiento"));
+
+                readCotizacion.setCedula_cliente(result.getString("cedula_cliente"));
+                readCotizacion.setCedula_vendedor(result.getString("cedula_vendedor"));
+                readCotizacion.setTOTAL_SIN_IVA(result.getInt("TOTAL_SIN_IVA"));
+                readCotizacion.setFecha_modificado(result.getDate("modificado"));
+                readCotizacion.setFecha_creacion(result.getDate("fecha_creacion"));
+                readCotizacion.setTOTAL_IVA(result.getInt("TOTAL_IVA"));
+                readCotizacion.setPlaca_automovil(result.getString("placa_automovil"));
+                readCotizacion.setid_orden_trabajo(result.getInt("id_orden_trabajo"));
 
                 cotizacionList.add(readCotizacion);
             }
@@ -312,10 +311,11 @@ public class CotizacionController implements Initializable {
         }
     }
 
+
     //@FXML
     private void refreshTable() {
         cotizacionList.clear();
-        this.readUsers();
+        this.readCotizacion();
     }
 
     /**
@@ -354,6 +354,7 @@ public class CotizacionController implements Initializable {
         txtDocumentoVendedor.setStyle(null);
         txtDescripcionCotizacion.setStyle(null);
         txtPlacaCotizacion.setStyle(null);
+        txtid_orden_trabajo.setStyle(null);
         dtpCotizacion.setStyle(null);
         if(txtDocumentoCliente.getText().isEmpty())
         {
@@ -402,21 +403,21 @@ public class CotizacionController implements Initializable {
                 Cotizacion readCotizacion = new Cotizacion();
 
                 readCotizacion.setCedula_cliente(result.getString("cedula_cliente"));
-                readCotizacion.setCedula_vendedor(result.getString("email"));
-                readCotizacion.(result.getString("nombre"));
-                readCotizacion.setApellido(result.getString("apellido"));
-                readCotizacion.setModificado(result.getDate("modificado"));
-                readCotizacion.setJoined(result.getString("descripcion"));
-                readCotizacion.setTelefono(result.getString("telefono"));
-                readCotizacion.setFecha_nacimiento(result.getDate("fecha_nacimiento"));
-                readCotizacion.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
+                readCotizacion.setCedula_vendedor(result.getString("cedula_vendedor"));
+                readCotizacion.setDescripcion(result.getString("descripcion"));
+                readCotizacion.setTOTAL_SIN_IVA(result.getInt("TOTAL_SIN_IVA"));
+                readCotizacion.calcularCotizacion(result.getDouble("TOTAL_IVA"));
+                readCotizacion.setIVA(result.getInt("IVA"));
+                readCotizacion.setPlaca_automovil(result.getString("placa_automovil"));
+                readCotizacion.setFecha_creacion(result.getDate("fecha_creacion"));
+                readCotizacion.setid_orden_trabajo(result.getInt("id_tipo_usuario"));
 
                 // Cambio valores en los labels
                 txtDocumentoCliente.setText(readCotizacion.getCedula_cliente());
                 txtDocumentoVendedor.setText(readCotizacion.getCedula_vendedor());
                 txtDescripcionCotizacion.setText(readCotizacion.getDescripcion());
                 txtPlacaCotizacion.setText(readCotizacion.getPlaca_automovil());
-                dtpCotizacion.setValue(LocalDate.parse(readCotizacion.getFecha_nacimiento().toString()));
+                dtpCotizacion.setValue(LocalDate.parse(readCotizacion.getFecha_creacion().toString()));
 
 
             }
@@ -469,7 +470,7 @@ public class CotizacionController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.readUsers();
+        this.readCotizacion();
         this.loadData();
         tablaCotizacion.setItems(cotizacionList.sorted());
     }
