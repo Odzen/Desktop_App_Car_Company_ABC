@@ -11,6 +11,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.openjfx.EmpresaAutosABC;
+import org.openjfx.Models.Automovil.SQL_Automovil;
+import org.openjfx.Models.Cliente.SQL_Cliente;
 import org.openjfx.Models.Orden_Trabajo.Orden;
 import org.openjfx.Models.Orden_Trabajo.SQL_Orden;
 import org.openjfx.Models.Orden_Trabajo.Utils.Estado;
@@ -129,11 +131,27 @@ public class GestionUsuJefeTallerOrdenesController implements Initializable {
             txtCedulaCliente.setStyle(estiloMensajeError);
             new FadeIn(txtCedulaCliente).play();
         }
+        else if(!SQL_Cliente.existeCliente_Cedula(txtCedulaCliente.getText())) {
+            validado = false;
+            String textoError = "Un cliente con esa cédula no existe!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtCedulaCliente.setStyle(estiloMensajeError);
+            new FadeIn(txtCedulaCliente).play();
+        }
         // Validacion de la placa
         if (!ValidacionesOrden.validarPlaca(txtPlaca.getText()))
         {
             validado = false;
             String textoError = "Formato de la placa está incorrecto!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtPlaca.setStyle(estiloMensajeError);
+            new FadeIn(txtPlaca).play();
+        }
+        else if(!SQL_Automovil.existeautomovil_placa(txtPlaca.getText())) {
+            validado = false;
+            String textoError = "Un automóvil con esa placa no existe!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtPlaca.setStyle(estiloMensajeError);
