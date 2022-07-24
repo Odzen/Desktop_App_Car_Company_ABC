@@ -399,11 +399,11 @@ public class CotizacionController implements Initializable {
         try {
             ResultSet result = SQL_Cotizacion.obtenerCotizacion_Cedula(cedula_cliente);
             while (result.next()) {
-                Cliente readCotizacion = new Cliente();
+                Cotizacion readCotizacion = new Cotizacion();
 
-                readCotizacion.setCedula(result.getString("cedula_cliente"));
-                readCotizacion.setEmail(result.getString("email"));
-                readCotizacion.setNombre(result.getString("nombre"));
+                readCotizacion.setCedula_cliente(result.getString("cedula_cliente"));
+                readCotizacion.setCedula_vendedor(result.getString("email"));
+                readCotizacion.(result.getString("nombre"));
                 readCotizacion.setApellido(result.getString("apellido"));
                 readCotizacion.setModificado(result.getDate("modificado"));
                 readCotizacion.setJoined(result.getString("descripcion"));
@@ -413,9 +413,9 @@ public class CotizacionController implements Initializable {
 
                 // Cambio valores en los labels
                 txtDocumentoCliente.setText(readCotizacion.getCedula_cliente());
-                txtDocumentoVendedor.setText(readCotizacion.getCedula());
-                txtDescripcionCotizacion.setText(readCotizacion);
-                txtPlacaCotizacion.setText(readCotizacion);
+                txtDocumentoVendedor.setText(readCotizacion.getCedula_vendedor());
+                txtDescripcionCotizacion.setText(readCotizacion.getDescripcion());
+                txtPlacaCotizacion.setText(readCotizacion.getPlaca_automovil());
                 dtpCotizacion.setValue(LocalDate.parse(readCotizacion.getFecha_nacimiento().toString()));
 
 
