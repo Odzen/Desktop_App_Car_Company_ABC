@@ -70,7 +70,7 @@
          </effect>
       </Button>
       <DatePicker fx:id="dtpCotizacion" layoutX="694.0" layoutY="85.0" prefHeight="34.0" promptText="Fecha de Cotización" />
-      <Button fx:id="bttnNuevoUsuario" layoutX="59.0" layoutY="317.0" mnemonicParsing="false" onAction="#bttnNuevoUsuarioClicked" prefHeight="34.0" prefWidth="88.0" style="-fx-background-color: #c8fcb3#c8fcb3; -fx-background-radius: 50;" text="Registrar" textAlignment="CENTER">
+      <Button fx:id="bttnNuevaCotizacion" layoutX="59.0" layoutY="317.0" mnemonicParsing="false" onAction="#bttnNuevaCotizacionClicked" prefHeight="34.0" prefWidth="88.0" style="-fx-background-color: #c8fcb3#c8fcb3; -fx-background-radius: 50;" text="Registrar" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
