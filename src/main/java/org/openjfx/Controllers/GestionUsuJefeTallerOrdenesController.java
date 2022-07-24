@@ -17,6 +17,7 @@ import org.openjfx.Models.Orden_Trabajo.Orden;
 import org.openjfx.Models.Orden_Trabajo.SQL_Orden;
 import org.openjfx.Models.Orden_Trabajo.Utils.Estado;
 import org.openjfx.Models.Orden_Trabajo.Utils.ValidacionesOrden;
+import org.openjfx.Models.Usuario.Utils.Rol;
 
 import java.io.IOException;
 import java.net.URL;
@@ -401,11 +402,23 @@ public class GestionUsuJefeTallerOrdenesController implements Initializable {
                 readOrden.setPlaca_automovil(result.getString("placa_automovil"));
                 readOrden.setId_estado_orden(result.getInt("id_estado_orden"));
                 readOrden.setEstado(Estado.valueOf(result.getString("estado")));
-
                 // Cambio valores en los labels
                 txtCedulaCliente.setText(readOrden.getCedula_cliente());
                 txtPlaca.setText(readOrden.getPlaca_automovil());
-                estado.setText(readOrden.getEstado().toString());
+
+                String estadoString = "";
+                if (readOrden.getEstado().toString().equals(Estado.EN_ESPERA.toString())) {
+                    estadoString = "En espera";
+                }
+                else if (readOrden.getEstado().toString().equals(Estado.EN_PROGRESO.toString())) {
+                    estadoString = "En progreso";
+                }
+                else {
+                    estadoString = "Terminada";
+                }
+
+                estado.setText(estadoString);
+
 
             }
         } catch(SQLException exception) {

@@ -25,6 +25,7 @@ public class SQL_Orden {
             }
 
         } catch (SQLException e) {
+            System.out.printf("Error al verificar la existencia por ID", e);
             throw new RuntimeException(e);
         }
     }
@@ -46,6 +47,7 @@ public class SQL_Orden {
             }
 
         } catch (SQLException e) {
+            System.out.printf("Error al verificar la existencia por la cedula y placa", e);
             throw new RuntimeException(e);
         }
     }
@@ -63,6 +65,7 @@ public class SQL_Orden {
             return resultado;
 
         } catch (SQLException e) {
+            System.out.printf("Error al obtener la orden por la cedula y placa", e);
             throw new RuntimeException(e);
         }
     }
@@ -79,6 +82,7 @@ public class SQL_Orden {
             return resultado;
 
         } catch (SQLException e) {
+            System.out.printf("Error al obtener orden por ID", e);
             throw new RuntimeException(e);
         }
     }
@@ -94,6 +98,7 @@ public class SQL_Orden {
             return resultado;
 
         } catch (SQLException e) {
+            System.out.printf("Error al obtener todas las Ordenes", e);
             throw new RuntimeException(e);
         }
     }
@@ -143,6 +148,8 @@ public class SQL_Orden {
                 sentencia.setInt(1, ordenActualizada.getId_estado_orden());
                 sentencia.setString(2, ordenActualizada.getEstado().toString());
                 sentencia.setDate(3, modificadoSql);
+                sentencia.setString(4, cedula_cliente);
+                sentencia.setString(5, placa_automovil);
 
                 int filasAfectadas = sentencia.executeUpdate();
                 System.out.println(filasAfectadas);
@@ -154,9 +161,11 @@ public class SQL_Orden {
                 }
             } catch (SQLException e) {
                 System.err.println(e);
+                throw new RuntimeException(e);
             }
         } else {
             System.out.println("La Orden con esa cédula y con esa placa NO existe , por favor dijite datos correctos!");
+
         }
     }
 
@@ -185,6 +194,7 @@ public class SQL_Orden {
 
             } catch (SQLException e) {
                 System.err.println(e);
+                throw new RuntimeException(e);
             }
         } else {
             System.out.println("Una Orden con ese id NO existe, por favor dijite un id correcto!");
@@ -219,6 +229,7 @@ public class SQL_Orden {
 
             } catch (SQLException e) {
                 System.err.println(e);
+                throw new RuntimeException(e);
             }
         } else {
             System.out.println("Una Orden con ese nombre NO existe, por favor dijite un nombre de sede correcto!");
