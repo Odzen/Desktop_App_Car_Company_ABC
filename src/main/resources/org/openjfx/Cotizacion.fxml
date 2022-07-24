@@ -17,7 +17,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="945.0" style="-fx-background-color: #c7e9ff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.Controllers.GestionVendedorController">
+<AnchorPane prefHeight="600.0" prefWidth="945.0" style="-fx-background-color: #c7e9ff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.Controllers.CotizacionController">
    <children>
       <Label layoutX="88.0" layoutY="26.0" prefHeight="23.0" prefWidth="88.0" text="Cotización">
          <font>
@@ -52,8 +52,9 @@
             <TableColumn fx:id="col_iva_Cotizacion" prefWidth="50.0" text="IVA" />
             <TableColumn fx:id="col_total_sin_iva_Cotizacion" prefWidth="112.0" text="Subtotal" />
             <TableColumn fx:id="col_total_iva_cotizacion" prefWidth="129.0" text="Total a pagar" />
-            <TableColumn fx:id="col_modificar_cotizacion" prefWidth="301.0" text="Modificado" />
-            <TableColumn fx:id="col_telefonoGestionVendedor" prefWidth="128.0" text="Creación" />
+            <TableColumn fx:id="col_fecha_modificacion_cotizacion" prefWidth="301.0" text="Modificado" />
+            <TableColumn fx:id="col_fecha_creacion_Cotizacion" prefWidth="128.0" text="Creación" />
+            <TableColumn fx:id="col_id_orden_trabajo_Cotizacion" prefWidth="110.0" text="Orden de trabajo" />
          </columns>
       </TableView>
       <Button fx:id="btnSalir" layoutX="46.0" layoutY="552.0" mnemonicParsing="false" onAction="#btnSalirClick" prefHeight="34.0" prefWidth="114.0" style="-fx-background-radius: 12; -fx-background-color: #b8b9ba#b8b9ba; -fx-border-color: #2b3238#2b3238; -fx-border-radius: 12;" text="Salir" underline="true">
@@ -70,7 +71,7 @@
          </effect>
       </Button>
       <DatePicker fx:id="dtpCotizacion" layoutX="694.0" layoutY="85.0" prefHeight="34.0" promptText="Fecha de Cotización" />
-      <Button fx:id="bttnNuevaCotizacion" layoutX="59.0" layoutY="317.0" mnemonicParsing="false" onAction="#bttnNuevaCotizacionClicked" prefHeight="34.0" prefWidth="88.0" style="-fx-background-color: #c8fcb3#c8fcb3; -fx-background-radius: 50;" text="Registrar" textAlignment="CENTER">
+      <Button fx:id="bttnNuevaCotizacion" layoutX="59.0" layoutY="317.0" mnemonicParsing="false" onAction="#btnNuevaCotizacionClicked" prefHeight="34.0" prefWidth="88.0" style="-fx-background-color: #c8fcb3#c8fcb3; -fx-background-radius: 50;" text="Registrar" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
@@ -145,5 +146,13 @@
          </font>
       </Label>
       <TextField fx:id="txtDescripcionCotizacion" layoutX="147.0" layoutY="237.0" prefHeight="43.0" prefWidth="509.0" promptText="Descripción" style="-fx-background-radius: 12;" />
+      <Button fx:id="imprimirReportesCotizacion" layoutX="589.0" layoutY="319.0" mnemonicParsing="false" onAction="#btnImprimirpdf" style="-fx-background-radius: 12; -fx-background-color: #899bab; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Imprimir Reporte">
+         <effect>
+            <InnerShadow color="#f5f2f2c7" />
+         </effect>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
