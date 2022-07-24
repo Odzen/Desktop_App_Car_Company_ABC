@@ -20,7 +20,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="945.0" style="-fx-background-color: #c7e9ff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.Controllers.GestionUsuJefeTallerOrdenesController">
     <children>
-        <TextField fx:id="txtcedulaCliente" layoutX="57.0" layoutY="93.0" prefHeight="40.0" prefWidth="188.0" promptText="Cédula cliente" style="-fx-background-radius: 8;">
+        <TextField fx:id="txtCedulaCliente" layoutX="57.0" layoutY="93.0" prefHeight="40.0" prefWidth="188.0" promptText="Cédula cliente" style="-fx-background-radius: 8;">
             <effect>
                 <Blend />
             </effect>
@@ -30,7 +30,7 @@
             <font>
                 <Font size="18.0" />
             </font></TextField>
-        <TextField fx:id="txtNombreRepuesto" layoutX="57.0" layoutY="158.0" prefHeight="40.0" prefWidth="188.0" promptText="Placa automovil" style="-fx-background-radius: 8;">
+        <TextField fx:id="txtPlaca" layoutX="57.0" layoutY="158.0" prefHeight="40.0" prefWidth="188.0" promptText="Placa automovil" style="-fx-background-radius: 8;">
             <effect>
                 <Blend />
             </effect>
@@ -72,15 +72,14 @@
         <Label fx:id="lblMensajeContra" layoutX="580.0" layoutY="71.0" prefHeight="146.0" prefWidth="350.0" />
         <TableView fx:id="tableGestionRepuestos" layoutX="40.0" layoutY="284.0" prefHeight="238.0" prefWidth="845.0">
             <columns>
-                <TableColumn fx:id="col_idRepuesto" prefWidth="68.0" text="Id" />
-                <TableColumn fx:id="col_marcaRepuesto" prefWidth="156.0" text="Marca" />
-                <TableColumn fx:id="col_nombreRepuesto" prefWidth="156.0" text="Nombre" />
-                <TableColumn fx:id="col_cantidadRepuesto" prefWidth="128.0" text="Cantidad" />
-                <TableColumn fx:id="col_sedeRepuesto" prefWidth="128.0" text="Sede" />
-                <TableColumn fx:id="col_creado_por" prefWidth="78.4000244140625" text="Creado por" />
-                <TableColumn fx:id="col_fecha_creacion_repuesto" prefWidth="111.2000732421875" text="Fecha creación" />
-                <TableColumn fx:id="col_fecha_modificacion_repuesto" prefWidth="134.4000244140625" text="Última Modificación" />
-                <TableColumn fx:id="col_activo_repuesto" prefWidth="82.0" text="Activo" />
+                <TableColumn fx:id="col_idOrden" prefWidth="68.0" text="Id" />
+                <TableColumn fx:id="col_cedulaCliente" prefWidth="156.0" text="Cédula cliente" />
+                <TableColumn fx:id="col_cedulaJefe" prefWidth="156.0" text="Cédula jefe de taller" />
+                <TableColumn fx:id="col_placa" prefWidth="128.0" text="Placa " />
+                <TableColumn fx:id="col_estadoOrden" prefWidth="128.0" text="Estado" />
+                <TableColumn fx:id="col_fecha_creacion" prefWidth="111.2000732421875" text="Fecha creación" />
+                <TableColumn fx:id="col_fecha_modificacion" prefWidth="134.4000244140625" text="Última Modificación" />
+                <TableColumn fx:id="col_activo_orden" prefWidth="82.0" text="Activo" />
             </columns>
         </TableView>
         <Button fx:id="bttnNuevaOrden" layoutX="57.0" layoutY="221.0" mnemonicParsing="false" onAction="#bttnNuevaOrden" prefHeight="34.0" prefWidth="88.0" style="-fx-background-color: #c8fcb3#c8fcb3; -fx-background-radius: 50;" text="Registrar" textAlignment="CENTER">
@@ -99,7 +98,7 @@
                 <Font size="14.0" />
             </font>
         </Button>
-        <Button fx:id="btnBorrarOrden" layoutX="297.0" layoutY="221.0" mnemonicParsing="false" onAction="#btnBorrarOrdenClicked" prefHeight="34.0" prefWidth="132.0" style="-fx-background-radius: 12; -fx-background-color: red; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Borrar" textFill="#ffffffed">
+        <Button fx:id="btnBorrarOrden" layoutX="297.0" layoutY="221.0" mnemonicParsing="false" onAction="#btnBorrarOrdenClicked" prefHeight="34.0" prefWidth="132.0" style="-fx-background-radius: 12; -fx-background-color: red; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Activa - Inactiva" textFill="#ffffffed">
             <effect>
                 <InnerShadow color="#f5f2f2c7" />
             </effect>
@@ -131,7 +130,7 @@
                 <Font size="14.0" />
             </font>
         </Button>
-      <SplitMenuButton fx:id="estado" layoutX="405.0" layoutY="93.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" text="Estado">
+      <SplitMenuButton fx:id="estado" layoutX="379.0" layoutY="93.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="132.0" text="Estado" textAlignment="CENTER">
          <items>
             <MenuItem fx:id="firstItem" mnemonicParsing="false" onAction="#setFirstItem" text="En espera" />
             <MenuItem fx:id="secondItem" mnemonicParsing="false" onAction="#setSecondItem" text="En progreso" />

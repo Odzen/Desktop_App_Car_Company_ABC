@@ -8,17 +8,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.openjfx.EmpresaAutosABC;
+import org.openjfx.Models.Orden_Trabajo.Orden;
+import org.openjfx.Models.Orden_Trabajo.SQL_Orden;
+import org.openjfx.Models.Orden_Trabajo.Utils.Estado;
+import org.openjfx.Models.Orden_Trabajo.Utils.ValidacionesOrden;
 import org.openjfx.Models.Repuesto.Repuesto;
 import org.openjfx.Models.Repuesto.SQL_Repuesto;
 import org.openjfx.Models.Repuesto.Utils.ValidacionesRepuesto;
+import org.openjfx.Models.Usuario.SQL_Usuario;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
@@ -28,32 +29,30 @@ import java.util.ResourceBundle;
 
 
 public class GestionUsuJefeTallerOrdenesController implements Initializable {
-    // Variables para Crear, Actualizar, Leer y Borrar Repuestos
+    // Variables para Crear, Actualizar, Leer y Borrar Ordenes
     @FXML
-    private TableView<Repuesto> tableGestionRepuestos;
+    private TableView<Orden> tableGestionOrdenes;
     @FXML
-    private TableColumn<Repuesto,Integer> col_idRepuesto;
+    private TableColumn<Orden,Integer> col_idOrden;
     @FXML
-    private TableColumn<Repuesto,String> col_marcaRepuesto;
+    private TableColumn<Orden,String> col_cedulaCliente;
     @FXML
-    private TableColumn<Repuesto,String> col_nombreRepuesto;
+    private TableColumn<Orden,String> col_cedulaJefe;
     @FXML
-    private TableColumn<Repuesto,Integer> col_cantidadRepuesto;
+    private TableColumn<Orden,String> col_placa;
     @FXML
-    private TableColumn<Repuesto, String> col_sedeRepuesto;
+    private TableColumn<Orden, String> col_estadoOrden;
     @FXML
-    private TableColumn<Repuesto, String> col_creado_por;
+    private TableColumn<Orden, Date> col_fecha_creacion;
     @FXML
-    private TableColumn<Repuesto, Date> col_fecha_creacion_repuesto;
+    private TableColumn<Orden, Date> col_fecha_modificacion;
     @FXML
-    private TableColumn<Repuesto, Date> col_fecha_modificacion_repuesto;
-    @FXML
-    private TableColumn<Repuesto, Boolean> col_activo_repuesto;
+    private TableColumn<Orden, Boolean> col_activo_orden;
 
-    private ObservableList<Repuesto> repuestosList = FXCollections.observableArrayList();
+    private ObservableList<Orden> ordenesList = FXCollections.observableArrayList();
 
 
-    // Variables para registrar repuestos
+    // Variables para registrar ordenes
     private String mensajeExito = String.format("-fx-text-fill: GREEN;");
     private String estiloMensajeExito = String.format("-fx-border-color: #A9A9A9; -fx-border-width: 2; -fx-border-radius: 5;");
 
@@ -61,104 +60,118 @@ public class GestionUsuJefeTallerOrdenesController implements Initializable {
     private String mensajeError = String.format("-fx-text-fill: RED;");
     private String estiloMensajeError = String.format("-fx-border-color: RED; -fx-border-width: 2; -fx-border-radius: 5;");
     @FXML
-    private TextField txtMarcaRepuesto, txtNombreRepuesto, txtCantidadRepuesto;
+    private TextField txtCedulaCliente, txtPlaca;
+    @FXML
+    private SplitMenuButton estado;
+    @FXML
+    MenuItem firstItem;
+    @FXML
+    MenuItem secondItem;
+    @FXML
+    MenuItem thirdItem;
 
     @FXML
     private Label validacionRegistroLabel;
 
     /**
-     * CREATE - Registrar Repuesto
+     * CREATE - Registrar Orden
      * @throws IOException
      */
-    //Para validar los campos de repuesto
 
-    private void crearActualizarRepuesto(boolean crear) {
+    //Para validar los campos de repuesto
+    private void crearActualizarOrden(boolean crear) {
 
         validacionRegistroLabel.setText("");
-        txtMarcaRepuesto.setStyle(null);
-        txtNombreRepuesto.setStyle(null);
-        txtCantidadRepuesto.setStyle(null);
+        txtCedulaCliente.setStyle(null);
+        txtPlaca.setStyle(null);
+        estado.setStyle(null);
         // Cuando los campos están en blanco
-        if(txtMarcaRepuesto.getText().isEmpty() || txtNombreRepuesto.getText().isEmpty() ||
-                txtCantidadRepuesto.getText().isEmpty())
+        if(txtCedulaCliente.getText().isEmpty() || txtPlaca.getText().isEmpty() || estado.getText().equals("Estado"))
         {
             validacionRegistroLabel.setStyle(mensajeError);
-            if(txtMarcaRepuesto.getText().isEmpty() && txtNombreRepuesto.getText().isEmpty() &&
-                    txtCantidadRepuesto.getText().isEmpty())
+            if(txtCedulaCliente.getText().isEmpty() && txtPlaca.getText().isEmpty() &&
+                    estado.getText().equals("Estado"))
             {
                 validacionRegistroLabel.setText("Se requieren todos los campos!");
-                txtMarcaRepuesto.setStyle(estiloMensajeError);
-                txtNombreRepuesto.setStyle(estiloMensajeError);
-                txtCantidadRepuesto.setStyle(estiloMensajeError);
-                new Shake(txtMarcaRepuesto).play();
-                new Shake(txtNombreRepuesto).play();
-                new Shake(txtCantidadRepuesto).play();
+                txtCedulaCliente.setStyle(estiloMensajeError);
+                txtPlaca.setStyle(estiloMensajeError);
+                estado.setStyle(estiloMensajeError);
+                new Shake(txtCedulaCliente).play();
+                new Shake(txtPlaca).play();
+                new Shake(estado).play();
             } else {
                 validacionRegistroLabel.setText("Algunos campos están vacíos!");
                 boolean validado = this.validaciones(crear);
                 if (validado) {
-                    this.guardarActualizarRepuesto(crear);
+                    this.guardarActualizarOrden(crear);
                 }
             }
         } else {
             boolean validado = this.validaciones(crear);
             if (validado) {
-                this.guardarActualizarRepuesto(crear);
+                this.guardarActualizarOrden(crear);
                 this.refreshTable();
             }
         }
     }
 
     @FXML
-    protected void bttnNuevoRepuesto() throws IOException{
-        this.crearActualizarRepuesto(true);
+    protected void bttnNuevaOrden() throws IOException{
+        this.crearActualizarOrden(true);
     }
 
     private boolean validaciones(boolean crear) {
         boolean validado = true;
         validacionRegistroLabel.setText("");
-        // Validacion de cantidad
-        if (!ValidacionesRepuesto.validarCantidadRepuesto(txtCantidadRepuesto.getText()))
+        // Validacion de cédula del cliente
+        if (!ValidacionesOrden.validarCedulaCliente(txtCedulaCliente.getText()))
         {
             validado = false;
-            String textoError = "Formato de la cantidad está incorrecto!";
+            String textoError = "Formato de la cédula está incorrecto!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
-            txtCantidadRepuesto.setStyle(estiloMensajeError);
-            new FadeIn(txtCantidadRepuesto).play();
+            txtCedulaCliente.setStyle(estiloMensajeError);
+            new FadeIn(txtCedulaCliente).play();
         }
-        // Se comprueba la longitud del nombre del repuesto
-        if (!ValidacionesRepuesto.validarNombreRepuesto(txtNombreRepuesto.getText()))
+        // Validacion de la placa
+        if (!ValidacionesOrden.validarPlaca(txtPlaca.getText()))
         {
             validado = false;
-            String textoError = "Formato del nombre del repuesto está incorrectos!";
+            String textoError = "Formato de la placa está incorrecto!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
-            txtNombreRepuesto.setStyle(estiloMensajeError);
-            new FadeIn(txtNombreRepuesto).play();
+            txtPlaca.setStyle(estiloMensajeError);
+            new FadeIn(txtPlaca).play();
         }
-        else if (SQL_Repuesto.existeRepuesto_NombreMarca(txtNombreRepuesto.getText(), txtMarcaRepuesto.getText()) && crear) {
-            // Validacion para saber si el repuesto con ese nombre y esa marca ya existe
-            validado = false;
-            String textoError = "Un repuesto con ese nombre y esa marca ya existe!";
-            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
-            validacionRegistroLabel.setStyle(mensajeError);
-            txtMarcaRepuesto.setStyle(estiloMensajeError);
-            new FadeIn(txtMarcaRepuesto).play();
-            txtNombreRepuesto.setStyle(estiloMensajeError);
-            new FadeIn(txtNombreRepuesto).play();
-        }
-        // Validación Marca
-        if (!ValidacionesRepuesto.validarMarcaRepuesto(txtMarcaRepuesto.getText()))
+        // Validacion estado
+        if (estado.getText().equals("Estado") || (!estado.getText().equals("En espera") && !estado.getText().equals("En progreso") && !estado.getText().equals("Terminada")))
         {
             validado = false;
-            String textoError = "El formato de la marca del repuesto está incorrecto!";
+            String textoError = "Formato de estado incorrecto!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
-            txtMarcaRepuesto.setStyle(estiloMensajeError);
-            new FadeIn(txtMarcaRepuesto).play();
+            estado.setStyle(estiloMensajeError);
+            new FadeIn(estado).play();
         }
-
+        else if( (estado.getText().equals("En progreso") || estado.getText().equals("Terminada")) && crear) {
+            validado = false;
+            String textoError = "Al momento de crear, el estado debe ser siempre 'En espera'!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            estado.setStyle(estiloMensajeError);
+            new FadeIn(estado).play();
+        }
+        else if (SQL_Orden.existeOrden_CedulaPlaca(txtCedulaCliente.getText(), txtPlaca.getText()) && crear) {
+            // Validacion para saber si la orden con esa cédula de cliente y esa placa ya existe
+            validado = false;
+            String textoError = "Una orden con esa cédula y esa placa ya existe!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtCedulaCliente.setStyle(estiloMensajeError);
+            new FadeIn(txtCedulaCliente).play();
+            txtPlaca.setStyle(estiloMensajeError);
+            new FadeIn(txtPlaca).play();
+        }
 
         // Mensaje si el ingreso es correcto
         return validado;
@@ -172,38 +185,46 @@ public class GestionUsuJefeTallerOrdenesController implements Initializable {
         new Tada(validacionRegistroLabel).play();
     }
 
-    public void guardarActualizarRepuesto(boolean crear) {
+    public void guardarActualizarOrden(boolean crear) {
         try {
-            Repuesto repuesto = new Repuesto();
+            Orden orden = new Orden();
 
-            repuesto.setMarca(txtMarcaRepuesto.getText());
-            repuesto.setNombre(txtNombreRepuesto.getText());
-            repuesto.setCantidad(Integer.parseInt(txtCantidadRepuesto.getText()));
-            repuesto.setSede(LoginController.obtenerUsuarioLogeado().getSede());
-            repuesto.setCedula_creado_por(LoginController.obtenerUsuarioLogeado().getCedula());
+            orden.setCedula_cliente(txtCedulaCliente.getText());
+            orden.setPlaca_automovil(txtPlaca.getText());
+            orden.setCedula_jefe_de_taller(LoginController.obtenerUsuarioLogeado().getCedula());
+
+            int idTipoEstado = 0;
+            if (estado.getText().equals("En espera")) {
+                idTipoEstado = 1;
+            } else if (estado.getText().equals("En progreso")) {
+                idTipoEstado = 2;
+            }else if (estado.getText().equals("Terminada")) {
+                idTipoEstado = 3;
+            }
+            orden.setId_estado_orden(idTipoEstado);
 
             // SI la orden es para crear, o para actualizar, llamo al metodo respectivo
             if (crear)
-                SQL_Repuesto.crearRepuesto(repuesto);
+                SQL_Orden.crearOrden(orden);
             else
-                SQL_Repuesto.editarRepuesto(repuesto.getNombre(),repuesto.getMarca(), repuesto);
+                SQL_Orden.editarOrden(orden.getCedula_cliente(),orden.getPlaca_automovil(), orden);
 
             this.validadoLabelSet();
             this.limpiar();
 
         } catch (Exception e) {
             System.err.println(e);
-            Dialogs.showError("Error en la base de datos", "Error registrando el repuesto");
+            Dialogs.showError("Error en la base de datos", "Error registrando la orden");
         }
     }
 
     public void limpiar() {
-        txtCantidadRepuesto.setText("");
-        txtMarcaRepuesto.setText("");
-        txtNombreRepuesto.setText("");
-        txtNombreRepuesto.setStyle(null);
-        txtMarcaRepuesto.setStyle(null);
-        txtCantidadRepuesto.setStyle(null);
+        txtPlaca.setText("");
+        txtCedulaCliente.setText("");
+        estado.setText("");
+        txtPlaca.setStyle(null);
+        txtCedulaCliente.setStyle(null);
+        estado.setStyle(null);
     }
 
     /**
@@ -212,48 +233,48 @@ public class GestionUsuJefeTallerOrdenesController implements Initializable {
     private void loadData() {
         refreshTable();
 
-        col_activo_repuesto.setCellValueFactory(new PropertyValueFactory<>("activo"));
-        col_cantidadRepuesto.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
-        col_creado_por.setCellValueFactory(new PropertyValueFactory<>("cedula_creado_por"));
-        col_fecha_creacion_repuesto.setCellValueFactory(new PropertyValueFactory<>("fecha_creacion"));
-        col_idRepuesto.setCellValueFactory(new PropertyValueFactory<>("id_repuesto"));
-        col_fecha_modificacion_repuesto.setCellValueFactory(new PropertyValueFactory<>("fecha_modificado"));
-        col_marcaRepuesto.setCellValueFactory(new PropertyValueFactory<>("marca"));
-        col_nombreRepuesto.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        col_sedeRepuesto.setCellValueFactory(new PropertyValueFactory<>("sede"));
+        col_idOrden.setCellValueFactory(new PropertyValueFactory<>("id_orden"));
+        col_fecha_creacion.setCellValueFactory(new PropertyValueFactory<>("fecha_creacion"));
+        col_fecha_modificacion.setCellValueFactory(new PropertyValueFactory<>("fecha_modificado"));
+        col_activo_orden.setCellValueFactory(new PropertyValueFactory<>("activo"));
+        col_cedulaCliente.setCellValueFactory(new PropertyValueFactory<>("cedula_cliente"));
+        col_cedulaJefe.setCellValueFactory(new PropertyValueFactory<>("cedula_jefe_de_taller"));
+        col_placa.setCellValueFactory(new PropertyValueFactory<>("placa_automovil"));
+        col_estadoOrden.setCellValueFactory(new PropertyValueFactory<>("estado"));
 
-        tableGestionRepuestos.setItems(repuestosList.sorted());
+        tableGestionOrdenes.setItems(ordenesList.sorted());
 
     }
 
-    private void readRepuestos() {
+    private void readOrdenes() {
         try {
-            ResultSet result = SQL_Repuesto.obtenerTodosRepuestosSet();
+            ResultSet result = SQL_Orden.obtenerTodasOrdenesSet();
             while (result.next()) {
-                Repuesto readRepuesto = new Repuesto();
+                Orden readOrden = new Orden();
 
-                readRepuesto.setId_repuesto(result.getInt("id_repuesto"));
-                readRepuesto.setActivo(result.getBoolean("activo"));
-                readRepuesto.setMarca(result.getString("marca"));
-                readRepuesto.setNombre(result.getString("nombre"));
-                readRepuesto.setCantidad(result.getInt("cantidad"));
-                readRepuesto.setCedula_creado_por(result.getString("cedula_creado_por"));
-                readRepuesto.setFecha_creacion(result.getDate("fecha_creacion"));
-                readRepuesto.setFecha_modificado(result.getDate("fecha_modificado"));
-                readRepuesto.setSede(result.getString("sede"));
+                readOrden.setId_orden(result.getInt("id_orden"));
+                readOrden.setFecha_creacion(result.getDate("fecha_creacion"));
+                readOrden.setFecha_modificado(result.getDate("fecha_modificado"));
+                readOrden.setActivo(result.getBoolean("activo"));
+                readOrden.setCedula_cliente(result.getString("cedula_cliente"));
+                readOrden.setCedula_jefe_de_taller(result.getString("cedula_jefe_de_taller"));
+                readOrden.setPlaca_automovil(result.getString("placa_automovil"));
+                readOrden.setId_estado_orden(result.getInt("id_estado_orden"));
+                readOrden.setEstado(Estado.valueOf(result.getString("estado")));
 
-                repuestosList.add(readRepuesto);
+                ordenesList.add(readOrden);
             }
-            repuestosList.sorted();
+            ordenesList.sorted();
         } catch(SQLException exception) {
-            throw new RuntimeException(exception);
+            System.err.println(exception);
+            Dialogs.showError("Error en la base de datos", "Error leyendo las ordenes");
         }
     }
 
     //@FXML
     private void refreshTable() {
-        repuestosList.clear();
-        this.readRepuestos();
+        ordenesList.clear();
+        this.readOrdenes();
     }
 
     /**
@@ -276,172 +297,132 @@ public class GestionUsuJefeTallerOrdenesController implements Initializable {
         this.limpiar();
     }
 
-    // Buscar por nombre y marca del repuesto para llenar campos y así poder registrar o borrar
+    // Buscar por cedula y placa de la orden para llenar campos y así poder registrar o borrar
     @FXML
-    protected void btnbuscarNombreMarcaRepuesto() {
+    protected void buscarCedulaPlacaOrden() {
         validacionRegistroLabel.setText("");
-        txtNombreRepuesto.setStyle(null);
-        txtMarcaRepuesto.setStyle(null);
-        txtCantidadRepuesto.setStyle(null);
-        if(txtNombreRepuesto.getText().isEmpty() || txtMarcaRepuesto.getText().isEmpty())
+        txtPlaca.setStyle(null);
+        txtCedulaCliente.setStyle(null);
+        estado.setStyle(null);
+        if(txtPlaca.getText().isEmpty() || txtCedulaCliente.getText().isEmpty())
         {
             validacionRegistroLabel.setStyle(mensajeError);
-            new Shake(txtNombreRepuesto).play();
-            new Shake(txtMarcaRepuesto).play();
-            validacionRegistroLabel.setText("El nombre o la marca del repuesto están vacias!");
+            new Shake(txtPlaca).play();
+            new Shake(txtCedulaCliente).play();
+            validacionRegistroLabel.setText("La cédula o la placa del repuesto están vacias!");
         }
         else {
-            boolean validado = this.validacionNombreMarca();
+            boolean validado = this.validacionCedulaPlaca();
             if (validado) {
-                this.llenarCamposPorNombreMarcaRepuesto();
+                this.llenarCamposPorCedulaPlaca();
             }
         }
     }
 
-    private boolean validacionNombreMarca() {
-        // Validación nombre
+    private boolean validacionCedulaPlaca() {
+        // Validación cedula
         boolean validado = true;
         validacionRegistroLabel.setText("");
-        if (!ValidacionesRepuesto.validarNombreRepuesto(txtNombreRepuesto.getText())) {
+        if (!ValidacionesOrden.validarCedulaCliente(txtCedulaCliente.getText())) {
             validado = false;
-            String textoError = "Formato del nombre del repuesto incorrecto!";
+            String textoError = "Formato de la cédula del cliente es incorrecto!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
-            txtNombreRepuesto.setStyle(estiloMensajeError);
-            new FadeIn(txtNombreRepuesto).play();
+            txtCedulaCliente.setStyle(estiloMensajeError);
+            new FadeIn(txtCedulaCliente).play();
         }
-        // Validación Marca
-        if (!ValidacionesRepuesto.validarMarcaRepuesto(txtMarcaRepuesto.getText()))
+        // Validación placa
+        if (!ValidacionesOrden.validarPlaca(txtPlaca.getText()))
         {
             validado = false;
-            String textoError = "Formato de la marca del repuesto está incorrecto!";
+            String textoError = "Formato de la placa del vehículo está incorrecto!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
-            txtMarcaRepuesto.setStyle(estiloMensajeError);
-            new FadeIn(txtMarcaRepuesto).play();
+            txtPlaca.setStyle(estiloMensajeError);
+            new FadeIn(txtPlaca).play();
         }
-        if (!SQL_Repuesto.existeRepuesto_NombreMarca(txtNombreRepuesto.getText(), txtMarcaRepuesto.getText())) {
-            // Validacion para saber si un repuesto con ese nombre y marca ya existe
+        if (!SQL_Orden.existeOrden_CedulaPlaca(txtCedulaCliente.getText(), txtPlaca.getText())) {
+            // Validacion para saber si una orden con esa cedula y placa ya existe
             validado = false;
-            String textoError = "Una repuesto con ese nombre y marca NO existe!";
+            String textoError = "Una orden con esa cedula y placa NO existe!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
-            txtNombreRepuesto.setStyle(estiloMensajeError);
-            new FadeIn(txtNombreRepuesto).play();
-            txtMarcaRepuesto.setStyle(estiloMensajeError);
-            new FadeIn(txtMarcaRepuesto).play();
+            txtCedulaCliente.setStyle(estiloMensajeError);
+            new FadeIn(txtCedulaCliente).play();
+            txtPlaca.setStyle(estiloMensajeError);
+            new FadeIn(txtPlaca).play();
         }
         return validado;
     }
 
-    private void llenarCamposPorNombreMarcaRepuesto() {
-        String nombreRepuesto = txtNombreRepuesto.getText();
-        String marcaRepuesto = txtMarcaRepuesto.getText();
+    private void llenarCamposPorCedulaPlaca() {
+        String cedulaCliente = txtCedulaCliente.getText();
+        String placa = txtPlaca.getText();
         try {
-            ResultSet result = SQL_Repuesto.obtenerRepuesto_NombreMarca(nombreRepuesto, marcaRepuesto);
+            ResultSet result = SQL_Orden.obtenerOrden_CedulaPlaca(cedulaCliente, placa);
             while (result.next()) {
-                Repuesto readRepuesto = new Repuesto();
+                Orden readOrden = new Orden();
 
-                readRepuesto.setId_repuesto(result.getInt("id_repuesto"));
-                readRepuesto.setActivo(result.getBoolean("activo"));
-                readRepuesto.setMarca(result.getString("marca"));
-                readRepuesto.setNombre(result.getString("nombre"));
-                readRepuesto.setCantidad(result.getInt("cantidad"));
-                readRepuesto.setCedula_creado_por(result.getString("cedula_creado_por"));
-                readRepuesto.setFecha_creacion(result.getDate("fecha_creacion"));
-                readRepuesto.setFecha_modificado(result.getDate("fecha_modificado"));
-                readRepuesto.setSede(result.getString("sede"));
+                readOrden.setId_orden(result.getInt("id_orden"));
+                readOrden.setFecha_creacion(result.getDate("fecha_creacion"));
+                readOrden.setFecha_modificado(result.getDate("fecha_modificado"));
+                readOrden.setActivo(result.getBoolean("activo"));
+                readOrden.setCedula_cliente(result.getString("cedula_cliente"));
+                readOrden.setCedula_jefe_de_taller(result.getString("cedula_jefe_de_taller"));
+                readOrden.setPlaca_automovil(result.getString("placa_automovil"));
+                readOrden.setId_estado_orden(result.getInt("id_estado_orden"));
+                readOrden.setEstado(Estado.valueOf(result.getString("estado")));
 
                 // Cambio valores en los labels
-                txtMarcaRepuesto.setText(readRepuesto.getMarca());
-                txtNombreRepuesto.setText(readRepuesto.getNombre());
-                txtCantidadRepuesto.setText(Integer.toString(readRepuesto.getCantidad()));
+                txtCedulaCliente.setText(readOrden.getCedula_cliente());
+                txtPlaca.setText(readOrden.getPlaca_automovil());
+                estado.setText(readOrden.getEstado().toString());
 
             }
         } catch(SQLException exception) {
-            throw new RuntimeException(exception);
+            System.err.println(exception);
+            Dialogs.showError("Error llenando datos por BD", "Error obteniendo las ordenes");
         }
 
     }
 
-    // Borrar - se hace SOFT DELETE solo cuando la cantidad del repuesto es = 0
-    // Borrar realmente lo que hace es borrar (actualizar) una determinada cantidad
-    // que se resta a la cantidad actual
-    // Esta cantidad NO puede ser mayor a la cantidad actual
-    // Si la cantidad actualizada queda en 0, entonces el repuesto se pone como inactivo (SOFT DELETE)
+    // Borrar - poner inactivo
     @FXML
-    private void btnBorrarRepuestoClicked() {
-        if(txtNombreRepuesto.getText().isEmpty() || txtMarcaRepuesto.getText().isEmpty() ||  txtCantidadRepuesto.getText().isEmpty())
-        {
-            validacionRegistroLabel.setStyle(mensajeError);
-            new Shake(txtNombreRepuesto).play();
-            new Shake(txtMarcaRepuesto).play();
-            new Shake(txtCantidadRepuesto).play();
-            validacionRegistroLabel.setText("El nombre, la marca o la cantidad del repuesto están vacias!");
-        }
-        else {
-            this.borrarRepuesto();
-        }
-    }
-
-    private boolean borrarRepuesto() {
-        boolean validado = true;
-        validacionRegistroLabel.setText("");
-        // Validacion existencia
-        if (SQL_Repuesto.existeRepuesto_NombreMarca(txtNombreRepuesto.getText(), txtMarcaRepuesto.getText())) {
-            // Validación cantidad
-            int cantidadActual = 0;
-            ResultSet resultado =  SQL_Repuesto.obtenerRepuesto_NombreMarca(txtNombreRepuesto.getText(), txtMarcaRepuesto.getText());
+    private void btnBorrarOrden() {
+        String cedulaCliente = txtCedulaCliente.getText();
+        String placa = txtPlaca.getText();
+        if (SQL_Orden.existeOrden_CedulaPlaca(cedulaCliente, placa)) {
             try {
-                resultado.next();
-                cantidadActual = resultado.getInt("cantidad");
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-            System.out.println("Cantidad para cambiar: " + txtCantidadRepuesto.getText());
-            System.out.println("Cantidad actual: " + cantidadActual);
-            if (Integer.parseInt(txtCantidadRepuesto.getText()) > cantidadActual) {
-                validado = false;
-                String textoError = "La cantidad que quiere borrar NO puede ser mayor a la cantidad actual!";
-                System.out.println(textoError);
-                validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
-                validacionRegistroLabel.setStyle(mensajeError);
-                txtCantidadRepuesto.setStyle(estiloMensajeError);
-                new FadeIn(txtCantidadRepuesto).play();
-            } else {
-                System.out.println("La cantidad es correcta");
-                Repuesto repuestoActualizado = new Repuesto();
-                int cantidadDespuesDeBorrar = cantidadActual - Integer.parseInt(txtCantidadRepuesto.getText());
-                try {
-                    repuestoActualizado.setNombre(resultado.getString("nombre"));
-                    repuestoActualizado.setMarca(resultado.getString("marca"));
-                    repuestoActualizado.setCantidad(cantidadDespuesDeBorrar);
-                    SQL_Repuesto.editarRepuesto(txtNombreRepuesto.getText(), txtMarcaRepuesto.getText(), repuestoActualizado);
-                    this.validadoLabelSet();
-                    this.limpiar();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+                ResultSet result = SQL_Orden.obtenerOrden_CedulaPlaca(cedulaCliente, placa);
+                result.next();
+                boolean activo = result.getBoolean("activo");
+                SQL_Orden.cambiarEstadoOrdenPorNombreMarca(cedulaCliente, placa, activo);
+                this.validadoLabelSet();
+                this.limpiar();
+
+            } catch (SQLException exception) {
+                System.err.println(exception);
+                Dialogs.showError("Error en BD", "Error borrando orden");
             }
         }
         else {
-            validado = false;
-            String textoError = "No existe un repuesto con ese nombre y marca!";
+            String textoError = "No existe una orden con esa cédula o placa!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
-            txtNombreRepuesto.setStyle(estiloMensajeError);
-            new FadeIn(txtNombreRepuesto).play();
-            txtMarcaRepuesto.setStyle(estiloMensajeError);
-            new FadeIn(txtMarcaRepuesto).play();
+            txtCedulaCliente.setStyle(estiloMensajeError);
+            new FadeIn(txtCedulaCliente).play();
+            txtPlaca.setStyle(estiloMensajeError);
+            new FadeIn(txtPlaca).play();
         }
+
         this.refreshTable();
-        return validado;
     }
+
 
     // Actualizar
     @FXML
-    private void btnActualizarRepuestoClicked() {
-        this.crearActualizarRepuesto(false);
+    private void btnActualizarOrden() {
+        this.crearActualizarOrden(false);
     }
 
     @FXML
@@ -454,9 +435,9 @@ public class GestionUsuJefeTallerOrdenesController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.readRepuestos();
+        this.readOrdenes();
         this.loadData();
-        tableGestionRepuestos.setItems(repuestosList.sorted());
+        tableGestionOrdenes.setItems(ordenesList.sorted());
     }
 }
 

@@ -70,8 +70,6 @@ public class GestionUsuAdminController implements Initializable {
 
     private ObservableList<Usuario> usuariosList = FXCollections.observableArrayList();
 
-    private Usuario usuario = null;
-
     // Variables para registrar usuarios
     private String mensajeExito = String.format("-fx-text-fill: GREEN;");
     private String estiloMensajeExito = String.format("-fx-border-color: #A9A9A9; -fx-border-width: 2; -fx-border-radius: 5;");
@@ -336,7 +334,7 @@ public class GestionUsuAdminController implements Initializable {
             new FadeIn(dtpNacimiento).play();
         }
         // Validacion Cargo
-        if (cargo.getText().equals("Seleccionar Cargo") || (!cargo.getText().equals("Gerente") && !cargo.getText().equals("Administrador")) )
+        if (cargo.getText().equals("Cargo") || (!cargo.getText().equals("Gerente") && !cargo.getText().equals("Administrador")) )
         {
             validado = false;
             String textoError = "Formato de cargo incorrecto!";
