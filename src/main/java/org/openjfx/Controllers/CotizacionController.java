@@ -51,10 +51,16 @@ public class CotizacionController implements Initializable {
     @FXML
     private TableColumn<Cotizacion, Integer> col_total_iva_cotizacion;
 
+
     @FXML
     private TableColumn<Cotizacion, String> col_Descripcion_Cotizacion;
+    @FXML
+    private TableColumn<Cotizacion, Date> col_fecha_modificacion_cotizacion;
 
-    private TableColumn<Cotizacion, Date> col_modificar_cotizacion;
+    @FXML
+    private TableColumn<Cotizacion, Date> col_fecha_creacion_Cotizacion;
+    @FXML
+    private TableColumn<Cotizacion, Integer> col_id_orden_trabajo_Cotizacion;
 
 
 
@@ -142,7 +148,7 @@ public class CotizacionController implements Initializable {
     }
 
     @FXML
-    protected void bttnNuevaCotizacionClicked() throws IOException{
+    protected void btnNuevaCotizacionClicked() throws IOException{
         this.crearActualizarCotizacion(true);
     }
 
@@ -275,14 +281,15 @@ public class CotizacionController implements Initializable {
         refreshTable();
 
         col_Id_Cliente_Cotizacion.setCellValueFactory(new PropertyValueFactory<>("cedula_cliente"));
-        col_Id_Vendedor_Cotizacion.setCellValueFactory(new PropertyValueFactory<>("email"));
-        col_placa_Cotizacion.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        col_Descripcion_Cotizacion.setCellValueFactory(new PropertyValueFactory<>("apellido"));
-        col_modificar_cotizacion.setCellValueFactory(new PropertyValueFactory<>("modificado"));
-        col_placa_Cotizacion.setCellValueFactory(new PropertyValueFactory<>("telefono"));
-        col_iva_Cotizacion.setCellValueFactory(new PropertyValueFactory<>("activo"));
-        col_total_sin_iva_Cotizacion.setCellValueFactory(new PropertyValueFactory<>("fecha_nacimiento"));
-        col_total_iva_cotizacion.setCellValueFactory(new PropertyValueFactory<>("last_session"));
+        col_Id_Vendedor_Cotizacion.setCellValueFactory(new PropertyValueFactory<>("cedula_vendedor"));
+        col_Descripcion_Cotizacion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+        col_fecha_modificacion_cotizacion.setCellValueFactory(new PropertyValueFactory<>("fecha_modificado"));
+        col_fecha_creacion_Cotizacion.setCellValueFactory(new PropertyValueFactory<>("fecha_creacion"));
+        col_placa_Cotizacion.setCellValueFactory(new PropertyValueFactory<>("placa_automovil"));
+        col_id_orden_trabajo_Cotizacion.setCellValueFactory(new PropertyValueFactory<>("id_orden_trabajo"));
+        col_iva_Cotizacion.setCellValueFactory(new PropertyValueFactory<>("IVA"));
+        col_total_sin_iva_Cotizacion.setCellValueFactory(new PropertyValueFactory<>("TOTAL_SIN_IVA"));
+        col_total_iva_cotizacion.setCellValueFactory(new PropertyValueFactory<>("TOTAL_IVA"));
         tablaCotizacion.setItems(cotizacionList.sorted());
 
     }
@@ -297,7 +304,7 @@ public class CotizacionController implements Initializable {
                 readCotizacion.setCedula_cliente(result.getString("cedula_cliente"));
                 readCotizacion.setCedula_vendedor(result.getString("cedula_vendedor"));
                 readCotizacion.setTOTAL_SIN_IVA(result.getInt("TOTAL_SIN_IVA"));
-                readCotizacion.setFecha_modificado(result.getDate("modificado"));
+                readCotizacion.setFecha_modificado(result.getDate("fecha_modificado"));
                 readCotizacion.setFecha_creacion(result.getDate("fecha_creacion"));
                 readCotizacion.setTOTAL_IVA(result.getInt("TOTAL_IVA"));
                 readCotizacion.setPlaca_automovil(result.getString("placa_automovil"));
@@ -410,6 +417,7 @@ public class CotizacionController implements Initializable {
                 readCotizacion.setIVA(result.getInt("IVA"));
                 readCotizacion.setPlaca_automovil(result.getString("placa_automovil"));
                 readCotizacion.setFecha_creacion(result.getDate("fecha_creacion"));
+                readCotizacion.setFecha_modificado(result.getDate("fecha_modificado"));
                 readCotizacion.setid_orden_trabajo(result.getInt("id_tipo_usuario"));
 
                 // Cambio valores en los labels
@@ -461,7 +469,7 @@ public class CotizacionController implements Initializable {
     }
 
     @FXML
-    private void btnImprimirCsv() {
+    private void btnImprimirpdf() {
         // TODO export to pdf or csv
     }
 
