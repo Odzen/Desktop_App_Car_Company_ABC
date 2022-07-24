@@ -4,6 +4,7 @@ ALTER SEQUENCE IF EXISTS sede_id_sede_seq RESTART;
 ALTER SEQUENCE IF EXISTS tipo_usuario_id_tipo_usuario_seq RESTART;
 ALTER SEQUENCE IF EXISTS repuesto_id_repuesto_seq RESTART;
 ALTER SEQUENCE IF EXISTS venta_id_venta_seq RESTART;
+ALTER SEQUENCE IF EXISTS estado_orden_id_estado_orden_seq RESTART;
 ALTER SEQUENCE IF EXISTS orden_de_trabajo_id_orden_seq RESTART;
 ALTER SEQUENCE IF EXISTS cotizacion_id_cotizacion_seq RESTART;
 ALTER SEQUENCE IF EXISTS solicitud_id_solicitud_seq RESTART;
@@ -16,6 +17,7 @@ DROP TABLE IF EXISTS repuesto CASCADE;
 DROP TABLE IF EXISTS automovil CASCADE;
 DROP TABLE IF EXISTS cliente CASCADE;
 DROP TABLE IF EXISTS venta CASCADE;
+DROP TABLE IF EXISTS estado_orden CASCADE;
 DROP TABLE IF EXISTS orden_de_trabajo CASCADE;
 DROP TABLE IF EXISTS repuestos_por_ordenes CASCADE;
 DROP TABLE IF EXISTS cotizacion CASCADE;
@@ -134,23 +136,18 @@ CREATE TABLE IF NOT EXISTS cliente (
            REFERENCES tipo_usuario(id_tipo_usuario)
 );
 
--- Tabla de Ventas
-CREATE TABLE IF NOT EXISTS venta (
-     id_venta SERIAL,
-     fecha DATE NOT NULL,
-     IVA INT NOT NULL,
-     descripcion text,
-     cedula_cliente text NOT NULL,
-     cedula_vendedor text NOT NULL,
-     placa_automovil text NOT NULL,
-     PRIMARY KEY (id_venta),
-     CONSTRAINT "FK_venta.id_automovil"
-         FOREIGN KEY (placa_automovil)
-             REFERENCES automovil(placa),
-     CONSTRAINT "FK_venta.cedula_cliente"
-         FOREIGN KEY (cedula_cliente)
-             REFERENCES cliente(cedula_cliente)
+-- id 1 - en_espera
+-- id 2 - en_progreso
+-- id 3 - terminada
+CREATE TABLE estado_orden (
+  id_estado_orden SERIAL,
+  nombre varchar(30) NOT NULL,
+  PRIMARY KEY (id_estado_orden)
 );
+
+INSERT INTO estado_orden(nombre)
+VALUES ('en_espera'), ('en_progreso'), ('terminada');
+
 
 -- Tabla de Ordenes de trabajo
 CREATE TABLE IF NOT EXISTS orden_de_trabajo (
@@ -161,13 +158,18 @@ CREATE TABLE IF NOT EXISTS orden_de_trabajo (
      cedula_cliente text NOT NULL,
      cedula_jefe_de_taller text NOT NULL,
      placa_automovil text NOT NULL,
+     id_estado_orden INT,
+     estado varchar(20) NOT NULL,
      PRIMARY KEY (id_orden),
      CONSTRAINT "FK_orden_de_trabajo.placa_automovil"
          FOREIGN KEY (placa_automovil)
              REFERENCES automovil(placa),
-    CONSTRAINT "FK_orden_de_trabajo.cedula_cliente"
+     CONSTRAINT "FK_orden_de_trabajo.cedula_cliente"
          FOREIGN KEY (cedula_cliente)
-            REFERENCES cliente(cedula_cliente)
+            REFERENCES cliente(cedula_cliente),
+     CONSTRAINT "FK_orden_de_trabajo.id_estado_orden"
+         FOREIGN KEY (id_estado_orden)
+             REFERENCES estado_orden(id_estado_orden)
 );
 
 -- Tabla de Respuestos por ordenes
@@ -206,6 +208,33 @@ CREATE TABLE IF NOT EXISTS cotizacion (
     CONSTRAINT "FK_cotizacion.id_orden_trabajo"
         FOREIGN KEY (id_orden_trabajo)
             REFERENCES orden_de_trabajo(id_orden)
+);
+
+
+-- Tabla de Ventas
+CREATE TABLE IF NOT EXISTS venta (
+    id_venta SERIAL,
+    IVA INT NOT NULL,
+    TOTAL_IVA INT NOT NULL,
+    TOTAL_SIN_IVA INT NOT NULL,
+    descripcion text,
+    fecha_modificado date NOT NULL,
+    fecha_creacion date NOT NULL,
+    cedula_cliente text NOT NULL,
+    cedula_vendedor text NOT NULL,
+    placa_automovil text,
+    id_orden_trabajo INT,
+    sede text NOT NULL,
+    PRIMARY KEY (id_venta),
+    CONSTRAINT "FK_venta.placa_automovil"
+     FOREIGN KEY (placa_automovil)
+         REFERENCES automovil(placa),
+    CONSTRAINT "FK_venta.cedula_cliente"
+     FOREIGN KEY (cedula_cliente)
+         REFERENCES cliente(cedula_cliente),
+    CONSTRAINT "FK_venta.id_orden_trabajo"
+     FOREIGN KEY (id_orden_trabajo)
+         REFERENCES orden_de_trabajo(id_orden)
 );
 
 -- Tabla de Solicitudes
