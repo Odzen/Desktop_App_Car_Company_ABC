@@ -1,7 +1,5 @@
 package org.openjfx.Models.Cotizacion;
 
-import org.openjfx.Models.Cotizacion.*;
-
 import java.util.Date;
 
 //Clase para modelar la cotizacion en la base de datos
@@ -62,11 +60,11 @@ public class Cotizacion  {
         this.fecha_creacion = fecha_creacion;
     }
 
-    public void setId_tipo_usuario(int id_tipo_usuario) {
-        this.id_orden_trabajo = id_tipo_usuario;
+    public void setid_orden_trabajo(int id_orden_trabajo) {
+        this.id_orden_trabajo = id_orden_trabajo;
     }
 
-    public int getId_tipo_usuario() {
+    public int getid_orden_trabajo() {
         return id_orden_trabajo;
     }
 
@@ -147,10 +145,9 @@ public class Cotizacion  {
 
      // Método que calcula el total de la cotizacion
 
-    public Integer calcularCotizacion(){
-        Integer TOTAL_SIN_IVA;
-        Integer IVA;
-        Integer TOTAL_IVA;
+    public double calcularCotizacion(double total){
+        double IVA;
+        double TOTAL_IVA;
 
         IVA = TOTAL_SIN_IVA * 0.19;
         TOTAL_IVA = TOTAL_SIN_IVA + IVA;
