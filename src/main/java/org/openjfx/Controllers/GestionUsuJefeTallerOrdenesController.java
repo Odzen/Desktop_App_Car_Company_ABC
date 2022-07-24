@@ -431,6 +431,10 @@ public class GestionUsuJefeTallerOrdenesController implements Initializable {
     // Borrar - poner inactivo
     @FXML
     private void btnBorrarOrdenClicked() {
+        validacionRegistroLabel.setText("");
+        txtPlaca.setStyle(null);
+        txtCedulaCliente.setStyle(null);
+        estado.setStyle(null);
         String cedulaCliente = txtCedulaCliente.getText();
         String placa = txtPlaca.getText();
         if (SQL_Orden.existeOrden_CedulaPlaca(cedulaCliente, placa)) {

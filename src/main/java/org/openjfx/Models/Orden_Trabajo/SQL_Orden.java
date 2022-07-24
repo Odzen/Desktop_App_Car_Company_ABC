@@ -219,6 +219,9 @@ public class SQL_Orden {
                 else
                     sentencia.setBoolean(2, true);
 
+                sentencia.setString(3, cedula_cliente);
+                sentencia.setString(4, placa_automovil);
+
                 int filasAfectadas = sentencia.executeUpdate();
 
                 if (filasAfectadas == 0) {
