@@ -1,7 +1,6 @@
 package org.openjfx.Models.Repuesto;
 
 import org.openjfx.Models.Conexion;
-import org.openjfx.Models.Sede.Sede;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -114,7 +113,7 @@ public class SQL_Repuesto {
     }
 
     // Obtiene un repuesto por su id
-    public static ResultSet obtenerSede_Id(int id_repuesto)  {
+    public static ResultSet obtenerRepuesto_Id(int id_repuesto)  {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
                     "SELECT * FROM repuesto WHERE id_repuesto= ?"
@@ -213,7 +212,7 @@ public class SQL_Repuesto {
         }
     }
 
-    // Elimina la sede poniendola inactiva en la base de datos - SOFT DELETE
+    // Elimina el repuesto poniendola inactiva en la base de datos - SOFT DELETE
     public static void eliminarRepuesto(int id_repuesto) {
         if(existeRepuesto_Id(id_repuesto)) {
             java.util.Date modificado = new java.util.Date();
@@ -233,14 +232,14 @@ public class SQL_Repuesto {
                 if (filasAfectadas == 0) {
                     System.out.println("No se modificó nada !");
                 } else {
-                    System.out.println("Se cambio el estado a INACTIVO de la sede en la base de datos");
+                    System.out.println("Se cambio el estado a INACTIVO de el repuesto en la base de datos");
                 }
 
             } catch (SQLException e) {
                 System.err.println(e);
             }
         } else {
-            System.out.println("La sede con ese id NO existe, por favor dijite un id correcto!");
+            System.out.println("Un repuesto con ese id NO existe, por favor dijite un id correcto!");
         }
     }
 
@@ -265,14 +264,14 @@ public class SQL_Repuesto {
                 if (filasAfectadas == 0) {
                     System.out.println("No se modificó nada !");
                 } else {
-                    System.out.println("Se cambio el estado de la sede en la base de datos!");
+                    System.out.println("Se cambio el estado del repuesto en la base de datos!");
                 }
 
             } catch (SQLException e) {
                 System.err.println(e);
             }
         } else {
-            System.out.println("La sede con ese nombre NO existe, por favor dijite un nombre de sede correcto!");
+            System.out.println("Un repuesto con ese nombre NO existe, por favor dijite un nombre de sede correcto!");
         }
     }
 }
