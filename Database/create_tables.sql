@@ -152,6 +152,19 @@ CREATE TABLE IF NOT EXISTS venta (
              REFERENCES cliente(cedula_cliente)
 );
 
+-- id 1 - en_espera
+-- id 2 - en_progreso
+-- id 3 - terminada
+CREATE TABLE estado_orden (
+  id_estado_orden SERIAL,
+  nombre varchar(30) NOT NULL,
+  PRIMARY KEY (id_estado_orden)
+);
+
+INSERT INTO estado_orden(nombre)
+VALUES ('en_espera'), ('en_progreso'), ('terminada');
+
+
 -- Tabla de Ordenes de trabajo
 CREATE TABLE IF NOT EXISTS orden_de_trabajo (
      id_orden SERIAL,
@@ -161,13 +174,18 @@ CREATE TABLE IF NOT EXISTS orden_de_trabajo (
      cedula_cliente text NOT NULL,
      cedula_jefe_de_taller text NOT NULL,
      placa_automovil text NOT NULL,
+     id_estado_orden INT,
+     estado varchar(20) NOT NULL,
      PRIMARY KEY (id_orden),
      CONSTRAINT "FK_orden_de_trabajo.placa_automovil"
          FOREIGN KEY (placa_automovil)
              REFERENCES automovil(placa),
-    CONSTRAINT "FK_orden_de_trabajo.cedula_cliente"
+     CONSTRAINT "FK_orden_de_trabajo.cedula_cliente"
          FOREIGN KEY (cedula_cliente)
-            REFERENCES cliente(cedula_cliente)
+            REFERENCES cliente(cedula_cliente),
+     CONSTRAINT "FK_orden_de_trabajo.id_estado_orden"
+         FOREIGN KEY (id_estado_orden)
+             REFERENCES estado_orden(id_estado_orden)
 );
 
 -- Tabla de Respuestos por ordenes
