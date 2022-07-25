@@ -12,7 +12,7 @@ public class ValidacionesRepuesto {
             Pattern.compile("^[a-z A-Z]{4,20}$", Pattern.CASE_INSENSITIVE);
 
     public static final Pattern VALID_CANTIDAD =
-            Pattern.compile("^[1-50]{1,3}$", Pattern.CASE_INSENSITIVE);
+            Pattern.compile("^([1-9][0-9]{0,2})$", Pattern.CASE_INSENSITIVE);
 
 
     // Verifica si el nombre del repuesto es correcto
