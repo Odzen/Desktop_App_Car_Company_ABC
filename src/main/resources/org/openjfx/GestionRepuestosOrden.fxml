@@ -79,7 +79,7 @@
             </font>
         </Label>
         <Label fx:id="lblMensajeContra" layoutX="580.0" layoutY="71.0" prefHeight="146.0" prefWidth="350.0" />
-        <TableView fx:id="tableGestionRepuestosOrdenes" layoutX="133.0" layoutY="286.0" prefHeight="238.0" prefWidth="640.0">
+        <TableView fx:id="tableGestionRepuestosOrdenes" layoutX="83.0" layoutY="283.0" prefHeight="238.0" prefWidth="771.0">
             <columns>
                 <TableColumn fx:id="col_idRepuesto" prefWidth="86.39999008178711" text="Id repuesto" />
                 <TableColumn fx:id="col_idOrden" prefWidth="97.5999755859375" text="Id Orden" />

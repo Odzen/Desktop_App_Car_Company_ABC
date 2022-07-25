@@ -17,7 +17,6 @@ import org.openjfx.EmpresaAutosABC;
 import org.openjfx.Models.Orden_Trabajo.SQL_Orden;
 import org.openjfx.Models.Repuesto.Repuesto;
 import org.openjfx.Models.Repuesto.SQL_Repuesto;
-import org.openjfx.Models.Repuesto.Utils.ValidacionesRepuesto;
 import org.openjfx.Models.Repuesto_Orden.RepuestoOrden;
 import org.openjfx.Models.Repuesto_Orden.SQL_RepuestoOrden;
 import org.openjfx.Models.Repuesto_Orden.Utils.ValidacionesRepuestosOrdenes;
@@ -376,27 +375,29 @@ public class GestionUsuJefeTallerRepuestoOrdenesController implements Initializa
     // Si la cantidad actualizada queda en 0, entonces el repuesto se pone como inactivo (SOFT DELETE)
     @FXML
     private void btnBorrarRepuestoOrdenClicked() {
-        if(txtNombreRepuesto.getText().isEmpty() || txtMarcaRepuesto.getText().isEmpty() ||  txtCantidadRepuesto.getText().isEmpty())
+        if(txtIdOrden.getText().isEmpty() || txtIdRepuesto.getText().isEmpty() ||  txtCantidadRepuesto.getText().isEmpty())
         {
             validacionRegistroLabel.setStyle(mensajeError);
-            new Shake(txtNombreRepuesto).play();
-            new Shake(txtMarcaRepuesto).play();
+            new Shake(txtIdOrden).play();
+            new Shake(txtIdRepuesto).play();
             new Shake(txtCantidadRepuesto).play();
-            validacionRegistroLabel.setText("El nombre, la marca o la cantidad del repuesto están vacias!");
+            validacionRegistroLabel.setText("Los Ids o la cantidad del repuesto están vacias!");
         }
         else {
-            this.borrarRepuesto();
+            this.borrarRepuestoOrden();
         }
     }
 
-    private boolean borrarRepuesto() {
+    private boolean borrarRepuestoOrden() {
+        int id_repuesto = Integer.parseInt(txtIdRepuesto.getText());
+        int id_orden = Integer.parseInt(txtIdOrden.getText());
         boolean validado = true;
         validacionRegistroLabel.setText("");
         // Validacion existencia
-        if (SQL_Repuesto.existeRepuesto_NombreMarca(txtNombreRepuesto.getText(), txtMarcaRepuesto.getText())) {
+        if (SQL_RepuestoOrden.existeRepuestoOrden_Id(id_repuesto, id_orden)) {
             // Validación cantidad
             int cantidadActual = 0;
-            ResultSet resultado =  SQL_Repuesto.obtenerRepuesto_NombreMarca(txtNombreRepuesto.getText(), txtMarcaRepuesto.getText());
+            ResultSet resultado =  SQL_RepuestoOrden.obtenerRepuestoOrden_Ids(id_repuesto, id_orden);
             try {
                 resultado.next();
                 cantidadActual = resultado.getInt("cantidad");
@@ -405,6 +406,7 @@ public class GestionUsuJefeTallerRepuestoOrdenesController implements Initializa
             }
             System.out.println("Cantidad para cambiar: " + txtCantidadRepuesto.getText());
             System.out.println("Cantidad actual: " + cantidadActual);
+
             if (Integer.parseInt(txtCantidadRepuesto.getText()) > cantidadActual) {
                 validado = false;
                 String textoError = "La cantidad que quiere borrar NO puede ser mayor a la cantidad actual!";
@@ -415,13 +417,13 @@ public class GestionUsuJefeTallerRepuestoOrdenesController implements Initializa
                 new FadeIn(txtCantidadRepuesto).play();
             } else {
                 System.out.println("La cantidad es correcta");
-                Repuesto repuestoActualizado = new Repuesto();
+                RepuestoOrden repuestoOrdenActualizado = new RepuestoOrden();
                 int cantidadDespuesDeBorrar = cantidadActual - Integer.parseInt(txtCantidadRepuesto.getText());
                 try {
-                    repuestoActualizado.setNombre(resultado.getString("nombre"));
-                    repuestoActualizado.setMarca(resultado.getString("marca"));
-                    repuestoActualizado.setCantidad(cantidadDespuesDeBorrar);
-                    SQL_Repuesto.editarRepuesto(txtNombreRepuesto.getText(), txtMarcaRepuesto.getText(), repuestoActualizado);
+                    repuestoOrdenActualizado.setId_repuesto(resultado.getInt("id_repuesto"));
+                    repuestoOrdenActualizado.setId_orden(resultado.getInt("id_orden"));
+                    repuestoOrdenActualizado.setCantidad(cantidadDespuesDeBorrar);
+                    SQL_RepuestoOrden.editarRepuestoOrden(id_repuesto, id_orden, repuestoOrdenActualizado);
                     this.validadoLabelSet();
                     this.limpiar();
                 } catch (SQLException e) {
@@ -431,13 +433,13 @@ public class GestionUsuJefeTallerRepuestoOrdenesController implements Initializa
         }
         else {
             validado = false;
-            String textoError = "No existe un repuesto con ese nombre y marca!";
+            String textoError = "No existe un repuesto con esos Ids!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
-            txtNombreRepuesto.setStyle(estiloMensajeError);
-            new FadeIn(txtNombreRepuesto).play();
-            txtMarcaRepuesto.setStyle(estiloMensajeError);
-            new FadeIn(txtMarcaRepuesto).play();
+            txtIdRepuesto.setStyle(estiloMensajeError);
+            new FadeIn(txtIdRepuesto).play();
+            txtIdOrden.setStyle(estiloMensajeError);
+            new FadeIn(txtIdOrden).play();
         }
         this.refreshTable();
         return validado;
