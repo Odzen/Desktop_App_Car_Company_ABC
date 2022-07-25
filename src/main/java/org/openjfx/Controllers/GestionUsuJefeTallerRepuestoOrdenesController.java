@@ -237,7 +237,7 @@ public class GestionUsuJefeTallerRepuestoOrdenesController implements Initializa
 
     private void readRepuestos() {
         try {
-            ResultSet result = SQL_Repuesto.obtenerTodosRepuestosSet();
+            ResultSet result = SQL_RepuestoOrden.obtenerTodosRepuestosOrdenesSet();
             while (result.next()) {
                 RepuestoOrden readRepuestoOrden = new RepuestoOrden();
 

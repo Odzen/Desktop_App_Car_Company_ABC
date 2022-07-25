@@ -6,10 +6,10 @@ import java.util.regex.Pattern;
 public class ValidacionesRepuestosOrdenes {
 
     public static final Pattern VALID_CANTIDAD =
-            Pattern.compile("^[1-50]{1,3}$", Pattern.CASE_INSENSITIVE);
+            Pattern.compile("^([1-9][0-9]{0,2})$", Pattern.CASE_INSENSITIVE);
 
     public static final Pattern VALID_IDS =
-            Pattern.compile("^[1-1000]{1,4}$", Pattern.CASE_INSENSITIVE);
+            Pattern.compile("^([1-9][0-9]{0,2})$", Pattern.CASE_INSENSITIVE);
 
 
     // Verifica Ids
