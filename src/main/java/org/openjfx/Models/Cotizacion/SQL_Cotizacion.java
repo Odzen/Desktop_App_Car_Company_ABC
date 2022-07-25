@@ -34,6 +34,26 @@ public class SQL_Cotizacion {
     }
 
 
+    public static boolean existeCotizacion_cedula_cliente(int cedula_cliente) {
+        try {
+            PreparedStatement sentencia = connection.prepareStatement(
+                    "SELECT * FROM cotizacion WHERE cedula_cliente= ?"
+            );
+
+            sentencia.setInt(1, cedula_cliente);
+            ResultSet resultadoCotizacion = sentencia.executeQuery();
+            if (resultadoCotizacion.next()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     // Verifica si una cotizacion existe o no en la base de datos, basado en cedula_cliente
     public static boolean existeCotizacion_cedula_Placa_orden(String cedula_cliente, String placa_automovil, Integer id_orden_trabajo)  {
         try {

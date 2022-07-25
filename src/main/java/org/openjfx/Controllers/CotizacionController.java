@@ -117,21 +117,33 @@ public class CotizacionController implements Initializable {
             validacionRegistroLabel.setStyle(mensajeError);
             if(txtDocumentoCliente.getText().isEmpty() &&
                     txtDocumentoVendedor.getText().isEmpty() && txtDescripcionCotizacion.getText().isEmpty() &&
-                    dtpCotizacion.getValue()==null )
+                    txtPlacaCotizacion.getText().isEmpty() && dtpCotizacion.getValue()==null )
             {
-                validacionRegistroLabel.setText("Se requieren el número de cédula del vendedor y del cliente, orden de trabajo o placa!");
+                validacionRegistroLabel.setText("Algunos campos están vacíos!");
                 txtDocumentoCliente.setStyle(estiloMensajeError);
                 txtDocumentoVendedor.setStyle(estiloMensajeError);
-                txtid_orden_trabajo.setStyle(estiloMensajeError);
-                txtPlacaCotizacion.setStyle(estiloMensajeError);
                 txtDescripcionCotizacion.setStyle(estiloMensajeError);
                 dtpCotizacion.setStyle(estiloMensajeError);
-                new Shake(txtid_orden_trabajo).play();
                 new Shake(txtDocumentoCliente).play();
                 new Shake(txtDocumentoVendedor).play();
-                new Shake(txtPlacaCotizacion).play();
                 new Shake(txtDescripcionCotizacion).play();
+                new Shake(txtPlacaCotizacion).play();
                 new Shake(dtpCotizacion).play();
+            } else if (txtDocumentoCliente.getText().isEmpty() &&
+                    txtDocumentoVendedor.getText().isEmpty() && txtDescripcionCotizacion.getText().isEmpty() &&
+                    txtid_orden_trabajo.getText().isEmpty() && dtpCotizacion.getValue()==null ) {
+
+                validacionRegistroLabel.setText("Algunos campos están vacíos!");
+                txtDocumentoCliente.setStyle(estiloMensajeError);
+                txtDocumentoVendedor.setStyle(estiloMensajeError);
+                txtDescripcionCotizacion.setStyle(estiloMensajeError);
+                dtpCotizacion.setStyle(estiloMensajeError);
+                new Shake(txtDocumentoCliente).play();
+                new Shake(txtDocumentoVendedor).play();
+                new Shake(txtDescripcionCotizacion).play();
+                new Shake(txtid_orden_trabajo).play();
+                new Shake(dtpCotizacion).play();
+
             } else {
                 validacionRegistroLabel.setText("Algunos campos están vacíos!");
                 boolean validado = this.validacionesCotizacion(crear);
@@ -141,6 +153,7 @@ public class CotizacionController implements Initializable {
 
                 }
             }
+
         } else {
             boolean validado = this.validacionesCotizacion(crear);
             if (validado) {
@@ -169,20 +182,15 @@ public class CotizacionController implements Initializable {
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumentoCliente.setStyle(estiloMensajeError);
             new FadeIn(txtDocumentoCliente).play();
-        } else if (SQL_Cotizacion.existeCotizacion_cedula_Placa_orden(txtDocumentoCliente.getText(), txtPlacaCotizacion.getText(), Integer.valueOf(txtid_orden_trabajo.getText()))) {
+        } else if (SQL_Cotizacion.existeCotizacion_cedula_Placa_orden(txtDocumentoCliente.getText(), String.valueOf(txtPlacaCotizacion),Integer.parseInt(String.valueOf(txtid_orden_trabajo)))) {
             // Validacion para saber si el cliente con esa cédula ya existe
-            System.out.println(SQL_Cliente.existeCliente_Cedula(txtDocumentoCliente.getText()));
+            System.out.println(SQL_Cotizacion.existeCotizacion_cedula_Placa_orden(txtDocumentoVendedor.getText(), txtPlacaCotizacion.getText(), Integer.valueOf(txtid_orden_trabajo.getText())));
             validado = false;
             String textoError = "Un usuario con ese número de cédula ya existe!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumentoCliente.setStyle(estiloMensajeError);
             new FadeIn(txtDocumentoCliente).play();
-            txtPlacaCotizacion.setStyle(estiloMensajeError);
-            new FadeIn(txtPlacaCotizacion).play();
-            txtid_orden_trabajo.setStyle(estiloMensajeError);
-            new FadeIn(txtid_orden_trabajo).play();
-
 
         }
         // Validación Cédula vendedor
@@ -196,7 +204,7 @@ public class CotizacionController implements Initializable {
             new FadeIn(txtDocumentoVendedor).play();
         } else if (SQL_Cotizacion.existeCotizacion_cedula_Placa_orden(txtDocumentoVendedor.getText(), txtPlacaCotizacion.getText(), Integer.valueOf(txtid_orden_trabajo.getText())) && crear) {
             // Validacion para saber si el cliente con esa cédula ya existe
-            System.out.println(SQL_Cliente.existeCliente_Cedula(txtDocumentoVendedor.getText()));
+            System.out.println(SQL_Cotizacion.existeCotizacion_cedula_Placa_orden(txtDocumentoVendedor.getText(), txtPlacaCotizacion.getText(), Integer.valueOf(txtid_orden_trabajo.getText())));
             validado = false;
             String textoError = "Un usuario con ese número de cédula ya existe!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
@@ -247,6 +255,8 @@ public class CotizacionController implements Initializable {
             cotizacionModelo.setCedula_vendedor(txtDocumentoCliente.getText());
             cotizacionModelo.setCedula_vendedor(txtDocumentoVendedor.getText());
             cotizacionModelo.setDescripcion(txtDescripcionCotizacion.getText());
+            cotizacionModelo.setPlaca_automovil(txtPlacaCotizacion.getText());
+            cotizacionModelo.setid_orden_trabajo(Integer.parseInt(txtid_orden_trabajo.getText()));
 
             DateTimeFormatter fechaHoraFormato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             String stringDataFormateada = dtpCotizacion.getValue().format(fechaHoraFormato);
@@ -263,7 +273,8 @@ public class CotizacionController implements Initializable {
             if (crear)
                 SQL_Cotizacion.crearCotizacion(cotizacionModelo);
             else
-                SQL_Cotizacion.editarCotizacion(cotizacionModelo.getCedula_cliente(), cotizacionModelo.getPlaca_automovil(),cotizacionModelo.getid_orden_trabajo(), cotizacionModelo);
+                SQL_Cotizacion.editarCotizacion(cotizacionModelo.getCedula_cliente(), cotizacionModelo.getPlaca_automovil(),
+                        cotizacionModelo.getid_orden_trabajo(), cotizacionModelo);
 
             this.validadoLabelSet();
             this.limpiar();
@@ -315,6 +326,7 @@ public class CotizacionController implements Initializable {
                 readCotizacion.setTOTAL_SIN_IVA(result.getInt("TOTAL_SIN_IVA"));
                 readCotizacion.setFecha_modificado(result.getDate("fecha_modificado"));
                 readCotizacion.setFecha_creacion(result.getDate("fecha_creacion"));
+                readCotizacion.setIVA(result.getInt("IVA"));
                 readCotizacion.setTOTAL_IVA(result.getInt("TOTAL_IVA"));
                 readCotizacion.setPlaca_automovil(result.getString("placa_automovil"));
                 readCotizacion.setid_orden_trabajo(result.getInt("id_orden_trabajo"));
@@ -372,13 +384,13 @@ public class CotizacionController implements Initializable {
         txtPlacaCotizacion.setStyle(null);
         txtid_orden_trabajo.setStyle(null);
         dtpCotizacion.setStyle(null);
-        if(txtDocumentoCliente.getText().isEmpty() && txtPlacaCotizacion.getText().isEmpty())
+        if(txtDocumentoCliente.getText().isEmpty() || txtPlacaCotizacion.getText().isEmpty())
         {
             validacionRegistroLabel.setStyle(mensajeError);
             new Shake(txtDocumentoCliente).play();
             new Shake(txtPlacaCotizacion).play();
             validacionRegistroLabel.setText("La cédula del cliente y la placa están vacias!");
-        } else if (txtDocumentoCliente.getText().isEmpty() && txtid_orden_trabajo.getText().isEmpty()) {
+        } else if (txtDocumentoCliente.getText().isEmpty() || txtid_orden_trabajo.getText().isEmpty()) {
             validacionRegistroLabel.setStyle(mensajeError);
             new Shake(txtDocumentoCliente).play();
             new Shake(txtid_orden_trabajo).play();
@@ -430,7 +442,7 @@ public class CotizacionController implements Initializable {
                 readCotizacion.setCedula_vendedor(result.getString("cedula_vendedor"));
                 readCotizacion.setDescripcion(result.getString("descripcion"));
                 readCotizacion.setTOTAL_SIN_IVA(result.getInt("TOTAL_SIN_IVA"));
-                readCotizacion.calcularCotizacion(result.getDouble("TOTAL_IVA"));
+                readCotizacion.setTOTAL_IVA(result.getInt("TOTAL_IVA"));
                 readCotizacion.setIVA(result.getInt("IVA"));
                 readCotizacion.setPlaca_automovil(result.getString("placa_automovil"));
                 readCotizacion.setFecha_creacion(result.getDate("fecha_creacion"));
