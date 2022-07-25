@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="945.0" style="-fx-background-color: #c7e9ff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.Controllers.GestionUsuJefeTallerRepuestoOrdenesController">
+    <children>
+        <TextField fx:id="txtIdRepuesto" layoutX="57.0" layoutY="93.0" prefHeight="40.0" prefWidth="188.0" promptText="Id repuesto" style="-fx-background-radius: 8;">
+            <effect>
+                <Blend />
+            </effect>
+            <cursor>
+                <Cursor fx:constant="MOVE" />
+            </cursor>
+            <font>
+                <Font size="18.0" />
+            </font></TextField>
+        <TextField fx:id="txtIdOrden" layoutX="57.0" layoutY="158.0" prefHeight="40.0" prefWidth="188.0" promptText="Id orden" style="-fx-background-radius: 8;">
+            <effect>
+                <Blend />
+            </effect>
+            <font>
+                <Font size="18.0" />
+            </font></TextField>
+        <ImageView fitHeight="94.0" fitWidth="126.0" layoutX="810.0">
+            <image>
+                <Image url="@recursos/logo.png" />
+            </image>
+        </ImageView>
+        <Separator layoutX="105.0" layoutY="8.0" orientation="VERTICAL" prefHeight="25.0" prefWidth="0.0" />
+        <Hyperlink layoutX="19.0" layoutY="5.0" onAction="#btnInicio" prefHeight="32.0" prefWidth="61.0" text="Inicio" underline="true">
+            <font>
+                <Font size="18.0" />
+            </font></Hyperlink>
+        <Label layoutX="133.0" layoutY="4.0" prefHeight="32.0" prefWidth="281.0" text="Registro de repuestos por ordenes">
+            <font>
+                <Font size="18.0" />
+            </font></Label>
+        <Button fx:id="btnCancelar" layoutX="51.0" layoutY="537.0" mnemonicParsing="false" onAction="#btnCancelarClick" prefHeight="26.0" prefWidth="119.0" style="-fx-background-color: #b8b9ba#b8b9ba #b8b9ba#b8b9ba; -fx-background-radius: 8;" text="Cancelar" textAlignment="CENTER" underline="true">
+            <effect>
+                <InnerShadow />
+            </effect>
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Button>
+        <TextField fx:id="txtCantidadRepuesto" layoutX="392.0" layoutY="93.0" prefHeight="40.0" prefWidth="172.0" promptText="Cantidad" style="-fx-background-radius: 8;">
+            <effect>
+                <Blend />
+            </effect>
+            <cursor>
+                <Cursor fx:constant="MOVE" />
+            </cursor>
+            <font>
+                <Font size="18.0" />
+            </font>
+        </TextField>
+        <Label fx:id="validacionRegistroLabel" layoutX="578.0" layoutY="80.0" prefHeight="128.0" prefWidth="356.0" textAlignment="LEFT">
+            <font>
+                <Font size="10.0" />
+            </font>
+        </Label>
+        <Label fx:id="lbinvalidoRegistro" layoutX="588.0" layoutY="66.0" prefHeight="155.0" prefWidth="350.0" textAlignment="CENTER">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <Label fx:id="lblMensajeContra" layoutX="580.0" layoutY="71.0" prefHeight="146.0" prefWidth="350.0" />
+        <TableView fx:id="tableGestionRepuestosOrdenes" layoutX="133.0" layoutY="286.0" prefHeight="238.0" prefWidth="640.0">
+            <columns>
+                <TableColumn fx:id="col_idRepuesto" prefWidth="86.39999008178711" text="Id repuesto" />
+                <TableColumn fx:id="col_idOrden" prefWidth="97.5999755859375" text="Id Orden" />
+                <TableColumn fx:id="col_cantidadRepuestoOrden" prefWidth="128.0" text="Cantidad" />
+                <TableColumn fx:id="col_cedulaCreadoPor" prefWidth="128.0" text="Creado por" />
+                <TableColumn fx:id="col_fecha_creacion_repuesto_orden" prefWidth="111.2000732421875" text="Fecha creación" />
+                <TableColumn fx:id="col_fecha_modificacion_repuesto_orden" prefWidth="134.4000244140625" text="Última Modificación" />
+                <TableColumn fx:id="col_activo_repuesto_orden" prefWidth="82.0" text="Activo" />
+            </columns>
+        </TableView>
+        <Button fx:id="bttnNuevoRepuestoOrden" layoutX="57.0" layoutY="221.0" mnemonicParsing="false" onAction="#bttnNuevoRepuestoOrden" prefHeight="34.0" prefWidth="88.0" style="-fx-background-color: #c8fcb3#c8fcb3; -fx-background-radius: 50;" text="Registrar" textAlignment="CENTER">
+            <font>
+                <Font size="14.0" />
+            </font>
+            <effect>
+                <DropShadow />
+            </effect>
+        </Button>
+        <Button fx:id="btnActualizarRepuestoOrden" layoutX="177.0" layoutY="223.0" mnemonicParsing="false" onAction="#btnActualizarRepuestoOrdenClicked" prefHeight="34.0" prefWidth="99.0" style="-fx-background-radius: 12; -fx-background-color: blue; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Actualizar" textFill="WHITE">
+            <effect>
+                <InnerShadow color="#f5f2f2c7" />
+            </effect>
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <Button fx:id="btnBorrarRepuestosOrdenes" layoutX="297.0" layoutY="221.0" mnemonicParsing="false" onAction="#btnBorrarRepuestoOrdenClicked" prefHeight="34.0" prefWidth="132.0" style="-fx-background-radius: 12; -fx-background-color: red; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Borrar" textFill="#ffffffed">
+            <effect>
+                <InnerShadow color="#f5f2f2c7" />
+            </effect>
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <Button fx:id="limpiar" layoutX="469.0" layoutY="224.0" mnemonicParsing="false" onAction="#btnLimpiar" style="-fx-background-radius: 12; -fx-background-color: gold; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Limpiar">
+            <effect>
+                <InnerShadow color="#f5f2f2c7" />
+            </effect>
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <Button fx:id="imprimirReporteRepuestosOrdenes" layoutX="564.0" layoutY="224.0" mnemonicParsing="false" onAction="#btnImprimirCsv" style="-fx-background-radius: 12; -fx-background-color: #899bab; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Imprimir Reporte">
+            <effect>
+                <InnerShadow color="#f5f2f2c7" />
+            </effect>
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <Button fx:id="buscarIdRepuestoOrden" layoutX="257.0" layoutY="128.0" mnemonicParsing="false" onAction="#btnbuscarIdRepuestoOrden" style="-fx-background-radius: 12; -fx-background-color: gold; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Buscar">
+            <effect>
+                <InnerShadow color="#f5f2f2c7" />
+            </effect>
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+    </children>
+</AnchorPane>
