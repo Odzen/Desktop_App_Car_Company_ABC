@@ -141,6 +141,24 @@ public class GestionUsuJefeTallerRepuestoOrdenesController implements Initializa
             txtIdRepuesto.setStyle(estiloMensajeError);
             new FadeIn(txtIdRepuesto).play();
         }
+        int cantidadActualRepuesto = 0;
+        try{
+            ResultSet resultRepuesto = SQL_Repuesto.obtenerRepuesto_Id(Integer.parseInt(txtIdRepuesto.getText()));
+            resultRepuesto.next();
+            cantidadActualRepuesto = resultRepuesto.getInt("cantidad");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        if(Integer.parseInt(txtCantidadRepuesto.getText()) > cantidadActualRepuesto)
+        {
+            validado = false;
+            String textoError = "La cantidad es mayor que la cantidad existente!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtCantidadRepuesto.setStyle(estiloMensajeError);
+            new FadeIn(txtCantidadRepuesto).play();
+        }
         // Valida el id de la orden
         if (!ValidacionesRepuestosOrdenes.validarIds(txtIdOrden.getText()))
         {
@@ -193,6 +211,7 @@ public class GestionUsuJefeTallerRepuestoOrdenesController implements Initializa
             repuestoOrden.setCantidad(Integer.parseInt(txtCantidadRepuesto.getText()));
             repuestoOrden.setCedula_creado_por(LoginController.obtenerUsuarioLogeado().getCedula());
 
+
             // SI la orden es para crear, o para actualizar, llamo al metodo respectivo
             if (crear)
                 SQL_RepuestoOrden.crearRepuestoOrden(repuestoOrden);
@@ -223,8 +242,8 @@ public class GestionUsuJefeTallerRepuestoOrdenesController implements Initializa
     private void loadData() {
         refreshTable();
 
-        col_idOrden.setCellValueFactory(new PropertyValueFactory<>("id_repuesto"));
-        col_idRepuesto.setCellValueFactory(new PropertyValueFactory<>("id_orden"));
+        col_idOrden.setCellValueFactory(new PropertyValueFactory<>("id_orden"));
+        col_idRepuesto.setCellValueFactory(new PropertyValueFactory<>("id_repuesto"));
         col_cantidadRepuestoOrden.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         col_cedulaCreadoPor.setCellValueFactory(new PropertyValueFactory<>("cedula_creado_por"));
         col_fecha_modificacion_repuesto_orden.setCellValueFactory(new PropertyValueFactory<>("fecha_modificado"));

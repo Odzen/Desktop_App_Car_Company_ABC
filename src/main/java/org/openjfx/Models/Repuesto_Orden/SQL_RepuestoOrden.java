@@ -1,11 +1,14 @@
 package org.openjfx.Models.Repuesto_Orden;
 
 import org.openjfx.Models.Conexion;
+import org.openjfx.Models.Repuesto.Repuesto;
+import org.openjfx.Models.Repuesto.SQL_Repuesto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 
 public class SQL_RepuestoOrden {
@@ -79,9 +82,42 @@ public class SQL_RepuestoOrden {
             sentencia.setInt(2, repuestoOrden.getId_repuesto());
             sentencia.setInt(3, repuestoOrden.getCantidad());
             sentencia.setString(4, repuestoOrden.getCedula_creado_por());
-            sentencia.setDate(5,  new java.sql.Date(repuestoOrden.getFecha_creacion().getTime()));
-            sentencia.setDate(6,  new java.sql.Date(repuestoOrden.getFecha_modificado().getTime()));
+            sentencia.setDate(5, new java.sql.Date(repuestoOrden.getFecha_creacion().getTime()));
+            sentencia.setDate(6, new java.sql.Date(repuestoOrden.getFecha_modificado().getTime()));
             sentencia.setBoolean(7, repuestoOrden.isActivo());
+
+            // Restarle esta cantidad de repuestos a la entidad de repuesto
+            int id_repuesto = repuestoOrden.getId_repuesto();
+
+            ResultSet resultSet = SQL_Repuesto.obtenerRepuesto_Id(id_repuesto);
+            resultSet.next();
+            int cantidadRepuesto = resultSet.getInt("cantidad");
+            String nombreRepuesto = resultSet.getString("nombre");
+            String marcaRepuesto = resultSet.getString("marca");
+            String cedula_creado_por = resultSet.getString("cedula_creado_por");
+            Date fecha_creacion = resultSet.getDate("fecha_creacion");
+            Date fecha_modificado = resultSet.getDate("fecha_modificado");
+            boolean activo = resultSet.getBoolean("activo");
+            String sedeRepuesto = resultSet.getString("sede");
+
+            int nuevaCantidadRepuesto = cantidadRepuesto - repuestoOrden.getCantidad();
+
+            Repuesto repuestoActualizado = new Repuesto();
+
+            repuestoActualizado.setId_repuesto(id_repuesto);
+            repuestoActualizado.setNombre(nombreRepuesto);
+            repuestoActualizado.setMarca(marcaRepuesto);
+            repuestoActualizado.setCedula_creado_por(cedula_creado_por);
+            repuestoActualizado.setFecha_creacion(fecha_creacion);
+            repuestoActualizado.setFecha_modificado(fecha_modificado);
+            repuestoActualizado.setActivo(activo);
+            repuestoActualizado.setSede(sedeRepuesto);
+            repuestoActualizado.setCantidad(nuevaCantidadRepuesto);
+
+
+            SQL_Repuesto.editarRepuesto(nombreRepuesto, marcaRepuesto, repuestoActualizado);
+
+            // Ejecutar sentencia para crear Repuesto Orden
 
             sentencia.execute();
 
@@ -117,6 +153,38 @@ public class SQL_RepuestoOrden {
                 } else {
                     cambiarEstadoRepuestoPorIds(id_repuesto, id_orden, true);
                 }
+
+                // Actualizar repuesto
+
+                ResultSet resultSet = SQL_Repuesto.obtenerRepuesto_Id(id_repuesto);
+                resultSet.next();
+                int cantidadRepuesto = resultSet.getInt("cantidad");
+                String nombreRepuesto = resultSet.getString("nombre");
+                String marcaRepuesto = resultSet.getString("marca");
+                String cedula_creado_por = resultSet.getString("cedula_creado_por");
+                Date fecha_creacion = resultSet.getDate("fecha_creacion");
+                Date fecha_modificado = resultSet.getDate("fecha_modificado");
+                boolean activo = resultSet.getBoolean("activo");
+                String sedeRepuesto = resultSet.getString("sede");
+
+                int nuevaCantidadRepuesto = cantidadRepuesto - repuestoOrdenActualizado.getCantidad();
+
+                Repuesto repuestoActualizado = new Repuesto();
+
+                repuestoActualizado.setId_repuesto(id_repuesto);
+                repuestoActualizado.setNombre(nombreRepuesto);
+                repuestoActualizado.setMarca(marcaRepuesto);
+                repuestoActualizado.setCedula_creado_por(cedula_creado_por);
+                repuestoActualizado.setFecha_creacion(fecha_creacion);
+                repuestoActualizado.setFecha_modificado(fecha_modificado);
+                repuestoActualizado.setActivo(activo);
+                repuestoActualizado.setSede(sedeRepuesto);
+                repuestoActualizado.setCantidad(nuevaCantidadRepuesto);
+
+
+                SQL_Repuesto.editarRepuesto(nombreRepuesto, marcaRepuesto, repuestoActualizado);
+
+                // Actualizar repuesto-orden
 
                 int filasAfectadas = sentencia.executeUpdate();
                 System.out.println(filasAfectadas);
