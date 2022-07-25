@@ -167,7 +167,12 @@ public class SQL_RepuestoOrden {
                 boolean activo = resultSet.getBoolean("activo");
                 String sedeRepuesto = resultSet.getString("sede");
 
-                int nuevaCantidadRepuesto = cantidadRepuesto - repuestoOrdenActualizado.getCantidad();
+                int nuevaCantidadRepuesto = 0;
+                if (cantidadRepuesto > repuestoOrdenActualizado.getCantidad()){
+                    nuevaCantidadRepuesto = cantidadRepuesto - repuestoOrdenActualizado.getCantidad();
+                } else {
+                    nuevaCantidadRepuesto = repuestoOrdenActualizado.getCantidad() + cantidadRepuesto;
+                }
 
                 Repuesto repuestoActualizado = new Repuesto();
 
