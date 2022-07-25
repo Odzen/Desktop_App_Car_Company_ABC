@@ -29,7 +29,7 @@
          </font></Hyperlink>
       <Separator layoutX="73.0" layoutY="14.0" orientation="VERTICAL" prefHeight="43.0" prefWidth="0.0" />
       <TextField fx:id="txtDocumentoCliente" layoutX="147.0" layoutY="165.0" prefHeight="25.0" prefWidth="158.0" promptText="Cédula cliente" style="-fx-background-radius: 12;" />
-      <Button fx:id="buscarCedula" layoutX="313.0" layoutY="163.0" mnemonicParsing="false" onAction="#btnBuscarCedula" style="-fx-background-radius: 12; -fx-background-color: gold; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Buscar">
+      <Button fx:id="buscarCedula" layoutX="664.0" layoutY="164.0" mnemonicParsing="false" onAction="#btnBuscarCedula" style="-fx-background-radius: 12; -fx-background-color: gold; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Buscar">
          <effect>
             <InnerShadow color="#f5f2f2c7" />
          </effect>
@@ -42,7 +42,7 @@
             <Image url="@recursos/logo.png" />
          </image>
       </ImageView>
-      <TableView fx:id="tableCotizacion" layoutX="39.0" layoutY="366.0" prefHeight="156.0" prefWidth="855.0">
+      <TableView fx:id="tablaCotizacion" layoutX="39.0" layoutY="366.0" prefHeight="156.0" prefWidth="855.0">
          <columns>
             <TableColumn fx:id="col_id_cotizacion" prefWidth="38.0" text="id " />
             <TableColumn fx:id="col_Id_Cliente_Cotizacion" prefWidth="97.0" text="Id Cliente" />
@@ -105,7 +105,7 @@
       </Button>
       <TextField fx:id="txtPlacaCotizacion" layoutX="489.0" layoutY="166.0" prefHeight="25.0" prefWidth="158.0" promptText="Placa de automóvil" style="-fx-background-radius: 12;" />
       <TextField fx:id="txtDocumentoVendedor" layoutX="147.0" layoutY="199.0" prefHeight="25.0" prefWidth="158.0" promptText="Cédula vendedor" style="-fx-background-radius: 12;" />
-      <TextField fx:id="txtOrdenCotizacion" layoutX="489.0" layoutY="199.0" prefHeight="25.0" prefWidth="158.0" promptText="Orden de trabajo" style="-fx-background-radius: 12;" />
+      <TextField fx:id="txtid_orden_trabajo" layoutX="489.0" layoutY="199.0" prefHeight="25.0" prefWidth="158.0" promptText="Orden de trabajo" style="-fx-background-radius: 12;" />
       <Label fx:id="lblMensajeContra" layoutX="680.0" layoutY="142.0" prefHeight="128.0" prefWidth="233.0" textAlignment="CENTER" textFill="RED" />
       <Label fx:id="validacionRegistroLabel" layoutX="632.0" layoutY="142.0" prefHeight="128.0" prefWidth="265.0" textAlignment="LEFT">
          <font>

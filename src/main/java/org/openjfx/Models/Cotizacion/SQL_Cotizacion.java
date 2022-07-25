@@ -1,15 +1,10 @@
 package org.openjfx.Models.Cliente;
 
 import org.openjfx.Models.Conexion;
-import org.openjfx.Models.Cliente.Utils.*;
 import org.openjfx.Models.Cotizacion.Cotizacion;
-import org.openjfx.Models.Usuario.Usuario;
-import org.openjfx.Models.Usuario.Utils.Rol;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class SQL_Cotizacion {
@@ -19,10 +14,31 @@ public class SQL_Cotizacion {
 
 
     // Verifica si una cotizacion existe o no en la base de datos, basado en cedula_cliente
-    public static boolean existeCotizacion_cedula(String cedula_cliente)  {
+    public static boolean existeCotizacion_id(int id_cotizacion)  {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
-                    "SELECT * FROM cotizacion WHERE cedula_cliente= ?"
+                    "SELECT * FROM cotizacion WHERE id_cotizacion= ?"
+            );
+
+            sentencia.setInt(1, id_cotizacion);
+            ResultSet resultadoCotizacion = sentencia.executeQuery();
+            if (resultadoCotizacion.next()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    // Verifica si una cotizacion existe o no en la base de datos, basado en cedula_cliente
+    public static boolean existeCotizacion_cedula_Placa_orden(String cedula_cliente, String placa_automovil, Integer id_orden_trabajo)  {
+        try {
+            PreparedStatement sentencia = connection.prepareStatement(
+                    "SELECT * FROM cotizacion WHERE cedula_cliente= ? AND (placa_automovil=? OR id_orden_trabajo=?)"
             );
 
             sentencia.setString(1, cedula_cliente);
@@ -37,11 +53,10 @@ public class SQL_Cotizacion {
             throw new RuntimeException(e);
         }
     }
-
     public static ResultSet obtenerTodasCotizacionesSet() {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
-                    "SELECT * FROM cotizacion ORDER BY cedula_cliente "
+                    "SELECT * FROM cotizacion ORDER BY id_cotizacion "
             );
 
             ResultSet resultadoCotizacion = sentencia.executeQuery();
@@ -53,10 +68,10 @@ public class SQL_Cotizacion {
     }
 
     // Verifica si una cotizacion se puede modificar
-    public static boolean puedoModificarCotizacion(String cedula_cliente)  {
+    public static boolean puedoModificarCotizacion(String cedula_cliente, String placa_automovil, Integer id_orden_trabajo)  {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
-                    "SELECT * FROM cotizacion WHERE cedula_cliente= ?"
+                    "SELECT * FROM cotizacion WHERE cedula_cliente= ? AND (placa_automovil=? OR id_orden_trabajo=?)"
             );
 
             sentencia.setString(1, cedula_cliente);
@@ -73,14 +88,16 @@ public class SQL_Cotizacion {
     }
 
 
-    // Obtiene un usuario buscandolo por su cédula
-    public static ResultSet obtenerCotizacion_Cedula(String cedula_cliente)  {
+    // Obtiene una cotizacion buscandola por su cédula
+    public static ResultSet obtenerCotizacion_Cedula_Placa_Orden(String cedula_cliente, String placa_automovil, String id_orden_trabajo)  {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
-                    "SELECT * FROM cotizacion WHERE cedula_cliente= ?"
+                    "SELECT * FROM cotizacion WHERE cedula_cliente= ? AND (placa_automovil=? OR id_orden_trabajo=? )"
             );
 
             sentencia.setString(1, cedula_cliente);
+            sentencia.setString(2, placa_automovil);
+            sentencia.setInt(2, Integer.parseInt(id_orden_trabajo));
             ResultSet resultadoCotizacion = sentencia.executeQuery();
             return resultadoCotizacion;
 
@@ -90,30 +107,13 @@ public class SQL_Cotizacion {
     }
 
 
-    // Verifica si un usuario existe o no en la base de datos, basado en su nombre
-    public static boolean existeCotizacion_Nombre(String cedula_cliente)  {
-        try {
-            PreparedStatement sentencia = connection.prepareStatement(
-                    "SELECT * FROM cotizacion WHERE cedula_cliente="+ cedula_cliente
-            );
-            ResultSet resultadoCotizacion = sentencia.executeQuery();
-            if (resultadoCotizacion.next()) {
-                return true;
-            } else {
-                return false;
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     // Obtiene todos los registros de cotizacion que están en la base de datos
 
     public static ArrayList<Cotizacion> leerTodosLosCotizacion() {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
-                    "SELECT * FROM cotizacion ORDER BY cedula_cliente"
+                    "SELECT * FROM cotizacion ORDER BY id_cotizacion"
             );
             ResultSet resultadoCotizacion = sentencia.executeQuery();
 
@@ -190,25 +190,17 @@ public class SQL_Cotizacion {
 
 
     // Edita una cotizacion en la base de datos
-    public static void editarCotizacion(String cedula_cliente, Cotizacion cotizacionActualizado) {
+    public static void editarCotizacion(String cedula_cliente, String placa_automovil, Integer id_orden_trabajo , Cotizacion cotizacionActualizado) {
 
-        if ( existeCotizacion_cedula(cedula_cliente)) {
+        if ( existeCotizacion_cedula_Placa_orden(cedula_cliente,placa_automovil, id_orden_trabajo)) {
             java.util.Date modificado = new java.util.Date();
             java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
             try {
                 PreparedStatement sentencia = connection.prepareStatement(
                         "UPDATE cotizacion SET " +
-                                "IVA = ? , " +
-                                "TOTAL_IVA= ?, " +
-                                "TOTAL_SIN_IVA= ?, " +
                                 "descripcion = ? , " +
-                                "fecha_modificado = ? , " +
-                                "fecha_creacion = ? , " +
-                                "cedula_cliente = ? , " +
                                 "cedula_vendedor = ? , " +
-                                "placa_automovil = ?, " +
-                                "id_orden_trabajo= ?, " +
-                                "WHERE cedula_cliente = ?");
+                                "WHERE cedula_cliente = ? AND (placa_automovil=? OR id_orden_trabajo=? )");
 
                 sentencia.setInt(1, cotizacionActualizado.getIVA());
                 sentencia.setInt(2, cotizacionActualizado.getTOTAL_IVA());
@@ -237,4 +229,29 @@ public class SQL_Cotizacion {
             System.out.println("La cotización con ese cliente NO existe, por favor dijiste una cédula correcta!");
         }
     }
+
+
+    public static boolean editarCotizacion(String cedula_cliente, String placa_automovil, String id_orden_trabajo) {
+        try {
+            PreparedStatement sentencia = connection.prepareStatement(
+                    "SELECT * FROM cotizacion WHERE cedula_cliente= ? AND (placa_automovil=? OR id_orden_trabajo=?)"
+            );
+
+            sentencia.setString(1, cedula_cliente);
+            sentencia.setString(2, placa_automovil);
+            sentencia.setString(2, id_orden_trabajo);
+
+            ResultSet resultado = sentencia.executeQuery();
+            if (resultado.next()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }

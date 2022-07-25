@@ -27,6 +27,8 @@ import org.openjfx.Models.Cliente.SQL_Cotizacion;
 import org.openjfx.Models.Cliente.Utils.ValidacionesClientes;
 import org.openjfx.Models.Cliente.Utils.ValidacionesCotizacion;
 import org.openjfx.Models.Cotizacion.Cotizacion;
+import org.openjfx.Models.Repuesto.Repuesto;
+import org.openjfx.Models.Repuesto.SQL_Repuesto;
 
 
 import javax.swing.*;
@@ -78,7 +80,9 @@ public class CotizacionController implements Initializable {
     @FXML
     private TextField txtDocumentoCliente, txtDocumentoVendedor;
     @FXML
-    private TextField txtPlacaCotizacion, txtDescripcionCotizacion;
+    private TextField txtPlacaCotizacion;
+    @FXML
+    private TextField txtDescripcionCotizacion;
     @FXML
     private TextField txtid_orden_trabajo;
     @FXML
@@ -113,10 +117,9 @@ public class CotizacionController implements Initializable {
             validacionRegistroLabel.setStyle(mensajeError);
             if(txtDocumentoCliente.getText().isEmpty() &&
                     txtDocumentoVendedor.getText().isEmpty() && txtDescripcionCotizacion.getText().isEmpty() &&
-                    txtPlacaCotizacion.getText().isEmpty() && txtid_orden_trabajo.getText().isEmpty() &&
                     dtpCotizacion.getValue()==null )
             {
-                validacionRegistroLabel.setText("Se requieren todos los campos!");
+                validacionRegistroLabel.setText("Se requieren el número de cédula del vendedor y del cliente, orden de trabajo o placa!");
                 txtDocumentoCliente.setStyle(estiloMensajeError);
                 txtDocumentoVendedor.setStyle(estiloMensajeError);
                 txtid_orden_trabajo.setStyle(estiloMensajeError);
@@ -166,7 +169,7 @@ public class CotizacionController implements Initializable {
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumentoCliente.setStyle(estiloMensajeError);
             new FadeIn(txtDocumentoCliente).play();
-        } else if (SQL_Cotizacion.existeCotizacion_cedula(txtDocumentoCliente.getText()) && crear) {
+        } else if (SQL_Cotizacion.existeCotizacion_cedula_Placa_orden(txtDocumentoCliente.getText(), txtPlacaCotizacion.getText(), Integer.valueOf(txtid_orden_trabajo.getText()))) {
             // Validacion para saber si el cliente con esa cédula ya existe
             System.out.println(SQL_Cliente.existeCliente_Cedula(txtDocumentoCliente.getText()));
             validado = false;
@@ -175,6 +178,12 @@ public class CotizacionController implements Initializable {
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumentoCliente.setStyle(estiloMensajeError);
             new FadeIn(txtDocumentoCliente).play();
+            txtPlacaCotizacion.setStyle(estiloMensajeError);
+            new FadeIn(txtPlacaCotizacion).play();
+            txtid_orden_trabajo.setStyle(estiloMensajeError);
+            new FadeIn(txtid_orden_trabajo).play();
+
+
         }
         // Validación Cédula vendedor
         if (!ValidacionesCotizacion.validarCedula(txtDocumentoVendedor.getText()))
@@ -185,7 +194,7 @@ public class CotizacionController implements Initializable {
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumentoVendedor.setStyle(estiloMensajeError);
             new FadeIn(txtDocumentoVendedor).play();
-        } else if (SQL_Cotizacion.existeCotizacion_cedula(txtDocumentoVendedor.getText()) && crear) {
+        } else if (SQL_Cotizacion.existeCotizacion_cedula_Placa_orden(txtDocumentoVendedor.getText(), txtPlacaCotizacion.getText(), Integer.valueOf(txtid_orden_trabajo.getText())) && crear) {
             // Validacion para saber si el cliente con esa cédula ya existe
             System.out.println(SQL_Cliente.existeCliente_Cedula(txtDocumentoVendedor.getText()));
             validado = false;
@@ -254,7 +263,7 @@ public class CotizacionController implements Initializable {
             if (crear)
                 SQL_Cotizacion.crearCotizacion(cotizacionModelo);
             else
-                SQL_Cotizacion.editarCotizacion(cotizacionModelo.getCedula_cliente(), cotizacionModelo);
+                SQL_Cotizacion.editarCotizacion(cotizacionModelo.getCedula_cliente(), cotizacionModelo.getPlaca_automovil(),cotizacionModelo.getid_orden_trabajo(), cotizacionModelo);
 
             this.validadoLabelSet();
             this.limpiar();
@@ -363,13 +372,19 @@ public class CotizacionController implements Initializable {
         txtPlacaCotizacion.setStyle(null);
         txtid_orden_trabajo.setStyle(null);
         dtpCotizacion.setStyle(null);
-        if(txtDocumentoCliente.getText().isEmpty())
+        if(txtDocumentoCliente.getText().isEmpty() && txtPlacaCotizacion.getText().isEmpty())
         {
             validacionRegistroLabel.setStyle(mensajeError);
             new Shake(txtDocumentoCliente).play();
-            validacionRegistroLabel.setText("La cédula está vacía!");
-        }
-        else {
+            new Shake(txtPlacaCotizacion).play();
+            validacionRegistroLabel.setText("La cédula del cliente y la placa están vacias!");
+        } else if (txtDocumentoCliente.getText().isEmpty() && txtid_orden_trabajo.getText().isEmpty()) {
+            validacionRegistroLabel.setStyle(mensajeError);
+            new Shake(txtDocumentoCliente).play();
+            new Shake(txtid_orden_trabajo).play();
+            validacionRegistroLabel.setText("La cédula del cliente y la orden de trabajo están vacias!");
+
+        } else {
             boolean validado = this.validacionCedula();
             if (validado) {
                 this.llenarCamposPorCedula();
@@ -390,7 +405,7 @@ public class CotizacionController implements Initializable {
             new FadeIn(txtDocumentoCliente).play();
         }
 
-        if (!SQL_Cotizacion.existeCotizacion_cedula(txtDocumentoCliente.getText())) {
+        if (!SQL_Cotizacion.existeCotizacion_cedula_Placa_orden(txtDocumentoCliente.getText(), txtPlacaCotizacion.getText(), Integer.valueOf(txtid_orden_trabajo.getText()))) {
             // Validacion para saber si el usuario con esa cédula ya existe
             validado = false;
             String textoError = "Un usuario con ese número de cédula NO existe!";
@@ -404,8 +419,10 @@ public class CotizacionController implements Initializable {
 
     private void llenarCamposPorCedula() {
         String cedula_cliente = txtDocumentoCliente.getText();
+        String placa_automovil = txtPlacaCotizacion.getText();
+        Integer id_orden_trabajo = Integer.valueOf(txtid_orden_trabajo.getText());
         try {
-            ResultSet result = SQL_Cotizacion.obtenerCotizacion_Cedula(cedula_cliente);
+            ResultSet result = SQL_Cotizacion.obtenerCotizacion_Cedula_Placa_Orden(cedula_cliente, placa_automovil, String.valueOf(id_orden_trabajo));
             while (result.next()) {
                 Cotizacion readCotizacion = new Cotizacion();
 
@@ -418,7 +435,7 @@ public class CotizacionController implements Initializable {
                 readCotizacion.setPlaca_automovil(result.getString("placa_automovil"));
                 readCotizacion.setFecha_creacion(result.getDate("fecha_creacion"));
                 readCotizacion.setFecha_modificado(result.getDate("fecha_modificado"));
-                readCotizacion.setid_orden_trabajo(result.getInt("id_tipo_usuario"));
+                readCotizacion.setid_orden_trabajo(result.getInt("id_orden_trabajo"));
 
                 // Cambio valores en los labels
                 txtDocumentoCliente.setText(readCotizacion.getCedula_cliente());
@@ -438,29 +455,41 @@ public class CotizacionController implements Initializable {
     // Borrar - poner inactivo
     @FXML
     private void btnBorrarClicked() {
-        String cedula_cliente = txtDocumentoCliente.getText();
-        if (SQL_Cotizacion.existeCotizacion_cedula(cedula_cliente)) {
-            try {
-                ResultSet result = SQL_Cotizacion.obtenerCotizacion_Cedula(cedula_cliente);
-                result.next();
-                boolean activo = result.getBoolean("activo");
-                SQL_Cliente.cambiarEstadoClientePorCedula(cedula_cliente, activo);
-                this.validadoLabelSet();
-                this.limpiar();
-
-            } catch (SQLException exception) {
-                throw new RuntimeException(exception);
-            }
+        if(txtDocumentoCliente.getText().isEmpty() || txtDocumentoVendedor.getText().isEmpty() ||
+                txtPlacaCotizacion.getText().isEmpty()|| txtDescripcionCotizacion.getText().isEmpty()||
+        txtid_orden_trabajo.getText().isEmpty())
+        {
+            validacionRegistroLabel.setStyle(mensajeError);
+            new Shake(txtDocumentoCliente).play();
+            new Shake(txtDocumentoVendedor).play();
+            new Shake(txtPlacaCotizacion).play();
+            new Shake(txtDescripcionCotizacion).play();
+            new Shake(txtid_orden_trabajo).play();
+            validacionRegistroLabel.setText("El nombre, la marca o la cantidad del repuesto están vacias!");
         }
         else {
-            String textoError = "No existe un usuario con esa cédula!";
-            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
-            validacionRegistroLabel.setStyle(mensajeError);
-            txtDocumentoCliente.setStyle(estiloMensajeError);
-            new FadeIn(txtDocumentoCliente).play();
+            this.borrarCotizacion();
         }
-        this.refreshTable();
     }
+
+    private boolean borrarCotizacion() {
+        boolean validado = true;
+        validacionRegistroLabel.setText("");
+        // Validacion existencia
+        if (SQL_Cotizacion.editarCotizacion(txtDocumentoCliente.getText(), txtPlacaCotizacion.getText(), txtid_orden_trabajo.getText())) {
+            // Validación cantidad
+            ResultSet resultado =  SQL_Cotizacion.obtenerCotizacion_Cedula_Placa_Orden(txtDocumentoCliente.getText(), txtPlacaCotizacion.getText(), txtid_orden_trabajo.getText());
+            try {
+                resultado.next();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);}
+            }
+        this.refreshTable();
+
+        return validado;
+    }
+
+
 
     // Actualizar
     @FXML
