@@ -22,13 +22,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
-import org.openjfx.Models.Cliente.SQL_Cliente;
 import org.openjfx.Models.Cliente.SQL_Cotizacion;
 import org.openjfx.Models.Cliente.Utils.ValidacionesClientes;
 import org.openjfx.Models.Cliente.Utils.ValidacionesCotizacion;
 import org.openjfx.Models.Cotizacion.Cotizacion;
-import org.openjfx.Models.Repuesto.Repuesto;
-import org.openjfx.Models.Repuesto.SQL_Repuesto;
+
 
 
 import javax.swing.*;
@@ -182,15 +180,17 @@ public class CotizacionController implements Initializable {
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumentoCliente.setStyle(estiloMensajeError);
             new FadeIn(txtDocumentoCliente).play();
-        } else if (SQL_Cotizacion.existeCotizacion_cedula_Placa_orden(txtDocumentoCliente.getText(), String.valueOf(txtPlacaCotizacion),Integer.parseInt(String.valueOf(txtid_orden_trabajo)))) {
+        } else if (SQL_Cotizacion.existeCotizacion_cedula_Placa(txtDocumentoCliente.getText(), txtPlacaCotizacion.getText())) {
             // Validacion para saber si el cliente con esa cédula ya existe
-            System.out.println(SQL_Cotizacion.existeCotizacion_cedula_Placa_orden(txtDocumentoVendedor.getText(), txtPlacaCotizacion.getText(), Integer.valueOf(txtid_orden_trabajo.getText())));
+            //System.out.println(SQL_Cotizacion.existeCotizacion_cedula_Placa_orden(txtDocumentoVendedor.getText(), txtPlacaCotizacion.getText(), Integer.parseInt(txtid_orden_trabajo.getText())));
             validado = false;
-            String textoError = "Un usuario con ese número de cédula ya existe!";
+            String textoError = "Una cotizacion con ese número de cédula de cliente y placa ya existe!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumentoCliente.setStyle(estiloMensajeError);
+            txtPlacaCotizacion.setStyle(estiloMensajeError);
             new FadeIn(txtDocumentoCliente).play();
+            new FadeIn(txtPlacaCotizacion).play();
 
         }
         // Validación Cédula vendedor
@@ -202,11 +202,11 @@ public class CotizacionController implements Initializable {
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumentoVendedor.setStyle(estiloMensajeError);
             new FadeIn(txtDocumentoVendedor).play();
-        } else if (SQL_Cotizacion.existeCotizacion_cedula_Placa_orden(txtDocumentoVendedor.getText(), txtPlacaCotizacion.getText(), Integer.valueOf(txtid_orden_trabajo.getText())) && crear) {
+         } else if (SQL_Cotizacion.existeCotizacion_cedula_Placa(txtDocumentoVendedor.getText(), txtPlacaCotizacion.getText()) && crear) {
             // Validacion para saber si el cliente con esa cédula ya existe
-            System.out.println(SQL_Cotizacion.existeCotizacion_cedula_Placa_orden(txtDocumentoVendedor.getText(), txtPlacaCotizacion.getText(), Integer.valueOf(txtid_orden_trabajo.getText())));
+            //System.out.println(SQL_Cotizacion.existeCotizacion_cedula_Placa(txtDocumentoVendedor.getText(), txtPlacaCotizacion.getText()));
             validado = false;
-            String textoError = "Un usuario con ese número de cédula ya existe!";
+            String textoError = "Una cotizacion con ese número de cédula de cliente y placa ya existe!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumentoCliente.setStyle(estiloMensajeError);
@@ -252,7 +252,7 @@ public class CotizacionController implements Initializable {
             Cotizacion cotizacionModelo = new Cotizacion();
 
 
-            cotizacionModelo.setCedula_vendedor(txtDocumentoCliente.getText());
+            cotizacionModelo.setCedula_cliente(txtDocumentoCliente.getText());
             cotizacionModelo.setCedula_vendedor(txtDocumentoVendedor.getText());
             cotizacionModelo.setDescripcion(txtDescripcionCotizacion.getText());
             cotizacionModelo.setPlaca_automovil(txtPlacaCotizacion.getText());
@@ -390,13 +390,7 @@ public class CotizacionController implements Initializable {
             new Shake(txtDocumentoCliente).play();
             new Shake(txtPlacaCotizacion).play();
             validacionRegistroLabel.setText("La cédula del cliente y la placa están vacias!");
-        } else if (txtDocumentoCliente.getText().isEmpty() || txtid_orden_trabajo.getText().isEmpty()) {
-            validacionRegistroLabel.setStyle(mensajeError);
-            new Shake(txtDocumentoCliente).play();
-            new Shake(txtid_orden_trabajo).play();
-            validacionRegistroLabel.setText("La cédula del cliente y la orden de trabajo están vacias!");
-
-        } else {
+        }  else {
             boolean validado = this.validacionCedula();
             if (validado) {
                 this.llenarCamposPorCedula();
@@ -417,7 +411,7 @@ public class CotizacionController implements Initializable {
             new FadeIn(txtDocumentoCliente).play();
         }
 
-        if (!SQL_Cotizacion.existeCotizacion_cedula_Placa_orden(txtDocumentoCliente.getText(), txtPlacaCotizacion.getText(), Integer.valueOf(txtid_orden_trabajo.getText()))) {
+        if (!SQL_Cotizacion.existeCotizacion_cedula_Placa(txtDocumentoCliente.getText(), txtPlacaCotizacion.getText())) {
             // Validacion para saber si el usuario con esa cédula ya existe
             validado = false;
             String textoError = "Un usuario con ese número de cédula NO existe!";
@@ -432,9 +426,9 @@ public class CotizacionController implements Initializable {
     private void llenarCamposPorCedula() {
         String cedula_cliente = txtDocumentoCliente.getText();
         String placa_automovil = txtPlacaCotizacion.getText();
-        Integer id_orden_trabajo = Integer.valueOf(txtid_orden_trabajo.getText());
+        int id_orden_trabajo = Integer.parseInt(txtid_orden_trabajo.getText());
         try {
-            ResultSet result = SQL_Cotizacion.obtenerCotizacion_Cedula_Placa_Orden(cedula_cliente, placa_automovil, String.valueOf(id_orden_trabajo));
+            ResultSet result = SQL_Cotizacion.obtenerCotizacion_Cedula_Placa_Orden(cedula_cliente, placa_automovil, id_orden_trabajo);
             while (result.next()) {
                 Cotizacion readCotizacion = new Cotizacion();
 
@@ -488,9 +482,9 @@ public class CotizacionController implements Initializable {
         boolean validado = true;
         validacionRegistroLabel.setText("");
         // Validacion existencia
-        if (SQL_Cotizacion.editarCotizacion(txtDocumentoCliente.getText(), txtPlacaCotizacion.getText(), txtid_orden_trabajo.getText())) {
+        if (SQL_Cotizacion.editarCotizacion(txtDocumentoCliente.getText(), txtPlacaCotizacion.getText(), Integer.parseInt(txtid_orden_trabajo.getText()))) {
             // Validación cantidad
-            ResultSet resultado =  SQL_Cotizacion.obtenerCotizacion_Cedula_Placa_Orden(txtDocumentoCliente.getText(), txtPlacaCotizacion.getText(), txtid_orden_trabajo.getText());
+            ResultSet resultado =  SQL_Cotizacion.obtenerCotizacion_Cedula_Placa_Orden(txtDocumentoCliente.getText(), txtPlacaCotizacion.getText(), Integer.parseInt(txtid_orden_trabajo.getText()));
             try {
                 resultado.next();
             } catch (SQLException e) {

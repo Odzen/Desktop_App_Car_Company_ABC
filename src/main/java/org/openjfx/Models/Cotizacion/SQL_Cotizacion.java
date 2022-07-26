@@ -53,15 +53,37 @@ public class SQL_Cotizacion {
         }
     }
 
+    public static boolean existeCotizacion_cedula_Placa(String cedula_cliente, String placa_automovil)  {
+        try {
+            PreparedStatement sentencia = connection.prepareStatement(
+                    "SELECT * FROM cotizacion WHERE cedula_cliente= ? AND placa_automovil=?"
+            );
+
+            sentencia.setString(1, cedula_cliente);
+            sentencia.setString(2,placa_automovil);
+            //sentencia.setString(2,null);
+            ResultSet resultadoCotizacion = sentencia.executeQuery();
+            if (resultadoCotizacion.next()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     // Verifica si una cotizacion existe o no en la base de datos, basado en cedula_cliente
-    public static boolean existeCotizacion_cedula_Placa_orden(String cedula_cliente, String placa_automovil, Integer id_orden_trabajo)  {
+    public static boolean existeCotizacion_cedula_Placa_orden(String cedula_cliente, String placa_automovil, int id_orden_trabajo)  {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
                     "SELECT * FROM cotizacion WHERE cedula_cliente= ? AND (placa_automovil=? OR id_orden_trabajo=?)"
             );
 
             sentencia.setString(1, cedula_cliente);
+            sentencia.setString(2,placa_automovil);
+            sentencia.setInt(3, id_orden_trabajo);
             ResultSet resultadoCotizacion = sentencia.executeQuery();
             if (resultadoCotizacion.next()) {
                 return true;
@@ -88,7 +110,7 @@ public class SQL_Cotizacion {
     }
 
     // Verifica si una cotizacion se puede modificar
-    public static boolean puedoModificarCotizacion(String cedula_cliente, String placa_automovil, Integer id_orden_trabajo)  {
+    public static boolean puedoModificarCotizacion(String cedula_cliente, String placa_automovil, int id_orden_trabajo)  {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
                     "SELECT * FROM cotizacion WHERE cedula_cliente= ? AND (placa_automovil=? OR id_orden_trabajo=?)"
@@ -109,7 +131,7 @@ public class SQL_Cotizacion {
 
 
     // Obtiene una cotizacion buscandola por su cédula
-    public static ResultSet obtenerCotizacion_Cedula_Placa_Orden(String cedula_cliente, String placa_automovil, String id_orden_trabajo)  {
+    public static ResultSet obtenerCotizacion_Cedula_Placa_Orden(String cedula_cliente, String placa_automovil, int id_orden_trabajo)  {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
                     "SELECT * FROM cotizacion WHERE cedula_cliente= ? AND (placa_automovil=? OR id_orden_trabajo=? )"
@@ -117,7 +139,7 @@ public class SQL_Cotizacion {
 
             sentencia.setString(1, cedula_cliente);
             sentencia.setString(2, placa_automovil);
-            sentencia.setInt(2, Integer.parseInt(id_orden_trabajo));
+            sentencia.setInt(3, id_orden_trabajo);
             ResultSet resultadoCotizacion = sentencia.executeQuery();
             return resultadoCotizacion;
 
@@ -133,7 +155,7 @@ public class SQL_Cotizacion {
     public static ArrayList<Cotizacion> leerTodosLosCotizacion() {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
-                    "SELECT * FROM cotizacion ORDER BY id_cotizacion"
+                    "SELECT * FROM cotizacion"
             );
             ResultSet resultadoCotizacion = sentencia.executeQuery();
 
@@ -210,7 +232,7 @@ public class SQL_Cotizacion {
 
 
     // Edita una cotizacion en la base de datos
-    public static void editarCotizacion(String cedula_cliente, String placa_automovil, Integer id_orden_trabajo , Cotizacion cotizacionActualizado) {
+    public static void editarCotizacion(String cedula_cliente, String placa_automovil, int id_orden_trabajo , Cotizacion cotizacionActualizado) {
 
         if ( existeCotizacion_cedula_Placa_orden(cedula_cliente,placa_automovil, id_orden_trabajo)) {
             java.util.Date modificado = new java.util.Date();
@@ -251,7 +273,7 @@ public class SQL_Cotizacion {
     }
 
 
-    public static boolean editarCotizacion(String cedula_cliente, String placa_automovil, String id_orden_trabajo) {
+    public static boolean editarCotizacion(String cedula_cliente, String placa_automovil, int id_orden_trabajo) {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
                     "SELECT * FROM cotizacion WHERE cedula_cliente= ? AND (placa_automovil=? OR id_orden_trabajo=?)"
@@ -259,7 +281,7 @@ public class SQL_Cotizacion {
 
             sentencia.setString(1, cedula_cliente);
             sentencia.setString(2, placa_automovil);
-            sentencia.setString(2, id_orden_trabajo);
+            sentencia.setInt(3, id_orden_trabajo);
 
             ResultSet resultado = sentencia.executeQuery();
             if (resultado.next()) {
