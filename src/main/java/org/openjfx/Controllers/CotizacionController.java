@@ -220,6 +220,7 @@ public class CotizacionController implements Initializable {
             String placa = txtPlacaCotizacion.getText();
             ResultSet result = SQL_Automovil.obtenerAutomovil_placa(placa);
             int precio_sin_iva = result.getInt("precio");
+            result.next();
 
             cotizacionModelo.setTOTAL_SIN_IVA(precio_sin_iva);
 
