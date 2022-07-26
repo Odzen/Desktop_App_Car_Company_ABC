@@ -150,10 +150,31 @@ public class GestionUsuJefeTallerRepuestoOrdenesController implements Initializa
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        int cantidadActualRepuestoOrden = 0;
+        try{
+            ResultSet resultRepuesto = SQL_RepuestoOrden.obtenerRepuestoOrden_Ids(Integer.parseInt(txtIdRepuesto.getText()), Integer.parseInt(txtIdOrden.getText()));
+            resultRepuesto.next();
+            cantidadActualRepuestoOrden = resultRepuesto.getInt("cantidad");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        /*
         if(Integer.parseInt(txtCantidadRepuesto.getText()) > cantidadActualRepuesto)
         {
             validado = false;
             String textoError = "La cantidad es mayor que la cantidad existente!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtCantidadRepuesto.setStyle(estiloMensajeError);
+            new FadeIn(txtCantidadRepuesto).play();
+        }
+        */
+        if(Integer.parseInt(txtCantidadRepuesto.getText()) == cantidadActualRepuestoOrden)
+        {
+            validado = false;
+            String textoError = "La cantidad es igual a la ya registrada!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtCantidadRepuesto.setStyle(estiloMensajeError);
@@ -208,17 +229,77 @@ public class GestionUsuJefeTallerRepuestoOrdenesController implements Initializa
 
             repuestoOrden.setId_orden(Integer.parseInt(txtIdOrden.getText()));
             repuestoOrden.setId_repuesto(Integer.parseInt(txtIdRepuesto.getText()));
-            repuestoOrden.setCantidad(Integer.parseInt(txtCantidadRepuesto.getText()));
             repuestoOrden.setCedula_creado_por(LoginController.obtenerUsuarioLogeado().getCedula());
 
 
             // SI la orden es para crear, o para actualizar, llamo al metodo respectivo
             if (crear)
+            {
+                repuestoOrden.setCantidad(Integer.parseInt(txtCantidadRepuesto.getText()));
                 SQL_RepuestoOrden.crearRepuestoOrden(repuestoOrden);
-            else
-                SQL_RepuestoOrden.editarRepuestoOrden(repuestoOrden.getId_repuesto(),repuestoOrden.getId_orden(), repuestoOrden);
+            }
+            else {
+                int cantidadActualRepuestoOrden = 0;
+                try{
+                    ResultSet resultRepuesto = SQL_RepuestoOrden.obtenerRepuestoOrden_Ids(Integer.parseInt(txtIdRepuesto.getText()), Integer.parseInt(txtIdOrden.getText()));
+                    resultRepuesto.next();
+                    cantidadActualRepuestoOrden = resultRepuesto.getInt("cantidad");
 
-            this.validadoLabelSet();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+                int cantidadRestante = Integer.parseInt(txtCantidadRepuesto.getText()) - cantidadActualRepuestoOrden;
+
+
+                // Actualizar repuesto
+
+                ResultSet resultSet = SQL_Repuesto.obtenerRepuesto_Id(Integer.parseInt(txtIdRepuesto.getText()));
+                resultSet.next();
+                int cantidadRepuesto = resultSet.getInt("cantidad");
+                String nombreRepuesto = resultSet.getString("nombre");
+                String marcaRepuesto = resultSet.getString("marca");
+                String cedula_creado_por = resultSet.getString("cedula_creado_por");
+                Date fecha_creacion = resultSet.getDate("fecha_creacion");
+                Date fecha_modificado = resultSet.getDate("fecha_modificado");
+                boolean activo = resultSet.getBoolean("activo");
+                String sedeRepuesto = resultSet.getString("sede");
+
+                int nuevaCantidadRepuesto = cantidadRepuesto - cantidadRestante;
+
+
+                if (nuevaCantidadRepuesto < 0)
+                {
+                    String textoError = "No hay suficientes repuestos!";
+                    validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+                    validacionRegistroLabel.setStyle(mensajeError);
+                    txtIdRepuesto.setStyle(estiloMensajeError);
+                    new FadeIn(txtIdRepuesto).play();
+                }
+                else {
+                    Repuesto repuestoActualizado = new Repuesto();
+
+                    repuestoActualizado.setId_repuesto(Integer.parseInt(txtIdRepuesto.getText()));
+                    repuestoActualizado.setNombre(nombreRepuesto);
+                    repuestoActualizado.setMarca(marcaRepuesto);
+                    repuestoActualizado.setCedula_creado_por(cedula_creado_por);
+                    repuestoActualizado.setFecha_creacion(fecha_creacion);
+                    repuestoActualizado.setFecha_modificado(fecha_modificado);
+                    repuestoActualizado.setActivo(activo);
+                    repuestoActualizado.setSede(sedeRepuesto);
+                    repuestoActualizado.setCantidad(nuevaCantidadRepuesto);
+
+
+                    SQL_Repuesto.editarRepuesto(nombreRepuesto, marcaRepuesto, repuestoActualizado);
+
+                    repuestoOrden.setCantidad(Integer.parseInt(txtCantidadRepuesto.getText()));
+                    SQL_RepuestoOrden.editarRepuestoOrden(repuestoOrden.getId_repuesto(),repuestoOrden.getId_orden(), repuestoOrden);
+                    this.validadoLabelSet();
+                }
+
+            }
+
+
             this.limpiar();
 
         } catch (Exception e) {
@@ -441,10 +522,61 @@ public class GestionUsuJefeTallerRepuestoOrdenesController implements Initializa
                 try {
                     repuestoOrdenActualizado.setId_repuesto(resultado.getInt("id_repuesto"));
                     repuestoOrdenActualizado.setId_orden(resultado.getInt("id_orden"));
-                    repuestoOrdenActualizado.setCantidad(cantidadDespuesDeBorrar);
-                    SQL_RepuestoOrden.editarRepuestoOrden(id_repuesto, id_orden, repuestoOrdenActualizado);
-                    this.validadoLabelSet();
-                    this.limpiar();
+
+                    // Actualizar Repuesto
+                    int cantidadActualRepuestoOrden = 0;
+                    try{
+                        ResultSet resultRepuesto = SQL_RepuestoOrden.obtenerRepuestoOrden_Ids(Integer.parseInt(txtIdRepuesto.getText()), Integer.parseInt(txtIdOrden.getText()));
+                        resultRepuesto.next();
+                        cantidadActualRepuestoOrden = resultRepuesto.getInt("cantidad");
+
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+
+
+                    ResultSet resultSet = SQL_Repuesto.obtenerRepuesto_Id(Integer.parseInt(txtIdRepuesto.getText()));
+                    resultSet.next();
+                    int cantidadRepuesto = resultSet.getInt("cantidad");
+                    String nombreRepuesto = resultSet.getString("nombre");
+                    String marcaRepuesto = resultSet.getString("marca");
+                    String cedula_creado_por = resultSet.getString("cedula_creado_por");
+                    Date fecha_creacion = resultSet.getDate("fecha_creacion");
+                    Date fecha_modificado = resultSet.getDate("fecha_modificado");
+                    boolean activo = resultSet.getBoolean("activo");
+                    String sedeRepuesto = resultSet.getString("sede");
+
+                    int nuevaCantidadRepuesto = Integer.parseInt(txtCantidadRepuesto.getText()) + cantidadRepuesto;
+
+                    if (nuevaCantidadRepuesto < 0)
+                    {
+                        String textoError = "No hay suficientes repuestos!";
+                        validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+                        validacionRegistroLabel.setStyle(mensajeError);
+                        txtIdRepuesto.setStyle(estiloMensajeError);
+                        new FadeIn(txtIdRepuesto).play();
+                    }
+                    else {
+                        Repuesto repuestoActualizado = new Repuesto();
+
+                        repuestoActualizado.setId_repuesto(Integer.parseInt(txtIdRepuesto.getText()));
+                        repuestoActualizado.setNombre(nombreRepuesto);
+                        repuestoActualizado.setMarca(marcaRepuesto);
+                        repuestoActualizado.setCedula_creado_por(cedula_creado_por);
+                        repuestoActualizado.setFecha_creacion(fecha_creacion);
+                        repuestoActualizado.setFecha_modificado(fecha_modificado);
+                        repuestoActualizado.setActivo(activo);
+                        repuestoActualizado.setSede(sedeRepuesto);
+                        repuestoActualizado.setCantidad(nuevaCantidadRepuesto);
+
+
+                        SQL_Repuesto.editarRepuesto(nombreRepuesto, marcaRepuesto, repuestoActualizado);
+
+                        repuestoOrdenActualizado.setCantidad(cantidadDespuesDeBorrar);
+                        SQL_RepuestoOrden.editarRepuestoOrden(id_repuesto, id_orden, repuestoOrdenActualizado);
+                        this.validadoLabelSet();
+                        this.limpiar();
+                    }
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }

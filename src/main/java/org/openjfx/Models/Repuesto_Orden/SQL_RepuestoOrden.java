@@ -154,41 +154,6 @@ public class SQL_RepuestoOrden {
                     cambiarEstadoRepuestoPorIds(id_repuesto, id_orden, true);
                 }
 
-                // Actualizar repuesto
-
-                ResultSet resultSet = SQL_Repuesto.obtenerRepuesto_Id(id_repuesto);
-                resultSet.next();
-                int cantidadRepuesto = resultSet.getInt("cantidad");
-                String nombreRepuesto = resultSet.getString("nombre");
-                String marcaRepuesto = resultSet.getString("marca");
-                String cedula_creado_por = resultSet.getString("cedula_creado_por");
-                Date fecha_creacion = resultSet.getDate("fecha_creacion");
-                Date fecha_modificado = resultSet.getDate("fecha_modificado");
-                boolean activo = resultSet.getBoolean("activo");
-                String sedeRepuesto = resultSet.getString("sede");
-
-                int nuevaCantidadRepuesto = 0;
-                if (cantidadRepuesto > repuestoOrdenActualizado.getCantidad()){
-                    nuevaCantidadRepuesto = cantidadRepuesto - repuestoOrdenActualizado.getCantidad();
-                } else {
-                    nuevaCantidadRepuesto = repuestoOrdenActualizado.getCantidad() + cantidadRepuesto;
-                }
-
-                Repuesto repuestoActualizado = new Repuesto();
-
-                repuestoActualizado.setId_repuesto(id_repuesto);
-                repuestoActualizado.setNombre(nombreRepuesto);
-                repuestoActualizado.setMarca(marcaRepuesto);
-                repuestoActualizado.setCedula_creado_por(cedula_creado_por);
-                repuestoActualizado.setFecha_creacion(fecha_creacion);
-                repuestoActualizado.setFecha_modificado(fecha_modificado);
-                repuestoActualizado.setActivo(activo);
-                repuestoActualizado.setSede(sedeRepuesto);
-                repuestoActualizado.setCantidad(nuevaCantidadRepuesto);
-
-
-                SQL_Repuesto.editarRepuesto(nombreRepuesto, marcaRepuesto, repuestoActualizado);
-
                 // Actualizar repuesto-orden
 
                 int filasAfectadas = sentencia.executeUpdate();
