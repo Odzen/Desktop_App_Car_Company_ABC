@@ -27,7 +27,7 @@
             <Font size="18.0" />
          </font></Hyperlink>
       <Separator layoutX="73.0" layoutY="14.0" orientation="VERTICAL" prefHeight="43.0" prefWidth="0.0" />
-      <TextField fx:id="txtDocumentoCliente" layoutX="147.0" layoutY="139.0" prefHeight="25.0" prefWidth="158.0" promptText="Cédula cliente" style="-fx-background-radius: 12;" />
+      <TextField fx:id="txtDocumentoCliente" layoutX="160.0" layoutY="158.0" prefHeight="25.0" prefWidth="158.0" promptText="Cédula cliente" style="-fx-background-radius: 12;" />
       <Button fx:id="buscarCedula" layoutX="676.0" layoutY="139.0" mnemonicParsing="false" onAction="#btnBuscarCedula" style="-fx-background-radius: 12; -fx-background-color: gold; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Buscar">
          <effect>
             <InnerShadow color="#f5f2f2c7" />
@@ -103,7 +103,6 @@
          </font>
       </Button>
       <TextField fx:id="txtPlacaVenta" layoutX="489.0" layoutY="139.0" prefHeight="25.0" prefWidth="158.0" promptText="Placa de automóvil" style="-fx-background-radius: 12;" />
-      <TextField fx:id="txtDocumentoVendedor" layoutX="147.0" layoutY="179.0" prefHeight="25.0" prefWidth="158.0" promptText="Cédula vendedor" style="-fx-background-radius: 12;" />
       <TextField fx:id="txtid_orden_trabajo" layoutX="489.0" layoutY="178.0" prefHeight="25.0" prefWidth="158.0" promptText="Orden de trabajo" style="-fx-background-radius: 12;" />
       <Label fx:id="lblMensajeContra" layoutX="335.0" layoutY="262.0" prefHeight="50.0" prefWidth="529.0" textAlignment="CENTER" textFill="RED" />
       <Label fx:id="validacionRegistroLabel" layoutX="55.0" layoutY="267.0" prefHeight="43.0" prefWidth="614.0" textAlignment="LEFT">
@@ -111,12 +110,7 @@
             <Font size="10.0" />
          </font>
       </Label>
-      <Label layoutX="56.0" layoutY="139.0" prefHeight="30.0" prefWidth="64.0" text="Id Cliente:">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Label>
-      <Label layoutX="55.0" layoutY="179.0" prefHeight="25.0" prefWidth="74.0" text="Id Vendedor:">
+      <Label layoutX="55.0" layoutY="155.0" prefHeight="30.0" prefWidth="132.0" text="Cédula Cliente:" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
@@ -144,7 +138,7 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <TextField fx:id="txtDescripcionVenta" layoutX="147.0" layoutY="216.0" prefHeight="43.0" prefWidth="509.0" promptText="Descripción" style="-fx-background-radius: 12;" />
+      <TextField fx:id="txtDescripcionVenta" layoutX="147.0" layoutY="216.0" prefHeight="43.0" prefWidth="735.0" promptText="Descripción" style="-fx-background-radius: 12;" />
       <Button fx:id="imprimirReportesVenta" layoutX="589.0" layoutY="319.0" mnemonicParsing="false" onAction="#btnImprimirpdf" style="-fx-background-radius: 12; -fx-background-color: #899bab; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Imprimir Reporte">
          <effect>
             <InnerShadow color="#f5f2f2c7" />

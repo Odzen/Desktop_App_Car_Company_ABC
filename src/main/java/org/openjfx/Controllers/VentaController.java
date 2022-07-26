@@ -19,6 +19,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
+import org.openjfx.Models.Automovil.SQL_Automovil;
 import org.openjfx.Models.Cotizacion.SQL_Cotizacion;
 import org.openjfx.Models.Venta.SQL_Venta;
 import org.openjfx.Models.Venta.Utils.ValidacionesVenta;
@@ -75,7 +76,7 @@ public class VentaController implements Initializable {
     private String mensajeError = String.format("-fx-text-fill: RED;");
     private String estiloMensajeError = String.format("-fx-border-color: RED; -fx-border-width: 2; -fx-border-radius: 5;");
     @FXML
-    private TextField txtDocumentoCliente, txtDocumentoVendedor;
+    private TextField txtDocumentoCliente;
     @FXML
     private TextField txtPlacaVenta;
     @FXML
@@ -99,51 +100,22 @@ public class VentaController implements Initializable {
 
         validacionRegistroLabel.setText("");
         txtDocumentoCliente.setStyle(null);
-        txtDocumentoVendedor.setStyle(null);
         txtDescripcionVenta.setStyle(null);
         txtPlacaVenta.setStyle(null);
         txtid_orden_trabajo.setStyle(null);
         // Cuando los campos están en blanco
         if(txtDocumentoCliente.getText().isEmpty() ||
-                txtDocumentoVendedor.getText().isEmpty() ||txtDescripcionVenta.getText().isEmpty()||
                 txtPlacaVenta.getText().isEmpty()|| txtid_orden_trabajo.getText().isEmpty() )
         {
             validacionRegistroLabel.setStyle(mensajeError);
-            if(txtDocumentoCliente.getText().isEmpty() &&
-                    txtDocumentoVendedor.getText().isEmpty() && txtDescripcionVenta.getText().isEmpty() &&
-                    txtPlacaVenta.getText().isEmpty() )
+            if(txtDocumentoCliente.getText().isEmpty() && txtPlacaVenta.getText().isEmpty() )
             {
                 validacionRegistroLabel.setText("Algunos campos están vacíos!");
                 txtDocumentoCliente.setStyle(estiloMensajeError);
-                txtDocumentoVendedor.setStyle(estiloMensajeError);
                 txtDescripcionVenta.setStyle(estiloMensajeError);
                 new Shake(txtDocumentoCliente).play();
-                new Shake(txtDocumentoVendedor).play();
-                new Shake(txtDescripcionVenta).play();
                 new Shake(txtPlacaVenta).play();
             }
-            /* else if (txtDocumentoCliente.getText().isEmpty() &&
-                    txtDocumentoVendedor.getText().isEmpty() && txtDescripcionVenta.getText().isEmpty() &&
-                    txtid_orden_trabajo.getText().isEmpty() ) {
-
-                validacionRegistroLabel.setText("Algunos campos están vacíos!");
-                txtDocumentoCliente.setStyle(estiloMensajeError);
-                txtDocumentoVendedor.setStyle(estiloMensajeError);
-                txtDescripcionVenta.setStyle(estiloMensajeError);
-                new Shake(txtDocumentoCliente).play();
-                new Shake(txtDocumentoVendedor).play();
-                new Shake(txtDescripcionVenta).play();
-                new Shake(txtid_orden_trabajo).play();
-
-            } else {
-                validacionRegistroLabel.setText("Algunos campos están vacíos!");
-                boolean validado = this.validacionesVenta(crear);
-                if (validado) {
-                    this.guardarActualizarVenta(crear);
-                    this.refreshTable();
-
-                }
-            }*/
 
         } else {
             boolean validado = this.validacionesVenta(crear);
@@ -173,9 +145,9 @@ public class VentaController implements Initializable {
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumentoCliente.setStyle(estiloMensajeError);
             new FadeIn(txtDocumentoCliente).play();
-        } else if (SQL_Cotizacion.existeCotizacion_cedula_Placa_orden(txtDocumentoCliente.getText(), txtPlacaVenta.getText(),Integer.parseInt(txtid_orden_trabajo.getText()))) {
+        }
+        else if (SQL_Cotizacion.existeCotizacion_cedula_Placa_orden(txtDocumentoCliente.getText(), txtPlacaVenta.getText(),Integer.parseInt(txtid_orden_trabajo.getText()))) {
             // Validacion para saber si el cliente con esa cédula ya existe
-            System.out.println(SQL_Cotizacion.existeCotizacion_cedula_Placa_orden(txtDocumentoVendedor.getText(), txtPlacaVenta.getText(), Integer.parseInt(txtid_orden_trabajo.getText())));
             validado = false;
             String textoError = "Un usuario con ese número de cédula ya existe!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
@@ -183,27 +155,6 @@ public class VentaController implements Initializable {
             txtDocumentoCliente.setStyle(estiloMensajeError);
             new FadeIn(txtDocumentoCliente).play();
 
-        }
-        // Validación Cédula vendedor
-        if (!ValidacionesVenta.validarCedula(txtDocumentoVendedor.getText()))
-        {
-            validado = false;
-            String textoError = "Formato de la cédula incorrecto!";
-            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
-            validacionRegistroLabel.setStyle(mensajeError);
-            txtDocumentoVendedor.setStyle(estiloMensajeError);
-            new FadeIn(txtDocumentoVendedor).play();
-        } else if (SQL_Venta.existeVenta_cedula_Placa_orden(txtDocumentoVendedor.getText(),
-                txtPlacaVenta.getText(), Integer.parseInt(txtid_orden_trabajo.getText())) && crear) {
-            // Validacion para saber si el cliente con esa cédula ya existe
-            System.out.println(SQL_Cotizacion.existeCotizacion_cedula_Placa_orden(txtDocumentoVendedor.getText(),
-                    txtPlacaVenta.getText(), Integer.parseInt(txtid_orden_trabajo.getText())));
-            validado = false;
-            String textoError = "Un usuario con ese número de cédula ya existe!";
-            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
-            validacionRegistroLabel.setStyle(mensajeError);
-            txtDocumentoCliente.setStyle(estiloMensajeError);
-            new FadeIn(txtDocumentoCliente).play();
         }
         // Validación placa
         if (!ValidacionesVenta.validarPlaca(txtPlacaVenta.getText()))
@@ -236,16 +187,29 @@ public class VentaController implements Initializable {
 
 
             ventaModelo.setCedula_vendedor(txtDocumentoCliente.getText());
-            ventaModelo.setCedula_vendedor(txtDocumentoVendedor.getText());
+
+            //Traer cedula vendedor
+            ventaModelo.setCedula_vendedor(LoginController.obtenerUsuarioLogeado().getCedula());
+
             ventaModelo.setDescripcion(txtDescripcionVenta.getText());
             ventaModelo.setPlaca_automovil(txtPlacaVenta.getText());
             ventaModelo.setid_orden_trabajo(Integer.parseInt(txtid_orden_trabajo.getText()));
 
-            //Traer sede vendedor
-            //ventaModelo.setCedula_vendedor(LoginController.obtenerUsuarioLogeado().getCedula());
+           //Traer sede vendedor
             ventaModelo.setCedula_vendedor(LoginController.obtenerUsuarioLogeado().getSede());
 
+            //Traer el precio del automovil
+            String placa = txtPlacaVenta.getText();
+            ResultSet result = SQL_Automovil.obtenerAutomovil_placa(placa);
+            int precio_sin_iva = result.getInt("precio");
 
+            ventaModelo.setTOTAL_SIN_IVA(precio_sin_iva);
+
+            int iva = precio_sin_iva * (19/100);
+            ventaModelo.setIVA(iva);
+
+            int precio_total = precio_sin_iva + iva;
+            ventaModelo.setTOTAL_IVA(precio_total);
 
             // SI la orden es para crear, o para actualizar, llamo al metodo respectivo
             if (crear)
@@ -265,7 +229,6 @@ public class VentaController implements Initializable {
 
     public void limpiar() {
         txtDocumentoCliente.setText("");
-        txtDocumentoVendedor.setText("");
         txtPlacaVenta.setText("");
         txtDescripcionVenta.setText("");
         txtid_orden_trabajo.setText("");
@@ -359,17 +322,15 @@ public class VentaController implements Initializable {
     protected void btnBuscarCedula() {
         validacionRegistroLabel.setText("");
         txtDocumentoCliente.setStyle(null);
-        txtDocumentoVendedor.setStyle(null);
         txtDescripcionVenta.setStyle(null);
         txtPlacaVenta.setStyle(null);
         txtid_orden_trabajo.setStyle(null);
-        if(txtDocumentoCliente.getText().isEmpty() || txtPlacaVenta.getText().isEmpty() ||
-                txtDocumentoVendedor.getText().isEmpty())
+        if(txtDocumentoCliente.getText().isEmpty() || txtPlacaVenta.getText().isEmpty())
         {
             validacionRegistroLabel.setStyle(mensajeError);
             new Shake(txtDocumentoCliente).play();
             new Shake(txtPlacaVenta).play();
-            validacionRegistroLabel.setText("La cédula del cliente o la cédula del vendedor o la placa están vacias!");
+            validacionRegistroLabel.setText("La cédula del cliente o la placa están vacias!");
         } else {
             boolean validado = this.validacionCedula();
             if (validado) {
@@ -412,13 +373,10 @@ public class VentaController implements Initializable {
             while (result.next()) {
                 Venta readVenta = new Venta();
 
-                readVenta.setCedula_cliente(result.getString("cedula_cliente"));
                 readVenta.setCedula_vendedor(result.getString("cedula_vendedor"));
-                readVenta.setDescripcion(result.getString("descripcion"));
                 readVenta.setTOTAL_SIN_IVA(result.getInt("TOTAL_SIN_IVA"));
                 readVenta.setTOTAL_IVA(result.getInt("TOTAL_IVA"));
                 readVenta.setIVA(result.getInt("IVA"));
-                readVenta.setPlaca_automovil(result.getString("placa_automovil"));
                 readVenta.setFecha_creacion(result.getDate("fecha_creacion"));
                 readVenta.setFecha_modificado(result.getDate("fecha_modificado"));
                 readVenta.setid_orden_trabajo(result.getInt("id_orden_trabajo"));
@@ -426,7 +384,6 @@ public class VentaController implements Initializable {
 
                 // Cambio valores en los labels
                 txtDocumentoCliente.setText(readVenta.getCedula_cliente());
-                txtDocumentoVendedor.setText(readVenta.getCedula_vendedor());
                 txtDescripcionVenta.setText(readVenta.getDescripcion());
                 txtPlacaVenta.setText(readVenta.getPlaca_automovil());
 
@@ -468,27 +425,7 @@ public class VentaController implements Initializable {
 
     }
 
-    /*
 
-     else {
-            this.borrarVenta();
-        }
-    private boolean borrarVenta() {
-        boolean validado = true;
-        validacionRegistroLabel.setText("");
-        // Validacion existencia
-        if (SQL_Venta.editarVenta(txtDocumentoCliente.getText(), txtPlacaVenta.getText(), Integer.parseInt(txtid_orden_trabajo.getText()))) {
-            // Validación cantidad
-            ResultSet resultado =  SQL_Venta.obtenerVenta_Cedula_Placa_Orden(txtDocumentoCliente.getText(), txtPlacaVenta.getText(), Integer.parseInt(txtid_orden_trabajo.getText()));
-            try {
-                resultado.next();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);}
-            }
-        this.refreshTable();
-
-        return validado;
-    }*/
 
 
 

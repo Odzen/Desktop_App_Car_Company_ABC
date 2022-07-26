@@ -345,7 +345,7 @@ public class CotizacionController implements Initializable {
             validacionRegistroLabel.setStyle(mensajeError);
             new Shake(txtDocumentoCliente).play();
             new Shake(txtPlacaCotizacion).play();
-            validacionRegistroLabel.setText("La cédula del cliente y la placa están vacias!");
+            validacionRegistroLabel.setText("La cédula del cliente 0 la placa están vacias!");
         }  else {
             boolean validado = this.validacionCedulaPlaca();
             if (validado) {
@@ -402,16 +402,12 @@ public class CotizacionController implements Initializable {
             while (result.next()) {
                 Cotizacion readCotizacion = new Cotizacion();
 
-                readCotizacion.setCedula_cliente(result.getString("cedula_cliente"));
                 readCotizacion.setCedula_vendedor(result.getString("cedula_vendedor"));
-                readCotizacion.setDescripcion(result.getString("descripcion"));
                 readCotizacion.setTOTAL_SIN_IVA(result.getInt("TOTAL_SIN_IVA"));
                 readCotizacion.setTOTAL_IVA(result.getInt("TOTAL_IVA"));
                 readCotizacion.setIVA(result.getInt("IVA"));
-                readCotizacion.setPlaca_automovil(result.getString("placa_automovil"));
                 readCotizacion.setFecha_creacion(result.getDate("fecha_creacion"));
                 readCotizacion.setFecha_modificado(result.getDate("fecha_modificado"));
-                readCotizacion.setid_orden_trabajo(result.getInt("id_orden_trabajo"));
 
                 // Cambio valores en los labels
                 txtDocumentoCliente.setText(readCotizacion.getCedula_cliente());
