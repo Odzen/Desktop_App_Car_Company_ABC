@@ -24,10 +24,10 @@ import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
 import org.openjfx.Models.Automovil.SQL_Automovil;
 import org.openjfx.Models.Cotizacion.SQL_Cotizacion;
-import org.openjfx.Models.Cliente.Utils.ValidacionesClientes;
-import org.openjfx.Models.Cliente.Utils.ValidacionesCotizacion;
+import org.openjfx.Models.Cotizacion.Utils.*;
 import org.openjfx.Models.Cotizacion.Cotizacion;
-
+import org.openjfx.Models.Orden_Trabajo.SQL_Orden;
+import org.openjfx.Models.Orden_Trabajo.Utils.ValidacionesOrden;
 
 
 import javax.swing.*;
@@ -78,15 +78,13 @@ public class CotizacionController implements Initializable {
     private String mensajeError = String.format("-fx-text-fill: RED;");
     private String estiloMensajeError = String.format("-fx-border-color: RED; -fx-border-width: 2; -fx-border-radius: 5;");
     @FXML
-    private TextField txtDocumentoCliente, txtDocumentoVendedor;
+    private TextField txtDocumentoCliente;
     @FXML
     private TextField txtPlacaCotizacion;
     @FXML
     private TextField txtDescripcionCotizacion;
     @FXML
     private TextField txtid_orden_trabajo;
-    @FXML
-    private DatePicker dtpCotizacion;
     @FXML
     MenuItem firstItem;
     @FXML
@@ -103,46 +101,29 @@ public class CotizacionController implements Initializable {
 
         validacionRegistroLabel.setText("");
         txtDocumentoCliente.setStyle(null);
-        txtDocumentoVendedor.setStyle(null);
         txtDescripcionCotizacion.setStyle(null);
         txtPlacaCotizacion.setStyle(null);
         txtid_orden_trabajo.setStyle(null);
-        dtpCotizacion.setStyle(null);
         // Cuando los campos están en blanco
-        if(txtDocumentoCliente.getText().isEmpty() ||
-                txtDocumentoVendedor.getText().isEmpty() ||txtDescripcionCotizacion.getText().isEmpty()||
-                txtPlacaCotizacion.getText().isEmpty()|| txtid_orden_trabajo.getText().isEmpty() ||
-                dtpCotizacion.getValue()==null )
+        if(txtDocumentoCliente.getText().isEmpty()  ||
+                txtPlacaCotizacion.getText().isEmpty()|| txtid_orden_trabajo.getText().isEmpty())
         {
             validacionRegistroLabel.setStyle(mensajeError);
-            if(txtDocumentoCliente.getText().isEmpty() &&
-                    txtDocumentoVendedor.getText().isEmpty() && txtDescripcionCotizacion.getText().isEmpty() &&
-                    txtPlacaCotizacion.getText().isEmpty() && dtpCotizacion.getValue()==null )
+            if(txtDocumentoCliente.getText().isEmpty() && txtPlacaCotizacion.getText().isEmpty() )
             {
                 validacionRegistroLabel.setText("Algunos campos están vacíos!");
                 txtDocumentoCliente.setStyle(estiloMensajeError);
-                txtDocumentoVendedor.setStyle(estiloMensajeError);
                 txtDescripcionCotizacion.setStyle(estiloMensajeError);
-                dtpCotizacion.setStyle(estiloMensajeError);
                 new Shake(txtDocumentoCliente).play();
-                new Shake(txtDocumentoVendedor).play();
-                new Shake(txtDescripcionCotizacion).play();
                 new Shake(txtPlacaCotizacion).play();
-                new Shake(dtpCotizacion).play();
-            } else if (txtDocumentoCliente.getText().isEmpty() &&
-                    txtDocumentoVendedor.getText().isEmpty() && txtDescripcionCotizacion.getText().isEmpty() &&
-                    txtid_orden_trabajo.getText().isEmpty() && dtpCotizacion.getValue()==null ) {
+            } else if (txtDocumentoCliente.getText().isEmpty()  && txtid_orden_trabajo.getText().isEmpty()  ) {
 
                 validacionRegistroLabel.setText("Algunos campos están vacíos!");
                 txtDocumentoCliente.setStyle(estiloMensajeError);
-                txtDocumentoVendedor.setStyle(estiloMensajeError);
-                txtDescripcionCotizacion.setStyle(estiloMensajeError);
-                dtpCotizacion.setStyle(estiloMensajeError);
+                txtid_orden_trabajo.setStyle(estiloMensajeError);
+
                 new Shake(txtDocumentoCliente).play();
-                new Shake(txtDocumentoVendedor).play();
-                new Shake(txtDescripcionCotizacion).play();
                 new Shake(txtid_orden_trabajo).play();
-                new Shake(dtpCotizacion).play();
 
             } else {
                 validacionRegistroLabel.setText("Algunos campos están vacíos!");
@@ -182,9 +163,10 @@ public class CotizacionController implements Initializable {
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumentoCliente.setStyle(estiloMensajeError);
             new FadeIn(txtDocumentoCliente).play();
-        } else if (SQL_Cotizacion.existeCotizacion_cedula_Placa(txtDocumentoCliente.getText(), txtPlacaCotizacion.getText())) {
+
+        } else if (SQL_Cotizacion.existeCotizacion_cedula_Placa(txtDocumentoCliente.getText(), txtPlacaCotizacion.getText())&& crear) {
+
             // Validacion para saber si el cliente con esa cédula ya existe
-            //System.out.println(SQL_Cotizacion.existeCotizacion_cedula_Placa_orden(txtDocumentoVendedor.getText(), txtPlacaCotizacion.getText(), Integer.parseInt(txtid_orden_trabajo.getText())));
             validado = false;
             String textoError = "Una cotizacion con ese número de cédula de cliente y placa ya existe!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
@@ -194,25 +176,6 @@ public class CotizacionController implements Initializable {
             new FadeIn(txtDocumentoCliente).play();
             new FadeIn(txtPlacaCotizacion).play();
 
-        }
-        // Validación Cédula vendedor
-        if (!ValidacionesCotizacion.validarCedula(txtDocumentoVendedor.getText()))
-        {
-            validado = false;
-            String textoError = "Formato de la cédula incorrecto!";
-            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
-            validacionRegistroLabel.setStyle(mensajeError);
-            txtDocumentoVendedor.setStyle(estiloMensajeError);
-            new FadeIn(txtDocumentoVendedor).play();
-         } else if (SQL_Cotizacion.existeCotizacion_cedula_Placa(txtDocumentoVendedor.getText(), txtPlacaCotizacion.getText()) && crear) {
-            // Validacion para saber si el cliente con esa cédula ya existe
-            //System.out.println(SQL_Cotizacion.existeCotizacion_cedula_Placa(txtDocumentoVendedor.getText(), txtPlacaCotizacion.getText()));
-            validado = false;
-            String textoError = "Una cotizacion con ese número de cédula de cliente y placa ya existe!";
-            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
-            validacionRegistroLabel.setStyle(mensajeError);
-            txtDocumentoCliente.setStyle(estiloMensajeError);
-            new FadeIn(txtDocumentoCliente).play();
         }
         // Validación placa
         if (!ValidacionesCotizacion.validarPlaca(txtPlacaCotizacion.getText()))
@@ -225,16 +188,7 @@ public class CotizacionController implements Initializable {
             txtPlacaCotizacion.setStyle(estiloMensajeError);
             new FadeIn(txtPlacaCotizacion).play();
         }
-        // Validación Fecha
-        if (dtpCotizacion.getValue()==null && !ValidacionesCotizacion.validarFecha(String.valueOf(dtpCotizacion.getValue())))
-        {
-            validado = false;
-            String textoError = "Formato de fecha incorrecto!";
-            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
-            validacionRegistroLabel.setStyle(mensajeError);
-            dtpCotizacion.setStyle(estiloMensajeError);
-            new FadeIn(dtpCotizacion).play();
-        }
+
 
         // Mensaje si el ingreso es correcto
         return validado;
@@ -255,50 +209,47 @@ public class CotizacionController implements Initializable {
 
             cotizacionModelo.setCedula_cliente(txtDocumentoCliente.getText());
 
+           //Traer cedula vendedor
             cotizacionModelo.setCedula_vendedor(LoginController.obtenerUsuarioLogeado().getCedula());
 
             cotizacionModelo.setDescripcion(txtDescripcionCotizacion.getText());
             cotizacionModelo.setPlaca_automovil(txtPlacaCotizacion.getText());
-            cotizacionModelo.setid_orden_trabajo(Integer.parseInt(txtid_orden_trabajo.getText()));
+           // cotizacionModelo.setid_orden_trabajo(Integer.parseInt(txtid_orden_trabajo.getText()));
 
+            //Traer el precio del automovil
             String placa = txtPlacaCotizacion.getText();
             ResultSet result = SQL_Automovil.obtenerAutomovil_placa(placa);
             int precio_sin_iva = result.getInt("precio");
 
             cotizacionModelo.setTOTAL_SIN_IVA(precio_sin_iva);
 
+            int iva = precio_sin_iva * (19/100);
+            cotizacionModelo.setIVA(iva);
 
-
-
-
-            //Traer cedula vendedor
-            cotizacionModelo.setCedula_vendedor(LoginController.obtenerUsuarioLogeado().getCedula());
-
-
+            int precio_total = precio_sin_iva + iva;
+            cotizacionModelo.setTOTAL_IVA(precio_total);
 
             // SI la orden es para crear, o para actualizar, llamo al metodo respectivo
             if (crear)
                 SQL_Cotizacion.crearCotizacion(cotizacionModelo);
             else
-                SQL_Cotizacion.editarCotizacion(cotizacionModelo.getCedula_cliente(), cotizacionModelo.getPlaca_automovil(),
-                        cotizacionModelo.getid_orden_trabajo(), cotizacionModelo);
+                SQL_Cotizacion.editarCotizacion_cedula_placa(cotizacionModelo.getCedula_cliente(), cotizacionModelo.getPlaca_automovil(), cotizacion);
 
             this.validadoLabelSet();
             this.limpiar();
 
         } catch (Exception e) {
             System.err.println(e);
-            JOptionPane.showMessageDialog(null,"Error registrando el usuario");
+            Dialogs.showError("Seleccione una opción", "Error registrando la cotización");
+
         }
     }
 
     public void limpiar() {
         txtDocumentoCliente.setText("");
-        txtDocumentoVendedor.setText("");
         txtDescripcionCotizacion.setText("");
         txtPlacaCotizacion.setText("");
         txtid_orden_trabajo.setText("");
-        dtpCotizacion.setValue(null);
     }
 
     /**
@@ -386,11 +337,9 @@ public class CotizacionController implements Initializable {
     protected void btnBuscarCedula() {
         validacionRegistroLabel.setText("");
         txtDocumentoCliente.setStyle(null);
-        txtDocumentoVendedor.setStyle(null);
         txtDescripcionCotizacion.setStyle(null);
         txtPlacaCotizacion.setStyle(null);
         txtid_orden_trabajo.setStyle(null);
-        dtpCotizacion.setStyle(null);
         if(txtDocumentoCliente.getText().isEmpty() || txtPlacaCotizacion.getText().isEmpty())
         {
             validacionRegistroLabel.setStyle(mensajeError);
@@ -398,18 +347,19 @@ public class CotizacionController implements Initializable {
             new Shake(txtPlacaCotizacion).play();
             validacionRegistroLabel.setText("La cédula del cliente y la placa están vacias!");
         }  else {
-            boolean validado = this.validacionCedula();
+            boolean validado = this.validacionCedulaPlaca();
             if (validado) {
                 this.llenarCamposPorCedula();
             }
         }
     }
 
-    private boolean validacionCedula() {
+    private boolean validacionCedulaPlaca() {
         // Validación Cédula
         boolean validado = true;
         validacionRegistroLabel.setText("");
-        if (!ValidacionesClientes.validarCedula(txtDocumentoCliente.getText())) {
+        if (!ValidacionesCotizacion.validarCedula(txtDocumentoCliente.getText())) {
+
             validado = false;
             String textoError = "Formato de la cédula incorrecto!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
@@ -417,15 +367,28 @@ public class CotizacionController implements Initializable {
             txtDocumentoCliente.setStyle(estiloMensajeError);
             new FadeIn(txtDocumentoCliente).play();
         }
+        // Validación placa
+        if (!ValidacionesCotizacion.validarPlaca(txtPlacaCotizacion.getText()))
+        {
+            validado = false;
+            String textoError = "Formato de la placa del vehículo está incorrecto!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtPlacaCotizacion.setStyle(estiloMensajeError);
+            new FadeIn(txtPlacaCotizacion).play();
+        }
 
         if (!SQL_Cotizacion.existeCotizacion_cedula_Placa(txtDocumentoCliente.getText(), txtPlacaCotizacion.getText())) {
             // Validacion para saber si el usuario con esa cédula ya existe
             validado = false;
-            String textoError = "Un usuario con ese número de cédula NO existe!";
+            String textoError = "Un cliente con ese número de cédula NO existe!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumentoCliente.setStyle(estiloMensajeError);
             new FadeIn(txtDocumentoCliente).play();
+            txtPlacaCotizacion.setStyle(estiloMensajeError);
+            new FadeIn(txtPlacaCotizacion).play();
+
         }
         return validado;
     }
@@ -452,15 +415,15 @@ public class CotizacionController implements Initializable {
 
                 // Cambio valores en los labels
                 txtDocumentoCliente.setText(readCotizacion.getCedula_cliente());
-                txtDocumentoVendedor.setText(readCotizacion.getCedula_vendedor());
-                txtDescripcionCotizacion.setText(readCotizacion.getDescripcion());
                 txtPlacaCotizacion.setText(readCotizacion.getPlaca_automovil());
-                dtpCotizacion.setValue(LocalDate.parse(readCotizacion.getFecha_creacion().toString()));
-
+                txtid_orden_trabajo.setText(String.valueOf(readCotizacion.getid_orden_trabajo()));
+                txtDescripcionCotizacion.setText(readCotizacion.getDescripcion());
 
             }
         } catch(SQLException exception) {
-            throw new RuntimeException(exception);
+            System.err.println(exception);
+            Dialogs.showError("Error llenando datos por BD", "Error obteniendo las cotizaciones");
+
         }
 
     }
@@ -468,39 +431,36 @@ public class CotizacionController implements Initializable {
     // Borrar - poner inactivo
     @FXML
     private void btnBorrarClicked() {
-        if(txtDocumentoCliente.getText().isEmpty() || txtDocumentoVendedor.getText().isEmpty() ||
-                txtPlacaCotizacion.getText().isEmpty()|| txtDescripcionCotizacion.getText().isEmpty()||
-        txtid_orden_trabajo.getText().isEmpty())
-        {
-            validacionRegistroLabel.setStyle(mensajeError);
-            new Shake(txtDocumentoCliente).play();
-            new Shake(txtDocumentoVendedor).play();
-            new Shake(txtPlacaCotizacion).play();
-            new Shake(txtDescripcionCotizacion).play();
-            new Shake(txtid_orden_trabajo).play();
-            validacionRegistroLabel.setText("El nombre, la marca o la cantidad del repuesto están vacias!");
+        validacionRegistroLabel.setText("");
+        txtPlacaCotizacion.setStyle(null);
+        txtDocumentoCliente.setStyle(null);
+        String cedulaCliente = txtDocumentoCliente.getText();
+        String placa = txtPlacaCotizacion.getText();
+        int id_orden = Integer.parseInt(txtid_orden_trabajo.getText());
+        if (SQL_Orden.existeOrden_CedulaPlaca(cedulaCliente, placa)) {
+            try {
+                ResultSet result = SQL_Cotizacion.obtenerCotizacion_Cedula_Placa_Orden(cedulaCliente, placa, id_orden);
+                result.next();
+                this.validadoLabelSet();
+                this.limpiar();
+
+            } catch (SQLException exception) {
+                Dialogs.showError("Error en BD", "Error borrando la cotización");
+            }
         }
         else {
-            this.borrarCotizacion();
+            String textoError = "No existe una orden con esa cédula o placa!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtDocumentoCliente.setStyle(estiloMensajeError);
+            new FadeIn(txtDocumentoCliente).play();
+            txtPlacaCotizacion.setStyle(estiloMensajeError);
+            new FadeIn(txtPlacaCotizacion).play();
         }
-    }
 
-    private boolean borrarCotizacion() {
-        boolean validado = true;
-        validacionRegistroLabel.setText("");
-        // Validacion existencia
-        if (SQL_Cotizacion.editarCotizacion(txtDocumentoCliente.getText(), txtPlacaCotizacion.getText(), Integer.parseInt(txtid_orden_trabajo.getText()))) {
-            // Validación cantidad
-            ResultSet resultado =  SQL_Cotizacion.obtenerCotizacion_Cedula_Placa_Orden(txtDocumentoCliente.getText(), txtPlacaCotizacion.getText(), Integer.parseInt(txtid_orden_trabajo.getText()));
-            try {
-                resultado.next();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);}
-            }
         this.refreshTable();
-
-        return validado;
     }
+
 
 
 

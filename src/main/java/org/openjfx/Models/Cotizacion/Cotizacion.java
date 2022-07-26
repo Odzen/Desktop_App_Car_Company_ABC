@@ -142,16 +142,4 @@ public class Cotizacion  {
                 '}';
     }
 
-
-     // Método que calcula el total de la cotizacion
-
-    public double calcularCotizacion(double total){
-        double IVA;
-        double TOTAL_IVA;
-
-        IVA = TOTAL_SIN_IVA * 0.19;
-        TOTAL_IVA = TOTAL_SIN_IVA + IVA;
-
-        return TOTAL_IVA;
-    }
 }
