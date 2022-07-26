@@ -22,7 +22,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
-import org.openjfx.Models.Cliente.SQL_Cotizacion;
+import org.openjfx.Models.Automovil.SQL_Automovil;
+import org.openjfx.Models.Cotizacion.SQL_Cotizacion;
 import org.openjfx.Models.Cliente.Utils.ValidacionesClientes;
 import org.openjfx.Models.Cliente.Utils.ValidacionesCotizacion;
 import org.openjfx.Models.Cotizacion.Cotizacion;
@@ -30,6 +31,7 @@ import org.openjfx.Models.Cotizacion.Cotizacion;
 
 
 import javax.swing.*;
+import javax.xml.transform.Result;
 
 public class CotizacionController implements Initializable {
 
@@ -251,17 +253,22 @@ public class CotizacionController implements Initializable {
         try {
             Cotizacion cotizacionModelo = new Cotizacion();
 
-
             cotizacionModelo.setCedula_cliente(txtDocumentoCliente.getText());
-            cotizacionModelo.setCedula_vendedor(txtDocumentoVendedor.getText());
+
+            cotizacionModelo.setCedula_vendedor(LoginController.obtenerUsuarioLogeado().getCedula());
+
             cotizacionModelo.setDescripcion(txtDescripcionCotizacion.getText());
             cotizacionModelo.setPlaca_automovil(txtPlacaCotizacion.getText());
             cotizacionModelo.setid_orden_trabajo(Integer.parseInt(txtid_orden_trabajo.getText()));
 
-            DateTimeFormatter fechaHoraFormato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String stringDataFormateada = dtpCotizacion.getValue().format(fechaHoraFormato);
-            Date cotizacionFormat = new SimpleDateFormat("dd/MM/yyyy").parse(stringDataFormateada);
-            cotizacionModelo.setFecha_creacion(cotizacionFormat);
+            String placa = txtPlacaCotizacion.getText();
+            ResultSet result = SQL_Automovil.obtenerAutomovil_placa(placa);
+            int precio_sin_iva = result.getInt("precio");
+
+            cotizacionModelo.setTOTAL_SIN_IVA(precio_sin_iva);
+
+
+
 
 
             //Traer cedula vendedor

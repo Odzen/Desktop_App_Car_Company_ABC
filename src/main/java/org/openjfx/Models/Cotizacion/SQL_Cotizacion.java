@@ -1,7 +1,6 @@
-package org.openjfx.Models.Cliente;
+package org.openjfx.Models.Cotizacion;
 
 import org.openjfx.Models.Conexion;
-import org.openjfx.Models.Cotizacion.Cotizacion;
 
 import java.sql.*;
 import java.util.ArrayList;
