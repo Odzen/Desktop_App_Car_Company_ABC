@@ -201,8 +201,8 @@ public class VentaController implements Initializable {
             //Traer el precio del automovil
             String placa = txtPlacaVenta.getText();
             ResultSet result = SQL_Automovil.obtenerAutomovil_placa(placa);
-            int precio_sin_iva = result.getInt("precio");
             result.next();
+            int precio_sin_iva = result.getInt("precio");
 
             ventaModelo.setTOTAL_SIN_IVA(precio_sin_iva);
 
