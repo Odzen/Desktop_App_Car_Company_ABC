@@ -139,6 +139,25 @@ public class SQL_Automovil {
         }
     }
 
+
+
+      public static ResultSet obtenerTodosMarcasSet(String marca, double cantidad) {
+        try {
+            PreparedStatement sentencia = connection.prepareStatement(
+                    "SELECT COUNT(*) C, marca M FROM automovil"
+            );
+            sentencia.setString(1, marca);
+            sentencia.setDouble(2, cantidad);
+
+            ResultSet resultado = sentencia.executeQuery();
+
+            return resultado;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     // Crea un automovil en la base de datos
     public static void crearAutomovil(Automovil automovil) {
         try {

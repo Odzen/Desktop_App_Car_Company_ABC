@@ -68,6 +68,10 @@ public class MenuGerenteController implements Initializable {
     }
 
 
+    @FXML
+    private void btnResumenVendedorClick() throws IOException {
+        EmpresaAutosABC.setRoot("ResumenGerente");
+    }
     /**
      * Initializes the controller class.
      */

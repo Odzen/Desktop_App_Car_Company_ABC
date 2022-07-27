@@ -61,7 +61,7 @@
          <font>
             <Font size="18.0" />
          </font></Button>
-      <Button fx:id="bttnReporteVendedor" layoutX="606.0" layoutY="255.0" mnemonicParsing="false" onAction="#btnReporteVendedorClick" prefHeight="40.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Reportes">
+      <Button fx:id="bttnReporteVendedor" layoutX="606.0" layoutY="255.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Reportes">
          <effect>
             <InnerShadow />
          </effect>
@@ -77,6 +77,14 @@
          </font>
       </Button>
       <Button fx:id="bttnVentas" layoutX="412.0" layoutY="255.0" mnemonicParsing="false" onAction="#btnVentasClick" prefHeight="40.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Ventas">
+         <effect>
+            <InnerShadow />
+         </effect>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnResumenVendedor" layoutX="606.0" layoutY="337.0" mnemonicParsing="false" onAction="#btnResumenVendedorClick" prefHeight="40.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Resumen">
          <effect>
             <InnerShadow />
          </effect>
