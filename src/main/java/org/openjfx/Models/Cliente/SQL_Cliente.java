@@ -50,6 +50,30 @@ public class SQL_Cliente {
         }
     }
 
+
+    // Verifica si un cliente está activo o no en la base de datos, basado en su cédula
+    public static boolean isActivoCliente_Cedula(String cedula_cliente)  {
+        try {
+            PreparedStatement sentencia = connection.prepareStatement(
+                    "SELECT * FROM cliente WHERE cedula_cliente= ?"
+            );
+
+            sentencia.setString(1, cedula_cliente);
+            ResultSet resultadoCliente = sentencia.executeQuery();
+            resultadoCliente.next();
+
+            boolean activo = resultadoCliente.getBoolean("activo");
+            if (activo) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     // Verifica si un cliente puede modificar
     public static boolean puedoModificarCliente(String cedula_cliente)  {
         try {

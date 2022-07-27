@@ -1,5 +1,6 @@
 package org.openjfx.Controllers;
 
+import GlobalUtils.Dialogs;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -116,25 +117,23 @@ public class LoginController  {
             usuarioLoggeado.setCedula(txtUser.getText());
             usuarioLoggeado.setContraseña(contraseñaCifrada);
 
-            boolean activo;
+            ResultSet resultSet = SQL_Usuario.obtenerUsuario_Cedula(usuarioLoggeado.getCedula());
             // Check si el usuario está inactivo o no
             try {
-                ResultSet resultSet = SQL_Usuario.obtenerUsuario_Cedula(txtUser.getText());
                 resultSet.next();
-                activo = resultSet.getBoolean("activo");
-
+                boolean activo = resultSet.getBoolean("activo");
+                if(!activo) {
+                    invalidoUser.setText("El usuario con esa cédula está inactivo!");
+                    invalidoUser.setStyle(mensajeError);
+                    txtUser.setStyle(estiloMensajeError);
+                    new animatefx.animation.FadeIn(txtUser).play();
+                    new animatefx.animation.Shake(txtUser).play();
+                    return;
+                }
 
             } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-
-            if(!activo) {
-                invalidoUser.setText("El usuario con esa cédula está inactivo!");
-                invalidoUser.setStyle(mensajeError);
-                txtUser.setStyle(estiloMensajeError);
-                new animatefx.animation.FadeIn(txtUser).play();
-                new animatefx.animation.Shake(txtUser).play();
-                return;
+                System.err.println(e);
+                Dialogs.showError("Error en la base de datos", "Error obteniendo el usuario");
             }
 
             // Check si existe un usuario con esa cedula y compara contraseñas
@@ -156,7 +155,8 @@ public class LoginController  {
                     usuarioLoggeado.setId_usuario(result.getInt("id_usuario"));
                     usuarioLoggeado.setSede(result.getString("sede"));
                 } catch (SQLException e) {
-                    throw new RuntimeException(e);
+                    System.err.println(e);
+                    Dialogs.showError("Error en la base de datos", "Error obteniendo el usuario");
                 }
 
 
@@ -167,6 +167,7 @@ public class LoginController  {
                 invalidoUser.setText("Cedula o Contraseña incorrectos!");
                 invalidoUser.setStyle(mensajeError);
                 txtUser.setStyle(estiloMensajeError);
+                txtContraseña.setStyle(estiloMensajeError);
                 new animatefx.animation.FadeIn(txtUser).play();
                 new animatefx.animation.FadeIn(txtContraseña).play();
                 new animatefx.animation.Shake(txtUser).play();

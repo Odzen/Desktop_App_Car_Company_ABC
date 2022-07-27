@@ -7,9 +7,9 @@ import java.util.Date;
 public class Venta  {
 
     private int id_venta;
-    private int IVA;
-    private int TOTAL_IVA;
-    private int TOTAL_SIN_IVA;
+    private double iva;
+    private double total_iva;
+    private double total_sin_iva;
     private String descripcion;
     private Date fecha_modificado;
     private Date fecha_creacion;
@@ -17,16 +17,14 @@ public class Venta  {
     private String cedula_vendedor;
     private String placa_automovil;
     private int id_orden_trabajo;
-
     private String sede;
 
 
 
-
     public Venta() {
-        this.IVA = 0;
-        this.TOTAL_IVA = 0;
-        this.TOTAL_SIN_IVA = 0;
+        this.iva = 0;
+        this.total_iva = 0;
+        this.total_sin_iva = 0;
         this.descripcion = "";
         this.fecha_modificado = new Date();
         this.fecha_creacion = new Date();
@@ -34,41 +32,48 @@ public class Venta  {
         this.cedula_vendedor = "";
         this.placa_automovil= "";
         this.id_orden_trabajo= 0;
-        this.sede="";
+        this.sede = "";
 
     }
-
 
     public int getId_venta() {
         return id_venta;
     }
 
-    public void setId_venta(int id_venta) {
-        this.id_venta = id_venta;
+    public void setId_venta(int id_cotizacion) {
+        this.id_venta = id_cotizacion;
     }
 
-    public String getCedula_cliente() {
-        return cedula_cliente;
+    public double getIva() {
+        return iva;
     }
 
-    public void setCedula_cliente(String cedula_cliente) {
-        this.cedula_cliente = cedula_cliente;
+    public void setIva(double iva) {
+        this.iva = iva;
     }
 
-    public Date getFecha_creacion() {
-        return fecha_creacion;
+    public double getTotal_iva() {
+        return total_iva;
     }
 
-    public void setFecha_creacion(Date fecha_creacion) {
-        this.fecha_creacion = fecha_creacion;
+    public void setTotal_iva(double total_iva) {
+        this.total_iva = total_iva;
     }
 
-    public void setid_orden_trabajo(int id_orden_trabajo) {
-        this.id_orden_trabajo = id_orden_trabajo;
+    public double getTotal_sin_iva() {
+        return total_sin_iva;
     }
 
-    public int getid_orden_trabajo() {
-        return id_orden_trabajo;
+    public void setTotal_sin_iva(double total_sin_iva) {
+        this.total_sin_iva = total_sin_iva;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public Date getFecha_modificado() {
@@ -79,37 +84,20 @@ public class Venta  {
         this.fecha_modificado = fecha_modificado;
     }
 
-    public int getIVA() {
-        return IVA;
+    public Date getFecha_creacion() {
+        return fecha_creacion;
     }
 
-    public void setIVA(int IVA) {
-        this.IVA = IVA;
+    public void setFecha_creacion(Date fecha_creacion) {
+        this.fecha_creacion = fecha_creacion;
     }
 
-    public int getTOTAL_IVA() {
-        return TOTAL_IVA;
+    public String getCedula_cliente() {
+        return cedula_cliente;
     }
 
-    public void setTOTAL_IVA(int TOTAL_IVA) {
-        this.TOTAL_IVA = TOTAL_IVA;
-    }
-
-
-    public int getTOTAL_SIN_IVA() {
-        return TOTAL_SIN_IVA;
-    }
-
-    public void setTOTAL_SIN_IVA(int TOTAL_SIN_IVA) {
-        this.TOTAL_SIN_IVA = TOTAL_SIN_IVA;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setCedula_cliente(String cedula_cliente) {
+        this.cedula_cliente = cedula_cliente;
     }
 
     public String getCedula_vendedor() {
@@ -128,14 +116,6 @@ public class Venta  {
         this.placa_automovil = placa_automovil;
     }
 
-    public String getSede() {
-        return sede;
-    }
-
-    public void setSede(String sede) {
-        this.sede = sede;
-    }
-
     public int getId_orden_trabajo() {
         return id_orden_trabajo;
     }
@@ -144,33 +124,11 @@ public class Venta  {
         this.id_orden_trabajo = id_orden_trabajo;
     }
 
-    @Override
-    public String toString() {
-        return "{" +
-                ", id_venta='" + id_venta + '\'' +
-                ", IVA='" + IVA + '\'' +
-                ", TOTAL_IVA='" + TOTAL_IVA + '\'' +
-                ", TOTAL_SIN_IVA='" + TOTAL_SIN_IVA + '\'' +
-                ", descripcion='" + descripcion + '\'' +
-                ", fecha_modificado=" + fecha_modificado + '\'' +
-                ", fecha_creacion=" + fecha_creacion +'\'' +
-                ", cedula_cliente=" + cedula_cliente +'\'' +
-                ", cedula_vendedor='" + cedula_vendedor + '\'' +
-                ", placa_automovil='" + placa_automovil + '\'' +
-                ", id_tipo_usuario='" + id_orden_trabajo + '\'' +
-                '}';
+    public String getSede() {
+        return sede;
     }
 
-
-     // Método que calcula el total de la cotizacion
-
-    public double calcularCotizacion(double total){
-        double IVA;
-        double TOTAL_IVA;
-
-        IVA = TOTAL_SIN_IVA * 0.19;
-        TOTAL_IVA = TOTAL_SIN_IVA + IVA;
-
-        return TOTAL_IVA;
+    public void setSede(String sede) {
+        this.sede = sede;
     }
 }

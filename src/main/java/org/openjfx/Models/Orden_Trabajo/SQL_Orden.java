@@ -30,6 +30,28 @@ public class SQL_Orden {
         }
     }
 
+    public static boolean isActivoOrden_Id(int id_orden)  {
+        try {
+            PreparedStatement sentencia = connection.prepareStatement(
+                    "SELECT * FROM orden_de_trabajo WHERE id_orden="+ id_orden
+            );
+            ResultSet resultado = sentencia.executeQuery();
+            resultado.next();
+
+            boolean activo = resultado.getBoolean("activo");
+
+            if (activo) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            System.out.printf("Error al verificar la existencia por ID", e);
+            throw new RuntimeException(e);
+        }
+    }
+
     // Verifica si una Orden existe o no en la base de datos, basado en su cédula de cliente y placa
     public static boolean existeOrden_CedulaPlaca(String cedula, String placa)  {
         try {
