@@ -141,45 +141,6 @@ public class GestionUsuJefeTallerRepuestoOrdenesController implements Initializa
             txtIdRepuesto.setStyle(estiloMensajeError);
             new FadeIn(txtIdRepuesto).play();
         }
-        int cantidadActualRepuesto = 0;
-        try{
-            ResultSet resultRepuesto = SQL_Repuesto.obtenerRepuesto_Id(Integer.parseInt(txtIdRepuesto.getText()));
-            resultRepuesto.next();
-            cantidadActualRepuesto = resultRepuesto.getInt("cantidad");
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        int cantidadActualRepuestoOrden = 0;
-        try{
-            ResultSet resultRepuesto = SQL_RepuestoOrden.obtenerRepuestoOrden_Ids(Integer.parseInt(txtIdRepuesto.getText()), Integer.parseInt(txtIdOrden.getText()));
-            resultRepuesto.next();
-            cantidadActualRepuestoOrden = resultRepuesto.getInt("cantidad");
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        /*
-        if(Integer.parseInt(txtCantidadRepuesto.getText()) > cantidadActualRepuesto)
-        {
-            validado = false;
-            String textoError = "La cantidad es mayor que la cantidad existente!";
-            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
-            validacionRegistroLabel.setStyle(mensajeError);
-            txtCantidadRepuesto.setStyle(estiloMensajeError);
-            new FadeIn(txtCantidadRepuesto).play();
-        }
-        */
-        if(Integer.parseInt(txtCantidadRepuesto.getText()) == cantidadActualRepuestoOrden)
-        {
-            validado = false;
-            String textoError = "La cantidad es igual a la ya registrada!";
-            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
-            validacionRegistroLabel.setStyle(mensajeError);
-            txtCantidadRepuesto.setStyle(estiloMensajeError);
-            new FadeIn(txtCantidadRepuesto).play();
-        }
         // Valida el id de la orden
         if (!ValidacionesRepuestosOrdenes.validarIds(txtIdOrden.getText()))
         {
@@ -209,7 +170,28 @@ public class GestionUsuJefeTallerRepuestoOrdenesController implements Initializa
             new FadeIn(txtIdRepuesto).play();
             txtIdOrden.setStyle(estiloMensajeError);
             new FadeIn(txtIdOrden).play();
+        } else if (SQL_RepuestoOrden.existeRepuestoOrden_Id(Integer.parseInt(txtIdRepuesto.getText()), Integer.parseInt(txtIdOrden.getText())) && !crear) {
+            int cantidadActualRepuestoOrden = 0;
+            try{
+                ResultSet resultRepuesto = SQL_RepuestoOrden.obtenerRepuestoOrden_Ids(Integer.parseInt(txtIdRepuesto.getText()), Integer.parseInt(txtIdOrden.getText()));
+                resultRepuesto.next();
+                cantidadActualRepuestoOrden = resultRepuesto.getInt("cantidad");
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            if(Integer.parseInt(txtCantidadRepuesto.getText()) == cantidadActualRepuestoOrden)
+            {
+                validado = false;
+                String textoError = "La cantidad es igual a la ya registrada!";
+                validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+                validacionRegistroLabel.setStyle(mensajeError);
+                txtCantidadRepuesto.setStyle(estiloMensajeError);
+                new FadeIn(txtCantidadRepuesto).play();
+            }
         }
+
+        
 
         // Mensaje si el ingreso es correcto
         return validado;
@@ -237,6 +219,7 @@ public class GestionUsuJefeTallerRepuestoOrdenesController implements Initializa
             {
                 repuestoOrden.setCantidad(Integer.parseInt(txtCantidadRepuesto.getText()));
                 SQL_RepuestoOrden.crearRepuestoOrden(repuestoOrden);
+                this.validadoLabelSet();
             }
             else {
                 int cantidadActualRepuestoOrden = 0;
