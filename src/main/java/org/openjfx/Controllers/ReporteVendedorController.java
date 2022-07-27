@@ -8,15 +8,19 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
+import org.openjfx.Models.Automovil.Automovil;
 
 
-public class MenuVendedorController implements Initializable {
+public class ReporteVendedorController implements Initializable {
     @FXML
     private Button btnCerrarSesion;
 
@@ -24,25 +28,19 @@ public class MenuVendedorController implements Initializable {
     private Button btnSalir;
 
     @FXML
-    private Button btnVendedor;
-
-
-    @FXML
-    private Button bttnBodegaVendedor;
-
-    @FXML
-    private Button bttnReporteVendedor;
-
-    @FXML
-    private  Button bttnCotizacion;
-
-    @FXML
-    private  Button bttnVentas;
-    @FXML
     private Label bttnSalir;
+
+    //@FXML
+    //private BarChart<?,?> grafico_marca_vendedor;
 
     @FXML
     private Label lblSaludo;
+
+    @FXML
+    private Tab ventana_;
+
+    @FXML
+    private AnchorPane ventana_marca_vendedor;
 
     // Para salir de la aplicación
     @FXML
@@ -50,26 +48,11 @@ public class MenuVendedorController implements Initializable {
         Stage stage = (Stage) btnSalir.getScene().getWindow();
         stage.close();
     }
-    @FXML
-    private void btnGestionVendedorClick() throws IOException{
-        EmpresaAutosABC.setRoot("GestionVendedor");
-    }
 
     @FXML
-    private void btnCotizacionClick() throws IOException{
-        EmpresaAutosABC.setRoot("Cotizacion");
+    protected void btnInicio() throws IOException {
+        EmpresaAutosABC.setRoot("menuVendedor");
     }
-
-    @FXML
-    private void btnVentasClick() throws IOException{
-        EmpresaAutosABC.setRoot("Venta");
-    }
-
-    @FXML
-    private void btnReporteVendedorClick() throws IOException{
-        EmpresaAutosABC.setRoot("ReporteVendedor");
-    }
-
 
     @FXML
     private void btnCerrarSesionClick() throws IOException{

@@ -114,7 +114,7 @@ public class SQL_Automovil {
         }
     }
 
-    // Crea un cliente en la base de datos
+    // Crea un automovil en la base de datos
     public static void crearAutomovil(Automovil automovil) {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
