@@ -68,10 +68,10 @@ public class MenuVendedorController implements Initializable {
         EmpresaAutosABC.setRoot("Venta");
     }
 
-   /* @FXML
+   @FXML
     private void btnReporteVendedorClick() throws IOException{
-        EmpresaAutosABC.setRoot("ReporteVendedor");
-    }*/
+        EmpresaAutosABC.setRoot("ReportesVendedor");
+    }
 
     @FXML
     private void btnResumenVendedorClick() throws IOException {
