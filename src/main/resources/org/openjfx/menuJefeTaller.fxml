@@ -20,12 +20,12 @@
             <font>
                 <Font size="18.0" />
             </font></Label>
-        <Button fx:id="bttnJefeTallerRepuestos" layoutX="125.0" layoutY="255.0" mnemonicParsing="false" onAction="#btnGestionRespuestosJefeTallerClick" prefHeight="40.0" prefWidth="194.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-color: #3d739c#3d739c; -fx-border-radius: 12;" text="Gestión de Repuestos">
+        <Button fx:id="bttnJefeTallerRepuestos" layoutX="174.0" layoutY="234.0" mnemonicParsing="false" onAction="#btnGestionRespuestosJefeTallerClick" prefHeight="42.0" prefWidth="208.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-color: #3d739c#3d739c; -fx-border-radius: 12;" text="Gestión de Repuestos">
             <effect>
                 <InnerShadow />
             </effect>
             <font>
-                <Font size="16.0" />
+                <Font size="18.0" />
             </font></Button>
         <Button fx:id="btnSalir" layoutX="84.0" layoutY="526.0" mnemonicParsing="false" onAction="#btnSalirClickmenu" prefHeight="37.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #b8b9ba#b8b9ba #b8b9ba#b8b9ba; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Salir" underline="true">
             <effect>
@@ -54,19 +54,27 @@
             <font>
                 <Font name="System Bold" size="18.0" />
             </font></Button>
-        <Button fx:id="bttnJefeTallerOrdenes" layoutX="374.0" layoutY="255.0" mnemonicParsing="false" onAction="#btnGestionOrdenesJefeTallerClick" prefHeight="42.0" prefWidth="297.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Gestion de Ordenes de Trabajo">
+        <Button fx:id="bttnJefeTallerOrdenes" layoutX="482.0" layoutY="234.0" mnemonicParsing="false" onAction="#btnGestionOrdenesJefeTallerClick" prefHeight="42.0" prefWidth="297.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Gestion de Ordenes de Trabajo">
             <effect>
                 <InnerShadow />
             </effect>
             <font>
                 <Font size="18.0" />
             </font></Button>
-        <Button fx:id="bttnReporteGer" layoutX="701.0" layoutY="255.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Reportes">
+        <Button fx:id="bttnReporteGer" layoutX="563.0" layoutY="338.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Reportes">
             <effect>
                 <InnerShadow />
             </effect>
             <font>
                 <Font size="18.0" />
             </font></Button>
+      <Button fx:id="bttnJefeTallerRepuestosPorOrden" layoutX="141.0" layoutY="338.0" mnemonicParsing="false" onAction="#btnGestionRepuestosPorOrdenJefeTallerClick" prefHeight="42.0" prefWidth="297.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Vincular Repuestos con Ordenes">
+         <effect>
+            <InnerShadow />
+         </effect>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
     </children>
 </AnchorPane>

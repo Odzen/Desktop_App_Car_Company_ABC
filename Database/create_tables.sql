@@ -177,6 +177,10 @@ CREATE TABLE IF NOT EXISTS repuestos_por_ordenes (
     id_orden INT,
     id_repuesto INT,
     cantidad INT NOT NULL,
+    cedula_creado_por text NOT NULL,
+    fecha_modificado date NOT NULL,
+    fecha_creacion date NOT NULL,
+    activo bool NOT NULL,
     PRIMARY KEY (id_orden, id_repuesto),
     CONSTRAINT "FK_repuestos_por_ordenes.id_orden"
         FOREIGN KEY (id_orden)

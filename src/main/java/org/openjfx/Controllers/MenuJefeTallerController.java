@@ -55,10 +55,14 @@ public class MenuJefeTallerController implements Initializable {
         EmpresaAutosABC.setRoot("GestionOrdenes");
     }
 
-
     @FXML
     private void btnCerrarSesionClick() throws IOException{
         EmpresaAutosABC.setRoot("Login");
+    }
+
+    @FXML
+    private void btnGestionRepuestosPorOrdenJefeTallerClick() throws IOException{
+        EmpresaAutosABC.setRoot("GestionRepuestosOrden");
     }
 
     /**
