@@ -85,7 +85,7 @@
          </font>
       </Hyperlink>
       <Separator layoutX="83.0" layoutY="24.0" orientation="VERTICAL" prefHeight="43.0" prefWidth="0.0" />
-      <Label layoutX="98.0" layoutY="36.0" prefHeight="23.0" prefWidth="88.0" text="Reporte">
+      <Label layoutX="98.0" layoutY="36.0" prefHeight="23.0" prefWidth="88.0" text="Resumen">
          <font>
             <Font size="18.0" />
          </font>

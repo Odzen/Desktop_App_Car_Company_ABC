@@ -103,15 +103,13 @@ public class ResumenVendedorController implements Initializable {
     }
 
 
-    ArrayList < String > p = new ArrayList < String > ();
-    ArrayList < Double > c = new ArrayList < > ();
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-/*
+
         ObservableList<PieChart.Data> pieChartDataMarca =
                 FXCollections.observableArrayList(
                   new PieChart.Data("Mazda", 50),
@@ -137,9 +135,9 @@ public class ResumenVendedorController implements Initializable {
                         new PieChart.Data("Negro",25)
                 );
         grafico_color_Vendedor.setData(pieChartDataColor);
-*/
 
-         loadData();
+
+        // loadData();
 
     }
    /* public static ResultSet obtenerTodosMarcasSet() {
@@ -155,35 +153,7 @@ public class ResumenVendedorController implements Initializable {
             throw new RuntimeException(e);
         }
     }*/
-    /*public void loadData() {
-        ObservableList < PieChart.Data > piechartdata;
-        piechartdata = FXCollections.observableArrayList();
 
-        int cantidadMarca = 0;
-        int cantidadColor = 0;
-        int cantidadAño
-
-        try {
-            ResultSet result = SQL_Automovil.obtenerTodosAutomovilSet();
-            while (result.next()) {
-                Automovil dataMarca = new Automovil();
-
-                dataMarca.setMarca(result.getString("marca"));
-                dataMarca.setMarca(result.getString("color"));
-                dataMarca.setMarca(result.getString("año"));
-
-
-                piechartdata.add(new PieChart.Data(result.getString("marca"), result.getDouble("C")));
-                p.add(result.getString("M"));
-                c.add(result.getDouble("C"));
-                grafico_marca_Vendedor.setData(piechartdata);
-                grafico_marca_Vendedor.setVisible(true);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-
-        }
-    }*/
 
     /*public int contar_marca() throws SQLException {
         int n = 0;
@@ -205,7 +175,8 @@ public class ResumenVendedorController implements Initializable {
     }*/
 
 
-
+    ArrayList < String > p = new ArrayList <String> ();
+    ArrayList < Double > c = new ArrayList <> ();
 
     public void loadData() {
         ObservableList < PieChart.Data > piechartdata;
@@ -220,7 +191,6 @@ public class ResumenVendedorController implements Initializable {
             if(cantidad.next()){
 
                 //System.out.println(cantidad.getString("CANTIDAD"));
-
 
                 piechartdata.add(new PieChart.Data(cantidad.getString("marca"), cantidad.getDouble("CANTIDAD")));
                 p.add(cantidad.getString("marca"));
