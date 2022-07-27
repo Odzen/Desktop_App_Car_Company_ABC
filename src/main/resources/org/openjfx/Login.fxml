@@ -8,26 +8,39 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="945.0" style="-fx-background-color: #c7e9ff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.Controllers.LoginController">
    <children>
-      <ImageView id="LOGO" fitHeight="158.0" fitWidth="254.0" layoutX="341.0" layoutY="73.0">
+      <ImageView id="LOGO" fitHeight="204.0" fitWidth="304.0" layoutX="316.0" layoutY="29.0">
          <image>
             <Image url="@recursos/logo.png" />
          </image>
       </ImageView>
-      <TextField fx:id="txtUser" layoutX="361.0" layoutY="252.0" prefHeight="42.0" prefWidth="214.0" promptText="Cédula de usuario" style="-fx-background-radius: 8;" />
-      <PasswordField fx:id="txtContraseña" layoutX="361.0" layoutY="306.0" prefHeight="42.0" prefWidth="214.0" promptText="Contraseña" style="-fx-background-radius: 8;" />
+      <TextField fx:id="txtUser" layoutX="355.0" layoutY="243.0" prefHeight="50.0" prefWidth="225.0" promptText="Cédula de usuario" style="-fx-background-radius: 8;">
+         <font>
+            <Font size="15.0" />
+         </font></TextField>
+      <PasswordField fx:id="txtContraseña" layoutX="355.0" layoutY="307.0" prefHeight="50.0" prefWidth="226.0" promptText="Contraseña" style="-fx-background-radius: 8;">
+         <font>
+            <Font size="15.0" />
+         </font></PasswordField>
       <Button fx:id="btnLogin" graphicTextGap="5.0" layoutX="552.0" layoutY="384.0" mnemonicParsing="false" onAction="#btnLoginClick" prefHeight="33.0" prefWidth="86.0" style="-fx-background-color: #c8fcb3#c8fcb3 #c8fcb3#c8fcb3; -fx-background-radius: 50;" text="Entrar">
          <effect>
             <DropShadow />
-         </effect></Button>
-      <Button fx:id="btnSalir" graphicTextGap="5.0" layoutX="283.0" layoutY="384.0" mnemonicParsing="false" onAction="#btnSalirClick" prefHeight="33.0" prefWidth="86.0" style="-fx-background-color: #b8b9ba#b8b9ba; -fx-background-radius: 50;" text="Salir">
+         </effect>
+         <font>
+            <Font size="16.0" />
+         </font></Button>
+      <Button fx:id="btnSalir" graphicTextGap="5.0" layoutX="267.0" layoutY="383.0" mnemonicParsing="false" onAction="#btnSalirClick" prefHeight="37.0" prefWidth="86.0" style="-fx-background-color: #b8b9ba#b8b9ba; -fx-background-radius: 50;" text="Salir">
          <effect>
             <DropShadow />
          </effect>
+         <font>
+            <Font size="14.0" />
+         </font>
       </Button>
       <Label fx:id="invalidoUser" layoutX="301.0" layoutY="426.0" prefHeight="138.0" prefWidth="350.0" textAlignment="CENTER" textFill="RED" />
-      <Label fx:id="validoUser" layoutX="311.0" layoutY="418.0" prefHeight="145.0" prefWidth="315.0" textAlignment="CENTER" textFill="GREEN" />
+      <Label fx:id="validoUser" layoutX="310.0" layoutY="418.0" prefHeight="145.0" prefWidth="315.0" textAlignment="CENTER" textFill="GREEN" />
    </children>
 </AnchorPane>

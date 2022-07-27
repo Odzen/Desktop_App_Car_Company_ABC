@@ -212,9 +212,9 @@ CREATE TABLE IF NOT EXISTS cotizacion (
 -- Tabla de Ventas
 CREATE TABLE IF NOT EXISTS venta (
     id_venta SERIAL,
-    IVA INT NOT NULL,
-    TOTAL_IVA INT NOT NULL,
-    TOTAL_SIN_IVA INT NOT NULL,
+    IVA numeric NOT NULL,
+    TOTAL_IVA numeric NOT NULL,
+    TOTAL_SIN_IVA numeric NOT NULL,
     descripcion text,
     fecha_modificado date NOT NULL,
     fecha_creacion date NOT NULL,
@@ -224,15 +224,9 @@ CREATE TABLE IF NOT EXISTS venta (
     id_orden_trabajo INT,
     sede text NOT NULL,
     PRIMARY KEY (id_venta),
-    CONSTRAINT "FK_venta.placa_automovil"
-     FOREIGN KEY (placa_automovil)
-         REFERENCES automovil(placa),
     CONSTRAINT "FK_venta.cedula_cliente"
      FOREIGN KEY (cedula_cliente)
-         REFERENCES cliente(cedula_cliente),
-    CONSTRAINT "FK_venta.id_orden_trabajo"
-     FOREIGN KEY (id_orden_trabajo)
-         REFERENCES orden_de_trabajo(id_orden)
+         REFERENCES cliente(cedula_cliente)
 );
 
 -- Tabla de Solicitudes

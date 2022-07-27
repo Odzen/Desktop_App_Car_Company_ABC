@@ -32,6 +32,31 @@ public class SQL_Automovil {
         }
     }
 
+
+    // Verifica si una automovil existe o no en la base de datos, basado en su placa
+    public static boolean isActivoAutomovil_placa(String placa)  {
+        try {
+            PreparedStatement sentencia = connection.prepareStatement(
+                    "SELECT * FROM automovil WHERE placa= ?"
+            );
+
+            sentencia.setString(1, placa);
+            ResultSet resultado = sentencia.executeQuery();
+            resultado.next();
+
+            boolean activo = resultado.getBoolean("activo");
+
+            if (activo) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     // Obtiene todos los registros de clientes que están en la base de datos
     public static ArrayList<Automovil> leerTodoslosAutomoviles() {
         try {

@@ -18,20 +18,20 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="945.0" style="-fx-background-color: #c7e9ff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.Controllers.CotizacionController">
    <children>
-      <Label layoutX="88.0" layoutY="26.0" prefHeight="23.0" prefWidth="88.0" text="Cotización">
+      <Label layoutX="101.0" layoutY="22.0" prefHeight="23.0" prefWidth="88.0" text="Cotización">
          <font>
             <Font size="18.0" />
          </font></Label>
-      <Hyperlink layoutX="19.0" layoutY="23.0" onAction="#btnInicio" prefHeight="31.0" prefWidth="65.0" text="Inicio">
+      <Hyperlink layoutX="14.0" layoutY="18.0" onAction="#btnInicio" prefHeight="31.0" prefWidth="65.0" text="Inicio">
          <font>
             <Font size="18.0" />
          </font></Hyperlink>
-      <Separator layoutX="73.0" layoutY="14.0" orientation="VERTICAL" prefHeight="43.0" prefWidth="0.0" />
+      <Separator layoutX="88.0" layoutY="14.0" orientation="VERTICAL" prefHeight="43.0" prefWidth="0.0" />
       <TextField fx:id="txtDocumentoCliente" layoutX="122.0" layoutY="78.0" prefHeight="35.0" prefWidth="158.0" promptText="Cédula cliente" style="-fx-background-radius: 12;">
          <font>
             <Font size="15.0" />
          </font></TextField>
-      <Button fx:id="buscarCedula" layoutX="736.0" layoutY="80.0" mnemonicParsing="false" onAction="#btnBuscarCedula" style="-fx-background-radius: 12; -fx-background-color: gold; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Buscar">
+      <Button fx:id="buscarCedula" layoutX="736.0" layoutY="80.0" mnemonicParsing="false" onAction="#btnBuscarCedulaPlacaOrden" style="-fx-background-radius: 12; -fx-background-color: gold; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Buscar">
          <effect>
             <InnerShadow color="#f5f2f2c7" />
          </effect>
@@ -50,11 +50,11 @@
             <TableColumn fx:id="col_Id_Cliente_Cotizacion" prefWidth="107.0" text="Cédula cliente" />
             <TableColumn fx:id="col_id_orden_trabajo_Cotizacion" prefWidth="73.0" text="Id Orden" />
             <TableColumn fx:id="col_placa_Cotizacion" prefWidth="93.0" text="Placa" />
-            <TableColumn fx:id="col_total_iva_cotizacion" prefWidth="121.0" text="Total a pagar" />
-            <TableColumn fx:id="col_total_sin_iva_Cotizacion" prefWidth="105.0" text="Subtotal" />
-            <TableColumn fx:id="col_iva_Cotizacion" prefWidth="90.0" text="IVA" />
-            <TableColumn fx:id="col_Descripcion_Cotizacion" prefWidth="200.0" text="Descripción" />
-            <TableColumn fx:id="col_Id_Vendedor_Cotizacion" prefWidth="111.0" text="Cédula vendedor" />
+            <TableColumn fx:id="col_total_iva_cotizacion" prefWidth="165.0" text="Total a pagar" />
+            <TableColumn fx:id="col_total_sin_iva_Cotizacion" prefWidth="134.0" text="Subtotal" />
+            <TableColumn fx:id="col_iva_Cotizacion" prefWidth="137.0" text="IVA" />
+            <TableColumn fx:id="col_Descripcion_Cotizacion" prefWidth="191.0" text="Descripción" />
+            <TableColumn fx:id="col_Id_Vendedor_Cotizacion" minWidth="0.0" prefWidth="0.0" text="Cédula vendedor" />
             <TableColumn fx:id="col_fecha_modificacion_cotizacion" prefWidth="103.0" text="Modificado" />
             <TableColumn fx:id="col_fecha_creacion_Cotizacion" prefWidth="128.0" text="Creación" />
          </columns>
@@ -94,15 +94,7 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="btnBorrar" layoutX="388.0" layoutY="203.0" mnemonicParsing="false" onAction="#btnBorrarClicked" prefHeight="34.0" prefWidth="132.0" style="-fx-background-radius: 12; -fx-background-color: red; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Cambiar estado" textFill="#ffffffed">
-         <effect>
-            <InnerShadow color="#f5f2f2c7" />
-         </effect>
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <Button fx:id="limpiar" layoutX="557.0" layoutY="204.0" mnemonicParsing="false" onAction="#btnLimpiar" style="-fx-background-radius: 12; -fx-background-color: gold; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Limpiar">
+      <Button fx:id="limpiar" layoutX="396.0" layoutY="204.0" mnemonicParsing="false" onAction="#btnLimpiar" style="-fx-background-radius: 12; -fx-background-color: gold; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Limpiar">
          <effect>
             <InnerShadow color="#f5f2f2c7" />
          </effect>
@@ -139,7 +131,7 @@
          <font>
             <Font size="15.0" />
          </font></TextField>
-      <Button fx:id="imprimirReportesCotizacion" layoutX="639.0" layoutY="204.0" mnemonicParsing="false" onAction="#btnImprimirpdf" style="-fx-background-radius: 12; -fx-background-color: #899bab; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Imprimir Reporte">
+      <Button fx:id="imprimirReportesCotizacion" layoutX="495.0" layoutY="204.0" mnemonicParsing="false" onAction="#btnImprimirpdf" style="-fx-background-radius: 12; -fx-background-color: #899bab; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Imprimir Reporte">
          <effect>
             <InnerShadow color="#f5f2f2c7" />
          </effect>
