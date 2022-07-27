@@ -74,9 +74,9 @@ public class MenuVendedorController implements Initializable {
     }*/
 
     @FXML
-    private void btnResumenVendedorClick() throws IOException{
+    private void btnResumenVendedorClick() throws IOException {
         EmpresaAutosABC.setRoot("ResumenVendedor");
-
+    }
     @FXML
     private void btnCerrarSesionClick() throws IOException{
         EmpresaAutosABC.setRoot("Login");
