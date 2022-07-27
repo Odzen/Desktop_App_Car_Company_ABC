@@ -193,9 +193,9 @@ CREATE TABLE IF NOT EXISTS repuestos_por_ordenes (
 -- Tabla de Cotizaciones
 CREATE TABLE IF NOT EXISTS cotizacion (
     id_cotizacion SERIAL,
-    IVA INT NOT NULL,
-    TOTAL_IVA INT NOT NULL,
-    TOTAL_SIN_IVA INT NOT NULL,
+    IVA numeric NOT NULL,
+    TOTAL_IVA numeric NOT NULL,
+    TOTAL_SIN_IVA numeric NOT NULL,
     descripcion text,
     fecha_modificado date NOT NULL,
     fecha_creacion date NOT NULL,
@@ -205,13 +205,7 @@ CREATE TABLE IF NOT EXISTS cotizacion (
     id_orden_trabajo INT,
     CONSTRAINT "FK_cotizacion.cedula_cliente"
         FOREIGN KEY (cedula_cliente)
-            REFERENCES cliente(cedula_cliente),
-    CONSTRAINT "FK_cotizacion.placa_automovil"
-        FOREIGN KEY (placa_automovil)
-            REFERENCES automovil(placa),
-    CONSTRAINT "FK_cotizacion.id_orden_trabajo"
-        FOREIGN KEY (id_orden_trabajo)
-            REFERENCES orden_de_trabajo(id_orden)
+            REFERENCES cliente(cedula_cliente)
 );
 
 

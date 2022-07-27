@@ -114,11 +114,11 @@ public class SQL_Cotizacion {
 
 
                 Integer IVA = resultadoCotizacion.getInt("IVA");
-                cotizacion.setIVA(IVA);
+                cotizacion.setIva(IVA);
                 Integer TOTAL_IVA = resultadoCotizacion.getInt("TOTAL_IVA");
-                cotizacion.setTOTAL_IVA(TOTAL_IVA);
+                cotizacion.setTotal_iva(TOTAL_IVA);
                 Integer TOTAL_SIN_IVA = resultadoCotizacion.getInt("TOTAL_SIN_IVA");
-                cotizacion.setTOTAL_SIN_IVA(TOTAL_SIN_IVA);
+                cotizacion.setTotal_sin_iva(TOTAL_SIN_IVA);
                 String descripcion = resultadoCotizacion.getString("descripcion");
                 cotizacion.setDescripcion(descripcion);
                 Date fecha_modificado = resultadoCotizacion.getDate("fecha_modificado");
@@ -132,7 +132,7 @@ public class SQL_Cotizacion {
                 String placa_automovil = resultadoCotizacion.getString("placa_automovil");
                 cotizacion.setPlaca_automovil(placa_automovil);
                 Integer id_orden_trabajo = resultadoCotizacion.getInt("id_orden_trabajo");
-                cotizacion.setid_orden_trabajo(id_orden_trabajo);
+                cotizacion.setId_orden_trabajo(id_orden_trabajo);
 
                 cotizacionResultado.add(cotizacion);
 
@@ -152,18 +152,18 @@ public class SQL_Cotizacion {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
                     "INSERT INTO cotizacion " +
-                            "(IVA,TOTAL_IVA,TOTAL_SIN_IVA, descripcion, fecha_modificado, fecha_creacion, cedula_cliente, cedula_vendedor, placa_automovil, id_orden_trabajo )" +
+                            "(iva,total_iva,total_sin_iva, descripcion, fecha_modificado, fecha_creacion, cedula_cliente, cedula_vendedor, placa_automovil, id_orden_trabajo )" +
                             "VALUES  (?,?,?,?,?,?,?,?,?,?)");
-            sentencia.setInt(1, cotizacion.getIVA());
-            sentencia.setInt(2, cotizacion.getTOTAL_IVA());
-            sentencia.setInt(3, cotizacion.getTOTAL_SIN_IVA());
+            sentencia.setDouble(1, cotizacion.getIva());
+            sentencia.setDouble(2, cotizacion.getTotal_iva());
+            sentencia.setDouble(3, cotizacion.getTotal_sin_iva());
             sentencia.setString(4, cotizacion.getDescripcion());
             sentencia.setDate(5,  new java.sql.Date(cotizacion.getFecha_modificado().getTime()));
             sentencia.setDate(6,  new java.sql.Date(cotizacion.getFecha_creacion().getTime()));
             sentencia.setString(7, cotizacion.getCedula_cliente());
             sentencia.setString(8, cotizacion.getCedula_vendedor());
             sentencia.setString(9, cotizacion.getPlaca_automovil());
-            sentencia.setInt(10, cotizacion.getid_orden_trabajo());
+            sentencia.setInt(10, cotizacion.getId_orden_trabajo());
 
             sentencia.execute();
 
@@ -187,19 +187,10 @@ public class SQL_Cotizacion {
                 PreparedStatement sentencia = connection.prepareStatement(
                         "UPDATE cotizacion SET " +
                                 "descripcion = ? , " +
-                                "cedula_vendedor = ? , " +
+                                "cedula_vendedor = ?  " +
                                 "WHERE cedula_cliente = ? AND (placa_automovil=? OR id_orden_trabajo=? )");
 
-                sentencia.setInt(1, cotizacionActualizado.getIVA());
-                sentencia.setInt(2, cotizacionActualizado.getTOTAL_IVA());
-                sentencia.setInt(3, cotizacionActualizado.getTOTAL_SIN_IVA());
-                sentencia.setString(4, cotizacionActualizado.getDescripcion());
-                sentencia.setDate(5,  new java.sql.Date(cotizacionActualizado.getFecha_modificado().getTime()));
-                sentencia.setDate(6,  new java.sql.Date(cotizacionActualizado.getFecha_creacion().getTime()));
-                sentencia.setString(7, cedula_cliente);
-                sentencia.setString(8, cotizacionActualizado.getCedula_vendedor());
-                sentencia.setString(9, cotizacionActualizado.getPlaca_automovil());
-                sentencia.setInt(10, cotizacionActualizado.getid_orden_trabajo());
+                sentencia.setDouble(1, cotizacionActualizado.getIva());
 
 
                 int filasAfectadas = sentencia.executeUpdate();
@@ -230,16 +221,6 @@ public class SQL_Cotizacion {
             );
 
 
-            sentencia.setInt(1, cotizacionActualizado.getIVA());
-            sentencia.setInt(2, cotizacionActualizado.getTOTAL_IVA());
-            sentencia.setInt(3, cotizacionActualizado.getTOTAL_SIN_IVA());
-            sentencia.setString(4, cotizacionActualizado.getDescripcion());
-            sentencia.setDate(5,  new java.sql.Date(cotizacionActualizado.getFecha_modificado().getTime()));
-            sentencia.setDate(6,  new java.sql.Date(cotizacionActualizado.getFecha_creacion().getTime()));
-            sentencia.setString(7, cedula_cliente);
-            sentencia.setString(8, cotizacionActualizado.getCedula_vendedor());
-            sentencia.setString(9, cotizacionActualizado.getPlaca_automovil());
-            sentencia.setInt(10, cotizacionActualizado.getid_orden_trabajo());
 
             int filasAfectadas = sentencia.executeUpdate();
             System.out.println(filasAfectadas);

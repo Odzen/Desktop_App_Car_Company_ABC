@@ -7,9 +7,9 @@ import java.util.Date;
 public class Cotizacion  {
 
     private int id_cotizacion;
-    private int IVA;
-    private int TOTAL_IVA;
-    private int TOTAL_SIN_IVA;
+    private double iva;
+    private double total_iva;
+    private double total_sin_iva;
     private String descripcion;
     private Date fecha_modificado;
     private Date fecha_creacion;
@@ -22,9 +22,9 @@ public class Cotizacion  {
 
 
     public Cotizacion() {
-        this.IVA = 0;
-        this.TOTAL_IVA = 0;
-        this.TOTAL_SIN_IVA = 0;
+        this.iva = 0;
+        this.total_iva = 0;
+        this.total_sin_iva = 0;
         this.descripcion = "";
         this.fecha_modificado = new Date();
         this.fecha_creacion = new Date();
@@ -35,6 +35,13 @@ public class Cotizacion  {
 
     }
 
+    public int getId_orden_trabajo() {
+        return id_orden_trabajo;
+    }
+
+    public void setId_orden_trabajo(int id_orden_trabajo) {
+        this.id_orden_trabajo = id_orden_trabajo;
+    }
 
     public int getId_cotizacion() {
         return id_cotizacion;
@@ -60,14 +67,6 @@ public class Cotizacion  {
         this.fecha_creacion = fecha_creacion;
     }
 
-    public void setid_orden_trabajo(int id_orden_trabajo) {
-        this.id_orden_trabajo = id_orden_trabajo;
-    }
-
-    public int getid_orden_trabajo() {
-        return id_orden_trabajo;
-    }
-
     public Date getFecha_modificado() {
         return fecha_modificado;
     }
@@ -76,29 +75,28 @@ public class Cotizacion  {
         this.fecha_modificado = fecha_modificado;
     }
 
-    public int getIVA() {
-        return IVA;
+    public double getIva() {
+        return iva;
     }
 
-    public void setIVA(int IVA) {
-        this.IVA = IVA;
+    public void setIva(double iva) {
+        this.iva = iva;
     }
 
-    public int getTOTAL_IVA() {
-        return TOTAL_IVA;
+    public double getTotal_iva() {
+        return total_iva;
     }
 
-    public void setTOTAL_IVA(int TOTAL_IVA) {
-        this.TOTAL_IVA = TOTAL_IVA;
+    public void setTotal_iva(double total_iva) {
+        this.total_iva = total_iva;
     }
 
-
-    public int getTOTAL_SIN_IVA() {
-        return TOTAL_SIN_IVA;
+    public double getTotal_sin_iva() {
+        return total_sin_iva;
     }
 
-    public void setTOTAL_SIN_IVA(int TOTAL_SIN_IVA) {
-        this.TOTAL_SIN_IVA = TOTAL_SIN_IVA;
+    public void setTotal_sin_iva(double total_sin_iva) {
+        this.total_sin_iva = total_sin_iva;
     }
 
     public String getDescripcion() {
@@ -129,9 +127,9 @@ public class Cotizacion  {
     public String toString() {
         return "{" +
                 ", id_cotizacion='" + id_cotizacion + '\'' +
-                ", IVA='" + IVA + '\'' +
-                ", TOTAL_IVA='" + TOTAL_IVA + '\'' +
-                ", TOTAL_SIN_IVA='" + TOTAL_SIN_IVA + '\'' +
+                ", IVA='" + iva + '\'' +
+                ", TOTAL_IVA='" + total_iva + '\'' +
+                ", TOTAL_SIN_IVA='" + total_sin_iva + '\'' +
                 ", descripcion='" + descripcion + '\'' +
                 ", fecha_modificado=" + fecha_modificado + '\'' +
                 ", fecha_creacion=" + fecha_creacion +'\'' +
