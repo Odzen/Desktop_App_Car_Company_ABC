@@ -61,7 +61,7 @@
             <font>
                 <Font size="18.0" />
             </font></Button>
-        <Button fx:id="bttnReporteGer" layoutX="563.0" layoutY="338.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Reportes">
+        <Button fx:id="bttnReporteGer" onAction="#btnReportes" layoutX="563.0" layoutY="338.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Reportes">
             <effect>
                 <InnerShadow />
             </effect>

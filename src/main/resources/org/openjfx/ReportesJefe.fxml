@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="945.0" style="-fx-background-color: #c7e9ff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.Controllers.ReportesJefeController">
+    <children>
+        <ImageView fitHeight="69.0" fitWidth="110.0" layoutX="807.0" layoutY="14.0">
+            <image>
+                <Image url="@recursos/logo.png" />
+            </image>
+        </ImageView>
+        <Label fx:id="lblSaludo" layoutX="234.0" layoutY="162.0" prefHeight="31.0" prefWidth="132.0">
+            <font>
+                <Font name="Apple SD Gothic Neo Regular" size="24.0" />
+            </font>
+        </Label>
+        <Label layoutX="349.0" layoutY="19.0" prefHeight="87.0" prefWidth="418.0" text="Reportes clientes" textAlignment="CENTER" textFill="#0d2443f0">
+            <font>
+                <Font size="27.0" />
+            </font>
+            <effect>
+                <Blend />
+            </effect>
+        </Label>
+        <Hyperlink layoutX="29.0" layoutY="33.0" onAction="#btnInicio" prefHeight="31.0" prefWidth="65.0" text="Inicio">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Hyperlink>
+        <Separator layoutX="83.0" layoutY="24.0" orientation="VERTICAL" prefHeight="43.0" prefWidth="0.0" />
+        <Label layoutX="98.0" layoutY="36.0" prefHeight="23.0" prefWidth="88.0" text="Reporte">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+      <Label layoutX="339.0" layoutY="289.0" prefHeight="87.0" prefWidth="418.0" text="Reportes vehículos" textAlignment="CENTER" textFill="#0d2443f0">
+         <font>
+            <Font size="27.0" />
+         </font>
+         <effect>
+            <Blend />
+         </effect>
+      </Label>
+      <TableView fx:id="tableGestionAutomovil" layoutX="40.0" layoutY="377.0" prefHeight="189.0" prefWidth="846.0">
+         <columns>
+            <TableColumn fx:id="col_PlacaAuto" prefWidth="68.0" text="Placa" />
+            <TableColumn fx:id="col_marcaAuto" prefWidth="156.0" text="Marca" />
+            <TableColumn fx:id="col_cilindrajeAuto" prefWidth="104.0" text="Cilindraje" />
+            <TableColumn fx:id="col_colorAuto" prefWidth="116.0" text="Color" />
+            <TableColumn fx:id="col_modeloAuto" prefWidth="196.0" text="Modelo" />
+            <TableColumn fx:id="col_yearAuto" prefWidth="84.0" text="Año" />
+            <TableColumn fx:id="col_precioAuto" prefWidth="126.0" text="Precio" />
+            <TableColumn fx:id="col_creadoPorAutomovil" prefWidth="112.0" text="Creado por" />
+            <TableColumn fx:id="col_Sede_Auto" prefWidth="112.0" text="Sede" />
+            <TableColumn fx:id="col_fecha_creacion_Auto" prefWidth="112.0" text="Creado en la fecha" />
+            <TableColumn fx:id="col_fecha_modificacion_Auto" prefWidth="128.0" text="Última Modificación" />
+            <TableColumn fx:id="col_activo_Auto" prefWidth="82.0" text="Activo" />
+         </columns>
+      </TableView>
+      <TableView fx:id="tableGestionVendedor" layoutX="62.0" layoutY="102.0" prefHeight="190.0" prefWidth="846.0">
+         <columns>
+            <TableColumn fx:id="col_cedula_clienteGestionVendedor" prefWidth="111.0" text="Cédula" />
+            <TableColumn fx:id="col_emailGestionVendedor" prefWidth="135.0" text="Email" />
+            <TableColumn fx:id="col_nombreGestionVendedor" prefWidth="156.0" text="Nombre" />
+            <TableColumn fx:id="col_apellidoGestionVendedor" prefWidth="156.0" text="Apellido" />
+            <TableColumn fx:id="col_fecha_modificadoGestionVendedor" prefWidth="128.0" text="Fecha modificado" />
+            <TableColumn fx:id="col_fecha_creacionGestionVendedor1" prefWidth="128.0" text="Fecha creación" />
+            <TableColumn fx:id="col_direccionGestionVendedor" prefWidth="156.0" text="Dirección" />
+            <TableColumn fx:id="col_activoGestionVendedor" prefWidth="82.0" text="Activo" />
+            <TableColumn fx:id="col_nacimientoGestionVendedor" prefWidth="128.0" text="Fecha de Nacimiento" />
+            <TableColumn fx:id="col_telefonoGestionVendedor" prefWidth="128.0" text="Telefono" />
+            <TableColumn fx:id="col_tipo_usuarioGestionVendedor" prefWidth="128.0" text="Tipo usuario" />
+            <TableColumn fx:id="col_creadoPorGestionVendedor" prefWidth="128.0" text="Creado por" />
+            <TableColumn fx:id="col_sedeGestionVendedor" prefWidth="128.0" text="Sede" />
+         </columns>
+      </TableView>
+    </children>
+</AnchorPane>
