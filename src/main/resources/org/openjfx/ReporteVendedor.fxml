@@ -1,101 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.effect.Blend?>
-<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="945.0" style="-fx-background-color: #c7e9ff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.Controllers.ReporteVendedorController">
-   <children>
-      <ImageView fitHeight="69.0" fitWidth="110.0" layoutX="807.0" layoutY="14.0">
-         <image>
-            <Image url="@recursos/logo.png" />
-         </image>
-      </ImageView>
-      <Button fx:id="btnSalir" layoutX="84.0" layoutY="526.0" mnemonicParsing="false" onAction="#btnSalirClickmenu" prefHeight="37.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #b8b9ba#b8b9ba #b8b9ba#b8b9ba; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Salir" underline="true">
-         <effect>
-            <InnerShadow />
-         </effect>
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font></Button>
-      <Label fx:id="lblSaludo" layoutX="234.0" layoutY="162.0" prefHeight="31.0" prefWidth="132.0">
-         <font>
-            <Font name="Apple SD Gothic Neo Regular" size="24.0" />
-         </font>
-      </Label>
-      <Label layoutX="316.0" layoutY="20.0" prefHeight="87.0" prefWidth="326.0" text="Reporte vendedor" textAlignment="CENTER" textFill="#0d2443f0">
-         <font>
-            <Font name="AppleMyungjo Regular" size="36.0" />
-         </font>
-         <effect>
-            <Blend />
-         </effect>
-      </Label>
-      <Button fx:id="btnCerrarSesion" layoutX="701.0" layoutY="528.0" mnemonicParsing="false" onAction="#btnCerrarSesionClick" prefHeight="37.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #e8cccd#e8cccd #e8cccd#e8cccd; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Cerrar Sesión" underline="true">
-         <effect>
-            <InnerShadow blurType="GAUSSIAN" color="#805e5e" />
-         </effect>
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font></Button>
-      <TabPane layoutX="85.0" layoutY="112.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="398.0" prefWidth="749.0" style="-fx-background-color: #c7e9ff; -fx-border-color: #bbc6c9;">
-        <tabs>
-          <Tab style="-fx-background-color: #ddeaed;" text="Marca de autos">
-            <content>
-              <AnchorPane fx:id="ventana_marca_vendedor" minHeight="0.0" minWidth="0.0" prefHeight="271.0" prefWidth="400.0">
-                     <children>
-                        <BarChart fx:id="grafico_marca_vendedor" layoutX="135.0" prefHeight="364.0" prefWidth="479.0" title="Marcas de autos">
-                          <xAxis>
-                            <CategoryAxis side="BOTTOM" />
-                          </xAxis>
-                          <yAxis>
-                            <NumberAxis side="LEFT" />
-                          </yAxis>
-                        </BarChart>
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-          <Tab fx:id="ventana_" style="-fx-background-color: #ddeaed;" text="Año">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="234.0" prefWidth="311.0">
-                     <children>
-                        <BarChart layoutX="144.0" layoutY="5.0" prefHeight="358.0" prefWidth="462.0" title="Año">
-                          <xAxis>
-                            <CategoryAxis side="BOTTOM" />
-                          </xAxis>
-                          <yAxis>
-                            <NumberAxis side="LEFT" />
-                          </yAxis>
-                        </BarChart>
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-        </tabs>
-      </TabPane>
-      <Hyperlink layoutX="29.0" layoutY="33.0" onAction="#btnInicio" prefHeight="31.0" prefWidth="65.0" text="Inicio">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Hyperlink>
-      <Separator layoutX="83.0" layoutY="24.0" orientation="VERTICAL" prefHeight="43.0" prefWidth="0.0" />
-      <Label layoutX="98.0" layoutY="36.0" prefHeight="23.0" prefWidth="88.0" text="Reporte">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-   </children>
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="945.0" style="-fx-background-color: #c7e9ff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.Controllers.ReportesVendedorController">
+    <children>
+        <ImageView fitHeight="69.0" fitWidth="110.0" layoutX="807.0" layoutY="14.0">
+            <image>
+                <Image url="@recursos/logo.png" />
+            </image>
+        </ImageView>
+        <Label fx:id="lblSaludo" layoutX="234.0" layoutY="162.0" prefHeight="31.0" prefWidth="132.0">
+            <font>
+                <Font name="Apple SD Gothic Neo Regular" size="24.0" />
+            </font>
+        </Label>
+        <Hyperlink layoutX="29.0" layoutY="33.0" onAction="#btnInicio" prefHeight="31.0" prefWidth="65.0" text="Inicio">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Hyperlink>
+        <Separator layoutX="83.0" layoutY="24.0" orientation="VERTICAL" prefHeight="43.0" prefWidth="0.0" />
+        <Label layoutX="98.0" layoutY="36.0" prefHeight="23.0" prefWidth="88.0" text="Reporte">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+        <Label layoutX="315.0" layoutY="24.0" prefHeight="87.0" prefWidth="418.0" text="Reportes vehículos" textAlignment="CENTER" textFill="#0d2443f0">
+            <font>
+                <Font size="27.0" />
+            </font>
+            <effect>
+                <Blend />
+            </effect>
+        </Label>
+        <TableView fx:id="tableGestionAutomovil" layoutX="29.0" layoutY="134.0" prefHeight="414.0" prefWidth="846.0">
+            <columns>
+                <TableColumn fx:id="col_PlacaAuto" prefWidth="68.0" text="Placa" />
+                <TableColumn fx:id="col_marcaAuto" prefWidth="156.0" text="Marca" />
+                <TableColumn fx:id="col_cilindrajeAuto" prefWidth="104.0" text="Cilindraje" />
+                <TableColumn fx:id="col_colorAuto" prefWidth="116.0" text="Color" />
+                <TableColumn fx:id="col_modeloAuto" prefWidth="196.0" text="Modelo" />
+                <TableColumn fx:id="col_yearAuto" prefWidth="84.0" text="Año" />
+                <TableColumn fx:id="col_precioAuto" prefWidth="126.0" text="Precio" />
+                <TableColumn fx:id="col_creadoPorAutomovil" prefWidth="112.0" text="Creado por" />
+                <TableColumn fx:id="col_Sede_Auto" prefWidth="112.0" text="Sede" />
+                <TableColumn fx:id="col_fecha_creacion_Auto" prefWidth="112.0" text="Creado en la fecha" />
+                <TableColumn fx:id="col_fecha_modificacion_Auto" prefWidth="128.0" text="Última Modificación" />
+                <TableColumn fx:id="col_activo_Auto" prefWidth="82.0" text="Activo" />
+            </columns>
+        </TableView>
+    </children>
 </AnchorPane>
