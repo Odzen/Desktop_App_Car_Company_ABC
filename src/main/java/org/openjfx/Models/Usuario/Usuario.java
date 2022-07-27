@@ -19,9 +19,11 @@ public class Usuario {
     private Date joined;
     private Date fecha_nacimiento;
     private String telefono;
+    private String sede;
     private String last_session;
     private Rol user_type;
     private int id_tipo_usuario;
+    private String cedula_creado_por;
 
 
     public Usuario() {
@@ -40,10 +42,20 @@ public class Usuario {
         this.fecha_nacimiento = null;
         this.last_session = "";
         this.id_tipo_usuario = 0;
+        this.sede = "";
+        this.cedula_creado_por= "";
     }
 
     public int getId_usuario() {
         return id_usuario;
+    }
+
+    public String getSede() {
+        return sede;
+    }
+
+    public void setSede(String sede) {
+        this.sede = sede;
     }
 
     public void setId_usuario(int id_usuario) {
@@ -156,6 +168,14 @@ public class Usuario {
         return id_tipo_usuario;
     }
 
+    public String getCedula_creado_por() {
+        return cedula_creado_por;
+    }
+
+    public void setCedula_creado_por(String cedula_creado_por) {
+        this.cedula_creado_por = cedula_creado_por;
+    }
+
     public void setId_tipo_usuario(int id_tipo_usuario) {
         this.id_tipo_usuario = id_tipo_usuario;
         if (this.id_tipo_usuario == 1) {
@@ -189,6 +209,7 @@ public class Usuario {
                 ", last_session='" + last_session + '\'' +
                 ", user_type='" + user_type + '\'' +
                 ", id_tipo_usuario='" + id_tipo_usuario + '\'' +
+                ", creado por='" + cedula_creado_por + '\'' +
                 '}';
     }
 }

@@ -1,4 +1,7 @@
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+ */
 package org.openjfx.Controllers;
 
 import java.io.IOException;
@@ -6,7 +9,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import GlobalUtils.Dialogs;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -15,7 +17,7 @@ import javafx.stage.Stage;
 import org.openjfx.EmpresaAutosABC;
 
 
-public class MenuGerenteController implements Initializable {
+public class MenuVendedorController implements Initializable {
     @FXML
     private Button btnCerrarSesion;
 
@@ -23,17 +25,20 @@ public class MenuGerenteController implements Initializable {
     private Button btnSalir;
 
     @FXML
-    private Button bttnBodegaGer;
+    private Button btnVendedor;
+
 
     @FXML
-    private Button btnGerente;
+    private Button bttnBodegaVendedor;
 
     @FXML
-    private Button bttnGestionSede;
+    private Button bttnReporteVendedor;
 
     @FXML
-    private Button bttnReporteGer;
+    private  Button bttnCotizacion;
 
+    @FXML
+    private  Button bttnVentas;
     @FXML
     private Label bttnSalir;
 
@@ -49,29 +54,35 @@ public class MenuGerenteController implements Initializable {
         }
     }
     @FXML
-    private void btnGestionGerenteClick() throws IOException{
-        EmpresaAutosABC.setRoot("GestionUsuGerente");
+    private void btnGestionVendedorClick() throws IOException{
+        EmpresaAutosABC.setRoot("GestionVendedor");
     }
 
     @FXML
-    private void btnGestionAutomovilClick() throws IOException{
-        EmpresaAutosABC.setRoot("GestionAutomovil");
+    private void btnCotizacionClick() throws IOException{
+        EmpresaAutosABC.setRoot("Cotizacion");
     }
 
+    @FXML
+    private void btnVentasClick() throws IOException{
+        EmpresaAutosABC.setRoot("Venta");
+    }
+
+   @FXML
+    private void btnReporteVendedorClick() throws IOException{
+        EmpresaAutosABC.setRoot("ReportesVendedor");
+    }
+
+    @FXML
+    private void btnResumenVendedorClick() throws IOException {
+        EmpresaAutosABC.setRoot("ResumenVendedor");
+    }
     @FXML
     private void btnCerrarSesionClick() throws IOException{
         EmpresaAutosABC.setRoot("Login");
     }
-    @FXML
-    private void btnReportes() throws IOException{
-        EmpresaAutosABC.setRoot("ReportesGerente");
-    }
 
 
-    @FXML
-    private void btnResumenVendedorClick() throws IOException {
-        EmpresaAutosABC.setRoot("ResumenGerente");
-    }
     /**
      * Initializes the controller class.
      */

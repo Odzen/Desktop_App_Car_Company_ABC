@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="945.0" style="-fx-background-color: #c7e9ff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.Controllers.MenuGerenteController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="945.0" style="-fx-background-color: #c7e9ff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.Controllers.MenuVendedorController">
    <children>
       <ImageView fitHeight="114.0" fitWidth="162.0" layoutX="749.0" layoutY="29.0">
          <image>
@@ -20,7 +20,7 @@
          <font>
             <Font size="18.0" />
          </font></Label>
-      <Button fx:id="bttnGerente" layoutX="125.0" layoutY="255.0" mnemonicParsing="false" onAction="#btnGestionGerenteClick" prefHeight="40.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-color: #3d739c#3d739c; -fx-border-radius: 12;" text="Gestión de usuario">
+      <Button fx:id="bttnVendedor" layoutX="205.0" layoutY="255.0" mnemonicParsing="false" onAction="#btnGestionVendedorClick" prefHeight="40.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-color: #3d739c#3d739c; -fx-border-radius: 12;" text="Gestión de cliente">
          <effect>
             <InnerShadow />
          </effect>
@@ -39,7 +39,7 @@
             <Font name="Apple SD Gothic Neo Regular" size="24.0" />
          </font>
       </Label>
-      <Label layoutX="226.0" layoutY="94.0" prefHeight="100.0" prefWidth="533.0" text="¡Bienvenido Gerente!" textAlignment="CENTER" textFill="#0e4c9ef0">
+      <Label layoutX="226.0" layoutY="94.0" prefHeight="100.0" prefWidth="533.0" text="¡Bienvenido Vendedor!" textAlignment="CENTER" textFill="#0e4c9ef0">
          <font>
             <Font size="48.0" />
          </font>
@@ -54,21 +54,37 @@
          <font>
             <Font name="System Bold" size="18.0" />
          </font></Button>
-      <Button fx:id="btnGestionAutomovil" layoutX="374.0" layoutY="255.0" mnemonicParsing="false" onAction="#btnGestionAutomovilClick" prefHeight="40.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Gestión de Automóvil">
-         <effect>
-            <InnerShadow />
-         </effect>
-         <font>
-            <Font size="14.0" />
-         </font></Button>
-      <Button fx:id="bttnReporteGer" layoutX="641.0" layoutY="255.0" mnemonicParsing="false" onAction="#btnReportes" prefHeight="40.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Reportes">
+      <Button fx:id="bttnBodegaVendedor" layoutX="412.0" layoutY="337.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Bodega">
          <effect>
             <InnerShadow />
          </effect>
          <font>
             <Font size="18.0" />
          </font></Button>
-      <Button fx:id="btnResumenVendedor" layoutX="641.0" layoutY="344.0" mnemonicParsing="false" onAction="#btnResumenVendedorClick" prefHeight="40.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Resumen">
+      <Button fx:id="bttnReporteVendedor" onAction="#btnReporteVendedorClick" layoutX="606.0" layoutY="255.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Reportes">
+         <effect>
+            <InnerShadow />
+         </effect>
+         <font>
+            <Font size="18.0" />
+         </font></Button>
+      <Button fx:id="bttnCorizacion" layoutX="205.0" layoutY="337.0" mnemonicParsing="false" onAction="#btnCotizacionClick" prefHeight="40.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Cotización">
+         <effect>
+            <InnerShadow />
+         </effect>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="bttnVentas" layoutX="412.0" layoutY="255.0" mnemonicParsing="false" onAction="#btnVentasClick" prefHeight="40.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Ventas">
+         <effect>
+            <InnerShadow />
+         </effect>
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnResumenVendedor" layoutX="606.0" layoutY="337.0" mnemonicParsing="false" onAction="#btnResumenVendedorClick" prefHeight="40.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #f0f4f7; -fx-border-radius: 12; -fx-border-color: #3d739c#3d739c;" text="Resumen">
          <effect>
             <InnerShadow />
          </effect>

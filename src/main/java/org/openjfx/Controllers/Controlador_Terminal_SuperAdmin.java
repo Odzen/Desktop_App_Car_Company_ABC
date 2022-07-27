@@ -1,5 +1,6 @@
 package org.openjfx.Controllers;
 
+import org.openjfx.Models.Sede.SQL_Sede;
 import org.openjfx.Models.Usuario.SQL_Usuario;
 import org.openjfx.Models.Usuario.Usuario;
 import org.openjfx.Models.Usuario.Utils.Hash;
@@ -56,7 +57,7 @@ public class Controlador_Terminal_SuperAdmin {
                 System.out.println("Ingrese la cedula del Usuario que quiere modificar");
                 String cedula = scanner.nextLine();
                 Usuario usuarioActualizado = pedirDatosUsuario();
-                usrConsulta.editarUsuarios(cedula,usuarioActualizado);
+                usrConsulta.editarUsuarios(cedula, usuarioActualizado);
             } else if( opcion == 4) {
                 System.out.println("Ingrese Id del Usuario que quiere eliminar");
                 int id_usuario = scanner.nextInt();
@@ -66,7 +67,6 @@ public class Controlador_Terminal_SuperAdmin {
             } else if( opcion == 6) {
                 System.out.println("Salió del menu Usuario!!");
             }
-
         } while (opcion != 6);
 
     }
@@ -122,6 +122,24 @@ public class Controlador_Terminal_SuperAdmin {
 
             System.out.println("Ingrese la fecha de nacimiento del usuario");
             String fecha_nacimiento = scanner.nextLine();
+
+
+
+            boolean id_sede_valido = false;
+            while (!id_sede_valido)
+            {
+                System.out.println("Ingrese la sede en la que trabaja el usuario, si aplica");
+                String sede = scanner.nextLine();
+                if (SQL_Sede.existeSede_Nombre(sede)) {
+                    id_sede_valido = true;
+                    usuario.setSede(sede);
+                }
+                 else {
+                    id_sede_valido = false;
+                    System.err.println("Una sede con este nombre NO existe");
+                }
+            }
+
 
             boolean telefono_Valido = false;
             while (!telefono_Valido)

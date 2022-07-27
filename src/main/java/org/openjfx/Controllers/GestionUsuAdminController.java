@@ -1,41 +1,29 @@
 package org.openjfx.Controllers;
 
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import GlobalUtils.Dialogs;
 import animatefx.animation.FadeIn;
 import animatefx.animation.Shake;
 import animatefx.animation.Tada;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.util.Callback;
 import org.openjfx.EmpresaAutosABC;
+import org.openjfx.Models.Sede.SQL_Sede;
 import org.openjfx.Models.Usuario.SQL_Usuario;
 import org.openjfx.Models.Usuario.Usuario;
 import org.openjfx.Models.Usuario.Utils.Hash;
@@ -44,7 +32,7 @@ import org.openjfx.Models.Usuario.Utils.Validaciones;
 
 import javax.swing.*;
 
-public class GestionUsuarioController implements Initializable {
+public class GestionUsuAdminController implements Initializable {
 
     // Variables para Actualizar, Leer y Borrar Usuarios
     @FXML
@@ -68,6 +56,8 @@ public class GestionUsuarioController implements Initializable {
     @FXML
     private TableColumn<Usuario, String> col_cargoGestionAdmin;
     @FXML
+    private TableColumn<Usuario, String> col_sedeGestionAdmin;
+    @FXML
     private TableColumn<Usuario, String> col_telefonoGestionAdmin;
     @FXML
     private TableColumn<Usuario, Boolean> col_activoGestionAdmin;
@@ -75,10 +65,10 @@ public class GestionUsuarioController implements Initializable {
     private TableColumn<Usuario, Date> col_nacimientoGestionAdmin;
     @FXML
     private TableColumn<Usuario, String> col_last_sessionGestionAdmin;
+    @FXML
+    private TableColumn<Usuario, String> col_creadoPorGestionAdmin;
 
     private ObservableList<Usuario> usuariosList = FXCollections.observableArrayList();
-
-    private Usuario usuario = null;
 
     // Variables para registrar usuarios
     private String mensajeExito = String.format("-fx-text-fill: GREEN;");
@@ -130,21 +120,21 @@ public class GestionUsuarioController implements Initializable {
         txtTelefono.setStyle(null);
         dtpNacimiento.setStyle(null);
         cargo.setStyle(null);
-        //System.out.println("Presionó Confirmar");
+        sede.setStyle(null);
         // Cuando los campos están en blanco
         if(txtNombre.getText().isEmpty() || txtPasswordConfirm.getText().isEmpty() ||
                 txtApellido.getText().isEmpty() || txtPassword.getText().isEmpty() ||
                 txtMail.getText().isEmpty()|| txtDocumento.getText().isEmpty() ||
                 txtTelefono.getText().isEmpty() || dtpNacimiento.getValue()==null ||
-                cargo.getText().equals("Cargo"))
+                cargo.getText().equals("Cargo") || sede.getText().equals("Sede"))
         {
             validacionRegistroLabel.setStyle(mensajeError);
             if(txtNombre.getText().isEmpty() && txtPasswordConfirm.getText().isEmpty() &&
                     txtApellido.getText().isEmpty() && txtPassword.getText().isEmpty() &&
                     txtMail.getText().isEmpty()  && txtDocumento.getText().isEmpty() &&
                     txtTelefono.getText().isEmpty() && dtpNacimiento.getValue()==null &&
-                    cargo.getText().equals("Cargo"))
-            {
+                    cargo.getText().equals("Cargo") && sede.getText().equals("Sede")) {
+
                 validacionRegistroLabel.setText("Se requieren todos los campos!");
                 txtNombre.setStyle(estiloMensajeError);
                 txtPasswordConfirm.setStyle(estiloMensajeError);
@@ -155,6 +145,7 @@ public class GestionUsuarioController implements Initializable {
                 txtTelefono.setStyle(estiloMensajeError);
                 dtpNacimiento.setStyle(estiloMensajeError);
                 cargo.setStyle(estiloMensajeError);
+                sede.setStyle(estiloMensajeError);
                 new Shake(txtNombre).play();
                 new Shake(txtPasswordConfirm).play();
                 new Shake(txtApellido).play();
@@ -164,11 +155,14 @@ public class GestionUsuarioController implements Initializable {
                 new Shake(txtTelefono).play();
                 new Shake(dtpNacimiento).play();
                 new Shake(cargo).play();
-            } else {
+                new Shake(sede).play();
+            }
+            else {
                 validacionRegistroLabel.setText("Algunos campos están vacíos!");
                 boolean validado = this.validaciones(crear);
                 if (validado) {
                     this.guardarActualizarUsuario(crear);
+                    this.refreshTable();
                 }
             }
         } else {
@@ -192,6 +186,15 @@ public class GestionUsuarioController implements Initializable {
     @FXML
     private void setSecondItem() {
         cargo.setText(secondItem.getText());
+    }
+
+    private void setTextSedeSplitButton() {
+        for (MenuItem item:
+                sede.getItems()) {
+            item.setOnAction(e -> {
+                sede.setText(item.getText());
+            });
+        }
     }
 
     private boolean validaciones(boolean crear) {
@@ -234,11 +237,30 @@ public class GestionUsuarioController implements Initializable {
         {
             validado = false;
             String textoError = "Formato de telefono incorrecto!";
-            //System.out.println(textoError);
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtTelefono.setStyle(estiloMensajeError);
             new FadeIn(txtTelefono).play();
+        }
+        // Validacion de sede cuando el rol es admin
+        if (cargo.getText().equals("Administrador") && !sede.getText().equals("Sede"))
+        {
+            validado = false;
+            String textoError = "Adminstrador no puede tener sede asociada!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            sede.setStyle(estiloMensajeError);
+            new FadeIn(sede).play();
+        }
+        // Validacion de sede cuando el rol es gerente
+        if (cargo.getText().equals("Gerente") && sede.getText().equals("Sede"))
+        {
+            validado = false;
+            String textoError = "Gerente debe de tener una sede asociada!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            sede.setStyle(estiloMensajeError);
+            new FadeIn(sede).play();
         }
         // Se comprueba la longitud del nombre del usuario
         if (txtNombre.getText().length() < 4 ||  txtNombre.getText().length() > 20)
@@ -260,7 +282,9 @@ public class GestionUsuarioController implements Initializable {
             txtApellido.setStyle(estiloMensajeError);
             new FadeIn(txtApellido).play();
         }
-        // Validación Cédula
+        // Validación Cédula, primero revisa el formato
+        // Luego si el formato está correcto, entonces revisa que el usuario con ese número de cédula no exista si la orden es crear
+        // Si la orden es modificar, revisa que la cédula sea de un gerente o un administrador
         if (!Validaciones.validarCedula(txtDocumento.getText()))
         {
             validado = false;
@@ -274,6 +298,15 @@ public class GestionUsuarioController implements Initializable {
             System.out.println(SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText()));
             validado = false;
             String textoError = "Un usuario con ese número de cédula ya existe!";
+            validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
+            validacionRegistroLabel.setStyle(mensajeError);
+            txtDocumento.setStyle(estiloMensajeError);
+            new FadeIn(txtDocumento).play();
+        } else if (!SQL_Usuario.puedoModificarAdmin(txtDocumento.getText()) && !crear) {
+            // Validacion para saber si tengo permisos para modificar este usuario
+            System.out.println(SQL_Usuario.existeUsuario_Cedula(txtDocumento.getText()));
+            validado = false;
+            String textoError = "No tiene permisos para modificar este usuario!";
             validacionRegistroLabel.setText(validacionRegistroLabel.getText() + textoError + '\n');
             validacionRegistroLabel.setStyle(mensajeError);
             txtDocumento.setStyle(estiloMensajeError);
@@ -301,7 +334,7 @@ public class GestionUsuarioController implements Initializable {
             new FadeIn(dtpNacimiento).play();
         }
         // Validacion Cargo
-        if (cargo.getText().equals("Seleccionar Cargo") || (!cargo.getText().equals("Gerente") && !cargo.getText().equals("Administrador")) )
+        if (cargo.getText().equals("Cargo") || (!cargo.getText().equals("Gerente") && !cargo.getText().equals("Administrador")) )
         {
             validado = false;
             String textoError = "Formato de cargo incorrecto!";
@@ -345,6 +378,16 @@ public class GestionUsuarioController implements Initializable {
             usuarioModelo.setFecha_nacimiento(fechaNacimientoFormat);
             usuarioModelo.setTelefono(txtTelefono.getText());
 
+            String sedeNombre = sede.getText();
+            ResultSet resultSede = SQL_Sede.obtenerSede_Nombre(sedeNombre);
+
+            if(resultSede.next())
+            {
+                usuarioModelo.setSede(sede.getText());
+            } else {
+                usuarioModelo.setSede("");
+            }
+
             int idTipoUsuario = 0;
             if (cargo.getText().equals("Administrador")) {
                 idTipoUsuario = 1;
@@ -352,6 +395,9 @@ public class GestionUsuarioController implements Initializable {
                 idTipoUsuario = 2;
             }
             usuarioModelo.setId_tipo_usuario(idTipoUsuario);
+
+
+            usuarioModelo.setCedula_creado_por(LoginController.obtenerUsuarioLogeado().getCedula());
 
             // SI la orden es para crear, o para actualizar, llamo al metodo respectivo
             if (crear)
@@ -364,7 +410,7 @@ public class GestionUsuarioController implements Initializable {
 
         } catch (Exception e) {
             System.err.println(e);
-            JOptionPane.showMessageDialog(null,"Error registrando el usuario");
+            Dialogs.showError("Error en la base de datos", "Error registrando el usuario");
         }
     }
 
@@ -376,7 +422,8 @@ public class GestionUsuarioController implements Initializable {
         txtPasswordConfirm.setText("");
         txtMail.setText("");
         txtTelefono.setText("");
-        cargo.setText("Seleccionar Cargo");
+        cargo.setText("Cargo");
+        sede.setText("Sede");
         dtpNacimiento.setValue(null);
     }
 
@@ -398,18 +445,28 @@ public class GestionUsuarioController implements Initializable {
         col_activoGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("activo"));
         col_nacimientoGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("fecha_nacimiento"));
         col_last_sessionGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("last_session"));
+        col_sedeGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("sede"));
+        col_creadoPorGestionAdmin.setCellValueFactory(new PropertyValueFactory<>("cedula_creado_por"));
 
-        tableGestionAdmin.setItems(usuariosList);
+        tableGestionAdmin.setItems(usuariosList.sorted());
 
     }
+
+
     private void loadSedes() {
+        ResultSet respuesta = SQL_Sede.obtenerTodasSedesSet();
+        try {
+            ArrayList<MenuItem> itemSedes = new ArrayList<MenuItem>();
+            while (respuesta.next())
+            {
+                MenuItem sedeItem = new MenuItem(respuesta.getString("nombre_sede"));
+                itemSedes.add(sedeItem);
+            }
+            sede.getItems().addAll(itemSedes);
 
-        //respuesta = SQL_Sedes.getAllSedes()
-
-        // while (respuesta.next())
-        //      MenuItem firstItem;
-
-
+        } catch (SQLException e) {
+                throw new RuntimeException(e);
+        }
     }
 
     private void readUsers() {
@@ -433,8 +490,11 @@ public class GestionUsuarioController implements Initializable {
                 readUsuario.setFecha_nacimiento(result.getDate("fecha_nacimiento"));
                 readUsuario.setLast_session(result.getString("last_session"));
                 readUsuario.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
+                readUsuario.setSede(result.getString("sede"));
+                readUsuario.setCedula_creado_por(result.getString("cedula_creado_por"));
                 usuariosList.add(readUsuario);
             }
+            usuariosList.sorted();
         } catch(SQLException exception) {
             throw new RuntimeException(exception);
         }
@@ -463,8 +523,10 @@ public class GestionUsuarioController implements Initializable {
     // Para salir de la aplicación
     @FXML
     protected void btnSalirClick() {
-        Stage stage = (Stage) btnSalir.getScene().getWindow();
-        stage.close();
+        if (Dialogs.showConfirm("Seleccione una opción", "¿Está seguro que quiere salir de la aplicación?", Dialogs.YES, Dialogs.NO).equals(Dialogs.YES)) {
+            Stage stage = (Stage) btnSalir.getScene().getWindow();
+            stage.close();
+        }
     }
     @FXML
     protected void btnLimpiar() {
@@ -484,6 +546,7 @@ public class GestionUsuarioController implements Initializable {
         txtTelefono.setStyle(null);
         dtpNacimiento.setStyle(null);
         cargo.setStyle(null);
+        sede.setStyle(null);
         if(txtDocumento.getText().isEmpty())
         {
             validacionRegistroLabel.setStyle(mensajeError);
@@ -526,7 +589,7 @@ public class GestionUsuarioController implements Initializable {
     private void llenarCamposPorCedula() {
         String cedula = txtDocumento.getText();
         try {
-            ResultSet result = SQL_Usuario.obtenerUsuario_Cedula(cedula);
+            ResultSet result = SQL_Usuario.obtenerUsuario_CedulaAdmin(cedula);
             while (result.next()) {
                 Usuario readUsuario = new Usuario();
 
@@ -545,6 +608,8 @@ public class GestionUsuarioController implements Initializable {
                 readUsuario.setFecha_nacimiento(result.getDate("fecha_nacimiento"));
                 readUsuario.setLast_session(result.getString("last_session"));
                 readUsuario.setId_tipo_usuario(result.getInt("id_tipo_usuario"));
+                readUsuario.setSede(result.getString("sede"));
+                readUsuario.setCedula_creado_por(result.getString("cedula_creado_por"));
 
                 // Cambio valores en los labels
                 txtNombre.setText(readUsuario.getNombre());
@@ -556,7 +621,7 @@ public class GestionUsuarioController implements Initializable {
                 dtpNacimiento.setValue(LocalDate.parse(readUsuario.getFecha_nacimiento().toString()));
 
                 String rol = "";
-                if (readUsuario.getUser_type().toString().equals("ADMIN")) {
+                if (readUsuario.getUser_type().toString().equals(Rol.ADMIN.toString())) {
                     rol = "Administrador";
                 }
                 else {
@@ -564,7 +629,15 @@ public class GestionUsuarioController implements Initializable {
                 }
                 cargo.setText(rol);
 
+                String sedeUsuario = readUsuario.getSede();
+
+                if(sedeUsuario.equals(""))
+                    sede.setText("Sede");
+                else
+                    sede.setText(readUsuario.getSede());
+
             }
+
         } catch(SQLException exception) {
             throw new RuntimeException(exception);
         }
@@ -576,7 +649,17 @@ public class GestionUsuarioController implements Initializable {
     private void btnBorrarClicked() {
         String cedula = txtDocumento.getText();
         if (SQL_Usuario.existeUsuario_Cedula(cedula)) {
-            SQL_Usuario.eliminarUsuarioPorCedula(cedula);
+            try {
+                ResultSet result = SQL_Usuario.obtenerUsuario_Cedula(cedula);
+                result.next();
+                boolean activo = result.getBoolean("activo");
+                SQL_Usuario.cambiarEstadoUsuarioPorCedula(cedula, activo);
+                this.validadoLabelSet();
+                this.limpiar();
+
+            } catch (SQLException exception) {
+                throw new RuntimeException(exception);
+            }
         }
         else {
             String textoError = "No existe un usuario con esa cédula!";
@@ -607,7 +690,8 @@ public class GestionUsuarioController implements Initializable {
         this.readUsers();
         this.loadData();
         this.loadSedes();
-        tableGestionAdmin.setItems(usuariosList);
+        this.setTextSedeSplitButton();
+        tableGestionAdmin.setItems(usuariosList.sorted());
     }
 
 }

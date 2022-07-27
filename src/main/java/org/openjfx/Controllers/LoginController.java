@@ -1,5 +1,6 @@
 package org.openjfx.Controllers;
 
+import GlobalUtils.Dialogs;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -15,6 +16,7 @@ import org.openjfx.Models.Usuario.SQL_Usuario;
 import org.openjfx.Models.Usuario.Usuario;
 import org.openjfx.Models.Usuario.Utils.Hash;
 import org.openjfx.Models.Usuario.Utils.Rol;
+import org.openjfx.Models.Usuario.Utils.Validaciones;
 
 import javax.print.DocFlavor.URL;
 
@@ -38,6 +40,8 @@ public class LoginController  {
 
     @FXML
     private TextField txtUser;
+
+    private static Usuario usuarioLoggeado = new Usuario();
     
     // Para salir de la aplicación
     @FXML
@@ -84,7 +88,7 @@ public class LoginController  {
             new animatefx.animation.Shake(txtContraseña).play();
         }
         // Se comprueba la longitud de la cedula
-        else if (txtUser.getText().length() < 10) {
+        else if (!Validaciones.validarCedula(txtUser.getText())) {
             invalidoUser.setText("Al menos 10 caracteres!");
             invalidoUser.setStyle(mensajeError);
             txtUser.setStyle(estiloMensajeError);
@@ -103,50 +107,67 @@ public class LoginController  {
         }
         // Si el ingreso es correcto
         else {
-            Usuario usuarioLogin = new Usuario();
             String contraseña = txtContraseña.getText();
             String contraseñaCifrada = Hash.encrypt(contraseña);
 
             Date date = new Date();
             DateFormat fechaHora = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
-            usuarioLogin.setLast_session(fechaHora.format(date));
+            usuarioLoggeado.setLast_session(fechaHora.format(date));
 
-            usuarioLogin.setCedula(txtUser.getText());
-            usuarioLogin.setContraseña(contraseñaCifrada);
+            usuarioLoggeado.setCedula(txtUser.getText());
+            usuarioLoggeado.setContraseña(contraseñaCifrada);
 
-
+            ResultSet resultSet = SQL_Usuario.obtenerUsuario_Cedula(usuarioLoggeado.getCedula());
             // Check si el usuario está inactivo o no
-            boolean activo;
             try {
-                ResultSet resultSet = SQL_Usuario.obtenerUsuario_Cedula(txtUser.getText());
                 resultSet.next();
-                activo = resultSet.getBoolean("activo");
-                System.out.println(activo);
+                boolean activo = resultSet.getBoolean("activo");
+                if(!activo) {
+                    invalidoUser.setText("El usuario con esa cédula está inactivo!");
+                    invalidoUser.setStyle(mensajeError);
+                    txtUser.setStyle(estiloMensajeError);
+                    new animatefx.animation.FadeIn(txtUser).play();
+                    new animatefx.animation.Shake(txtUser).play();
+                    return;
+                }
+
             } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-            if(!activo) {
-                invalidoUser.setText("El usuario con esa cédula está inactivo!");
-                invalidoUser.setStyle(mensajeError);
-                txtUser.setStyle(estiloMensajeError);
-                new animatefx.animation.FadeIn(txtUser).play();
-                new animatefx.animation.Shake(txtUser).play();
-                return;
+                System.err.println(e);
+                Dialogs.showError("Error en la base de datos", "Error obteniendo el usuario");
             }
 
             // Check si existe un usuario con esa cedula y compara contraseñas
-            if(SQL_Usuario.login(usuarioLogin)) {
+            // También llama otro método para identificar que usuario inició sesión
+            // Y así mismo se le muestra, dependiendo de los permisos
+            if(SQL_Usuario.login(usuarioLoggeado)) {
                 validoUser.setText("Ingreso éxitoso!");
                 validoUser.setStyle(mensajeExito);
                 txtUser.setStyle(estiloMensajeExito);
                 txtContraseña.setStyle(estiloMensajeExito);
                 new animatefx.animation.Tada(validoUser).play();
-                this.btnLogin_MouseClicked(usuarioLogin);
+
+                // Se inicia sesión, y se guarda el usuario loggeado
+                // Para poder acceder a estos datos luego
+
+                ResultSet result = SQL_Usuario.obtenerUsuario_Cedula(usuarioLoggeado.getCedula());
+                try {
+                    result.next();
+                    usuarioLoggeado.setId_usuario(result.getInt("id_usuario"));
+                    usuarioLoggeado.setSede(result.getString("sede"));
+                } catch (SQLException e) {
+                    System.err.println(e);
+                    Dialogs.showError("Error en la base de datos", "Error obteniendo el usuario");
+                }
+
+
+                // Se redirige al usuario a un menú, dependiendo de su rol
+                this.btnLogin_MouseClicked(usuarioLoggeado);
             }
             else {
                 invalidoUser.setText("Cedula o Contraseña incorrectos!");
                 invalidoUser.setStyle(mensajeError);
                 txtUser.setStyle(estiloMensajeError);
+                txtContraseña.setStyle(estiloMensajeError);
                 new animatefx.animation.FadeIn(txtUser).play();
                 new animatefx.animation.FadeIn(txtContraseña).play();
                 new animatefx.animation.Shake(txtUser).play();
@@ -165,10 +186,10 @@ public class LoginController  {
             EmpresaAutosABC.setRoot("menuGerente");
         }
         else if (usuarioLogin.getUser_type().equals(Rol.JEFE_TALLER)) {
-            // EmpresaAutosABC.setRoot("menuJefeTaller");
+            EmpresaAutosABC.setRoot("menuJefeTaller");
         }
         else if (usuarioLogin.getUser_type().equals(Rol.VENDEDOR)) {
-            // EmpresaAutosABC.setRoot("menuVendedor");
+            EmpresaAutosABC.setRoot("menuVendedor");
         }
         else {
             System.err.println("Rol undefined");
@@ -177,5 +198,10 @@ public class LoginController  {
      @FXML
     public void initialize (URL url, ResourceBundle rb){
         //TODO
+    }
+
+
+    public static Usuario obtenerUsuarioLogeado() {
+        return usuarioLoggeado;
     }
 }

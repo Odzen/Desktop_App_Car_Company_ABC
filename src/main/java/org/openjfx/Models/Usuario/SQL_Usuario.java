@@ -39,11 +39,20 @@ public class SQL_Usuario {
                 PreparedStatement sentencia = connection.prepareStatement(
                         "SELECT * FROM usuario WHERE user_type= ? or user_type= ? "
                 );
-                sentencia.setString(1, "ADMIN");
-                sentencia.setString(2, "GERENTE");
+                sentencia.setString(1, Rol.ADMIN.toString());
+                sentencia.setString(2, Rol.GERENTE.toString());
 
                 ResultSet resultado = sentencia.executeQuery();
                 return resultado;
+            } else if (rol.equals(Rol.GERENTE)) {
+                PreparedStatement sentencia = connection.prepareStatement(
+                        "SELECT * FROM usuario WHERE user_type= ? or user_type= ? "
+                );
+                sentencia.setString(1, Rol.JEFE_TALLER.toString());
+                sentencia.setString(2, Rol.VENDEDOR.toString());
+
+                ResultSet resultadoGerente = sentencia.executeQuery();
+                return resultadoGerente;
             }
 
         } catch (SQLException e) {
@@ -72,7 +81,51 @@ public class SQL_Usuario {
         }
     }
 
-    // Verifica si un usuario existe o no en la base de datos, basado en su cédula
+    // Verifica si un admin puede modificar
+    public static boolean puedoModificarAdmin(String cedula)  {
+        try {
+            PreparedStatement sentencia = connection.prepareStatement(
+                    "SELECT * FROM usuario WHERE cedula= ? AND (user_type=? OR user_type=?)"
+            );
+
+            sentencia.setString(1, cedula);
+            sentencia.setString(2, Rol.GERENTE.toString());
+            sentencia.setString(3, Rol.ADMIN.toString());
+            ResultSet resultado = sentencia.executeQuery();
+            if (resultado.next()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Verifica si un gerente puede modificar
+    public static boolean puedoModificarGerente(String cedula)  {
+        try {
+            PreparedStatement sentencia = connection.prepareStatement(
+                    "SELECT * FROM usuario WHERE cedula= ? AND (user_type=? OR user_type=?)"
+            );
+
+            sentencia.setString(1, cedula);
+            sentencia.setString(2, Rol.JEFE_TALLER.toString());
+            sentencia.setString(3, Rol.VENDEDOR.toString());
+            ResultSet resultado = sentencia.executeQuery();
+            if (resultado.next()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Obtiene un usuario buscandolo por su cédula
     public static ResultSet obtenerUsuario_Cedula(String cedula)  {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
@@ -80,6 +133,44 @@ public class SQL_Usuario {
             );
 
             sentencia.setString(1, cedula);
+            ResultSet resultado = sentencia.executeQuery();
+            return resultado;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Obtiene un usuario buscandolo por su cédula, para gerente
+    // Solo devuelve usuarios con el rol de vendendor o jefe de taller
+    public static ResultSet obtenerUsuario_CedulaGerente(String cedula)  {
+        try {
+            PreparedStatement sentencia = connection.prepareStatement(
+                    "SELECT * FROM usuario WHERE cedula= ? AND (user_type=? OR user_type=?)"
+            );
+
+            sentencia.setString(1, cedula);
+            sentencia.setString(2, Rol.JEFE_TALLER.toString());
+            sentencia.setString(3, Rol.VENDEDOR.toString());
+            ResultSet resultado = sentencia.executeQuery();
+            return resultado;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Obtiene un usuario buscandolo por su cédula, para gerente
+    // Solo devuelve usuarios con el rol de gerente o Admin
+    public static ResultSet obtenerUsuario_CedulaAdmin(String cedula)  {
+        try {
+            PreparedStatement sentencia = connection.prepareStatement(
+                    "SELECT * FROM usuario WHERE cedula= ? AND (user_type=? OR user_type=?)"
+            );
+
+            sentencia.setString(1, cedula);
+            sentencia.setString(2, Rol.GERENTE.toString());
+            sentencia.setString(3, Rol.ADMIN.toString());
             ResultSet resultado = sentencia.executeQuery();
             return resultado;
 
@@ -203,8 +294,8 @@ public class SQL_Usuario {
         try {
             PreparedStatement sentencia = connection.prepareStatement(
                     "INSERT INTO usuario " +
-                            "(cedula, nombre, apellido, contraseña, email, joined, modificado, activo, avatar, fecha_nacimiento, telefono, last_session, user_type, id_tipo_usuario )" +
-                            "VALUES  (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                            "(cedula, nombre, apellido, contraseña, email, joined, modificado, activo, avatar, fecha_nacimiento, telefono, last_session, user_type, id_tipo_usuario, sede, cedula_creado_por )" +
+                            "VALUES  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             sentencia.setString(1, usuario.getCedula());
             sentencia.setString(2, usuario.getNombre());
             sentencia.setString(3, usuario.getApellido());
@@ -219,6 +310,8 @@ public class SQL_Usuario {
             sentencia.setString(12, usuario.getLast_session());
             sentencia.setString(13, usuario.getUser_type().name());
             sentencia.setInt(14, usuario.getId_tipo_usuario());
+            sentencia.setString(15, usuario.getSede());
+            sentencia.setString(16, usuario.getCedula_creado_por());
 
             sentencia.execute();
 
@@ -252,7 +345,9 @@ public class SQL_Usuario {
                                 "telefono = ?, " +
                                 "last_session= ?, " +
                                 "id_tipo_usuario= ?, " +
-                                "user_type= ? " +
+                                "user_type= ?, " +
+                                "sede= ?, " +
+                                "cedula_creado_por= ? " +
                                 "WHERE cedula = ?");
                 sentencia.setString(1, cedula);
                 sentencia.setString(2, usuarioActualizado.getContraseña());
@@ -266,7 +361,9 @@ public class SQL_Usuario {
                 sentencia.setString(10, usuarioActualizado.getLast_session());
                 sentencia.setInt(11, usuarioActualizado.getId_tipo_usuario());
                 sentencia.setString(12, usuarioActualizado.getUser_type().toString());
-                sentencia.setString(13, cedula);
+                sentencia.setString(13, usuarioActualizado.getSede());
+                sentencia.setString(14, usuarioActualizado.getCedula_creado_por());
+                sentencia.setString(15, cedula);
 
                 int filasAfectadas = sentencia.executeUpdate();
                 System.out.println(filasAfectadas);
@@ -316,7 +413,7 @@ public class SQL_Usuario {
     }
 
     // Elimina al usuario poniendolo inactivo en la base de datos
-    public static void eliminarUsuarioPorCedula(String cedula) {
+    public static void cambiarEstadoUsuarioPorCedula(String cedula, boolean activo) {
         if(existeUsuario_Cedula(cedula)) {
             java.util.Date modificado = new java.util.Date();
             java.sql.Date modificadoSql = new java.sql.Date(modificado.getTime());
@@ -327,7 +424,12 @@ public class SQL_Usuario {
                                 "activo= ?  " +
                                 "WHERE cedula = ?");
                 sentencia.setDate(1, modificadoSql);
-                sentencia.setBoolean(2, false);
+
+                if (activo)
+                    sentencia.setBoolean(2, false);
+                else
+                    sentencia.setBoolean(2, true);
+
                 sentencia.setString(3, cedula);
 
                 int filasAfectadas = sentencia.executeUpdate();
@@ -335,7 +437,7 @@ public class SQL_Usuario {
                 if (filasAfectadas == 0) {
                     System.out.println("No se modificó nada !");
                 } else {
-                    System.out.println("Se cambio el estado a INACTIVO del usuario en la base de datos");
+                    System.out.println("Se cambio el estado del usuario en la base de datos!");
                 }
 
             } catch (SQLException e) {
