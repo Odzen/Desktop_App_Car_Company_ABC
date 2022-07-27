@@ -15,80 +15,80 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="945.0" style="-fx-background-color: #c7e9ff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.Controllers.ResumenGerenteController">
-   <children>
-      <ImageView fitHeight="69.0" fitWidth="110.0" layoutX="807.0" layoutY="14.0">
-         <image>
-            <Image url="@recursos/logo.png" />
-         </image>
-      </ImageView>
-      <Button fx:id="btnSalir" layoutX="84.0" layoutY="526.0" mnemonicParsing="false" onAction="#btnSalirClickmenu" prefHeight="37.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #b8b9ba#b8b9ba #b8b9ba#b8b9ba; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Salir" underline="true">
-         <effect>
-            <InnerShadow />
-         </effect>
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font></Button>
-      <Label fx:id="lblSaludo" layoutX="234.0" layoutY="162.0" prefHeight="31.0" prefWidth="132.0">
-         <font>
-            <Font name="Apple SD Gothic Neo Regular" size="24.0" />
-         </font>
-      </Label>
-      <Label layoutX="254.0" layoutY="20.0" prefHeight="87.0" prefWidth="489.0" text="Resumen de Automóviles" textAlignment="CENTER" textFill="#0d2443f0">
-         <font>
-            <Font name="Malayalam MN" size="36.0" />
-         </font>
-         <effect>
-            <Blend />
-         </effect>
-      </Label>
-      <Button fx:id="btnCerrarSesion" layoutX="701.0" layoutY="528.0" mnemonicParsing="false" onAction="#btnCerrarSesionClick" prefHeight="37.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #e8cccd#e8cccd #e8cccd#e8cccd; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Cerrar Sesión" underline="true">
-         <effect>
-            <InnerShadow blurType="GAUSSIAN" color="#805e5e" />
-         </effect>
-         <font>
-            <Font name="System Bold" size="18.0" />
-         </font></Button>
-      <TabPane layoutX="85.0" layoutY="112.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="398.0" prefWidth="749.0" style="-fx-background-color: #c7e9ff; -fx-border-color: #bbc6c9;">
-        <tabs>
-          <Tab fx:id="ventana_marca_autos_gerente" style="-fx-background-color: #ddeaed;" text="Marca">
-            <content>
-              <AnchorPane fx:id="ventana_marca_vendedor" minHeight="0.0" minWidth="0.0" prefHeight="271.0" prefWidth="400.0">
-                     <children>
-                        <PieChart fx:id="grafico_marca_Vendedor" layoutX="133.0" layoutY="8.0" prefHeight="352.0" prefWidth="516.0" title="Marca de Autos" />
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-          <Tab fx:id="ventana_año_autos_gerente" style="-fx-background-color: #ddeaed;" text="Año">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="234.0" prefWidth="311.0">
-                     <children>
-                        <PieChart fx:id="grafico_año_Vendedor" layoutX="169.0" layoutY="10.0" prefHeight="345.0" prefWidth="392.0" title="Año de autos" />
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-            <Tab fx:id="ventana_color_autos_gerente" style="-fx-background-color: #ddeaed;" text="Color">
-               <content>
-                  <AnchorPane fx:id="ventana_marca_vendedor1" minHeight="0.0" minWidth="0.0" prefHeight="271.0" prefWidth="400.0">
-                     <children>
-                        <PieChart fx:id="grafico_color_Vendedor" layoutX="116.0" layoutY="7.0" prefHeight="352.0" prefWidth="516.0" title="Color de autos" />
-                     </children>
-                  </AnchorPane>
-               </content>
-            </Tab>
-        </tabs>
-      </TabPane>
-      <Hyperlink layoutX="29.0" layoutY="33.0" onAction="#btnInicio" prefHeight="31.0" prefWidth="65.0" text="Inicio">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Hyperlink>
-      <Separator layoutX="83.0" layoutY="24.0" orientation="VERTICAL" prefHeight="43.0" prefWidth="0.0" />
-      <Label layoutX="98.0" layoutY="36.0" prefHeight="23.0" prefWidth="88.0" text="Resumen">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-   </children>
+    <children>
+        <ImageView fitHeight="69.0" fitWidth="110.0" layoutX="807.0" layoutY="14.0">
+            <image>
+                <Image url="@recursos/logo.png" />
+            </image>
+        </ImageView>
+        <Button fx:id="btnSalir" layoutX="84.0" layoutY="526.0" mnemonicParsing="false" onAction="#btnSalirClickmenu" prefHeight="37.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #b8b9ba#b8b9ba #b8b9ba#b8b9ba; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Salir" underline="true">
+            <effect>
+                <InnerShadow />
+            </effect>
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font></Button>
+        <Label fx:id="lblSaludo" layoutX="234.0" layoutY="162.0" prefHeight="31.0" prefWidth="132.0">
+            <font>
+                <Font name="Apple SD Gothic Neo Regular" size="24.0" />
+            </font>
+        </Label>
+        <Label layoutX="254.0" layoutY="20.0" prefHeight="87.0" prefWidth="489.0" text="Resumen de Automóviles" textAlignment="CENTER" textFill="#0d2443f0">
+            <font>
+                <Font name="Malayalam MN" size="36.0" />
+            </font>
+            <effect>
+                <Blend />
+            </effect>
+        </Label>
+        <Button fx:id="btnCerrarSesion" layoutX="701.0" layoutY="528.0" mnemonicParsing="false" onAction="#btnCerrarSesionClick" prefHeight="37.0" prefWidth="161.0" style="-fx-background-radius: 12; -fx-background-color: #e8cccd#e8cccd #e8cccd#e8cccd; -fx-border-color: #2b3238#2b3238 #2b3238#2b3238; -fx-border-radius: 12;" text="Cerrar Sesión" underline="true">
+            <effect>
+                <InnerShadow blurType="GAUSSIAN" color="#805e5e" />
+            </effect>
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font></Button>
+        <TabPane layoutX="85.0" layoutY="112.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="398.0" prefWidth="749.0" style="-fx-background-color: #c7e9ff; -fx-border-color: #bbc6c9;">
+            <tabs>
+                <Tab fx:id="ventana_marca_autos_gerente" style="-fx-background-color: #ddeaed;" text="Marca">
+                    <content>
+                        <AnchorPane fx:id="ventana_marca_vendedor" minHeight="0.0" minWidth="0.0" prefHeight="271.0" prefWidth="400.0">
+                            <children>
+                                <PieChart fx:id="grafico_marca_Vendedor" layoutX="133.0" layoutY="8.0" prefHeight="352.0" prefWidth="516.0" title="Marca de Autos" />
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="ventana_año_autos_gerente" style="-fx-background-color: #ddeaed;" text="Año">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="234.0" prefWidth="311.0">
+                            <children>
+                                <PieChart fx:id="grafico_año_Vendedor" layoutX="169.0" layoutY="10.0" prefHeight="345.0" prefWidth="392.0" title="Año de autos" />
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="ventana_color_autos_gerente" style="-fx-background-color: #ddeaed;" text="Color">
+                    <content>
+                        <AnchorPane fx:id="ventana_marca_vendedor1" minHeight="0.0" minWidth="0.0" prefHeight="271.0" prefWidth="400.0">
+                            <children>
+                                <PieChart fx:id="grafico_color_Vendedor" layoutX="116.0" layoutY="7.0" prefHeight="352.0" prefWidth="516.0" title="Color de autos" />
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+        <Hyperlink layoutX="29.0" layoutY="33.0" onAction="#btnInicio" prefHeight="31.0" prefWidth="65.0" text="Inicio">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Hyperlink>
+        <Separator layoutX="83.0" layoutY="24.0" orientation="VERTICAL" prefHeight="43.0" prefWidth="0.0" />
+        <Label layoutX="98.0" layoutY="36.0" prefHeight="23.0" prefWidth="88.0" text="Resumen">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Label>
+    </children>
 </AnchorPane>

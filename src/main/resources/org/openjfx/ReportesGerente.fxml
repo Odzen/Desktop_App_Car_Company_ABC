@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="945.0" style="-fx-background-color: #c7e9ff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.Controllers.ReportesGerenteController">
+    <children>
+        <Hyperlink layoutX="19.0" layoutY="23.0" onAction="#btnInicio" prefHeight="31.0" prefWidth="65.0" text="Inicio">
+            <font>
+                <Font size="18.0" />
+            </font></Hyperlink>
+        <Separator layoutX="93.0" layoutY="14.0" orientation="VERTICAL" prefHeight="43.0" prefWidth="0.0" />
+        <ImageView fitHeight="100.0" fitWidth="145.0" layoutX="775.0" layoutY="19.0">
+            <image>
+                <Image url="@recursos/logo.png" />
+            </image>
+        </ImageView>
+        <TableView fx:id="tablaVenta" layoutX="52.0" layoutY="110.0" prefHeight="426.0" prefWidth="855.0">
+            <columns>
+                <TableColumn fx:id="col_id_venta" prefWidth="38.0" text="id " />
+                <TableColumn fx:id="col_Id_Cliente_Venta" prefWidth="97.0" text="Id Cliente" />
+                <TableColumn fx:id="col_id_orden_trabajo_Venta" prefWidth="110.0" text="Id Orden" />
+                <TableColumn fx:id="col_placa_Venta" prefWidth="110.0" text="Placa" />
+                <TableColumn fx:id="col_Descripcion_Venta" prefWidth="204.0" text="Descripción" />
+                <TableColumn fx:id="col_iva_Venta" prefWidth="50.0" text="IVA" />
+                <TableColumn fx:id="col_total_sin_iva_Venta" prefWidth="112.0" text="Subtotal" />
+                <TableColumn fx:id="col_total_iva_Venta" prefWidth="129.0" text="Total a pagar" />
+                <TableColumn fx:id="col_fecha_modificacion_Venta" prefWidth="301.0" text="Modificado" />
+                <TableColumn fx:id="col_fecha_creacion_Venta" prefWidth="128.0" text="Creación" />
+                <TableColumn fx:id="col_Id_Vendedor_Venta" prefWidth="102.0" text="Id Vendedor" />
+                <TableColumn fx:id="col_sede_Venta" prefWidth="110.0" text="sede" />
+            </columns>
+        </TableView>
+        <Label fx:id="lblMensajeContra" layoutX="240.0" layoutY="451.0" prefHeight="137.0" prefWidth="529.0" textAlignment="CENTER" textFill="RED">
+            <font>
+                <Font size="15.0" />
+            </font></Label>
+        <Label fx:id="validacionRegistroLabel" layoutX="166.0" layoutY="463.0" prefHeight="122.0" prefWidth="614.0" textAlignment="LEFT">
+            <font>
+                <Font size="13.0" />
+            </font>
+        </Label>
+        <Label contentDisplay="CENTER" layoutX="369.0" layoutY="36.0" prefHeight="43.0" prefWidth="207.0" text="Reportes Venta" textAlignment="CENTER">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+            <cursor>
+                <Cursor fx:constant="S_RESIZE" />
+            </cursor>
+        </Label>
+    </children>
+</AnchorPane>
